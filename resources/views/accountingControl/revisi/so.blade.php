@@ -43,13 +43,13 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">SO Harian</a>
+                    <a href="#" class="nav-link">SO Harian</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Sales Harian</a>
+                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">Sales Harian</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Patty Cash</a>
+                    <a href="#" class="nav-link">Patty Cash</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Waste</a>
@@ -71,7 +71,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-danger elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <a href="#" class="brand-link">
                 <img src="{{ url('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Accounting</span>
@@ -105,19 +105,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active">
+                                    <a href="#" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>SO Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
+                                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sales Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
+                                    <a href="{{ url('accounting/revisi/pattyCash') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Patty Cash</p>
                                     </a>

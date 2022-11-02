@@ -111,13 +111,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link active">
+                                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sales Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('accounting/revisi/pattyCash') }}" class="nav-link">
+                                    <a href="#" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Patty Cash</p>
                                     </a>
@@ -173,10 +173,10 @@
                                 <div class="card-header border-0">
                                     <div class="d-flex justify-content-left">
                                         <a onclick="setTable(0)" style="cursor: pointer">To Do (</a>
-                                        <div id="toDoCountSales"></div>
+                                        <div id="toDoCountPattyCash"></div>
                                         <a>)/</a>
                                         <a onclick="setTable(1)" style="cursor: pointer">Done (</a>
-                                        <div id="doneCountSales"></div>
+                                        <div id="doneCountPattyCash"></div>
                                         <a>)</a>
                                     </div>
                                 </div>
@@ -217,8 +217,8 @@
                     <div class="modal-body">
                         <h4></h4>
                         <div class="form-group">
-                            <label>CU</label>
-                            <input id="editCU" class="form-control" value="0" />
+                            <label>Quantity</label>
+                            <input id="editQty" class="form-control" value="0" />
                         </div>
                         <div class="form-group">
                             <label>Total</label>
@@ -227,62 +227,62 @@
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="button" class="btn btn-info" value="Submit" onclick="submitRevSales()">
+                        <input type="button" class="btn btn-info" value="Submit" onclick="submitRevPattyCash()">
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script>
-        var dataAllSales = []; //format : Tanggal, idCuRev, CU, idTotalRev, Total, IdSalesFill
-        var clickLastEditSales = 0;
+        var dataAllPattyCash = []; //format : Tanggal, idQtyRev, Qty, idTotalRev, Total, IdPattyCashFill, Satuan
+        var clickLastEditPattyCash = 0;
         $(document).on("click", "[id^=a]", function(event, ui) {
             //function for edit (when clicked)
             var idClickEdit = this.id.substring(1);
-            clickLastEditSales = idClickEdit;
-            // console.log(dataAllSales);
-            document.getElementById('editTanggal').innerHTML = dataAllSales[idClickEdit][0];
-            document.getElementById('editCU').value = dataAllSales[idClickEdit][2];
-            document.getElementById('editTotal').value = dataAllSales[idClickEdit][4];
+            clickLastEditPattyCash = idClickEdit;
+            // console.log(dataAllPattyCash);
+            document.getElementById('editTanggal').innerHTML = dataAllPattyCash[idClickEdit][0];
+            document.getElementById('editQty').value = dataAllPattyCash[idClickEdit][2];
+            document.getElementById('editTotal').value = dataAllPattyCash[idClickEdit][4];
         })
 
         $(document).ready(function() {
             setTable(0);
-            showAllRevisionSales();
-            showAllRevisionDoneSales();
+            showAllRevisionPattyCash();
+            showAllRevisionDonePattyCash();
         });
 
         function setTable(index) {
             if (index == 0) {
                 document.getElementById('setTable').innerHTML =
-                    '<table class="table table-striped" id="mainTableSales">' +
+                    '<table class="table table-striped" id="mainTablePattyCash">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Item Sales</th><th scope="col">' +
-                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Item PattyCash</th><th scope="col">' +
+                    'Qty</th><th scope="col">Satuan</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Action</th></tr></thead><tbody></tbody></table>';
-                showAllRevisionSales();
+                showAllRevisionPattyCash();
             } else if (index == 1) {
                 document.getElementById('setTable').innerHTML =
-                    '<table class="table table-striped" id="mainTableSalesDone">' +
+                    '<table class="table table-striped" id="mainTablePattyCashDone">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Item Sales</th><th scope="col">' +
-                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Item PattyCash</th><th scope="col">' +
+                    'Qty</th><th scope="col">Satuan</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Perevisi</th></tr></thead><tbody></tbody></table>';
-                showAllRevisionDoneSales();
+                showAllRevisionDonePattyCash();
             }
 
         }
 
-        function submitRevSales() {
-            var cu = document.getElementById('editCU').value;
+        function submitRevPattyCash() {
+            var qty = document.getElementById('editQty').value;
             var total = document.getElementById('editTotal').value;
-            if (dataAllSales[clickLastEditSales][1] == '2') {
+            if (dataAllPattyCash[clickLastEditPattyCash][1] == '2') {
                 $.ajax({
-                    url: "{{ url('salesHarian/edit/cu/rev/data') }}",
+                    url: "{{ url('pattyCash/edit/qty/rev/data') }}",
                     type: 'get',
                     data: {
-                        cuRevisi: cu,
-                        idSalesFill: dataAllSales[clickLastEditSales][5],
+                        qtyRevisi: qty,
+                        idPattyCashFill: dataAllPattyCash[clickLastEditPattyCash][5],
                         idPerevisi: "{{ session('idPengisi') }}"
                     },
                     success: function(response) {
@@ -294,13 +294,13 @@
                     }
                 });
             }
-            if (dataAllSales[clickLastEditSales][3] == '2') {
+            if (dataAllPattyCash[clickLastEditPattyCash][3] == '2') {
                 $.ajax({
-                    url: "{{ url('salesHarian/edit/total/rev/data') }}",
+                    url: "{{ url('pattyCash/edit/total/rev/data') }}",
                     type: 'get',
                     data: {
                         totalRevisi: total,
-                        idSalesFill: dataAllSales[clickLastEditSales][5],
+                        idPattyCashFill: dataAllPattyCash[clickLastEditPattyCash][5],
                         idPerevisi: "{{ session('idPengisi') }}"
                     },
                     success: function(response) {},
@@ -311,137 +311,145 @@
                 });
             }
             $('#editEmployeeModal').modal('hide');
-            clearRevSales();
+            clearRevPattyCash();
         }
 
-        function clearRevSales() {
-            // $('#mainTableSales>tbody').empty();
-            showAllRevisionSales();
-            showAllRevisionDoneSales();
+        function clearRevPattyCash() {
+            // $('#mainTablePattyCash>tbody').empty();
+            showAllRevisionPattyCash();
+            showAllRevisionDonePattyCash();
         }
 
-        function refreshTableRevSales(obj) {
+        function refreshTableRevPattyCash(obj) {
             var dataTable = '';
             var countData = 0;
-            dataAllSales.length = 0;
-            for (var i = 0; i < obj?.itemSales?.length; i++) {
-                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
+            dataAllPattyCash.length = 0;
+            for (var i = 0; i < obj?.itemPattyCash?.length; i++) {
+                for (var j = 0; j < obj.itemPattyCash[i].Item.length; j++) {
+                    for (var k = 0; k < obj.itemPattyCash[i].Item[j].Item.length; k++) {
                         var tempData = [];
                         countData++;
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Tanggal.split("-").reverse().join("/");
-                        tempData.push(obj.itemSales[i].Tanggal.split("-").reverse().join("/"));
+                        dataTable += obj.itemPattyCash[i].Tanggal.split("-").reverse().join("/");
+                        tempData.push(obj.itemPattyCash[i].Tanggal.split("-").reverse().join("/"));
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Outlet;
+                        dataTable += obj.itemPattyCash[i].Item[j].Outlet;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].sales;
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].pattyCash;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
+                        if (obj.itemPattyCash[i].Item[j].Item[k].idQtyRev == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
+                        } else if (obj.itemPattyCash[i].Item[j].Item[k].idQtyRev == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idCuRev);
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].cuQty);
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].qty;
+                        tempData.push(obj.itemPattyCash[i].Item[j].Item[k].idQtyRev);
+                        tempData.push(obj.itemPattyCash[i].Item[j].Item[k].qty);
+                        dataTable += '</td>';
+                        dataTable += '<td>';
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].satuan;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
+                        if (obj.itemPattyCash[i].Item[j].Item[k].idTotalRev == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
+                        } else if (obj.itemPattyCash[i].Item[j].Item[k].idTotalRev == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idTotalRev);
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].totalQty);
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].total.toLocaleString();
+                        tempData.push(obj.itemPattyCash[i].Item[j].Item[k].idTotalRev);
+                        tempData.push(obj.itemPattyCash[i].Item[j].Item[k].total);
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPengisi;
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].namaPengisi;
                         dataTable += '</td>';
                         dataTable +=
                             '<td><a onclick="showEdit()" class="delete" data-toggle="modal" style="cursor: pointer"><i class="material-icons" data-toggle="tooltip" title="Accept" id="a' +
                             (countData - 1) + '">&#xE254;</i></a></td>';
                         dataTable += '</tr>';
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
-                        dataAllSales.push(tempData);
-                        // idSalesFill.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
+                        tempData.push(obj.itemPattyCash[i].Item[j].Item[k].idPattyCashFill);
+                        tempData.push(obj.itemPattyCash[i].Item[j].Item[k].satuan);
+                        dataAllPattyCash.push(tempData);
+                        // idPattyCashFill.push(obj.itemPattyCash[i].Item[j].Item[k].idPattyCashFill);
                     }
                 }
             }
-            document.getElementById("toDoCountSales").innerHTML = countData;
+            document.getElementById("toDoCountPattyCash").innerHTML = countData;
             // console.log(dataTable);
-            $('#mainTableSales>tbody').empty().append(dataTable);
+            console.log(dataAllPattyCash);
+            $('#mainTablePattyCash>tbody').empty().append(dataTable);
         }
 
         function showEdit() {
             $('#editEmployeeModal').modal('show');
         }
 
-        function refreshTableRevSalesDone(obj) {
+        function refreshTableRevPattyCashDone(obj) {
             var dataTable = '';
             var countData = 0;
-            for (var i = 0; i < obj?.itemSales?.length; i++) {
-                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
+            for (var i = 0; i < obj?.itemPattyCash?.length; i++) {
+                for (var j = 0; j < obj.itemPattyCash[i].Item.length; j++) {
+                    for (var k = 0; k < obj.itemPattyCash[i].Item[j].Item.length; k++) {
                         countData++;
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Tanggal.split("-").reverse().join("/");
+                        dataTable += obj.itemPattyCash[i].Tanggal.split("-").reverse().join("/");
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Outlet;
+                        dataTable += obj.itemPattyCash[i].Item[j].Outlet;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].sales;
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].pattyCash;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
+                        if (obj.itemPattyCash[i].Item[j].Item[k].idQtyRev == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
+                        } else if (obj.itemPattyCash[i].Item[j].Item[k].idQtyRev == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].qty;
+                        dataTable += '</td>';
+                        dataTable += '<td>';
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].satuan;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
+                        if (obj.itemPattyCash[i].Item[j].Item[k].idTotalRev == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
+                        } else if (obj.itemPattyCash[i].Item[j].Item[k].idTotalRev == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].total.toLocaleString();
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPengisi;
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].namaPengisi;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPerevisi;
+                        dataTable += obj.itemPattyCash[i].Item[j].Item[k].namaPerevisi;
                         dataTable += '</td>';
                         dataTable += '</tr>';
                     }
                 }
             }
-            document.getElementById("doneCountSales").innerHTML = countData;
+            document.getElementById("doneCountPattyCash").innerHTML = countData;
             // console.log(dataTable);
-            $('#mainTableSalesDone>tbody').empty().append(dataTable);
+            $('#mainTablePattyCashDone>tbody').empty().append(dataTable);
         }
 
-        function showAllRevisionSales() {
+        function showAllRevisionPattyCash() {
             $.ajax({
-                url: "{{ url('salesHarian/show/revision/all') }}",
+                url: "{{ url('pattyCash/show/revision/all') }}",
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
-                    refreshTableRevSales(obj);
+                    refreshTableRevPattyCash(obj);
                 },
                 error: function(req, err) {
                     console.log(err);
@@ -449,16 +457,16 @@
             });
         }
 
-        function showAllRevisionDoneSales() {
+        function showAllRevisionDonePattyCash() {
             $.ajax({
-                url: "{{ url('salesHarian/show/revision/done') }}",
+                url: "{{ url('pattyCash/show/revision/done') }}",
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
-                    refreshTableRevSalesDone(obj);
+                    refreshTableRevPattyCashDone(obj);
                     // console.log(obj);
-                    // setRevSalesDone(depthRevisiSalesDone, index1RevisiSalesDone, index2RevisiSalesDone,
-                    //     index3RevisiSalesDone);
+                    // setRevPattyCashDone(depthRevisiPattyCashDone, index1RevisiPattyCashDone, index2RevisiPattyCashDone,
+                    //     index3RevisiPattyCashDone);
                     // $('#mainTable>tbody').empty().append(dataTable);
                 },
                 error: function(req, err) {

@@ -109,6 +109,10 @@ Route::get('pattyCash/brand/show', [pattyCashController::class, 'showAllBrand'])
 Route::get('pattyCash/brand/show/item', [pattyCashController::class, 'showItemOnBrand']);
 Route::get('pattyCash/user/showTable/{id}/{date}', [pattyCashController::class, 'show']); //show id untuk outlet
 
+
+Route::get('pattyCash/show/revision/all', [pattyCashController::class, 'showDateRevision']);
+Route::get('pattyCash/show/revision/done', [pattyCashController::class, 'showDateRevisionDone']);
+
 Route::get('pattyCash/outlet/show', [pattyCashController::class, 'showAllOutlet']);
 Route::get('pattyCash/items/store', [pattyCashController::class, 'storeItem']);
 Route::get('pattyCash/items/store/revision', [pattyCashController::class, 'storeItemRevision']);
@@ -117,7 +121,11 @@ Route::get('pattyCash/brands/store/item', [pattyCashController::class, 'storeBra
 Route::get('pattyCash/brands/item/del', [pattyCashController::class, 'destroyItemOnBrand']);
 
 Route::get('pattyCash/edit/qty/data/{id}', [pattyCashController::class, 'editQty']);
+Route::get('pattyCash/edit/qty/rev/data', [pattyCashController::class, 'editQtyRev']);
+
 Route::get('pattyCash/edit/total/data/{id}', [pattyCashController::class, 'editTotal']);
+
+Route::get('pattyCash/edit/total/rev/data', [pattyCashController::class, 'editTotalRev']);
 
 Route::get('pattyCash/data/getId', [pattyCashController::class, 'showAndCreateID']);
 Route::get('pattyCash/store/data', [pattyCashController::class, 'store']);
@@ -168,6 +176,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('accounting/revisi/so', function () {
         return view('accountingControl.revisi.so');
+    });
+    Route::get('accounting/revisi/pattyCash', function () {
+        return view('accountingControl.revisi.pattyCash');
     });
     Route::get('user/soHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.soHarian',[
