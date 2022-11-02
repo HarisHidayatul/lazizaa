@@ -22,6 +22,7 @@ class pattyCashFill extends Model
         'idRevQuantity',
         'idRevTotal',
         'idPengisi',
+        'idPerevisi',
         'created_at',
         'update_at',
         // 'delete_at'

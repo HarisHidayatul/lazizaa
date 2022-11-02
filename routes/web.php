@@ -63,7 +63,10 @@ Route::get('soHarian/date/getId', [fsoHarianController::class, 'showAndCreateID'
 Route::get('soHarian/store/data', [soFillController::class, 'store']);
 Route::get('soHarian/edit/data/{id}', [fsoHarianController::class, 'editSoFill']);
 Route::get('soHarian/edit/userFill/{id}', [fsoHarianController::class, 'editFsoHarian']);
+Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRev']);
 Route::get('soHarian/show/data/all', [fsoHarianController::class, 'showAllDataSo']);
+Route::get('soHarian/show/revision/all', [fsoHarianController::class, 'showDateRevision']);
+Route::get('soHarian/show/revision/done', [fsoHarianController::class, 'showDateRevisionDone']);
 Route::get('fsoh/getId', [fsoHarianController::class, 'showAndCreateID']);
 
 Route::get('soHarian', function () {

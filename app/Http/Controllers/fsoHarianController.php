@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\dBrand;
+use App\Models\doutlet;
 use App\Models\dUser;
 use App\Models\fsoHarian;
 use App\Models\listItemSO;
@@ -157,6 +158,111 @@ class fsoHarianController extends Controller
         }
     }
 
+    public function showDateRevision()
+    {
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $soDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $dataso = $tanggalAll[$h]->fsoharians;
+            $revisionDateFound = false;
+            $soOutlet = [];
+            for ($i = 0; $i < $dataso->count(); $i++) {
+                $soArray = [];
+                $revisionFound = false;
+                for ($j = 0; $j < ($dataso[$i]->listItemSOs->count()); $j++) {
+                    $idRevisi = $dataso[$i]->listItemSOs[$j]->pivot->idRevisi;
+                    if ($idRevisi == '2') {
+                        $revisionFound = true;
+                        $qty = 0;
+                        $qty = $dataso[$i]->listItemSOs[$j]->pivot->quantityRevisi;
+                        $userPengisi = dUser::find($dataso[$i]->idPengisi);
+                        array_push($soArray, (object)[
+                            'idSoFill' => $dataso[$i]->listItemSOs[$j]->pivot->id,
+                            // 'idListSo' => $dataso[$i]->listItemSOs[$j]->id,
+                            'Item' => $dataso[$i]->listItemSOs[$j]->Item,
+                            'satuan' => $dataso[$i]->listItemSOs[$j]->satuans['Satuan'],
+                            'idRev' => $idRevisi,
+                            'qty' => $qty,
+                            'namaPengisi' => $userPengisi['Username'],
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($dataso[$i]['idOutlet']);
+                    array_push($soOutlet, (object)[
+                        // 'Tanggal' => $dataso[$i]['Tanggal'],
+                        'Outlet' => $outlet['Nama Store'],
+                        'Item' => $soArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($soDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $soOutlet
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $dataso->count(),
+            'itemSo' => $soDate
+        ]);
+    }
+
+    public function showDateRevisionDone()
+    {
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $soDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $dataso = $tanggalAll[$h]->fsoharians;
+            $revisionDateFound = false;
+            $soOutlet = [];
+            for ($i = 0; $i < $dataso->count(); $i++) {
+                $soArray = [];
+                $revisionFound = false;
+                for ($j = 0; $j < ($dataso[$i]->listItemSOs->count()); $j++) {
+                    $idRevisi = $dataso[$i]->listItemSOs[$j]->pivot->idRevisi;
+                    if ($idRevisi == '3') {
+                        $revisionFound = true;
+                        $qty = 0;
+                        $qty = $dataso[$i]->listItemSOs[$j]->pivot->quantity;
+                        $perevisi = dUser::find($dataso[$i]->listItemSOs[$j]->pivot->idPerevisi);
+                        array_push($soArray, (object)[
+                            'idSoFill' => $dataso[$i]->listItemSOs[$j]->pivot->id,
+                            // 'idListSo' => $dataso[$i]->listItemSOs[$j]->id,
+                            'Item' => $dataso[$i]->listItemSOs[$j]->Item,
+                            'satuan' => $dataso[$i]->listItemSOs[$j]->satuans['Satuan'],
+                            'idRev' => $idRevisi,
+                            'qty' => $qty,
+                            'namaPengisi' => $dataso[$i]->dUsers->Username,
+                            'namaPerevisi' => $perevisi['Username'],
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($dataso[$i]['idOutlet']);
+                    array_push($soOutlet, (object)[
+                        // 'Tanggal' => $dataso[$i]['Tanggal'],
+                        'Outlet' => $outlet['Nama Store'],
+                        'Item' => $soArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($soDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $soOutlet
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $dataso->count(),
+            'itemSo' => $soDate
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -166,6 +272,15 @@ class fsoHarianController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    public function editQtyRev(Request $request)
+    {
+        soFill::find($request->idSoFill)->update([
+            'quantity' => $request->qty,
+            'idRevisi'      => '3',
+            'idPerevisi' => $request->idPerevisi,
+        ]);
     }
 
     public function editSoFill($id,Request $request){

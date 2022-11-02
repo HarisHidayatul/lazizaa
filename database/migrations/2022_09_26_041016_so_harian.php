@@ -158,6 +158,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idRevisi')->default('1');
             $table->foreign('idRevisi')->references('id')->on('revisi');
 
+            $table->unsignedBigInteger('idPerevisi');
+            $table->foreign('idPerevisi')->references('id')->on('dUser');
+
             $table->timestamps();
             // $table->softDeletes();
         });

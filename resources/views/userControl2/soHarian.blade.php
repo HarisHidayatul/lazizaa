@@ -19,6 +19,17 @@
             width: 50px;
             height: 50px;
         }
+
+        td:first-child {
+            position: sticky;
+            left: 0px;
+            background-color: white;
+        }
+        td:last-child{
+            position: sticky;
+            right: 0px;
+            background-color: white;
+        }
     </style>
 </head>
 
@@ -275,7 +286,8 @@
                     addOrderData += '<div class="form-group">';
                     editOrderData += '<div class="form-group">';
 
-                    addOrderData += '<label>' + obj.DataItem[i]['Item'] + ' ('+ obj.DataItem[i]['satuan'] + ') ' + '</label>';
+                    addOrderData += '<label>' + obj.DataItem[i]['Item'] + ' (' + obj.DataItem[i]['satuan'] +
+                        ') ' + '</label>';
                     editOrderData += '<label>' + obj.DataItem[i]['Item'] + '</label>';
 
                     addOrderData += '<input type="number" name="addname" class="form-control" value="0"/>';
@@ -285,13 +297,14 @@
                     addOrderData += '</div>';
                     editOrderData += '</div>';
 
-                    order_data += '<td>' + obj.DataItem[i]['Item'] + '<br>' + obj.DataItem[i]['satuan'] + '</td>';
+                    order_data += '<td>' + obj.DataItem[i]['Item'] + '<br>' + obj.DataItem[i]['satuan'] +
+                        '</td>';
                 }
                 order_data += '<td>';
-                order_data += 'Edit';
+                order_data += 'Pengisi';
                 order_data += '</td>';
                 order_data += '<td>';
-                order_data += 'Pengisi';
+                order_data += 'Edit';
                 order_data += '</td>';
                 order_data += '</tr>';
                 $('#maintable>thead').empty().append(order_data);
@@ -396,14 +409,14 @@
                             dataTable += '</td>';
                         }
                     }
+                    
+                    dataTable += '<td>';
+                    dataTable += obj.itemfso[i].pengisi;
+                    dataTable += '</td>';
                     dataTable +=
                         '<td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit" id="a' +
                         i +
                         '">&#xE254;</i></a>';
-
-                    dataTable += '<td>';
-                    dataTable += obj.itemfso[i].pengisi;
-                    dataTable += '</td>';
                     dataTable += '</tr>';
                 }
                 $('#maintable>tbody').empty().append(dataTable);

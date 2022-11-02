@@ -16,6 +16,9 @@ class soFill extends Model
     public function fsoHarians(){
         return $this->hasMany(fsoHarian::class,'id');
     }
+    public function dUsers(){
+        return $this->belongsTo(dUser::class,'idPerevisi','id');
+    }
     public function listItemSOs(){
         return $this->hasMany(listItemSO::class,'id');
     }
@@ -28,6 +31,7 @@ class soFill extends Model
         'quantity',
         'idRevisi',
         'quantityRevisi',
+        'idPerevisi',
         'created_at',
         'update_at',
         // 'delete_at'

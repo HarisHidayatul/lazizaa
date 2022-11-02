@@ -127,7 +127,7 @@ class loginController extends Controller
                         'date'    => date("Y-m-d"),
                         'namaPengisi' => $data['Nama Lengkap']
                     ]);
-                    return redirect('accounting/revisi/sales');
+                    return redirect('accounting/revisi/so');
                 }
                 else{
                     return redirect('/')->with('message', 'Role tidak terdaftar');

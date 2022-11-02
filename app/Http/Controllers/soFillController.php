@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\fsoHarian;
 use App\Models\soFill;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -40,10 +41,12 @@ class soFillController extends Controller
         $data = soFill::where('idSo','=',$request->idSo)
                 ->where('idItemSo','=',$request->idItemSo)->first();
         if($data == null){
+            $idPengisi = fsoHarian::find($request->idSo)->idPengisi;
             $dataArray = [
                 'idSo' => $request->idSo,
                 'idItemSo' => $request->idItemSo,
                 'quantity' => $request->quantity,
+                'idPerevisi' =>  $idPengisi,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ];
             soFill::create($dataArray);

@@ -19,6 +19,7 @@ class wasteFill extends Model
         'quantityRevisi',
         'idRevQuantity',
         'idPengisi',
+        'idPerevisi',
         'created_at',
         'update_at',
         // 'delete_at'

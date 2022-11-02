@@ -89,6 +89,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idPengisi');
             $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
 
+            $table->unsignedBigInteger('idPerevisi');
+            $table->foreign('idPerevisi')->references('id')->on('dUser');
+            
             $table->timestamps();
             
         });
