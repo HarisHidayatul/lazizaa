@@ -28,7 +28,6 @@
             width: 50px;
             height: 50px;
         }
-
         h5 {
             font-weight: 400;
         }
@@ -69,6 +68,7 @@
                 <img src="{{ session('brandImage') }}" alt="" class="brandIcon">
             </div>
         </nav>
+        <h5 id="date"></h5>
         <div class="container-sm">
             <table class="table table-bordered" id="mainTable">
                 <thead>
@@ -492,6 +492,7 @@
     }
 
     $(document).ready(function() {
+        setDate();
         getItemBrand();
         refreshFillTable();
         getAllSatuan();

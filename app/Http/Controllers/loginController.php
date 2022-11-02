@@ -105,19 +105,33 @@ class loginController extends Controller
             //     return redirect('user/dashboard');
             // }
             if ($request->password == $data->Password) {
-                $dOutlet = $data->doutlets;
-                $dBrand = doutlet::find($data['idOutlet'])->dBrands;
-                session(['berhasil_login' => true]);
-                session([
-                    'Brand' => $dBrand['Nama Brand'],
-                    'idBrand' => $dBrand['id'],
-                    'brandImage' => $dBrand['Image'],
-                    'Outlet' => $dOutlet['Nama Store'],
-                    'idPengisi' => $data['id'],
-                    'idOutlet' => $data['idOutlet'],
-                    'date'    => date("Y-m-d")
-                ]);
-                return redirect('user/dashboard');
+                if ($data['idRole'] == '2') {//untuk role user
+                    $dOutlet = $data->doutlets;
+                    $dBrand = doutlet::find($data['idOutlet'])->dBrands;
+                    session(['berhasil_login' => true]);
+                    session([
+                        'Brand' => $dBrand['Nama Brand'],
+                        'idBrand' => $dBrand['id'],
+                        'brandImage' => $dBrand['Image'],
+                        'Outlet' => $dOutlet['Nama Store'],
+                        'idPengisi' => $data['id'],
+                        'idOutlet' => $data['idOutlet'],
+                        'date'    => date("Y-m-d")
+                    ]);
+                    return redirect('user/dashboard');
+                }
+                else if($data['idRole']=='1'){//untuk role admin
+                    session(['berhasil_login' => true]);
+                    session([
+                        'idPengisi' => $data['id'],
+                        'date'    => date("Y-m-d"),
+                        'namaPengisi' => $data['Nama Lengkap']
+                    ]);
+                    return redirect('accounting/revisi/sales');
+                }
+                else{
+                    return redirect('/')->with('message', 'Role tidak terdaftar');
+                }
             }
         }
         return redirect('/')->with('message', 'Username atau Password Salah');

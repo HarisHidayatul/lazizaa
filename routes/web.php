@@ -158,7 +158,13 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/dashboard', function () {
         // @dd(session()->all());
         // @dd(session('date'));
-        return view('userControl2.allDataOnDate');
+        return view('userControl2.dashboard');
+    });
+    Route::get('accounting/revisi/sales', function () {
+        return view('accountingControl.revisi.sales');
+    });
+    Route::get('accounting/revisi/so', function () {
+        return view('accountingControl.revisi.so');
     });
     Route::get('user/soHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.soHarian',[
