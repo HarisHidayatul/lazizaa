@@ -32,6 +32,9 @@
         h5 {
             font-weight: 400;
         }
+        h1{
+            
+        }
     </style>
     <title>Waste Harian</title>
 </head>
