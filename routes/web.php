@@ -180,6 +180,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/revisi/pattyCash', function () {
         return view('accountingControl.revisi.pattyCash');
     });
+    Route::get('accounting/revisi/waste', function () {
+        return view('accountingControl.revisi.waste');
+    });
     Route::get('user/soHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.soHarian',[
             'dateSelect' => $dateSelect

@@ -46,13 +46,13 @@
                     <a href="{{ url('accounting/revisi/so') }}" class="nav-link">SO Harian</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Sales Harian</a>
+                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">Sales Harian</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Patty Cash</a>
+                    <a href="#" class="nav-link">Patty Cash</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Waste</a>
+                    <a href="{{ url('accounting/revisi/waste') }}" class="nav-link">Waste</a>
                 </li>
             </ul>
 
@@ -123,7 +123,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
+                                    <a href="{{ url('accounting/revisi/waste') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Waste</p>
                                     </a>

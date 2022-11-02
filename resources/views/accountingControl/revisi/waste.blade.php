@@ -43,7 +43,7 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">SO Harian</a>
+                    <a href="{{ url('accounting/revisi/so') }}" class="nav-link">SO Harian</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">Sales Harian</a>
@@ -52,7 +52,7 @@
                     <a href="{{ url('accounting/revisi/pattyCash') }}" class="nav-link">Patty Cash</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ url('accounting/revisi/waste') }}" class="nav-link">Waste</a>
+                    <a href="#" class="nav-link">Waste</a>
                 </li>
             </ul>
 
@@ -71,7 +71,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-danger elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a href="index3.html" class="brand-link">
                 <img src="{{ url('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Accounting</span>
@@ -105,13 +105,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link active">
+                                    <a href="{{ url('accounting/revisi/so') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>SO Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">
+                                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sales Harian</p>
                                     </a>
@@ -123,7 +123,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('accounting/revisi/waste') }}" class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Waste</p>
                                     </a>
@@ -156,7 +156,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Revisi</a></li>
-                                <li class="breadcrumb-item active">So Harian</li>
+                                <li class="breadcrumb-item active">Sales Harian</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -173,10 +173,10 @@
                                 <div class="card-header border-0">
                                     <div class="d-flex justify-content-left">
                                         <a onclick="setTable(0)" style="cursor: pointer">To Do (</a>
-                                        <div id="toDoCountSo"></div>
+                                        <div id="toDoCountSales"></div>
                                         <a>)/</a>
                                         <a onclick="setTable(1)" style="cursor: pointer">Done (</a>
-                                        <div id="doneCountSo"></div>
+                                        <div id="doneCountSales"></div>
                                         <a>)</a>
                                     </div>
                                 </div>
@@ -215,79 +215,78 @@
                             aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <h4 id="editItem"></h4>
-                        <div class="input-group">
-                            <input type="number" id="editQty" class="form-control" placeholder="0">
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="satuan"></span>
-                            </div>
+                        <h4></h4>
+                        <div class="form-group">
+                            <label>CU</label>
+                            <input id="editCU" class="form-control" value="0" />
+                        </div>
+                        <div class="form-group">
+                            <label>Total</label>
+                            <input id="editTotal" class="form-control" value="0" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="button" class="btn btn-info" value="Submit" onclick="submitRevSo()">
+                        <input type="button" class="btn btn-info" value="Submit" onclick="submitRevSales()">
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script>
-        var dataAllSo = []; //format : Tanggal, idRev, qty, Item, Satuan, IdSoFill
-        var clickLastEditSo = 0;
+        var dataAllSales = []; //format : Tanggal, idCuRev, CU, idTotalRev, Total, IdSalesFill
+        var clickLastEditSales = 0;
         $(document).on("click", "[id^=a]", function(event, ui) {
             //function for edit (when clicked)
             var idClickEdit = this.id.substring(1);
-            clickLastEditSo = idClickEdit;
-            // console.log(dataAllSo);
-            document.getElementById('editTanggal').innerHTML = dataAllSo[idClickEdit][0];
-            document.getElementById('editQty').value = dataAllSo[idClickEdit][2];
-            document.getElementById('editItem').innerHTML = dataAllSo[idClickEdit][3];
-            document.getElementById('satuan').innerHTML = dataAllSo[idClickEdit][4];
-
+            clickLastEditSales = idClickEdit;
+            // console.log(dataAllSales);
+            document.getElementById('editTanggal').innerHTML = dataAllSales[idClickEdit][0];
+            document.getElementById('editCU').value = dataAllSales[idClickEdit][2];
+            document.getElementById('editTotal').value = dataAllSales[idClickEdit][4];
         })
+
         $(document).ready(function() {
             setTable(0);
-            showAllRevisionSo();
-            showAllRevisionDoneSo();
+            showAllRevisionSales();
+            showAllRevisionDoneSales();
         });
 
         function setTable(index) {
             if (index == 0) {
                 document.getElementById('setTable').innerHTML =
-                    '<table class="table table-striped" id="mainTableSo">' +
+                    '<table class="table table-striped" id="mainTableSales">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Item SO</th><th scope="col">' +
-                    'Nilai</th><th scope="col">Satuan</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Item Sales</th><th scope="col">' +
+                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Action</th></tr></thead><tbody></tbody></table>';
-                showAllRevisionSo();
+                showAllRevisionSales();
             } else if (index == 1) {
                 document.getElementById('setTable').innerHTML =
-                    '<table class="table table-striped" id="mainTableSoDone">' +
+                    '<table class="table table-striped" id="mainTableSalesDone">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Item SO</th><th scope="col">' +
-                    'Nilai</th><th scope="col">Satuan</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Item Sales</th><th scope="col">' +
+                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Perevisi</th></tr></thead><tbody></tbody></table>';
-                showAllRevisionDoneSo();
+                showAllRevisionDoneSales();
             }
 
         }
 
-        function submitRevSo() {
-            $('#editEmployeeModal').modal('hide');
-            var qty = document.getElementById('editQty').value;
-            if (dataAllSo[clickLastEditSo][1] == '2') {
-                console.log(dataAllSo);
+        function submitRevSales() {
+            var cu = document.getElementById('editCU').value;
+            var total = document.getElementById('editTotal').value;
+            if (dataAllSales[clickLastEditSales][1] == '2') {
                 $.ajax({
-                    url: "{{ url('soHarian/edit/qty/rev/data') }}",
+                    url: "{{ url('salesHarian/edit/cu/rev/data') }}",
                     type: 'get',
                     data: {
-                        qty: qty,
-                        idPerevisi: "{{ session('idPengisi') }}",
-                        idSoFill: dataAllSo[clickLastEditSo][5],
+                        cuRevisi: cu,
+                        idSalesFill: dataAllSales[clickLastEditSales][5],
+                        idPerevisi: "{{ session('idPengisi') }}"
                     },
                     success: function(response) {
                         // console.log(response);
-                        clearRevSo();
                     },
                     error: function(req, err) {
                         console.log(err);
@@ -295,124 +294,154 @@
                     }
                 });
             }
+            if (dataAllSales[clickLastEditSales][3] == '2') {
+                $.ajax({
+                    url: "{{ url('salesHarian/edit/total/rev/data') }}",
+                    type: 'get',
+                    data: {
+                        totalRevisi: total,
+                        idSalesFill: dataAllSales[clickLastEditSales][5],
+                        idPerevisi: "{{ session('idPengisi') }}"
+                    },
+                    success: function(response) {},
+                    error: function(req, err) {
+                        console.log(err);
+                        // return 0
+                    }
+                });
+            }
+            $('#editEmployeeModal').modal('hide');
+            clearRevSales();
         }
 
-        function clearRevSo() {
-            // $('#mainTableSo>tbody').empty();
-            showAllRevisionSo();
-            showAllRevisionDoneSo();
+        function clearRevSales() {
+            // $('#mainTableSales>tbody').empty();
+            showAllRevisionSales();
+            showAllRevisionDoneSales();
         }
 
-        function refreshTableRevSo(obj) {
+        function refreshTableRevSales(obj) {
             var dataTable = '';
             var countData = 0;
-            dataAllSo.length = 0;
-            for (var i = 0; i < obj?.itemSo?.length; i++) {
-                for (var j = 0; j < obj.itemSo[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSo[i].Item[j].Item.length; k++) {
+            dataAllSales.length = 0;
+            for (var i = 0; i < obj?.itemSales?.length; i++) {
+                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
+                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
                         var tempData = [];
                         countData++;
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Tanggal.split("-").reverse().join("/");
-                        tempData.push(obj.itemSo[i].Tanggal.split("-").reverse().join("/"));
+                        dataTable += obj.itemSales[i].Tanggal.split("-").reverse().join("/");
+                        tempData.push(obj.itemSales[i].Tanggal.split("-").reverse().join("/"));
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Outlet;
+                        dataTable += obj.itemSales[i].Item[j].Outlet;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].Item;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].sales;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSo[i].Item[j].Item[k].idRev == '2') {
+                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSo[i].Item[j].Item[k].idRev == '3') {
+                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].qty;
-                        tempData.push(obj.itemSo[i].Item[j].Item[k].idRev);
-                        tempData.push(obj.itemSo[i].Item[j].Item[k].qty);
-                        tempData.push(obj.itemSo[i].Item[j].Item[k].Item);
+                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
+                        tempData.push(obj.itemSales[i].Item[j].Item[k].idCuRev);
+                        tempData.push(obj.itemSales[i].Item[j].Item[k].cuQty);
+                        dataTable += '</td>';
+                        dataTable += '<td ';
+                        if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
+                            dataTable += 'style="background-color:tomato;" ';
+                        } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
+                            dataTable += 'style="background-color:rgb(30, 206, 9);" ';
+                        }
+                        dataTable += ' >';
+                        dataTable += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
+                        tempData.push(obj.itemSales[i].Item[j].Item[k].idTotalRev);
+                        tempData.push(obj.itemSales[i].Item[j].Item[k].totalQty);
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].satuan;
-                        dataTable += '</td>';
-                        dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].namaPengisi;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPengisi;
                         dataTable += '</td>';
                         dataTable +=
-                            '<td><a  onclick="showEdit()" class="delete" data-toggle="modal" style="cursor: pointer"><i class="material-icons" data-toggle="tooltip" title="Accept" id="a' +
+                            '<td><a onclick="showEdit()" class="delete" data-toggle="modal" style="cursor: pointer"><i class="material-icons" data-toggle="tooltip" title="Accept" id="a' +
                             (countData - 1) + '">&#xE254;</i></a></td>';
                         dataTable += '</tr>';
-                        tempData.push(obj.itemSo[i].Item[j].Item[k].satuan);
-                        tempData.push(obj.itemSo[i].Item[j].Item[k].idSoFill);
-                        dataAllSo.push(tempData);
-                        // idSoFill.push(obj.itemSo[i].Item[j].Item[k].idSoFill);
+                        tempData.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
+                        dataAllSales.push(tempData);
+                        // idSalesFill.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
                     }
                 }
             }
-            document.getElementById("toDoCountSo").innerHTML = countData;
+            document.getElementById("toDoCountSales").innerHTML = countData;
             // console.log(dataTable);
-            $('#mainTableSo>tbody').empty().append(dataTable);
+            $('#mainTableSales>tbody').empty().append(dataTable);
         }
 
         function showEdit() {
             $('#editEmployeeModal').modal('show');
         }
 
-        function refreshTableRevSoDone(obj) {
+        function refreshTableRevSalesDone(obj) {
             var dataTable = '';
             var countData = 0;
-            for (var i = 0; i < obj?.itemSo?.length; i++) {
-                for (var j = 0; j < obj.itemSo[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSo[i].Item[j].Item.length; k++) {
+            for (var i = 0; i < obj?.itemSales?.length; i++) {
+                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
+                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
                         countData++;
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Tanggal.split("-").reverse().join("/");
+                        dataTable += obj.itemSales[i].Tanggal.split("-").reverse().join("/");
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Outlet;
+                        dataTable += obj.itemSales[i].Item[j].Outlet;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].Item;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].sales;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSo[i].Item[j].Item[k].idRev == '2') {
+                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSo[i].Item[j].Item[k].idRev == '3') {
+                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].qty;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
+                        dataTable += '</td>';
+                        dataTable += '<td ';
+                        if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
+                            dataTable += 'style="background-color:tomato;" ';
+                        } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
+                            dataTable += 'style="background-color:rgb(30, 206, 9);" ';
+                        }
+                        dataTable += ' >';
+                        dataTable += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].satuan;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPengisi;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].namaPengisi;
-                        dataTable += '</td>';
-                        dataTable += '<td>';
-                        dataTable += obj.itemSo[i].Item[j].Item[k].namaPerevisi;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPerevisi;
                         dataTable += '</td>';
                         dataTable += '</tr>';
                     }
                 }
             }
-            document.getElementById("doneCountSo").innerHTML = countData;
+            document.getElementById("doneCountSales").innerHTML = countData;
             // console.log(dataTable);
-            $('#mainTableSoDone>tbody').empty().append(dataTable);
+            $('#mainTableSalesDone>tbody').empty().append(dataTable);
         }
 
-        function showAllRevisionSo() {
+        function showAllRevisionSales() {
             $.ajax({
-                url: "{{ url('soHarian/show/revision/all') }}",
+                url: "{{ url('salesHarian/show/revision/all') }}",
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
-                    refreshTableRevSo(obj);
+                    refreshTableRevSales(obj);
                 },
                 error: function(req, err) {
                     console.log(err);
@@ -420,16 +449,16 @@
             });
         }
 
-        function showAllRevisionDoneSo() {
+        function showAllRevisionDoneSales() {
             $.ajax({
-                url: "{{ url('soHarian/show/revision/done') }}",
+                url: "{{ url('salesHarian/show/revision/done') }}",
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
-                    refreshTableRevSoDone(obj);
+                    refreshTableRevSalesDone(obj);
                     // console.log(obj);
-                    // setRevSoDone(depthRevisiSoDone, index1RevisiSoDone, index2RevisiSoDone,
-                    //     index3RevisiSoDone);
+                    // setRevSalesDone(depthRevisiSalesDone, index1RevisiSalesDone, index2RevisiSalesDone,
+                    //     index3RevisiSalesDone);
                     // $('#mainTable>tbody').empty().append(dataTable);
                 },
                 error: function(req, err) {
