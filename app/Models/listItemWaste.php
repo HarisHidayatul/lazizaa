@@ -17,6 +17,10 @@ class listItemWaste extends Model
     public function satuans(){
         return $this->belongsTo(satuan::class,'idSatuan','id');
     }
+
+    public function jenisBahans(){
+        return $this->belongsTo(jenisBahan::class,'idJenisBahan','id');
+    }
     
     protected $fillable = [
         'Item',

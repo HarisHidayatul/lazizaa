@@ -147,6 +147,9 @@ Route::get('waste/user/showTable/{id}/{date}', [wasteController::class, 'show'])
 Route::get('waste/data/getId', [wasteController::class, 'showAndCreateID']);
 Route::get('waste/store/data', [wasteController::class, 'store']);
 Route::get('waste/edit/qty/data/{id}', [wasteController::class, 'editQty']);
+Route::get('waste/show/revision/all', [wasteController::class, 'showDateRevision']);
+Route::get('waste/show/revision/done', [wasteController::class, 'showDateRevisionDone']);
+Route::get('waste/edit/cu/rev/data', [wasteController::class, 'editQtyRev']);
 
 
 Route::get('wasteHarian', function () {

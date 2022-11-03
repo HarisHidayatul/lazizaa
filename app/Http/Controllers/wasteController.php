@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\brandWaste;
 use App\Models\dBrand;
+use App\Models\doutlet;
 use App\Models\dUser;
 use App\Models\jenisBahan;
 use App\Models\listItemWaste;
@@ -54,7 +55,8 @@ class wasteController extends Controller
                 'idListItem' => $request->idListItem,
                 'quantity' => $request->quantity,
                 'total' => $request->total,
-                'idPengisi' => $request->idPengisi
+                'idPengisi' => $request->idPengisi,
+                'idPerevisi' => $request->idPengisi
             ];
             wasteFill::create($dataArray);
             echo 1;
@@ -141,7 +143,7 @@ class wasteController extends Controller
         $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
         $dataWaste = wasteHarian::where('idOutlet', '=', $id)->where('idTanggal', '=', $tanggalAll['id'])->get();
         // @dd($dataWaste[0]->listItemWastes[0]->pivot);
-        $sales = [];
+        $waste = [];
         for ($i = 0; $i < $dataWaste->count(); $i++) {
             $WasteArray = [];
             for ($j = 0; $j < ($dataWaste[$i]->listItemWastes->count()); $j++) {
@@ -157,7 +159,7 @@ class wasteController extends Controller
                 array_push($WasteArray, (object)[
                     'idWasteFill' => $dataWaste[$i]->listItemWastes[$j]->pivot->id,
                     'Item' => $dataWaste[$i]->listItemWastes[$j]->Item,
-                    'idListSales' => $dataWaste[$i]->listItemWastes[$j]->id,
+                    'idListwaste' => $dataWaste[$i]->listItemWastes[$j]->id,
                     'Satuan' => $satuan->Satuan,
                     'jenis' => $jenis->jenis,
                     'idQtyRev' => $idQuantityRevisi,
@@ -165,14 +167,14 @@ class wasteController extends Controller
                     'namaPengisi' => $userPengisi['Username'],
                 ]);
             }
-            array_push($sales, (object)[
+            array_push($waste, (object)[
                 'idWaste' => $dataWaste[$i]['id'],
                 'Item' => $WasteArray,
             ]);
         }
         return response()->json([
             'countItem' => $dataWaste->count(),
-            'itemWaste' => $sales
+            'itemWaste' => $waste
         ]);
     }
 
@@ -278,7 +280,7 @@ class wasteController extends Controller
 
     public function showAll()
     {
-        //tampilkan seluruh listSales
+        //tampilkan seluruh listwaste
         $listWaste = jenisBahan::all();
         $arraylistWaste = [];
         // @dd($listWaste[0]->listItemWastes);
@@ -303,6 +305,126 @@ class wasteController extends Controller
         ]);
     }
 
+    public function showDateRevision()
+    {
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        // @dd($tanggalAll[0]->wasteharians);
+        $wasteDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $datawaste = $tanggalAll[$h]->wasteHarians;
+            $revisionDateFound = false;
+            // @dd($datawaste[0]->listItemWastes);
+            $wasteOutlet = [];
+            for ($i = 0; $i < $datawaste->count(); $i++) {
+                $wasteArray = [];
+                $revisionFound = false;
+                for ($j = 0; $j < ($datawaste[$i]->listItemWastes->count()); $j++) {
+                    $idQtyRevisi = $datawaste[$i]->listItemWastes[$j]->pivot->idRevQuantity;
+                    if (($idQtyRevisi == '2')) {
+                        $revisionFound = true;
+                        $quantity = 0;
+                        if ($idQtyRevisi == '2') {
+                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantityRevisi;
+                        } else {
+                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantity;
+                        }
+                        $userPengisi = dUser::find($datawaste[$i]->listItemWastes[$j]->pivot->idPengisi);
+                        array_push($wasteArray, (object)[
+                            'idWasteFill' => $datawaste[$i]->listItemWastes[$j]->pivot->id,
+                            // 'idListwaste' => $datawaste[$i]->listItemWastes[$j]->id,
+                            'satuan' => $datawaste[$i]->listItemWastes[$j]->satuans['Satuan'],
+                            'waste' => $datawaste[$i]->listItemWastes[$j]->Item,
+                            'idQty' => $idQtyRevisi,
+                            'quantity' => $quantity,
+                            'jenis' => $datawaste[$i]->listItemWastes[$j]->jenisBahans['jenis'],
+                            'namaPengisi' => $userPengisi['Username'],
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($datawaste[$i]['idOutlet']);
+                    array_push($wasteOutlet, (object)[
+                        // 'Tanggal' => $datawaste[$i]['Tanggal'],
+                        'Outlet' => $outlet['Nama Store'],
+                        'Item' => $wasteArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($wasteDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $wasteOutlet
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datawaste->count(),
+            'itemWaste' => $wasteDate
+        ]);
+    }
+
+    public function showDateRevisionDone()
+    {
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        // @dd($tanggalAll[0]->wasteharians);
+        $wasteDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $datawaste = $tanggalAll[$h]->wasteHarians;
+            $revisionDateFound = false;
+            // @dd($datawaste[0]->listItemWastes);
+            $wasteOutlet = [];
+            for ($i = 0; $i < $datawaste->count(); $i++) {
+                $wasteArray = [];
+                $revisionFound = false;
+                for ($j = 0; $j < ($datawaste[$i]->listItemWastes->count()); $j++) {
+                    $idQtyRevisi = $datawaste[$i]->listItemWastes[$j]->pivot->idRevQuantity;
+                    if (($idQtyRevisi == '3')) {
+                        $revisionFound = true;
+                        $quantity = 0;
+                        if ($idQtyRevisi == '3') {
+                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantity;
+                        } else {
+                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantityRevisi;   
+                        }
+                        $userPengisi = dUser::find($datawaste[$i]->listItemWastes[$j]->pivot->idPengisi);
+                        $userPerevisi = dUser::find($datawaste[$i]->listItemWastes[$j]->pivot->idPerevisi);
+                        array_push($wasteArray, (object)[
+                            'idWasteFill' => $datawaste[$i]->listItemWastes[$j]->pivot->id,
+                            // 'idListwaste' => $datawaste[$i]->listItemWastes[$j]->id,
+                            'satuan' => $datawaste[$i]->listItemWastes[$j]->satuans['Satuan'],
+                            'waste' => $datawaste[$i]->listItemWastes[$j]->Item,
+                            'idQty' => $idQtyRevisi,
+                            'quantity' => $quantity,
+                            'jenis' => $datawaste[$i]->listItemWastes[$j]->jenisBahans['jenis'],
+                            'namaPengisi' => $userPengisi['Username'],
+                            'namaPerevisi' => $userPerevisi['Username']
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($datawaste[$i]['idOutlet']);
+                    array_push($wasteOutlet, (object)[
+                        // 'Tanggal' => $datawaste[$i]['Tanggal'],
+                        'Outlet' => $outlet['Nama Store'],
+                        'Item' => $wasteArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($wasteDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $wasteOutlet
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datawaste->count(),
+            'itemWaste' => $wasteDate
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -320,6 +442,14 @@ class wasteController extends Controller
             'idPengisi' => $request->idPengisi,
             'quantityRevisi' => $request->quantityRevisi,
             'idRevQuantity'  => '2'
+        ]);
+    }
+    public function editQtyRev(Request $request)
+    {
+        wasteFill::find($request->idWasteFill)->update([
+            'quantity' => $request->qtyRevisi,
+            'idRevQuantity'      => '3',
+            'idPerevisi' => $request->idPerevisi,
         ]);
     }
 

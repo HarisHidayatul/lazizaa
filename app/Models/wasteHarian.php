@@ -19,7 +19,7 @@ class wasteHarian extends Model
     }
 
     public function listItemWastes(){
-        return $this->belongsToMany(listItemWaste::class,'wasteFill','idWaste','idListItem')->withPivot('id','quantity','quantityRevisi','idPengisi','idRevQuantity');
+        return $this->belongsToMany(listItemWaste::class,'wasteFill','idWaste','idListItem')->withPivot('id','quantity','quantityRevisi','idPengisi','idPerevisi','idRevQuantity');
     }
     protected $fillable = [
         'idOutlet',

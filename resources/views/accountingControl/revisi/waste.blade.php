@@ -111,7 +111,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link active">
+                                    <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sales Harian</p>
                                     </a>
@@ -123,7 +123,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="#" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Waste</p>
                                     </a>
@@ -156,7 +156,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Revisi</a></li>
-                                <li class="breadcrumb-item active">Sales Harian</li>
+                                <li class="breadcrumb-item active">Waste</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -173,10 +173,10 @@
                                 <div class="card-header border-0">
                                     <div class="d-flex justify-content-left">
                                         <a onclick="setTable(0)" style="cursor: pointer">To Do (</a>
-                                        <div id="toDoCountSales"></div>
+                                        <div id="toDoCountWaste"></div>
                                         <a>)/</a>
                                         <a onclick="setTable(1)" style="cursor: pointer">Done (</a>
-                                        <div id="doneCountSales"></div>
+                                        <div id="doneCountWaste"></div>
                                         <a>)</a>
                                     </div>
                                 </div>
@@ -217,72 +217,66 @@
                     <div class="modal-body">
                         <h4></h4>
                         <div class="form-group">
-                            <label>CU</label>
-                            <input id="editCU" class="form-control" value="0" />
-                        </div>
-                        <div class="form-group">
-                            <label>Total</label>
-                            <input id="editTotal" class="form-control" value="0" />
+                            <label>Quantity</label>
+                            <input id="editQty" class="form-control" value="0" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="button" class="btn btn-info" value="Submit" onclick="submitRevSales()">
+                        <input type="button" class="btn btn-info" value="Submit" onclick="submitRevWaste()">
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script>
-        var dataAllSales = []; //format : Tanggal, idCuRev, CU, idTotalRev, Total, IdSalesFill
-        var clickLastEditSales = 0;
+        var dataAllWaste = []; //format : Tanggal, idQty, CU, idTotalRev, Total, IdWasteFill
+        var clickLastEditWaste = 0;
         $(document).on("click", "[id^=a]", function(event, ui) {
             //function for edit (when clicked)
             var idClickEdit = this.id.substring(1);
-            clickLastEditSales = idClickEdit;
-            // console.log(dataAllSales);
-            document.getElementById('editTanggal').innerHTML = dataAllSales[idClickEdit][0];
-            document.getElementById('editCU').value = dataAllSales[idClickEdit][2];
-            document.getElementById('editTotal').value = dataAllSales[idClickEdit][4];
+            clickLastEditWaste = idClickEdit;
+            // console.log(dataAllWaste);
+            document.getElementById('editTanggal').innerHTML = dataAllWaste[idClickEdit][0];
+            document.getElementById('editQty').value = dataAllWaste[idClickEdit][2];
         })
 
         $(document).ready(function() {
             setTable(0);
-            showAllRevisionSales();
-            showAllRevisionDoneSales();
+            showAllRevisionWaste();
+            showAllRevisionDoneWaste();
         });
 
         function setTable(index) {
             if (index == 0) {
                 document.getElementById('setTable').innerHTML =
-                    '<table class="table table-striped" id="mainTableSales">' +
+                    '<table class="table table-striped" id="mainTableWaste">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Item Sales</th><th scope="col">' +
-                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Jenis</th><th scope="col">Item Waste</th><th scope="col">' +
+                    'Quantity</th><th scope="col">Satuan</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Action</th></tr></thead><tbody></tbody></table>';
-                showAllRevisionSales();
+                showAllRevisionWaste();
             } else if (index == 1) {
                 document.getElementById('setTable').innerHTML =
-                    '<table class="table table-striped" id="mainTableSalesDone">' +
+                    '<table class="table table-striped" id="mainTableWasteDone">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Item Sales</th><th scope="col">' +
-                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
+                        'Outlet</th><th scope="col">Jenis</th><th scope="col">Item Waste</th><th scope="col">' +
+                    'Quantity</th><th scope="col">Satuan</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Perevisi</th></tr></thead><tbody></tbody></table>';
-                showAllRevisionDoneSales();
+                showAllRevisionDoneWaste();
             }
 
         }
 
-        function submitRevSales() {
-            var cu = document.getElementById('editCU').value;
-            var total = document.getElementById('editTotal').value;
-            if (dataAllSales[clickLastEditSales][1] == '2') {
+        function submitRevWaste() {
+            var qty = document.getElementById('editQty').value;
+            if (dataAllWaste[clickLastEditWaste][1] == '2') {
                 $.ajax({
-                    url: "{{ url('salesHarian/edit/cu/rev/data') }}",
+                    url: "{{ url('waste/edit/cu/rev/data') }}",
                     type: 'get',
                     data: {
-                        cuRevisi: cu,
-                        idSalesFill: dataAllSales[clickLastEditSales][5],
+                        qtyRevisi: qty,
+                        idWasteFill: dataAllWaste[clickLastEditWaste][5],
                         idPerevisi: "{{ session('idPengisi') }}"
                     },
                     success: function(response) {
@@ -294,154 +288,134 @@
                     }
                 });
             }
-            if (dataAllSales[clickLastEditSales][3] == '2') {
-                $.ajax({
-                    url: "{{ url('salesHarian/edit/total/rev/data') }}",
-                    type: 'get',
-                    data: {
-                        totalRevisi: total,
-                        idSalesFill: dataAllSales[clickLastEditSales][5],
-                        idPerevisi: "{{ session('idPengisi') }}"
-                    },
-                    success: function(response) {},
-                    error: function(req, err) {
-                        console.log(err);
-                        // return 0
-                    }
-                });
-            }
             $('#editEmployeeModal').modal('hide');
-            clearRevSales();
+            clearRevWaste();
         }
 
-        function clearRevSales() {
-            // $('#mainTableSales>tbody').empty();
-            showAllRevisionSales();
-            showAllRevisionDoneSales();
+        function clearRevWaste() {
+            // $('#mainTableWaste>tbody').empty();
+            showAllRevisionWaste();
+            showAllRevisionDoneWaste();
         }
 
-        function refreshTableRevSales(obj) {
+        function refreshTableRevWaste(obj) {
             var dataTable = '';
             var countData = 0;
-            dataAllSales.length = 0;
-            for (var i = 0; i < obj?.itemSales?.length; i++) {
-                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
+            dataAllWaste.length = 0;
+            for (var i = 0; i < obj?.itemWaste?.length; i++) {
+                for (var j = 0; j < obj.itemWaste[i].Item.length; j++) {
+                    for (var k = 0; k < obj.itemWaste[i].Item[j].Item.length; k++) {
                         var tempData = [];
                         countData++;
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Tanggal.split("-").reverse().join("/");
-                        tempData.push(obj.itemSales[i].Tanggal.split("-").reverse().join("/"));
+                        dataTable += obj.itemWaste[i].Tanggal.split("-").reverse().join("/");
+                        tempData.push(obj.itemWaste[i].Tanggal.split("-").reverse().join("/"));
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Outlet;
+                        dataTable += obj.itemWaste[i].Item[j].Outlet;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].sales;
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].jenis;
+                        dataTable += '</td>';
+                        dataTable += '<td>';
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].waste;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
+                        if (obj.itemWaste[i].Item[j].Item[k].idQty == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
+                        } else if (obj.itemWaste[i].Item[j].Item[k].idQty == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idCuRev);
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].cuQty);
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].quantity;
+                        tempData.push(obj.itemWaste[i].Item[j].Item[k].idQty);
+                        tempData.push(obj.itemWaste[i].Item[j].Item[k].quantity);
                         dataTable += '</td>';
-                        dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
-                            dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
-                            dataTable += 'style="background-color:rgb(30, 206, 9);" ';
-                        }
-                        dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idTotalRev);
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].totalQty);
+                        tempData.push('0');
+                        tempData.push('0');
+                        dataTable += '<td>';
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].satuan;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPengisi;
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].namaPengisi;
                         dataTable += '</td>';
                         dataTable +=
                             '<td><a onclick="showEdit()" class="delete" data-toggle="modal" style="cursor: pointer"><i class="material-icons" data-toggle="tooltip" title="Accept" id="a' +
                             (countData - 1) + '">&#xE254;</i></a></td>';
                         dataTable += '</tr>';
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
-                        dataAllSales.push(tempData);
-                        // idSalesFill.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
+                        tempData.push(obj.itemWaste[i].Item[j].Item[k].idWasteFill);
+                        dataAllWaste.push(tempData);
+                        // idWasteFill.push(obj.itemWaste[i].Item[j].Item[k].idWasteFill);
                     }
                 }
             }
-            document.getElementById("toDoCountSales").innerHTML = countData;
+            document.getElementById("toDoCountWaste").innerHTML = countData;
             // console.log(dataTable);
-            $('#mainTableSales>tbody').empty().append(dataTable);
+            $('#mainTableWaste>tbody').empty().append(dataTable);
         }
 
         function showEdit() {
             $('#editEmployeeModal').modal('show');
         }
 
-        function refreshTableRevSalesDone(obj) {
+        function refreshTableRevWasteDone(obj) {
             var dataTable = '';
             var countData = 0;
-            for (var i = 0; i < obj?.itemSales?.length; i++) {
-                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
+            for (var i = 0; i < obj?.itemWaste?.length; i++) {
+                for (var j = 0; j < obj.itemWaste[i].Item.length; j++) {
+                    for (var k = 0; k < obj.itemWaste[i].Item[j].Item.length; k++) {
+                        var tempData = [];
                         countData++;
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Tanggal.split("-").reverse().join("/");
+                        dataTable += obj.itemWaste[i].Tanggal.split("-").reverse().join("/");
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Outlet;
+                        dataTable += obj.itemWaste[i].Item[j].Outlet;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].sales;
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].jenis;
+                        dataTable += '</td>';
+                        dataTable += '<td>';
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].waste;
                         dataTable += '</td>';
                         dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
+                        if (obj.itemWaste[i].Item[j].Item[k].idQty == '2') {
                             dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
+                        } else if (obj.itemWaste[i].Item[j].Item[k].idQty == '3') {
                             dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                         }
                         dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
-                        dataTable += '</td>';
-                        dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
-                            dataTable += 'style="background-color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
-                            dataTable += 'style="background-color:rgb(30, 206, 9);" ';
-                        }
-                        dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].quantity;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPengisi;
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].satuan;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].namaPerevisi;
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].namaPengisi;
+                        dataTable += '</td>';
+                        dataTable += '<td>';
+                        dataTable += obj.itemWaste[i].Item[j].Item[k].namaPerevisi;
                         dataTable += '</td>';
                         dataTable += '</tr>';
+                        // idWasteFill.push(obj.itemWaste[i].Item[j].Item[k].idWasteFill);
                     }
                 }
             }
-            document.getElementById("doneCountSales").innerHTML = countData;
+            document.getElementById("doneCountWaste").innerHTML = countData;
             // console.log(dataTable);
-            $('#mainTableSalesDone>tbody').empty().append(dataTable);
+            $('#mainTableWasteDone>tbody').empty().append(dataTable);
         }
 
-        function showAllRevisionSales() {
+        function showAllRevisionWaste() {
             $.ajax({
-                url: "{{ url('salesHarian/show/revision/all') }}",
+                url: "{{ url('waste/show/revision/all') }}",
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
-                    refreshTableRevSales(obj);
+                    refreshTableRevWaste(obj);
                 },
                 error: function(req, err) {
                     console.log(err);
@@ -449,16 +423,16 @@
             });
         }
 
-        function showAllRevisionDoneSales() {
+        function showAllRevisionDoneWaste() {
             $.ajax({
-                url: "{{ url('salesHarian/show/revision/done') }}",
+                url: "{{ url('waste/show/revision/done') }}",
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
-                    refreshTableRevSalesDone(obj);
+                    refreshTableRevWasteDone(obj);
                     // console.log(obj);
-                    // setRevSalesDone(depthRevisiSalesDone, index1RevisiSalesDone, index2RevisiSalesDone,
-                    //     index3RevisiSalesDone);
+                    // setRevWasteDone(depthRevisiWasteDone, index1RevisiWasteDone, index2RevisiWasteDone,
+                    //     index3RevisiWasteDone);
                     // $('#mainTable>tbody').empty().append(dataTable);
                 },
                 error: function(req, err) {
