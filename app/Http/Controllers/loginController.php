@@ -129,6 +129,15 @@ class loginController extends Controller
                     ]);
                     return redirect('accounting/revisi/so');
                 }
+                else if($data['idRole']=='3'){
+                    session(['berhasil_login' => true]);
+                    session([
+                        'idPengisi' => $data['id'],
+                        'date'    => date("Y-m-d"),
+                        'namaPengisi' => $data['Nama Lengkap']
+                    ]);
+                    return redirect('admin/item/so');
+                }
                 else{
                     return redirect('/')->with('message', 'Role tidak terdaftar');
                 }

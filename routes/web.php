@@ -174,6 +174,13 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         // @dd(session('date'));
         return view('userControl2.dashboard');
     });
+    
+    Route::get('admin/item/so', function () {
+        return view('adminControl.setItem.soHarian');
+    });
+    Route::get('admin/item/sales', function () {
+        return view('adminControl.setItem.sales');
+    });
     Route::get('accounting/revisi/sales', function () {
         return view('accountingControl.revisi.sales');
     });
