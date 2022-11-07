@@ -20,16 +20,15 @@ class typeSalesController extends Controller
         //
         $typeSales = typeSales::all();
         $arrayTypeSales = [];
-        for($i=0;$i<$typeSales->count();$i++)
-        {
-            array_push($arrayTypeSales,(object)[
+        for ($i = 0; $i < $typeSales->count(); $i++) {
+            array_push($arrayTypeSales, (object)[
                 'id' => $typeSales[$i]['id'],
                 'type' => $typeSales[$i]['type'],
             ]);
         }
         return response()->json([
-            'countItem'=>$typeSales->count(),
-            'typeSales'=> $arrayTypeSales
+            'countItem' => $typeSales->count(),
+            'typeSales' => $arrayTypeSales
         ]);
     }
 
@@ -41,7 +40,7 @@ class typeSalesController extends Controller
     public function create()
     {
         //
-        
+
     }
 
     /**
@@ -59,7 +58,8 @@ class typeSalesController extends Controller
             ]
         );
     }
-    public function storeItem(Request $request){
+    public function storeItem(Request $request)
+    {
         listSales::create(
             [
                 'typeSales' => $request->idType,
@@ -67,9 +67,10 @@ class typeSalesController extends Controller
             ]
         );
     }
-    public function storeItemOnOutlet(Request $request){
-        $data = outletListSales::where('idOutlet','=',$request->idOutlet)->where('idListSales','=',$request->idListSales)->first();
-        if($data == null){
+    public function storeItemOnOutlet(Request $request)
+    {
+        $data = outletListSales::where('idOutlet', '=', $request->idOutlet)->where('idListSales', '=', $request->idListSales)->first();
+        if ($data == null) {
             outletListSales::create(
                 [
                     'idOutlet' => $request->idOutlet,
@@ -89,50 +90,73 @@ class typeSalesController extends Controller
         //Tampilkan listSales dengan parameter type id ini
         $listSales = typeSales::find($id)->listSaless;
         $arrayListSales = [];
-        for($i=0;$i<$listSales->count();$i++)
-        {
-            array_push($arrayListSales,(object)[
+        for ($i = 0; $i < $listSales->count(); $i++) {
+            array_push($arrayListSales, (object)[
                 'id' => $listSales[$i]['id'],
                 'sales' => $listSales[$i]['sales'],
             ]);
         }
         return response()->json([
-            'countItem'=>$listSales->count(),
-            'listSales'=> $arrayListSales
+            'countItem' => $listSales->count(),
+            'listSales' => $arrayListSales
         ]);
     }
-    public function showAll(){
+    public function showItemType()
+    {
+        //Tampilkan listSales dengan parameter type id ini
+        // $listSales = typeSales::find($id)->listSaless;
+        $typeSales = typeSales::all();
+        $arrayTypeSales = [];
+        for ($i = 0; $i < $typeSales->count(); $i++) {
+            $arrayListSales = [];
+            for ($j = 0; $j < $typeSales[$i]->listSaless->count(); $j++) {
+                array_push($arrayListSales, (object)[
+                    'id' => $typeSales[$i]->listSaless[$j]['id'],
+                    'sales' => $typeSales[$i]->listSaless[$j]['sales'],
+                ]);
+            }
+            array_push($arrayTypeSales, (object)[
+                'id' => $typeSales[$i]['id'],
+                'type' => $typeSales[$i]['type'],
+                'listSales' => $arrayListSales
+            ]);
+        }
+
+        return response()->json([
+            'listType' => $arrayTypeSales
+        ]);
+    }
+    public function showAll()
+    {
         //tampilkan seluruh listSales
         $listSales = listSales::all();
         $arrayListSales = [];
-        for($i=0;$i<$listSales->count();$i++)
-        {
-            array_push($arrayListSales,(object)[
+        for ($i = 0; $i < $listSales->count(); $i++) {
+            array_push($arrayListSales, (object)[
                 'id' => $listSales[$i]['id'],
                 'sales' => $listSales[$i]['sales'],
             ]);
         }
         return response()->json([
-            'countItem'=>$listSales->count(),
-            'listSales'=> $arrayListSales
+            'countItem' => $listSales->count(),
+            'listSales' => $arrayListSales
         ]);
     }
-    public function showListOnOutlet($id){
+    public function showListOnOutlet($id)
+    {
         //tampilkan list sale dalam setiap item berdasarkan id outlet
         $listSales = doutlet::find($id)->outletListSaless;
         $arrayListSales = [];
-        for($i=0;$i<$listSales->count();$i++)
-        {
-            array_push($arrayListSales,(object)[
+        for ($i = 0; $i < $listSales->count(); $i++) {
+            array_push($arrayListSales, (object)[
                 'id' => $listSales[$i]['id'],
                 'sales' => $listSales[$i]['sales'],
             ]);
         }
         return response()->json([
-            'countItem'=>$listSales->count(),
-            'listSales'=> $arrayListSales
+            'countItem' => $listSales->count(),
+            'listSales' => $arrayListSales
         ]);
-
     }
 
     /**
@@ -168,9 +192,10 @@ class typeSalesController extends Controller
     {
         //
     }
-    public function destroyItemOnOutlet(Request $request){
-        $dataDestroy = outletListSales::where('idOutlet','=',$request->idOutlet)
-        ->where('idListSales','=',$request->idListSales)->firstOrFail();
+    public function destroyItemOnOutlet(Request $request)
+    {
+        $dataDestroy = outletListSales::where('idOutlet', '=', $request->idOutlet)
+            ->where('idListSales', '=', $request->idListSales)->firstOrFail();
         $dataDestroy->delete();
     }
 }

@@ -76,6 +76,7 @@ Route::get('soHarian', function () {
 //Flow untuk Sales Harian
 Route::get('typeSales/show', [typeSalesController::class, 'index']); //get all type sales
 Route::get('typeSales/item/show/{id}', [typeSalesController::class, 'show']);
+Route::get('typeSales/show/item/eachtype', [typeSalesController::class, 'showItemType']);
 Route::get('typeSales/items/show', [typeSalesController::class, 'showAll']);
 Route::get('typeSales/outlet/show/item/{id}', [typeSalesController::class, 'showListOnOutlet']);
 Route::get('typeSales/store', [typeSalesController::class, 'store']);
@@ -167,6 +168,7 @@ Route::get('/', function () {
     return view('userControl2.login');
 });
 Route::post('user/login', [loginController::class, 'login']);
+
 Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/logout', [loginController::class, 'logout']);
     Route::get('user/dashboard', function () {

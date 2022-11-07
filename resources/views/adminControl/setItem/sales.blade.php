@@ -105,13 +105,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/item/so') }}" class="nav-link active">
+                                    <a href="{{ url('admin/item/so') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>SO Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/item/sales') }}" class="nav-link">
+                                    <a href="{{ url('admin/item/sales') }}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sales Harian</p>
                                     </a>
@@ -184,24 +184,37 @@
                                 <div class="card-body">
                                     <form>
                                         <div class="form-row">
+                                            <div class="form-group col-sm-3">
+                                                <input type="text" class="form-control" id="tambahTypeSales"
+                                                    placeholder="Nama Type">
+                                            </div>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="tambahNamaItem" placeholder="Nama Item">
+                                                <button type="button" onclick="sendAddType()"
+                                                    class="btn btn-secondary">Submit</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="addItemSalesOnType"
+                                                    placeholder="Nama Item">
                                             </div>
                                             <div class="form-group col-sm-2">
-                                                <select class="form-control" id="showSatuanAdd">
+                                                <select class="form-control" id="selType">
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <button type="button" onclick="sendAddItem()" class="btn btn-secondary">Submit</button>
+                                                <button type="button" onclick="sendAddItem()"
+                                                    class="btn btn-secondary">Submit</button>
                                             </div>
                                         </div>
                                     </form>
                                     <table class="table table-striped" id="tableAllItem">
                                         <thead>
-                                          <tr>
-                                            <th>Nama Item</th>
-                                            <th>Satuan</th>
-                                          </tr>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Sales</th>
+                                                <th>Delete</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
@@ -230,67 +243,64 @@
 
     <script>
         $(document).ready(function() {
+            getListAllType();
             getListAllItem();
-            getAllSatuan();
+            // showOutlet();
+            // getAllItem();
         })
-        function sendAddItem() {
+
+        function getListAllType() {
             $.ajax({
-                url: "{{ url('itemSO/store') }}",
-                type: 'get',
-                data: {
-                    item: document.getElementById('tambahNamaItem').value,
-                    idSatuan: $('#showSatuanAdd').val(),
-                },
-                success: function(response) {
-                    getListAllItem();
-                    document.getElementById('tambahNamaItem').value = "";
-                },
-                error: function(req, err) {
-                    console.log(err);
-                }
-            })
-        }
-        function getAllSatuan() {
-            $.ajax({
-                url: "{{ url('show/satuan') }}",
+                url: "{{ url('typeSales/show') }}",
                 type: 'get',
                 success: function(response) {
                     // console.log(response);
                     var obj = JSON.parse(JSON.stringify(response));
-                    console.log(obj);
+                    var type = '';
                     var dataDropdown = '';
-                    for (var i = 0; i < obj.dataItem.length; i++) {
+                    for (var i = 0; i < obj.typeSales.length; i++) {
+                        type += obj.typeSales[i].type + ' | ';
+
                         dataDropdown += '<option value=';
-                        dataDropdown += obj.dataItem[i].id;
+                        dataDropdown += obj.typeSales[i].id;
                         dataDropdown += '>';
-                        dataDropdown += obj.dataItem[i].Satuan;
+                        dataDropdown += obj.typeSales[i].type;
                         dataDropdown += '</option>';
                     }
-                    $('#showSatuanAdd').empty().append(dataDropdown);
+                    $('#selType').empty().append(dataDropdown);
                 },
                 error: function(req, err) {
                     console.log(err);
                 }
-            })
+            });
         }
+
         function getListAllItem() {
             $.ajax({
-                url: "{{ url('itemSO/show') }}",
+                url: "{{ url('typeSales/show/item/eachtype') }}",
                 type: 'get',
                 success: function(response) {
-                    // console.log(response);
                     var obj = JSON.parse(JSON.stringify(response));
-                    var item = '';
                     var dataTable = '';
-                    for (var i = 0; i < obj.itemSO.length; i++) {
-                        dataTable += '<tr>';
-                        dataTable += '<td>';
-                        dataTable += obj.itemSO[i].item;
-                        dataTable += '</td>';
-                        dataTable += '<td>';
-                        dataTable += obj.itemSO[i].Satuan;
-                        dataTable += '</td>';
-                        dataTable += '</tr>';
+                    console.log(obj);
+                    var indexTable =0;
+                    for (var i = 0; i < obj.listType.length; i++) {
+                        for (var j = 0; j < obj.listType[i].listSales.length; j++) {
+                            dataTable += '<tr>';
+                            dataTable += '<td>';
+                            dataTable += obj.listType[i].type;
+                            dataTable += '</td>';
+                            dataTable += '<td>';
+                            dataTable += obj.listType[i].listSales[j].sales;
+                            dataTable += '</td>';
+                            dataTable +=
+                                '<td><a href="#deleteEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete" id="a' +
+                                indexTable +
+                                '">&#xE254;</i></a>';
+                            dataTable += '<td>';
+                            dataTable += '</tr>';
+                            indexTable++;
+                        }
                     }
                     $('#tableAllItem>tbody').empty().append(dataTable);
                 },
@@ -298,6 +308,42 @@
                     console.log(err);
                 }
             });
+        }
+
+        function sendAddItem() {
+            $.ajax({
+                url: "{{ url('typeSales/item/store') }}",
+                type: 'get',
+                data: {
+                    idType: $('#selType').val(),
+                    NamaItem: document.getElementById('addItemSalesOnType').value,
+                },
+                success: function(response) {
+                    setType();
+                    document.getElementById('addItemSalesOnType').value = "";
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+
+        }
+
+        function sendAddType() {
+            $.ajax({
+                url: "{{ url('typeSales/store') }}",
+                type: 'get',
+                data: {
+                    NamaType: document.getElementById('tambahTypeSales').value,
+                },
+                success: function(response) {
+                    getListAllType();
+                    document.getElementById('tambahTypeSales').value = "";
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
         }
     </script>
 
