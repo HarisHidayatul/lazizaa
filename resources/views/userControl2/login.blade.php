@@ -89,7 +89,7 @@
 
         .bottom {
             background-color: white;
-            border-radius: 36px 36px 0 0;
+            /* border-radius: 36px 36px 36px 36px; */
             margin-top: 30px;
             height: 500px;
         }
@@ -161,45 +161,63 @@
             color: #9C9C9C;
 
         }
-        .checkBox{
+
+        .checkBox {
             background: #FFFFFF;
             border: 1px solid #F1F1F1;
             box-shadow: 0px 3px 8px rgba(28, 28, 95, 0.05);
             border-radius: 8px;
         }
+
+        .containAll {
+            max-width: 750px;
+        }
+
+        @media only screen and (min-width: 600px) {
+            .containAll {
+                margin-left: 25vw;
+            }
+            .bottom{
+                border-radius: 36px 36px 36px 36px;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .bottom{
+                border-radius: 36px 36px 0 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="containAll">
+        <div class="row justify-content-center head">
+            <img src="img/lazizaaHome.png" alt="">
+            <h3>Pelaporan administrasi outlet</h3>
+        </div>
+        <div class="bottom">
+            <div class="wrap-form">
+                <h1>Log in</h1>
+                <div class="border-login"></div>
+                <form action="{{ url('user/login') }}" method="post">
 
-    </div>
-    <div class="row justify-content-center head">
-        <img src="img/lazizaaHome.png" alt="">
-        <h3>Pelaporan administrasi outlet</h3>
-    </div>
-    <div class="bottom">
-        <div class="wrap-form">
-            <h1>Log in</h1>
-            <div class="border-login"></div>
-            <form  action="{{ url('user/login') }}" method="post">
-                @csrf
-                <div class="form-group">
-                    <h2>Username</h2>
-                    <input type="text" name="username" class="form-control inputForm"
-                        placeholder="Masukkan username" autofocus>
-                </div>
-                <div class="form-group">
-                    <h2>Kata Sandi</h2>
-                    <input type="password" name="password" class="form-control inputForm"
-                        placeholder="Masukkan kata sandi">
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input checkBox" id="exampleCheck1">
-                    <label class="form-check-label textSavePassword" for="exampleCheck1">Simpan kata sandi?</label>
-                </div>
-                <button type="submit" class="btn block">Log in</button>
-            </form>
+                    <div class="form-group">
+                        <h2>Username</h2>
+                        <input type="text" name="username" class="form-control inputForm"
+                            placeholder="Masukkan username" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <h2>Kata Sandi</h2>
+                        <input type="password" name="password" class="form-control inputForm"
+                            placeholder="Masukkan kata sandi">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input checkBox" id="exampleCheck1">
+                        <label class="form-check-label textSavePassword" for="exampleCheck1">Simpan kata sandi?</label>
+                    </div>
+                    <button type="submit" class="btn block">Log in</button>
+                </form>
+            </div>
         </div>
     </div>
     {{-- <div class="login-form">
