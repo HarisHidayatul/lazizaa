@@ -7,329 +7,363 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Document</title>
+    <title>Dashboard User</title>
     <style>
-        body {
-            /* background: #4527A0; */
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
-        .list-group {
-            width: 400px !important;
-        }
-
-        .list-group-item {
-            margin-top: 10px;
-            border-radius: none;
-            /* background: #5E35B1; */
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-
-        .list-group-item:hover {
-            transform: scaleX(1.1);
-        }
-
-
-
-        .check {
-            opacity: 0;
-            transition: all 0.6s ease-in-out;
-        }
-
-        .list-group-item:hover .check {
-            opacity: 1;
-
-        }
-
-        .about span {
-            font-size: 12px;
-            margin-right: 10px;
-
-        }
-
-        input[type=checkbox] {
-            position: relative;
-            cursor: pointer;
-        }
-
-        input[type=checkbox]:before {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 0px;
-            left: 0;
-            border: 1px solid #10a3f9;
-            border-radius: 3px;
-            background-color: white;
-
-        }
-
-        input[type=checkbox]:checked:after {
-            content: "";
-            display: block;
-            width: 7px;
-            height: 12px;
-            border: solid #007bff;
-            border-width: 0 2px 2px 0;
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-            position: absolute;
-            top: 2px;
-            left: 6px;
-        }
-
-        input[type="checkbox"]:checked+.check {
-            opacity: 1;
-        }
-
-        .brandIcon {
-            width: 50px;
+        .header {
             height: 50px;
+            background: #B20731;
+        }
+
+        .imageMenu {
+            width: 28px;
+            height: 28px;
+        }
+
+        .menuAll {
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 10px;
+        }
+
+        h4 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            color: #FFFFFF;
+        }
+
+        .laporanMenu {
+            margin-top: 4px;
+        }
+
+        .imageProfile {
+            border-radius: 32px;
+            height: 32px;
+            width: 32px;
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            left: 0;
+            margin: auto;
+            width: 175px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .modal.left .modal-body {
+            padding: 15px 15px 80px;
+        }
+
+        .modal.left.fade .modal-dialog {
+            right: -320px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+
+        .modal.left.fade.show .modal-dialog {
+            left: 0;
+        }
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom-color: #eeeeee;
+            background-color: #fafafa;
+        }
+
+        .imageClose {
+            width: 15px;
+            height: 15px;
+            right: 20px;
+            position: absolute;
+        }
+
+        .imageLogo {
+            width: 85px;
+            height: 30px;
+            margin-top: 25%;
+            position: absolute;
+        }
+
+        .containerr {
+            margin-top: 75px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Code For Calendar */
+        .dateNow {
+            /* position: relative; */
+            /* z-index: 1; */
+            color: white;
+        }
+
+        .dateNow::before {
+            content: "";
+            background: #b20732;
+
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 6px;
+
+            height: 30px;
+            width: 30px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        td {
+            cursor: pointer;
+            padding: 0 2vw;
+            position: relative;
+        }
+
+        .mainTable {
+            text-align: center;
+            vertical-align: middle;
+            /* Semibold/base */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 4.5vh;
+
+            border-spacing: 100px 0;
+        }
+
+        .beforeAfterDate {
+            color: #E0E0E0;
+        }
+
+        h3 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 120%;
+            /* identical to box height, or 24px */
+
+            /* display: flex; */
+            align-items: center;
+            text-align: center;
+            margin-top: 1px;
+        }
+
+        h1 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 24px;
+            color: #B20731;
+        }
+
+        h2 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #B20731;
+        }
+
+        .previousNext {
+            border: none;
+            background: none;
+        }
+
+        .rowHeight {
+            content: "";
+            height: 125px
+        }
+
+        .rowHeight2 {
+            content: "";
+            height: 10px;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-            <a class="navbar-brand" href="#">Administrasi Outlet</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ url('user/dashboard') }}">Laporan Harian <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            User
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">View Outlet</a>
-                            <a class="dropdown-item" href="#">View Profile</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ url('user/logout') }}">Logout</a>
-                        </div>
-                    </li>
-                </ul>
+    <div class="fixed-top header">
+        <div class="d-flex justify-content-between menuAll">
+            <div class="row">
+                <div class="col-3" data-toggle="modal" data-target="#exampleModal">
+                    <img src="{{ url('img/dashboard/menuIcon.png') }}" alt="menu icon" class="imageMenu">
+                </div>
+                <div class="col">
+                    <h4 class="laporanMenu">Laporan</h4>
+                </div>
             </div>
-            <div class="justify-content-between">
-                <input onclick="addDataShow()" class="btn btn-primary" type="button" value="Add Data">
-                <img src="{{ session('brandImage') }}" alt="" class="brandIcon">
-            </div>
-        </nav>
-        {{-- https://bbbootstrap.com/snippets/bootstrap-folder-list-checkbox-and-transform-effect-16091735 --}}
-        <div class="d-flex justify-content-center">
-            <ul class="list-group mt-5 text-black">
-                <div id="showAllTanggal"></div>
-            </ul>
-        </div>
-    </div>
-    <div id="addData" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Data</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body" id="groupAddItem">
-                        <input type="date" class="form-control" id="dateAdd" value="{{ session('date') }}" required>
-                        <li onclick="goToSoHarianAdd()" class = "list-group-item d-flex justify-content-between align-content-center" >
-                            <div class = "d-flex flex-row" >
-                                <img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / >
-                                <div class = "ml-2" >
-                                    <h6 class = "mb-0">SO Harian</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li onclick="goToPattyCashHarianAdd()" class = "list-group-item d-flex justify-content-between align-content-center" >
-                            <div class = "d-flex flex-row" >
-                                <img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / >
-                                <div class = "ml-2" >
-                                    <h6 class = "mb-0">Patty Cash</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li onclick="goToSalesHarianAdd()" class = "list-group-item d-flex justify-content-between align-content-center" >
-                            <div class = "d-flex flex-row" >
-                                <img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / >
-                                <div class = "ml-2" >
-                                    <h6 class = "mb-0">Sales</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li onclick="goToWasteHarianAdd()" class = "list-group-item d-flex justify-content-between align-content-center" >
-                            <div class = "d-flex flex-row" >
-                                <img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / >
-                                <div class = "ml-2" >
-                                    <h6 class = "mb-0">Waste</h6>
-                                </div>
-                            </div>
-                        </li>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    </div>
-                </form>
+            <div>
+                <img src="{{ url('img/dashboard/userIcon.jpg') }}" alt="user icon" class="imageProfile">
             </div>
         </div>
     </div>
-    <div id="selectData" class="modal fade">
-        <div class="modal-dialog">
+    <div class="containerr">
+        <div class="row">
+            <div class="col">
+                <button class="previousNext" onclick="previous()">&#10094;</button>
+            </div>
+            <div class="col-8">
+                <h3 id="monthAndYear"></h3>
+            </div>
+            <div class="col">
+                <button class="previousNext" onclick="next()">&#10095;</button>
+            </div>
+        </div>
+        <div class="row">
+            <table class="mainTable" id="calendar">
+                <thead>
+                    <tr>
+                        <td>Sen</td>
+                        <td>Sel</td>
+                        <td>Rab</td>
+                        <td>Kam</td>
+                        <td>Jum</td>
+                        <td>Sab</td>
+                        <td>Min</td>
+                    </tr>
+                </thead>
+                <tbody id="calendar-body">
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="rowHeight"></div>
+        </div>
+        <div class="row">
+            <h1>Lazizaa Sukodono</h1>
+        </div>
+        <div class="row">
+            <h2>Selasa, 1 Nopember</h2>
+        </div>
+        <div class="row">
+            <div class="rowHeight2"></div>
+        </div>
+    </div>
+    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Data</h4>
-                        <div id="idEdit"></div>
-                        <button type="button" class="close" data-dismiss="modal"
-                            aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body" id="groupFillItem">
-
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    </div>
-                </form>
+                <div class="modal-body">
+                    <img src="{{ url('img/dashboard/closeIcon.png') }}" alt="close icon" class="imageClose"
+                        data-dismiss="modal">
+                    <img src="{{ url('img/dashboard/lazizaaLogo.png') }}" alt="logo icon" class="imageLogo">
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script>
-    var dataExistType = []; //fso, pattycash, sales, waste
-    var dateAll =[];
-    var indexDateSelect=0;
-    function addDataShow() {
-        $('#addData').modal('show');
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "Nopember", "Desember"
+    ];
+
+    let monthAndYear = document.getElementById("monthAndYear");
+    showCalendar(currentMonth, currentYear);
+
+
+    function next() {
+        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+        currentMonth = (currentMonth + 1) % 12;
+        showCalendar(currentMonth, currentYear);
     }
 
-    function goToSoHarian(){
-        window.location.href = "{{ url('user/soHarian') }}"+'/'+dateAll[indexDateSelect];
-    }
-    function goToSoHarianAdd(){
-        window.location.href = "{{ url('user/soHarian') }}"+'/'+document.getElementById('dateAdd').value;
-    }
-
-    function goToSalesHarian(){
-        window.location.href = "{{ url('user/salesHarian') }}"+'/'+dateAll[indexDateSelect];
-    }
-    function goToSalesHarianAdd(){
-        window.location.href = "{{ url('user/salesHarian') }}"+'/'+document.getElementById('dateAdd').value;
+    function previous() {
+        currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+        currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+        showCalendar(currentMonth, currentYear);
     }
 
-    function goToPattyCashHarian(){
-        window.location.href = "{{ url('user/pattyCashHarian') }}"+'/'+dateAll[indexDateSelect];
-    }
-    function goToPattyCashHarianAdd(){
-        window.location.href = "{{ url('user/pattyCashHarian') }}"+'/'+document.getElementById('dateAdd').value;
-    }
+    function showCalendar(month, year) {
 
-    function goToWasteHarian(){
-        window.location.href = "{{ url('user/wasteHarian') }}"+'/'+dateAll[indexDateSelect];
-    }
-    function goToWasteHarianAdd(){
-        window.location.href = "{{ url('user/wasteHarian') }}"+'/'+document.getElementById('dateAdd').value;
-    }
-    
-    function clickDate(index) {
-        var fillData = '';
-        console.log(dataExistType);
-        fillData+= '<input type="date" class="form-control" value="'+dateAll[index]+'" readonly>';
-        indexDateSelect = index;
-        if (dataExistType[index][0] == 1) {
-            fillData +=
-                '<li onclick="goToSoHarian()" class = "list-group-item d-flex justify-content-between align-content-center" ><div class = "d-flex flex-row" ><img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / ><div class = "ml-2" ><h6 class = "mb-0">';
-            fillData += "So Harian";
-            fillData += '</h6>';
-            fillData += "</div></div></li>";
-        }
-        if (dataExistType[index][1] == 1) {
-            fillData +=
-                '<li onclick="goToPattyCashHarian()" class = "list-group-item d-flex justify-content-between align-content-center" ><div class = "d-flex flex-row" ><img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / ><div class = "ml-2" ><h6 class = "mb-0">';
-            fillData += "Patty Cash";
-            fillData += '</h6>';
-            fillData += "</div></div></li>";
-        }
-        if (dataExistType[index][2] == 1) {
-            fillData +=
-                '<li onclick="goToSalesHarian()" class = "list-group-item d-flex justify-content-between align-content-center" ><div class = "d-flex flex-row" ><img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / ><div class = "ml-2" ><h6 class = "mb-0">';
-            fillData += "Sales";
-            fillData += '</h6>';
-            fillData += "</div></div></li>";
-        }
-        if (dataExistType[index][3] == 1) {
-            fillData +=
-                '<li onclick="goToWasteHarian()" class = "list-group-item d-flex justify-content-between align-content-center" ><div class = "d-flex flex-row" ><img src = "https://img.icons8.com/external-anggara-basic-outline-anggara-putra/100/000000/external-edit-basic-user-interface-anggara-basic-outline-anggara-putra.png" width = "40" / ><div class = "ml-2" ><h6 class = "mb-0">';
-            fillData += "Waste";
-            fillData += '</h6>';
-            fillData += "</div></div></li>";
-        }
-        document.getElementById('groupFillItem').innerHTML = fillData;
-        $('#selectData').modal('show');
-    }
+        let firstDay = (new Date(year, month)).getDay() - 1;
+        let daysInMonth = 32 - new Date(year, month, 32).getDate();
+        let daysInMonthBefore = 32 - new Date(year, month - 1, 32).getDate();
 
-    function showListOnAllDate(obj) {
-        // .split("-").reverse().join("/")
-        dataExistType.length = 0;
-        dateAll.length =0;
-        var dataTable = '';
-        for (var i = 0; i < obj.DataTanggal.length; i++) {
-            var arrayExistType = [];
-            arrayExistType.push(obj.DataTanggal[i].fso);
-            arrayExistType.push(obj.DataTanggal[i].pcash);
-            arrayExistType.push(obj.DataTanggal[i].sales);
-            arrayExistType.push(obj.DataTanggal[i].waste);
-            dataExistType.push(arrayExistType);
-            var countData = 0;
-            for (var j = 0; j < arrayExistType.length; j++) {
-                countData += arrayExistType[j];
+        let tbl = document.getElementById("calendar-body"); // body of the calendar
+
+        // clearing all previous cells
+        tbl.innerHTML = "";
+
+        // filing data about month and in the page via DOM.
+        monthAndYear.innerHTML = months[month] + " " + year;
+
+        // creating all cells
+        let dateBefore = daysInMonthBefore - firstDay + 1;
+        let date = 1;
+        let dateAfter = 1;
+        for (let i = 0; i < 5; i++) {
+            // creates a table row
+            let row = document.createElement("tr");
+            //creating individual cells, filing them up with data.
+            for (let j = 0; j < 7; j++) {
+                let cell = document.createElement("td");
+                // cell.addEventListener("click", showBefore);
+                // cell.setAttribute('id','id2');
+                if (i === 0 && j < firstDay) {
+                    let cellText = document.createTextNode(dateBefore);
+                    cell.appendChild(cellText);
+                    cell.classList.add("beforeAfterDate");
+                    cell.addEventListener("click", previous);
+                    dateBefore++;
+                } else if (date > daysInMonth) {
+                    let cellText = document.createTextNode(dateAfter);
+                    cell.appendChild(cellText);
+                    cell.classList.add("beforeAfterDate");
+                    cell.addEventListener("click", previous);
+                    dateAfter++;
+                    // break;
+                } else {
+                    let cellText = document.createTextNode(date);
+                    if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                        cell.classList.add("dateNow");
+                    } // color today's date
+                    cell.classList.add("fillData");
+                    cell.appendChild(cellText);
+                    date++;
+                }
+                row.appendChild(cell);
             }
-            dataTable +=
-                '<li onClick="clickDate(' + i +
-                ')" class = "list-group-item d-flex justify-content-between align-content-center" ><div class = "d-flex flex-row" ><img src = "https://img.icons8.com/ios/100/000000/calendar--v1.png" width = "40" / ><div class = "ml-2" ><h6 class = "mb-0">';
-            dataTable += obj.DataTanggal[i].Tanggal.split("-").reverse().join("/");
-            dateAll.push(obj.DataTanggal[i].Tanggal);
-            dataTable += '</h6><div class="about"><span>';
-            // dataTable += "22 Files";
-            dataTable += countData;
-            dataTable += " Data";
-            dataTable += '</span></div>';
-            dataTable += "</div></div></li>";
+            tbl.appendChild(row); // appending each row into calendar body.
         }
-        // console.log(dataTable);
-        document.getElementById('showAllTanggal').innerHTML = dataTable;
     }
-
-    function getDataOnAllDate() {
-        $.ajax({
-            url: "{{ url('getAllDate/') }}" + '/' + "{{ session('idOutlet') }}", 
-            type: 'get',
-            success: function(response) {
-                // break;
-                var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
-                showListOnAllDate(obj);
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        });
-    }
-    $(document).ready(function() {
-        getDataOnAllDate();
-        // showListOnAllDate();
-    });
 </script>
 
 </html>

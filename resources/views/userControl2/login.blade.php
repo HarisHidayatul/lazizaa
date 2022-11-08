@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Bootstrap Simple Login Form</title>
+    <title>Login Form Lazizaa</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -91,7 +91,7 @@
             background-color: white;
             /* border-radius: 36px 36px 36px 36px; */
             margin-top: 30px;
-            height: 500px;
+            height: 450px;
         }
 
         .wrap-form {
@@ -200,7 +200,7 @@
                 <h1>Log in</h1>
                 <div class="border-login"></div>
                 <form action="{{ url('user/login') }}" method="post">
-
+                    @csrf
                     <div class="form-group">
                         <h2>Username</h2>
                         <input type="text" name="username" class="form-control inputForm"
