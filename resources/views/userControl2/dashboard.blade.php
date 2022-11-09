@@ -118,13 +118,13 @@
         }
 
         /* Code For Calendar */
-        .dateNow {
+        .dateSelect {
             /* position: relative; */
             /* z-index: 1; */
             color: white;
         }
 
-        .dateNow::before {
+        .dateSelect::before {
             content: "";
             background: #b20732;
 
@@ -145,6 +145,44 @@
             cursor: pointer;
             padding: 0 2vw;
             position: relative;
+        }
+
+        td:hover {
+            color: white;
+        }
+
+        td:hover::after {
+            content: "";
+            background: #afafaf;
+
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 6px;
+
+            height: 30px;
+            width: 30px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .dateNow::before {
+            content: "";
+            background: #B20731;
+
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 1.5px;
+
+            height: 5px;
+            width: 5px;
+            color: #B20731;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
         }
 
         .mainTable {
@@ -184,6 +222,10 @@
             font-weight: 700;
             font-size: 24px;
             color: #B20731;
+            display: flex;
+            position: absolute;
+            left: 10%;
+            margin-top: -4vh;
         }
 
         h2 {
@@ -193,9 +235,26 @@
             font-size: 16px;
             line-height: 140%;
             display: flex;
+            position: absolute;
+            left: 10%;
+            /* align-items: center;
+            text-align: center; */
+            color: #B20731;
+            margin-top: 0vh;
+        }
+
+        h5 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 140%;
+            /* or 20px */
+
+            display: flex;
             align-items: center;
             text-align: center;
-            color: #B20731;
+
         }
 
         .previousNext {
@@ -205,12 +264,46 @@
 
         .rowHeight {
             content: "";
-            height: 125px
+            height: 100px
         }
 
-        .rowHeight2 {
+        .container2 {
             content: "";
-            height: 10px;
+            height: 20px;
+        }
+
+        .bottom {
+            margin-top: 65px;
+            height: 1000px;
+            background: #FCFBFB;
+            box-shadow: 0px -0.82px 1.65px rgba(0, 14, 51, 0.1);
+            border-radius: 16px;
+        }
+
+        .soIcon {
+            height: 30px;
+            margin-left: 10px;
+        }
+
+        .layoutBottom {
+            height: 55px;
+            background: #FFFFFF;
+            /* Greyscale/20 */
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            padding-top: 10px;
+            /* padding-left: 10px; */
+            margin-top: 12px;
+        }
+
+        .bottom-container {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        .soStatus {
+            height: 20px;
+            margin-right: 10px
         }
     </style>
 </head>
@@ -231,16 +324,17 @@
             </div>
         </div>
     </div>
+    <div class="container2"></div>
     <div class="containerr">
         <div class="row">
             <div class="col">
-                <button class="previousNext" onclick="previous()">&#10094;</button>
+                <button class="previousNext" onclick="previous(0)">&#10094;</button>
             </div>
             <div class="col-8">
                 <h3 id="monthAndYear"></h3>
             </div>
             <div class="col">
-                <button class="previousNext" onclick="next()">&#10095;</button>
+                <button class="previousNext" onclick="next(0)">&#10095;</button>
             </div>
         </div>
         <div class="row">
@@ -269,9 +363,63 @@
         <div class="row">
             <h2>Selasa, 1 Nopember</h2>
         </div>
-        <div class="row">
-            <div class="rowHeight2"></div>
+    </div>
+    <div class="d-flex justify-content-center bottom">
+        <div class="container bottom-container">
+            <div class="row d-flex justify-content-between layoutBottom">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="{{ url('img/dashboard/laporanSo.png') }}" alt="laporanSo" class="soIcon">
+                    </div>
+                    <div class="col" style="margin-top: 3px;margin-left: 1px;">
+                        <h5>Laporan SO</h5>
+                    </div>
+                </div>
+                <div>
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus" id="soStatus">
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between layoutBottom">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="laporanSo" class="soIcon">
+                    </div>
+                    <div class="col" style="margin-top: 3px; margin-left: -3px;">
+                        <h5>Laporan Sales</h5>
+                    </div>
+                </div>
+                <div>
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong2" class="soStatus" id="salesStatus">
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between layoutBottom">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="{{ url('img/dashboard/laporanWaste.png') }}" alt="laporanSo" class="soIcon">
+                    </div>
+                    <div class="col" style="margin-top: 3px; margin-left: -5px;">
+                        <h5>Laporan Waste</h5>
+                    </div>
+                </div>
+                <div>
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="terisi" class="soStatus" id="wasteStatus">
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between layoutBottom">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="{{ url('img/dashboard/laporanPattyCash.png') }}" alt="laporanSo" class="soIcon">
+                    </div>
+                    <div class="col" style="margin-top: 3px; margin-left: -12px;">
+                        <h5>Laporan Patty Cash</h5>
+                    </div>
+                </div>
+                <div>
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus" id="pattyCashStatus">
+                </div>
+            </div>
         </div>
+
     </div>
     <div class="modal right fade" id="exampleModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -290,6 +438,8 @@
     let today = new Date();
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
+    let dateSelect = today.getDate();
+    var dataExistType = []; //fso, pattycash, sales, waste, date
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "Nopember", "Desember"
@@ -298,17 +448,100 @@
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
 
+    function changeIcon(fsoStatus,pattyCashStatus,salesStatus,wasteStatus){
+        if(fsoStatus == 1){
+            $('#soStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
+        }else{
+            $('#soStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+        }
+        if(pattyCashStatus == 1){
+            $('#pattyCashStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
+        }else{
+            $('#pattyCashStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+        }
+        if(salesStatus == 1){
+            $('#salesStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
+        }else{
+            $('#salesStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+        }
+        if(wasteStatus == 1){
+            $('#wasteStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
+        }else{
+            $('#wasteStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+        }
+    }
 
-    function next() {
+    function getDataOnAllDate() {
+        $.ajax({
+            url: "{{ url('getAllDate/') }}" + '/' + "{{ session('idOutlet') }}",
+            data: {
+                month: currentMonth + 1,
+                year: currentYear
+            },
+            type: 'get',
+            success: function(response) {
+                // break;
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                showListOnAllDate(obj);
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function showListOnAllDate(obj) {
+        dataExistType.length = 0;
+        for (var i = 0; i < obj.DataTanggal.length; i++) {
+            var arrayExistType = [];
+            var dateParse = parseInt(obj.DataTanggal[i].Tanggal.split("-")[2]);
+            arrayExistType.push(obj.DataTanggal[i].fso);
+            arrayExistType.push(obj.DataTanggal[i].pcash);
+            arrayExistType.push(obj.DataTanggal[i].sales);
+            arrayExistType.push(obj.DataTanggal[i].waste);
+            arrayExistType.push(dateParse);
+            // arrayExistType.push(mydate.toDateString());
+            dataExistType.push(arrayExistType);
+        }
+        console.log(dataExistType);
+        showCalendar(currentMonth, currentYear);
+        selectDate(dateSelect);
+    }
+
+    function searchExistDataOnDate(indexDate) {
+        var dataTemp = null;
+        for (var i = 0; i < dataExistType.length; i++) {
+            if(indexDate == dataExistType[i][4]){
+                dataTemp = i;
+                break;
+            }
+        }
+        return dataTemp;
+    }
+    $(document).ready(function() {
+        getDataOnAllDate();
+        // showListOnAllDate();
+    });
+
+    function next(indexDate) {
+        if (indexDate != 0) {
+            dateSelect = indexDate;
+        }
         currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
         currentMonth = (currentMonth + 1) % 12;
         showCalendar(currentMonth, currentYear);
+        getDataOnAllDate();
     }
 
-    function previous() {
+    function previous(indexDate) {
+        if (indexDate != 0) {
+            dateSelect = indexDate;
+        }
         currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
         currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
         showCalendar(currentMonth, currentYear);
+        getDataOnAllDate();
     }
 
     function showCalendar(month, year) {
@@ -329,40 +562,56 @@
         let dateBefore = daysInMonthBefore - firstDay + 1;
         let date = 1;
         let dateAfter = 1;
+        let fillTable = '';
         for (let i = 0; i < 5; i++) {
             // creates a table row
-            let row = document.createElement("tr");
+            fillTable += '<tr>';
             //creating individual cells, filing them up with data.
             for (let j = 0; j < 7; j++) {
-                let cell = document.createElement("td");
-                // cell.addEventListener("click", showBefore);
-                // cell.setAttribute('id','id2');
+                fillTable += '<td ';
                 if (i === 0 && j < firstDay) {
-                    let cellText = document.createTextNode(dateBefore);
-                    cell.appendChild(cellText);
-                    cell.classList.add("beforeAfterDate");
-                    cell.addEventListener("click", previous);
+                    fillTable += 'class="beforeAfterDate" ';
+                    fillTable += 'onClick="previous(' + dateBefore + ');" ';
+                    fillTable += '>';
+                    fillTable += dateBefore;
                     dateBefore++;
                 } else if (date > daysInMonth) {
-                    let cellText = document.createTextNode(dateAfter);
-                    cell.appendChild(cellText);
-                    cell.classList.add("beforeAfterDate");
-                    cell.addEventListener("click", previous);
+                    fillTable += 'class="beforeAfterDate" ';
+                    fillTable += 'onClick="next(' + dateAfter + ');" ';
+                    fillTable += '>';
+                    fillTable += dateAfter;
                     dateAfter++;
                     // break;
                 } else {
-                    let cellText = document.createTextNode(date);
-                    if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-                        cell.classList.add("dateNow");
-                    } // color today's date
-                    cell.classList.add("fillData");
-                    cell.appendChild(cellText);
+                    if (date === dateSelect) {
+                        fillTable += 'class="dateSelect" ';
+                    } else {
+                        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                            fillTable += 'class="dateNow" ';
+                        } // color today's date
+                    }
+                    fillTable += 'onClick="selectDate(' + date + ');" ';
+                    fillTable += '>';
+                    fillTable += date;
                     date++;
                 }
-                row.appendChild(cell);
+                fillTable += '</td>';
             }
-            tbl.appendChild(row); // appending each row into calendar body.
+            fillTable += '</tr>';
         }
+        $('#calendar-body').empty().append(fillTable);
+        // console.log(fillTable);
+    }
+
+    function selectDate(indexDate) {
+        var indexDataOnDate = searchExistDataOnDate(indexDate);
+        if(indexDataOnDate == null){
+            changeIcon(0,0,0,0);
+        }else{
+            changeIcon(dataExistType[indexDataOnDate][0],dataExistType[indexDataOnDate][1],dataExistType[indexDataOnDate][2],dataExistType[indexDataOnDate][3]);
+        }
+        dateSelect = indexDate;
+        showCalendar(currentMonth, currentYear);
     }
 </script>
 

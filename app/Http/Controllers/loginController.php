@@ -155,11 +155,12 @@ class loginController extends Controller
     public function soHarian($date)
     {
     }
-    public function getAllDate($idOutlet)
+    public function getAllDate($idOutlet,Request $request)
     {
         // echo $idOutlet;
         $allData = doutlet::find($idOutlet);
-        $allTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        // $allTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $allTanggal = tanggalAll::whereYear('Tanggal','=',$request->year)->whereMonth('Tanggal','=',$request->month)->get();
 
         $dateSales = $allData->dateSales;
         $datefsoharian = $allData->datefsoharian;
