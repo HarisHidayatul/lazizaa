@@ -116,16 +116,23 @@ class soHarian extends Seeder
             );
         }
         $itemSO = array(
-            'Beras', 'French Fries', 'Milo', 'Tepung Ori', 'Minyak Padat',
-            'Ayam Reg Besar', 'Ayam Reg Kecil', 'Ayam Utuh', 'Ayam Fillet',
-            'Ayam Small', 'Dori Triming', 'Chili Sachet', 'Tomat Sachet',
-            'Sambal Bawang', 'Sambal Korek', 'Sambal Bajak', 'Saus BBQ',
-            'Saus BP', 'Lunch Box', 'Rame Box', 'Box Geprek', 'Bubuk Candy',
-            'Buble Gum', 'SKM'
+            'Beras', 'Milo', 'French Fries', 'Tepung Ori', 'Minyak Padat', 'Ayam Reg Kecil',
+            'Ayam Reg Besar', 'Ayam Utuh', 'Ayam Fillet', 'Ayam Small', 'Dori Triming',
+            'Chili Sachet', 'Tomat Sachet', 'Sambal Bawang','Sambal Korek','Sambal Bajak',
+            'Saus BBQ', 'Saus BP', 'Lunch Box', 'Rame Box', 'Box Geprek','Bubuk Candy', 'Bubble Gum',
+            'SKM'
+        );
+        $itemIcon = array(
+            'beras.png','milo.png','frenchfries.png','tepungOri.png','minyakpadat.png','ayamRegKecil.png',
+            'ayamRegBesar.png', 'ayamUtuh.png', 'ayamFillet.png','ayamSmall.png','doriTriming.png',
+            'chiliSachet.png','tomat.png', 'sambalBawang.png','sambalKorek.png','sambalBajak.png',
+            'sausBBQ.png','sausBP.png','lunchBox.png','rameBox.png','boxGeprek.png','bubukCandy.png','bubbleGum.png',
+            'skm.png'
         );
         for ($i = 0; $i < 24; $i++) {
             DB::table('listItemSO')->insert([
                 'Item' => $itemSO[$i],
+                'icon' => $itemIcon[$i],
                 'idSatuan' => '1',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);

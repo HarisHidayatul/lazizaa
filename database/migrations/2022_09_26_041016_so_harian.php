@@ -104,6 +104,7 @@ return new class extends Migration
         Schema::create('listItemSO', function (Blueprint $table) {
             $table->id();
             $table->string('Item');
+            $table->string('icon');
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');

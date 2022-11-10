@@ -25,6 +25,7 @@ class listItemSO extends Model
     protected $fillable = [
         'Item',
         'idSatuan',
+        'icon',
         'created_at',
         'update_at',
         'delete_at'

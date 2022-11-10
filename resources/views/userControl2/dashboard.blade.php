@@ -361,7 +361,7 @@
             <h1>Lazizaa Sukodono</h1>
         </div>
         <div class="row">
-            <h2>Selasa, 1 Nopember</h2>
+            <h2>Selasa, 1 November</h2>
         </div>
     </div>
     <div class="d-flex justify-content-center bottom">
@@ -442,7 +442,7 @@
     var dataExistType = []; //fso, pattycash, sales, waste, date
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
-        "Nopember", "Desember"
+        "November", "Desember"
     ];
 
     let monthAndYear = document.getElementById("monthAndYear");

@@ -167,7 +167,8 @@ class typeOutletItemController extends Controller
                     array_push($dataArray, (object)[
                         'id' => $data2[$j]['id'],
                         'Item' => $data2[$j]['Item'],
-                        'satuan' => $data2[$j]->satuans['Satuan']
+                        'satuan' => $data2[$j]->satuans['Satuan'],
+                        'icon' => $data2[$j]['icon']
                     ]);
                     array_push($dataId, $data2[$j]['id']);
                 }
