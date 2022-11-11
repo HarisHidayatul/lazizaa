@@ -59,6 +59,7 @@ Route::get('listType/soHarian/delete/outletOnType', [typeOutletItemController::c
 Route::get('show/outlet', [typeOutletItemController::class, 'indexOutlet']);
 
 Route::get('soHarian/user/showTable/{id}', [fsoHarianController::class, 'show']); //show id untuk outlet
+Route::get('soHarian/user/showDetail/{id}/{date}', [fsoHarianController::class, 'showOnDate']);//show id untuk outlet, berdasarkan tanggal
 Route::get('soHarian/date/getId', [fsoHarianController::class, 'showAndCreateID']);
 Route::get('soHarian/store/data', [soFillController::class, 'store']);
 Route::get('soHarian/edit/data/{id}', [fsoHarianController::class, 'editSoFill']);

@@ -111,6 +111,43 @@ class fsoHarianController extends Controller
         ]);
     }
 
+    public function showOnDate($id,$date){
+        $dataDate = tanggalAll::where('Tanggal','=',$date)->first()->fsoHarians->where('idOutlet','=',$id)->first();
+        // @dd($dataDate);
+        $itemArray = [];
+        for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
+            $idSoRevisi = $dataDate->listItemSOs[$j]->pivot->idRevisi;
+            if ($idSoRevisi == '2') {
+                //Jika statusnya revisi
+                array_push($itemArray, (object)[
+                    'idItem' => $dataDate->listItemSOs[$j]->id,
+                    'item'   => $dataDate->listItemSOs[$j]->Item,
+                    'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
+                    'icon' => $dataDate->listItemSOs[$j]->icon,
+                    'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
+                    'qty'    => $dataDate->listItemSOs[$j]->pivot->quantityRevisi,
+                    'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
+                ]);
+            } else {
+                //Jika statusnya tidak direvisi maupun sudah direvisi
+                array_push($itemArray, (object)[
+                    'idItem' => $dataDate->listItemSOs[$j]->id,
+                    'item'   => $dataDate->listItemSOs[$j]->Item,
+                    'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
+                    'icon' => $dataDate->listItemSOs[$j]->icon,
+                    'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
+                    'qty'    => $dataDate->listItemSOs[$j]->pivot->quantity,
+                    'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datafso->count(),
+            'pengisi' => $dataDate->dUsers['Nama Lengkap'],
+            'itemfso' => $itemArray
+        ]);
+    }
+
     public function showAllDataSo()
     {
         $outletShow = dBrand::all();

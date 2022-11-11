@@ -166,21 +166,25 @@
             border-radius: 6px;
         }
 
-        .contentSo{
+        .contentSo {
             border-bottom: 1px solid #E0E0E0;
-            margin-top:15px
+            margin-top: 20px
         }
-        .imgSo{
+
+        .imgSo {
             height: 21px;
             margin-top: -5px
         }
-        .leftSo{
+
+        .leftSo {
             margin-top: -6px;
         }
-        .rightSo{
+
+        .rightSo {
             margin-top: -3px;
         }
-        .itemSo{
+
+        .itemSo {
             margin-left: -10px;
         }
     </style>
@@ -189,8 +193,8 @@
 <body>
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
-            <div class="row">
-                <div class="col-2" data-toggle="modal" data-target="#exampleModal" onclick="goToDashboard();">
+            <div class="row" onclick="goToDashboard();">
+                <div class="col-2" data-toggle="modal" data-target="#exampleModal">
                     <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack">
                 </div>
                 <div class="col">
@@ -213,39 +217,73 @@
         <h3>Laporan SO</h3>
     </div>
     <div class="d-flex justify-content-center">
-        <h4>Selasa, 01 November 2022</h4>
+        <h4 id="dateSelected">Selasa, 01 November 2022</h4>
     </div>
     <div class="containerBottom">
         <div style="height: 20px;content: ''"></div>
         <div style="margin-left: 20px; margin-right: 20px;">
             <div class="d-flex justify-content-between boxPengisi">
                 <h5 style="margin-top: 5px; margin-left: 10px">Pengisi</h5>
-                <h6 style="margin-top: 5px; margin-right: 10px">Siti</h6>
+                <h6 style="margin-top: 5px; margin-right: 10px" id="namaPengisi">.</h6>
             </div>
             <div style="height: 15px;content: ''"></div>
-            <div class="d-flex justify-content-between contentSo">
-                <div class="row leftSo">
-                    <div class="col-1">
-                        <img src="{{ url('img/soImage/beras.png') }}" alt="so icon" class="imgSo">
-                    </div>
-                    <div class="col itemSo">
-                        <h5>Beras</h5>
-                    </div>
-                </div>
-                <div class="row rightSo">
-                    <div class="col-1">
-                        <h6>999</h6>
-                    </div>
-                    <div class="col itemSo">
-                        <h6>pcs</h6>
-                    </div>
-                </div>
-            </div>
+            <div id="contentSo"></div>
             <button type="button" class="btn">Edit</button>
-            <div style="content: ''; height: 1250px"></div>
+            <div style="content: ''; height: 150px"></div>
         </div>
     </div>
 </body>
-<script></script>
+<script>
+    var dateSelected = "{{ $dateSelect }}";
+
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "November", "Desember"
+    ];
+    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+    $(document).ready(function() {
+        var day = new Date(dateSelected);
+        console.log(day);
+        var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] + ' ' + (day.getYear()+1900);
+        document.getElementById('dateSelected').innerHTML = stringDay;
+
+        showAllData();
+    });
+
+    function showAllData() {
+        $.ajax({
+            url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
+                "{{ $dateSelect }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(response);
+                var contentSo = '';
+                for (var i = 0; i < obj.itemfso.length; i++) {
+                    var urlImage = '{{ url('img/soImage') }}' + '/' + obj.itemfso[i]['icon'];
+                    contentSo +=
+                        '<div class="d-flex justify-content-between contentSo"><div class="row leftSo"><div class="col-1">'
+                    contentSo += '<img src="' + urlImage + '"' + ' alt="so icon" class="imgSo">';
+                    contentSo += '</div><div class="col itemSo">';
+                    contentSo += '<h5>' + obj.itemfso[i]['item'] + '</h5>';
+                    contentSo += '</div></div><div class="row rightSo"><div class="col-1">';
+                    contentSo += '<h6>' + obj.itemfso[i]['qty'] + '</h6>';
+                    contentSo += '</div><div class="col itemSo">';
+                    contentSo += '<h6>' + obj.itemfso[i]['satuan'] + '</h6>';
+                    contentSo += '</div></div></div>';
+                }
+                document.getElementById('contentSo').innerHTML = contentSo;
+                document.getElementById('namaPengisi').innerHTML = obj.pengisi;
+            },
+            error: function(req, err) {
+                console.log(err);
+                // return 0
+            }
+        });
+    }
+    function goToDashboard() {
+        window.location.href = "{{ url('user/dashboard') }}";
+    }
+</script>
 
 </html>

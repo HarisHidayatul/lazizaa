@@ -151,10 +151,6 @@ class loginController extends Controller
         $request->session()->flush();
         return redirect('/');
     }
-
-    public function soHarian($date)
-    {
-    }
     public function getAllDate($idOutlet,Request $request)
     {
         // echo $idOutlet;
