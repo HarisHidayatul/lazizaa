@@ -228,7 +228,7 @@
             </div>
             <div style="height: 15px;content: ''"></div>
             <div id="contentSo"></div>
-            <button type="button" class="btn">Edit</button>
+            <button type="button" class="btn" onclick="goToEdit();">Edit</button>
             <div style="content: ''; height: 150px"></div>
         </div>
     </div>
@@ -249,6 +249,10 @@
 
         showAllData();
     });
+
+    function goToEdit(){
+        window.location.href = "{{ url('user/edit/soHarian') }}" + "/" + "{{ $dateSelect }}";
+    }
 
     function showAllData() {
         $.ajax({

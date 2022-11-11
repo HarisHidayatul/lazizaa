@@ -294,6 +294,7 @@
             padding-top: 10px;
             /* padding-left: 10px; */
             margin-top: 12px;
+            cursor: pointer;
         }
 
         .bottom-container {
@@ -366,7 +367,7 @@
     </div>
     <div class="d-flex justify-content-center bottom">
         <div class="container bottom-container">
-            <div class="row d-flex justify-content-between layoutBottom">
+            <div class="row d-flex justify-content-between layoutBottom" onclick="soClick();">
                 <div class="row">
                     <div class="col-3">
                         <img src="{{ url('img/dashboard/laporanSo.png') }}" alt="laporanSo" class="soIcon">
@@ -415,7 +416,8 @@
                     </div>
                 </div>
                 <div>
-                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus" id="pattyCashStatus">
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus"
+                        id="pattyCashStatus">
                 </div>
             </div>
         </div>
@@ -440,35 +442,56 @@
     let currentYear = today.getFullYear();
     let dateSelect = today.getDate();
     var dataExistType = []; //fso, pattycash, sales, waste, date
+    var statusSo = 0;
+    var statusSales = 0;
+    var statusWaste = 0;
+    var statusPattyCash = 0;
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
-    let days = ["Rabu","Kamis","Jumat","Sabtu","Minggu","Senin","Selasa"];
+    let days = ["Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", "Selasa"];
 
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
 
-    function changeIcon(fsoStatus,pattyCashStatus,salesStatus,wasteStatus){
-        if(fsoStatus == 1){
-            $('#soStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
+    function soClick() {
+        if (statusSo == 0) 
+        {
+            window.location.href = "{{ url('user/soHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
         }else{
-            $('#soStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+            window.location.href = "{{ url('user/detail/soHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
         }
-        if(pattyCashStatus == 1){
-            $('#pattyCashStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
-        }else{
-            $('#pattyCashStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+    }
+
+    function changeIcon(fsoStatus, pattyCashStatus, salesStatus, wasteStatus) {
+        if (fsoStatus == 1) {
+            $('#soStatus').attr('src', "{{ url('img/dashboard/terisi.png') }}");
+            statusSo = 1;
+        } else {
+            $('#soStatus').attr('src', "{{ url('img/dashboard/kosong1.png') }}");
+            statusSo = 0;
         }
-        if(salesStatus == 1){
-            $('#salesStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
-        }else{
-            $('#salesStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+        if (pattyCashStatus == 1) {
+            $('#pattyCashStatus').attr('src', "{{ url('img/dashboard/terisi.png') }}");
+            statusPattyCash = 1;
+        } else {
+            $('#pattyCashStatus').attr('src', "{{ url('img/dashboard/kosong1.png') }}");
+            statusPattyCash = 0;
         }
-        if(wasteStatus == 1){
-            $('#wasteStatus').attr('src',"{{ url('img/dashboard/terisi.png') }}");
-        }else{
-            $('#wasteStatus').attr('src',"{{ url('img/dashboard/kosong1.png') }}");
+        if (salesStatus == 1) {
+            $('#salesStatus').attr('src', "{{ url('img/dashboard/terisi.png') }}");
+            statusSales = 1;
+        } else {
+            $('#salesStatus').attr('src', "{{ url('img/dashboard/kosong1.png') }}");
+            statusSales = 0;
+        }
+        if (wasteStatus == 1) {
+            $('#wasteStatus').attr('src', "{{ url('img/dashboard/terisi.png') }}");
+            statusWaste = 1;
+        } else {
+            $('#wasteStatus').attr('src', "{{ url('img/dashboard/kosong1.png') }}");
+            statusWaste = 0;
         }
     }
 
@@ -513,7 +536,7 @@
     function searchExistDataOnDate(indexDate) {
         var dataTemp = null;
         for (var i = 0; i < dataExistType.length; i++) {
-            if(indexDate == dataExistType[i][4]){
+            if (indexDate == dataExistType[i][4]) {
                 dataTemp = i;
                 break;
             }
@@ -522,7 +545,6 @@
     }
     $(document).ready(function() {
         getDataOnAllDate();
-        // showListOnAllDate();
     });
 
     function next(indexDate) {
@@ -606,10 +628,11 @@
 
     function selectDate(indexDate) {
         var indexDataOnDate = searchExistDataOnDate(indexDate);
-        if(indexDataOnDate == null){
-            changeIcon(0,0,0,0);
-        }else{
-            changeIcon(dataExistType[indexDataOnDate][0],dataExistType[indexDataOnDate][1],dataExistType[indexDataOnDate][2],dataExistType[indexDataOnDate][3]);
+        if (indexDataOnDate == null) {
+            changeIcon(0, 0, 0, 0);
+        } else {
+            changeIcon(dataExistType[indexDataOnDate][0], dataExistType[indexDataOnDate][1], dataExistType[
+                indexDataOnDate][2], dataExistType[indexDataOnDate][3]);
         }
         dateSelect = indexDate;
         var newDate = currentYear;
