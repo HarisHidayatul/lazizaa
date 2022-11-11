@@ -126,7 +126,7 @@
 
         .containerBottom {
             margin-top: 75px;
-            height: 500px;
+            /* height: 500px; */
 
             background: #FCFBFB;
             box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.1), 0px -2.22px 11.1008px -1.11008px rgba(50, 50, 71, 0.08);
@@ -210,8 +210,25 @@
             color: #BEBEBE;
 
         }
-        .input-so{
+
+        .input-so {
             margin-top: 10px;
+        }
+
+        .btn {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            /* or 22px */
+            color: #FFFFFF;
+            background: #B20731;
+            border-radius: 6px;
+            width: 96px;
+            height: 44px;
+            margin-top: 50px;
+            float: right;
         }
     </style>
 </head>
@@ -220,7 +237,7 @@
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
             <div class="row">
-                <div class="col-2" data-toggle="modal" data-target="#exampleModal">
+                <div class="col-2" data-toggle="modal" data-target="#exampleModal" onclick="goToDashboard();">
                     <img src="{{ url('img/back.png') }}" alt="back icon" class="imageBack">
                 </div>
                 <div class="col">
@@ -242,104 +259,120 @@
     </div>
     <div class="d-flex justify-content-start containerBottom">
         <div class="container" style="margin-left: 5px;margin-right: 10px">
-            <h3 style="margin-top: 18px">Selasa, 1 November</h3>
+            <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
             <h3 style="margin-top: 20px">Laporan SO</h3>
-            <div class="input-so">
-                <label>Beras</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text imgSo"><img src="{{ url('img/soImage/beras.png') }}"
-                                alt="" style="height: 22px;margin-left:-5px"></span>
-                    </div>
-                    <input type="text" class="form-control inputSo" placeholder="0">
-                    <div class="input-group-append">
-                        <span class="input-group-text unitSo">gr</span>
-                    </div>
-                </div>
-            </div>
-            <div class="input-so">
-                <label>Beras</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text imgSo"><img src="{{ url('img/soImage/beras.png') }}"
-                                alt="" style="height: 22px;margin-left:-5px"></span>
-                    </div>
-                    <input type="text" class="form-control inputSo" placeholder="0">
-                    <div class="input-group-append">
-                        <span class="input-group-text unitSo">gr</span>
-                    </div>
-                </div>
-            </div>
+            <div id="groupAddItem"></div>
+            <button type="button" class="btn" onclick="sendAddData()">Simpan</button>
+            <div style="content: ''; height: 125px"></div>
         </div>
     </div>
 </body>
 <script>
     var dataId = [];
+    var idSo = 0;
+    var dateSelected = "{{ $dateSelect }}";
+
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "November", "Desember"
+    ];
+    let days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+
+
     $(document).ready(function() {
-        dataId.length =0;
+        var day = new Date(dateSelected);
+        var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
+        // console.log(stringDay);
+        // console.log(day.getDay());
+        document.getElementById('dateSelected').innerHTML = stringDay;
+
+
+        dataId.length = 0;
         showItemOutlet("{{ session('idOutlet') }}");
+        console.log("{{ $dateSelect }}");
     });
+
+    function goToDashboard() {
+        window.location.href = "{{ url('user/dashboard') }}";
+    }
+
+    function sendDataToServer(idSo2) {
+        var elementInput = document.getElementsByName("addname");
+        // console.log(elementInput[0].value);
+        // console.log(elementInput.length);
+        for (var i = 0; i < (elementInput.length * 5); i++) {
+            var isSuccess = false;
+            var indexIteration = i % elementInput.length;
+            if (elementInput[indexIteration].value == '') {
+                continue;
+            } else {
+                $.ajax({
+                    url: "{{ url('soHarian/store/data') }}",
+                    type: 'get',
+                    data: {
+                        idSo: idSo2,
+                        idItemSo: dataId[indexIteration],
+                        quantity: elementInput[indexIteration].value
+                    },
+                    success: function(response) {
+                        // break;
+                        isSuccess = true;
+                    },
+                    error: function(req, err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+        goToDashboard();
+    }
+
+    function sendAddData() {
+        $.ajax({
+            url: "{{ url('soHarian/date/getId') }}",
+            type: 'get',
+            data: {
+                tanggal: "{{ $dateSelect }}",
+                idPengisi: "{{ session('idPengisi') }}"
+            },
+            success: function(response) {
+                // console.log(response);
+                idSo = response;
+                sendDataToServer(idSo)
+            },
+            error: function(req, err) {
+                console.log(err);
+                // return 0
+            }
+        });
+    }
+
     function showItemOutlet(id) {
-        dataId.length =0;
+        dataId.length = 0;
         $.ajax({
             url: "{{ url('listType/soHarian/show/item/outlet/') }}" + '/' + id,
             type: 'get',
             success: function(response) {
                 var order_data = '';
-                var addOrderData = '';
-                var editOrderData = '';
                 var obj = JSON.parse(JSON.stringify(response));
-
-                addOrderData += '<div class="form-group">';
-                editOrderData += '<div class="form-group">';
-
-                addOrderData += '<label>Tanggal</label>';
-                editOrderData += '<label>Tanggal</label>';
-
-                addOrderData +=
-                    '<input type="date" class="form-control" id="dateAdd" value={{ $dateSelect }} required>';
-                editOrderData +=
-                    '<input type="date" class="form-control" id="dateEdit" value={{ $dateSelect }} readonly>';
-
-                addOrderData += '</div>';
-                editOrderData += '</div>';
-
-                order_data += '<tr>';
-                order_data += '<td>';
-                order_data += 'Tanggal';
-                order_data += '</td>';
-                console.log(response);
+                console.log(obj);
                 for (var i = 0; i < obj.DataItem.length; i++) {
+                    var urlImage = '{{ url('img/soImage') }}' + '/' + obj.DataItem[i]['icon'];
                     dataId.push(obj.DataItem[i]['id']);
-                    addOrderData += '<div class="form-group">';
-                    editOrderData += '<div class="form-group">';
-
-                    addOrderData += '<label>' + obj.DataItem[i]['Item'] + ' (' + obj.DataItem[i]['satuan'] +
-                        ') ' + '</label>';
-                    editOrderData += '<label>' + obj.DataItem[i]['Item'] + '</label>';
-
-                    addOrderData += '<input type="number" name="addname" class="form-control" value="0"/>';
-                    editOrderData +=
-                        '<input type="number" name="editname" class="form-control" value="0"/>';
-
-                    addOrderData += '</div>';
-                    editOrderData += '</div>';
-
-                    order_data += '<td>' + obj.DataItem[i]['Item'] + '<br>' + obj.DataItem[i]['satuan'] +
-                        '</td>';
+                    order_data += '<div class="input-so">';
+                    order_data += '<label>' + obj.DataItem[i]['Item'] + '</label>';
+                    order_data +=
+                        '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text imgSo">';
+                    order_data += '<img src="' + urlImage + '"' +
+                        'alt="" style="height: 22px;margin-left:-5px"></span>';
+                    order_data +=
+                        '</div><input type="number" class="form-control inputSo" name="addname" placeholder="0">';
+                    order_data +=
+                        '<div class="input-group-append"><span class="input-group-text unitSo">';
+                    order_data += obj.DataItem[i]['satuan'];
+                    order_data += '</span></div></div></div>'
                 }
-                order_data += '<td>';
-                order_data += 'Pengisi';
-                order_data += '</td>';
-                order_data += '<td>';
-                order_data += 'Edit';
-                order_data += '</td>';
-                order_data += '</tr>';
-                // $('#maintable>thead').empty().append(order_data);
-
-                // $('#groupAddItem').empty().append(addOrderData);
-                // $('#groupEditItem').empty().append(editOrderData);
-
+                // document.getElementById('dateAdd').
+                $('#groupAddItem').empty().append(order_data);
             },
             error: function(req, err) {
                 console.log(err);

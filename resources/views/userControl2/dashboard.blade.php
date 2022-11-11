@@ -361,7 +361,7 @@
             <h1>Lazizaa Sukodono</h1>
         </div>
         <div class="row">
-            <h2>Selasa, 1 November</h2>
+            <h2 id="dateSelected">Selasa, 1 November</h2>
         </div>
     </div>
     <div class="d-flex justify-content-center bottom">
@@ -444,6 +444,7 @@
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
+    let days = ["Rabu","Kamis","Jumat","Sabtu","Minggu","Senin","Selasa"];
 
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
@@ -563,7 +564,7 @@
         let date = 1;
         let dateAfter = 1;
         let fillTable = '';
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             // creates a table row
             fillTable += '<tr>';
             //creating individual cells, filing them up with data.
@@ -611,6 +612,13 @@
             changeIcon(dataExistType[indexDataOnDate][0],dataExistType[indexDataOnDate][1],dataExistType[indexDataOnDate][2],dataExistType[indexDataOnDate][3]);
         }
         dateSelect = indexDate;
+        var newDate = currentYear;
+        newDate += '-' + currentMonth;
+        newDate += '-' + dateSelect;
+        var day = new Date(newDate);
+        var stringDay = days[day.getDay()] + ', ' + dateSelect + ' ' + months[currentMonth];
+        console.log(stringDay);
+        document.getElementById('dateSelected').innerHTML = stringDay;
         showCalendar(currentMonth, currentYear);
     }
 </script>

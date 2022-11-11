@@ -200,6 +200,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
+    Route::get('user/detail/soHarian/{dateSelect}',function($dateSelect){
+        return view('userControl2.soHarianDetail',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
     Route::get('user/salesHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.salesHarian',[
             'dateSelect' => $dateSelect
