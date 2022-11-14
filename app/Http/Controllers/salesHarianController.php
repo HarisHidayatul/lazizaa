@@ -8,6 +8,7 @@ use App\Models\perevisiSales;
 use App\Models\salesFill;
 use App\Models\salesharian;
 use App\Models\tanggalAll;
+use App\Models\typeSales;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;

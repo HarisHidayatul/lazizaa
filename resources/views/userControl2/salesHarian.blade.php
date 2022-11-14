@@ -5,140 +5,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.6.0/autoNumeric.min.js"></script>
+
+    <title>Sales Harian</title>
     <style>
-        .brandIcon {
-            width: 50px;
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+        .header {
+            height: 50px;
+            background: #B20731;
+        }
+
+        .imageBack {
+            height: 15px;
+        }
+
+        .menuAll {
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 10px;
+        }
+
+        h4 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            color: #FFFFFF;
+        }
+
+        .laporanMenu {
+            margin-top: 4px;
+        }
+
+        .imageProfile {
+            border-radius: 32px;
+            height: 32px;
+            width: 32px;
+        }
+
+        .containerTop {
+            margin-top: 100px;
+            content: "";
             height: 50px;
         }
 
+        /* .menuSel::before{
+            content: "";
+            background-color: white;
+            height: 35px;
+            width: 25px;
+            display: flex;
+            margin-top: 8px;
+        } */
+        .col-middle {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .headerTop {
+            background-color: #B20731;
+            border-radius: 8px;
+            width: 350px;
+        }
+
+        .menuSel {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            /* identical to box height, or 20px */
+
+
+            /* Main color/Red/50 */
+
+            /* color: #B20731; */
+            color: #B20731;
+            z-index: 0;
+        }
+
+        .menuSel::before {
+            content: "";
+            position: absolute;
+            width: 75px;
+            height: 40px;
+            margin-top: -10px;
+            margin-left: -20px;
+            z-index: -1;
+            /* Greyscale/10 */
+
+            background: #FFFFFF;
+            /* shadow/Very Soft */
+
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 8px;
+        }
+
+        .menuNotSel {
+            /* Semibold/SM */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            /* identical to box height, or 20px */
+
+
+            /* Greyscale/10 */
+
+            color: #FFFFFF;
+        }
+
+        .containerBottom {
+            margin-top: 75px;
+            /* height: 500px; */
+
+            background: #FCFBFB;
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.1), 0px -2.22px 11.1008px -1.11008px rgba(50, 50, 71, 0.08);
+            border-radius: 32px;
+        }
+
+        h3 {
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            /* identical to box height, or 28px */
+
+            display: flex;
+            align-items: center;
+            text-align: center;
+
+        }
+
+        h2 {
+
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+        }
+
         h5 {
-            font-weight: 400;
+
+            /* Semibold/SM */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+        }
+
+        h6 {
+
+            /* Regular/XS */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 15px;
+            /* identical to box height */
+
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+
+        }
+
+        h7 {
+
+            /* Semibold/base */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 140%;
+            /* or 22px */
+
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+
+        }
+
+        .btn {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            /* or 22px */
+            color: #FFFFFF;
+            background: #B20731;
+            border-radius: 6px;
+            width: 96px;
+            height: 44px;
+            margin-top: 50px;
+            float: right;
+        }
+
+        input {
+            background: #FFFFFF;
+            /* Greyscale/20 */
+
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            height: 40px;
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 13.4367px;
+            line-height: 140%;
+            /* identical to box height, or 19px */
+
+
+            /* Greyscale/20 */
+
+            /* color: #E0E0E0; */
+
+            padding-left: 15px;
+        }
+
+        .typeSales {
+            margin-top: 25px;
+        }
+
+        .rowSales {
+            margin-top: 25px;
+        }
+
+        .inputCU {
+            width: 37vw;
+            max-width: 220px;
+        }
+
+        .inputTotal {
+            width: 50vw;
+            max-width: 280px;
+        }
+        .totalRp::before{
+            content: 'Rp. ';
+            position: absolute;
+            right: 100px;
         }
     </style>
-    <title>Sales Harian</title>
 </head>
 
 <body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-            <a class="navbar-brand" href="#">Administrasi Outlet</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ url('user/dashboard') }}">Laporan Harian <span
-                                class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            User
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">View Outlet</a>
-                            <a class="dropdown-item" href="#">View Profile</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ url('user/logout') }}">Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="justify-content-between">
-                <img src="{{ session('brandImage') }}" alt="" class="brandIcon">
-            </div>
-        </nav>
-        <div class="container-sm">
-            <input type="date" class="form-control" id="dateAdd" value="{{ $dateSelect }}" readonly>
-            {{-- <h2>{{ $Outlet }}</h2> --}}
-            <table class="table" id="fillTable">
-                <thead>
-                    <tr>
-                        <th>
-                            <h3></h3>
-                        </th>
-                        <th>
-                            <h3>CU</h3>
-                        </th>
-                        <th>
-                            <h3>Total</h3>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <br>
-            <button class="right" onclick="submitSalesHarian()">Submit</button>
-            <br>
-            <br>
-            <table class="table" id="mainTable">
-                <thead>
-                    <tr>
-                        <th>
-                            <h6>Item Sales</h6>
-                        </th>
-                        <th>
-                            <h6>CU</h6>
-                        </th>
-                        <th>
-                            <h6>Jumlah</h6>
-                        </th>
-                        <th>
-                            <h6>Action</h6>
-                        </th>
-                        <th>
-                            <h6>Pengisi</h6>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="container" style="width:60%">
-        <div id="editEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">
-                            <h4 class="modal-title">Edit Data</h4>
-                            <div id="idEdit"></div>
-                            <button type="button" class="close" data-dismiss="modal"
-                                aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <h4></h4>
-                            <div class="form-group">
-                                <label>CU</label>
-                                <input id="editCU" class="form-control" value="0" />
-                            </div>
-                            <div class="form-group">
-                                <label>Total</label>
-                                <input id="editTotal" class="form-control" value="0" />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="button" class="btn btn-info" value="Save" onclick="checkEditSend()">
-                        </div>
-                    </form>
+    <div class="fixed-top header">
+        <div class="d-flex justify-content-between menuAll">
+            <div class="row">
+                <div class="col-2 col-middle" data-toggle="modal" data-target="#exampleModal"
+                    onclick="goToDashboard();">
+                    <img src="{{ url('img/back.png') }}" alt="back icon" class="imageBack">
+                </div>
+                <div class="col col-middle">
+                    <h4 class="laporanMenu">Laporan harian</h4>
                 </div>
             </div>
+            <div>
+                <img src="{{ url('img/dashboard/userIcon.jpg') }}" alt="user icon" class="imageProfile">
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center containerTop">
+        <div class="row headerTop">
+            <div class="col menuNotSel col-middle" style="margin-top: 15px">SO</div>
+            <div class="col menuSel col-middle" style="margin-top: 15px">Sales</div>
+            <div class="col menuNotSel col-middle" style="margin-top: 15px">Waste</div>
+            <div class="col menuNotSel col-middle" style="margin-top: 5px">Patty Cash</div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-start containerBottom">
+        <div class="container" style="margin-left: 5px;margin-right: 10px">
+            <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
+            <div id="fillDataSales"></div>
+            <div style="margin-top: 45px;">
+                <div id="bottomFill"></div>
+                <div style="content: ''; border: 1px solid #B20731; margin-bottom: 15px;"></div>
+                <div class="d-flex justify-content-between">
+                    <h7>Total Sales</h7>
+                    <h7 id="totalALL">Rp. 0</h7>
+                </div>
+            </div>
+            <button type="button" class="btn" onclick="submitSalesHarian();">Simpan</button>
+            <div style="content: ''; height: 125px"></div>
         </div>
     </div>
 </body>
@@ -154,96 +328,25 @@
 
     var valueTotalAll = [];
     var idSales = 0;
-    var rowEditSales = 0;
 
-    var valueCuEdit = new AutoNumeric('#editCU', {
-        decimalPlaces: '0'
+    var row = 0;
+
+    var dateSelected = "{{ $dateSelect }}";
+
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "November", "Desember"
+    ];
+    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+
+    $(document).ready(function() {
+        var day = new Date(dateSelected);
+        var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
+        // console.log(stringDay);
+        // console.log(day.getDay());
+        document.getElementById('dateSelected').innerHTML = stringDay;
+        getListAllType();
     });
-    var valueTotalEdit = new AutoNumeric('#editTotal', {
-        decimalPlaces: '0'
-    });
-
-    var dates = "{{ $dateSelect }}";
-
-    function setDate() {
-        dates = document.getElementById("dateAdd").value;
-        document.getElementById("date").innerHTML = dates.split("-").reverse().join("/");
-        refreshFillTable();
-        setClearFill();
-    }
-
-    function setClearFill() {
-        for (var i = 0; i < dataIdItem.length; i++) {
-            document.getElementById('r' + i + 'c0').value = "";
-            document.getElementById('r' + i + 'c1').value = "";
-        }
-        sumValueInput();
-    }
-
-    function checkEditSend() {
-        //Check Edit Data
-        // var cuValEdit = document.getElementById("editCU").value;
-        var cuValEdit = parseInt(valueCuEdit.rawValue);
-        // var totalValEdit = document.getElementById("editTotal").value;
-        var totalValEdit = parseInt(valueTotalEdit.rawValue);
-        // var cuTableFill = document.getElementById('b' + rowEditSales + 'k0').innerText;
-        var cuTableFill = cuDataTable[rowEditSales];
-        // var totalTableFill = document.getElementById('b' + rowEditSales + 'k1').innerText;
-        var totalTableFill = totalDataTable[rowEditSales];
-        // alert(rowEditSales);
-        if (cuValEdit != cuTableFill) {
-            $.ajax({
-                url: "{{ url('salesHarian/edit/cu/data/') }}" + "/" + dataSales[rowEditSales],
-                type: 'get',
-                data: {
-                    cuRevisi: cuValEdit,
-                    idPengisi: "{{ session('idPengisi') }}"
-                },
-                success: function(response) {
-                    // console.log(response);
-                    refreshFillTable();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                    // return 0
-                }
-            });
-        }
-        if (totalValEdit != totalTableFill) {
-            $.ajax({
-                url: "{{ url('salesHarian/edit/total/data/') }}" + "/" + dataSales[rowEditSales],
-                type: 'get',
-                data: {
-                    totalRevisi: totalValEdit,
-                    idPengisi: "{{ session('idPengisi') }}"
-                },
-                success: function(response) {
-                    refreshFillTable();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                    // return 0
-                }
-            });
-        }
-
-
-        $('#editEmployeeModal').modal('hide');
-    }
-
-    $(document).on("click", "[id^=a]", function(event, ui) {
-        //function for edit (when clicked)
-        var rows = this.id.substring(1);
-        rowEditSales = rows;
-        // alert(this.id.substring(1));
-        // document.getElementById("editCU").value = document.getElementById('b' + rows + 'k0').innerText;
-        // document.getElementById("editTotal").value = document.getElementById('b' + rows + 'k1').innerText;
-
-        // valueCuEdit.rawValue = cuDataTable[rows];
-        valueCuEdit.set(cuDataTable[rows]);
-        // valueTotalEdit.rawValue = totalDataTable[rows];
-        valueTotalEdit.set(totalDataTable[rows]);
-    })
 
     function submitSalesHarian() {
         $.ajax({
@@ -251,7 +354,7 @@
             type: 'get',
             data: {
                 // tanggal: document.getElementById('dateAdd').value,
-                tanggal: dates,
+                tanggal: dateSelected,
                 idOutlet: "{{ session('idOutlet') }}"
             },
             success: function(response) {
@@ -273,10 +376,10 @@
                 // var elementIDSendRow1 = document.getElementById('r' + i + 'c1').value;
                 var elementIDSendRow1 = parseInt(valueTotalAll[i].rawValue);
                 var idListSales = dataIdItem[i];
-                if (elementIDSendRow0 == null) {
+                if (elementIDSendRow0 == '') {
                     continue;
                 }
-                if (elementIDSendRow1 == null) {
+                if (elementIDSendRow1 == '') {
                     continue;
                 }
 
@@ -300,101 +403,11 @@
                 });
             }
         }
-        refreshFillTable();
+        goToDashboard();
     }
 
-    function refreshFillTable() {
-        $.ajax({
-            url: "{{ url('salesHarian/user/showTable/') }}"+ '/' + "{{ session('idOutlet') }}" + '/' + dates,
-            type: 'get',
-            success: function(response) {
-                // console.log(response);
-                dataSales.length = 0;
-                cuDataTable.length = 0;
-                totalDataTable.length = 0;
-                var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
-                var dataTable = '';
-                var indexLoop = 0;
-                for (var i = 0; i < obj.itemSales.length; i++) {
-                    dataTable += '<tr>';
-                    // console.log(obj.itemSales.length);
-                    for (var j = 0; j < dataIdItem.length; j++) {
-                        // console.log(obj.itemSales[i].Item.length);
-                        // console.log(dataIdItem[j]);
-                        // var dataFound = false;
-                        for (var k = 0; k < obj.itemSales[i].Item.length; k++) {
-                            if (dataIdItem[j] == obj.itemSales[i].Item[k].idListSales) {
-                                dataTable += '<tr>';
-                                dataTable += '<td>' + nameIdItem[j] + '</td>';
-
-                                dataTable += '<td id="b' + indexLoop + 'k0" ';
-                                if (obj.itemSales[i].Item[k].idCuRev == '2') {
-                                    dataTable += 'style="background-color:tomato;" ';
-                                } else if (obj.itemSales[i].Item[k].idCuRev == '3') {
-                                    dataTable += 'style="background-color:rgb(30, 206, 9);" ';
-                                }
-                                dataTable += '>';
-                                dataTable += obj.itemSales[i].Item[k].cuQty;
-                                cuDataTable.push(obj.itemSales[i].Item[k].cuQty);
-                                dataTable += '</td>';
-
-                                dataTable += '<td id="b' + indexLoop + 'k1" ';
-                                if (obj.itemSales[i].Item[k].idTotalRev == '2') {
-                                    dataTable += 'style="background-color:tomato;" ';
-                                } else if (obj.itemSales[i].Item[k].idTotalRev == '3') {
-                                    dataTable += 'style="background-color:rgb(30, 206, 9);" ';
-                                }
-                                dataTable += '>';
-                                dataTable += obj.itemSales[i].Item[k].totalQty.toLocaleString();
-                                totalDataTable.push(obj.itemSales[i].Item[k].totalQty);
-                                dataTable += '</td>';
-
-                                dataTable +=
-                                    '<td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit" id="a' +
-                                    indexLoop +
-                                    '">&#xE254;</i></a>';
-                                indexLoop++;
-
-
-                                dataTable += '<td>';
-                                dataTable += obj.itemSales[i].Item[k].namaPengisi;
-                                dataTable += '</td>';
-                                dataTable += '<tr>';
-
-                                dataSales.push(obj.itemSales[i].Item[k].idSalesFill);
-
-                                break;
-                            }
-                        }
-                        // if (!dataFound) {
-                        //     dataTable += '<td>';
-                        //     dataTable += 0;
-                        //     dataTable += '</td>';
-                        // }
-                    }
-                    dataTable += '</tr>';
-                }
-                $('#mainTable>tbody').empty().append(dataTable);
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        });
-    }
-
-    function sumValueInput() {
-        var sumData = 0;
-        for (var i = 0; i < dataIdItem.length; i++) {
-            var idInput = 'r' + i + 'c1';
-            if (document.getElementById(idInput).value != '') {
-                // sumData += parseInt(document.getElementById(idInput).value);
-                sumData += parseInt(valueTotalAll[i].rawValue);
-                // sumData += valueTotalAll[i].rawValue;
-            }
-        }
-        document.getElementById('totalALL').innerHTML = sumData.toLocaleString();
-        // console.log(sumData);
+    function goToDashboard() {
+        window.location.href = "{{ url('user/dashboard') }}";
     }
 
     function getListAllType() {
@@ -429,9 +442,12 @@
             success: function(response) {
                 // console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
                 var dataTable = '';
-                var row = 0;
+                row = 0;
                 valueTotalAll.length = 0;
+                var inputFill = '';
+                var bottomFill = '';
                 for (var i = 0; i < dataIdType.length; i++) {
                     var dataFound = false;
                     for (var j = 0; j < obj.listSales.length; j++) {
@@ -439,67 +455,75 @@
                             dataFound = true;
                             break;
                         }
-                        // dataDropdown += obj.listSales[j].id;
-                        // dataDropdown += obj.listSales[j].sales;
                     }
                     if (dataFound) {
-                        dataTable += "<tr><th><h5>" + nameIdType[i] + "</h5></th></tr>";
+                        inputFill += '<div>';
+                        inputFill += '<h2 class="typeSales">' + nameIdType[i] + '</h2>';
                         for (var j = 0; j < obj.listSales.length; j++) {
                             if (dataIdType[i] == obj.listSales[j].typeSales) {
                                 dataIdItem.push(obj.listSales[j].id);
                                 nameIdItem.push(obj.listSales[j].sales);
-                                dataTable += '<tr><td>' + obj.listSales[j].sales +
-                                    '</td><td><input type="number"' + ' id="r' + row +
-                                    'c0" style="width: 100px; padding: 1px" placeholder="0">' +
-                                    '</td><td><input class="numberComa"' + ' id="r' + row +
-                                    'c1" style="width: 100px; padding: 1px" placeholder="0" onchange="sumValueInput()">' +
-                                    '</td></tr>';
+                                inputFill += '<div class="row rowSales"><div class="col-5">';
+                                inputFill += '<h5>' + obj.listSales[j].sales + '</h5>';
+                                inputFill += '<input type="number" id="r' + row +
+                                    'c0" class="inputCU" placeholder="CU">';
+                                inputFill += '</div><div class="col-7"><h5>Total</h5>';
+                                inputFill += '<input class="inputTotal" id="r' + row +
+                                    'c1" placeholder="0" onchange="sumValueInput()">';
+                                inputFill += '</div></div>';
+
+                                bottomFill += '<div class="d-flex justify-content-between">';
+                                bottomFill += '<h6>' + obj.listSales[j].sales + '</h6>';
+
+                                bottomFill += '<h6 class="totalRp" id="t' + row + '">0</h6>';
+                                bottomFill += '</div>';
+
                                 row++;
                             }
                         }
+                        inputFill += '</div>';
                     }
                 }
-                dataTable += "<tr><th><h5>" + 'Total' + "</h5></th>";
-                dataTable += '<th><h5 id="totalCU"></h5></th>';
-                dataTable += '<th><h5 id="totalALL">0</h5></th>';
-                dataTable += "</tr>";
-                $('#fillTable>tbody').empty().append(dataTable);
+                document.getElementById('fillDataSales').innerHTML = inputFill;
+                document.getElementById('bottomFill').innerHTML = bottomFill;
                 for (var i = 0; i < row; i++) {
                     var idRow = '#r' + i + 'c1';
                     valueTotalAll.push(new AutoNumeric(idRow, {
                         decimalPlaces: '0'
                     }));
                 }
-                refreshFillTable();
             },
             error: function(req, err) {
                 console.log(err);
             }
         });
     }
-    $(document).ready(function() {
-        getListAllType();
-        // refreshFillTable();
-        // .split("-").reverse().join("/")
-        document.getElementById("date").innerHTML = dates.split("-").reverse().join("/");
-        $.ajax({
-            url: "{{ url('salesHarian/data/getId') }}",
-            type: 'get',
-            data: {
-                // tanggal: document.getElementById('dateAdd').value,
-                tanggal: "{{ $dateSelect }}",
-                idOutlet: "{{ session('idOutlet') }}"
-            },
-            success: function(response) {
-                // console.log(response);
-                idSales = response;
-            },
-            error: function(req, err) {
-                console.log(err);
-                // return 0
+
+    function sumValueInput() {
+        var sumData = 0;
+        for (var i = 0; i < dataIdItem.length; i++) {
+            var idInput = 'r' + i + 'c1';
+            if (document.getElementById(idInput).value != '') {
+                // sumData += parseInt(document.getElementById(idInput).value);
+                sumData += parseInt(valueTotalAll[i].rawValue);
+                // sumData += valueTotalAll[i].rawValue;
             }
-        });
-    });
+        }
+        document.getElementById('totalALL').innerHTML = 'Rp. ' + sumData.toLocaleString();
+        // console.log(sumData);
+        copyInputToText();
+    }
+    function copyInputToText(){
+        for(var i =0;i<row;i++){
+            var idTotal = 'r' + i +'c1';
+            var idBottomTotal = 't' + i;
+            var valueIdTotal = 0;
+            if(document.getElementById(idTotal).value != ''){
+                valueIdTotal = document.getElementById(idTotal).value;
+            }
+            document.getElementById(idBottomTotal).innerHTML = valueIdTotal.toLocaleString().replace(',','.');
+        }
+    }
 </script>
 
 </html>

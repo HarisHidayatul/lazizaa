@@ -241,7 +241,7 @@
                     <img src="{{ url('img/back.png') }}" alt="back icon" class="imageBack">
                 </div>
                 <div class="col">
-                    <h4 class="laporanMenu">Laporan Harian</h4>
+                    <h4 class="laporanMenu">Laporan harian</h4>
                 </div>
             </div>
             <div>
