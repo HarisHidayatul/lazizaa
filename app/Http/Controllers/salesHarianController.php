@@ -154,7 +154,7 @@ class salesHarianController extends Controller
                                 'idTotalRev' => $idTotalRevisi,
                                 'cuQty' => $cuQty,
                                 'totalQty' => $totalQty,
-                                'namaPengisi' => $userPengisi['Username'],
+                                'namaPengisi' => $userPengisi['Nama Lengkap'],
                             ]);
                         }
                     }

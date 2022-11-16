@@ -359,7 +359,7 @@
 
         .iconStatus {
             height: 18px;
-            margin-top: 10px;
+            margin-top: 15px;
             margin-left: 8px;
 
         }
@@ -410,15 +410,105 @@
             font-size: 16px;
             line-height: 140%;
         }
-        .totalRow{
+
+        .totalRow {
             padding-bottom: 15px;
 
         }
-        .borderCuTotal{
+
+        .borderCuTotal {
             margin-top: 5px;
             border: 1px solid #E0E0E0;
             margin-left: 5px;
             margin-bottom: 8px;
+        }
+
+        .listBottom {
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 15px;
+            /* Main color/Red/50 */
+            color: #B20731;
+            margin-left: 5px;
+        }
+
+        .valBottom {
+            /* Regular/XS */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 15px;
+            /* identical to box height */
+
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+        }
+
+        .valBottom::before{
+            content: 'Rp. ';
+            position: absolute;
+            right: 90px;
+        }
+
+        .borderTotal {
+
+            /* Main color/Red/50 */
+
+            border: 1px solid #B20731;
+            margin-left: 5px;
+        }
+
+        .listPrice {
+            /* margin-top: 10px; */
+            margin-bottom: 10px;
+
+        }
+
+        .totalSales {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        
+
+        .totalBottom {
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            margin-left: 5px;
+            /* identical to box height, or 28px */
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+        }
+
+        .totalBottomVal {
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            /* identical to box height, or 28px */
+
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+
         }
     </style>
 </head>
@@ -458,44 +548,21 @@
             <div class="d-flex justify-content-between boxPengisi">
                 <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
                 <div>
-                    <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();">S</h6>
-                    <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();">S</h6>
-                    <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();">S</h6>
-                    <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();">S</h6>
+                    <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
+                    <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
+                    <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
+                    <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
                 </div>
             </div>
             <div style="height: 15px;content: ''"></div>
-            {{-- <div id="contentSo"></div> --}}
+            <div id="dataFill"></div>
+            <div style="content: ''; height: 30px"></div>
             <div>
-                <div class="d-flex justify-content-start typeSales">Organik</div>
-                <div class="d-flex justify-content-start">
-                    <div class="itemSales">Dine In</div>
-                    <img src="{{ url('img/icon/direvisi.png') }}" class="iconStatus" alt="icon status">
-                </div>
-                <div class="d-flex justify-content-between cuRow">
-                    <div class="cuText">CU</div>
-                    <div class="cuVal">46</div>
-                </div>
-                <div class="d-flex justify-content-between borderCuTotal"></div>
-                <div class="d-flex justify-content-between totalRow">
-                    <div class="totalText">Total</div>
-                    <div class="totalVal">Rp. 546.064</div>
-                </div>
-            </div>
-            <div>
-                <div class="d-flex justify-content-start typeSales">Organik</div>
-                <div class="d-flex justify-content-start">
-                    <div class="itemSales">Dine In</div>
-                    <img src="{{ url('img/icon/direvisi.png') }}" class="iconStatus" alt="icon status">
-                </div>
-                <div class="d-flex justify-content-between cuRow">
-                    <div class="cuText">CU</div>
-                    <div class="cuVal">46</div>
-                </div>
-                <div class="d-flex justify-content-between borderCuTotal"></div>
-                <div class="d-flex justify-content-between totalRow">
-                    <div class="totalText">Total</div>
-                    <div class="totalVal">Rp. 546.064</div>
+                <div id="dataBottom"></div>
+                <div class="d-flex justify-content-between borderTotal"></div>
+                <div class="d-flex justify-content-between totalSales">
+                    <div class="totalBottom">Total Sales</div>
+                    <div class="totalBottomVal" id="totalAll">Rp 0</div>
                 </div>
             </div>
             <button type="button" class="btn" onclick="goToEdit();">Edit</button>
@@ -505,17 +572,7 @@
     <div id="pengisiModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content modalContent">
-                <div class="row" style="margin-left: 5px; margin-top: 5px">
-                    <div class="col-3 detailName" id="namaPengisi2">S</div>
-                    <div class="col-9">
-                        <div class="row">
-                            <div class="detailFullName" id="namaLengkap2">Nama Lengkap S</div>
-                        </div>
-                        <div class="row">
-                            <div class="detailSales">Takeaway</div>
-                        </div>
-                    </div>
-                </div>
+                <div id="pengisiFill"></div>
             </div>
         </div>
     </div>
@@ -554,7 +611,68 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                var dataFill = '';
+                var dataBottom = '';
+                var detailPengisi = '';
+                var totalData = 0;
+                var indexRow =0;
+                for (var i = 0; i < obj.length; i++) {
+                    dataFill += '<div><div class="d-flex justify-content-start typeSales">';
+                    dataFill += obj[i].type;
+                    dataFill += '</div>';
+                    for (var j = 0; j < obj[i].sales.length; j++) {
+                        dataFill += '<div class="d-flex justify-content-start">';
+                        dataFill += '<div class="itemSales">' + obj[i].sales[j].sales + '</div>';
+                        if ((obj[i].sales[j].idCuRev == 2) || (obj[i].sales[j].idTotalRev == 2)) {
+                            var urlImage = "{{ url('img/icon/tertunda.png') }}";
+                            dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
+                        } else if ((obj[i].sales[j].idCuRev == 3) || (obj[i].sales[j].idTotalRev == 3)) {
+                            var urlImage = "{{ url('img/icon/direvisi.png') }}";
+                            dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
+                        } else {
+                            dataFill += '';
+                        }
+                        dataFill += '</div><div class="d-flex justify-content-between cuRow">';
+                        dataFill += '<div class="cuText">CU</div>';
+                        dataFill += '<div class="cuVal">' + obj[i].sales[j].cuQty + '</div></div>';
+                        dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
+                        dataFill += '<div class="d-flex justify-content-between totalRow">';
+                        dataFill += '<div class="totalText">Total</div>';
+                        dataFill += '<div class="totalVal">Rp. ' + obj[i].sales[j].totalQty.toLocaleString()
+                            .replace(',', '.') + '</div></div>';
 
+                        dataBottom += '<div class="d-flex justify-content-between listPrice">';
+                        dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
+                        dataBottom += '<div class="valBottom">' + obj[i].sales[j].totalQty.toLocaleString().replace(',', '.') + '</div>';
+                        dataBottom += '</div>';
+                        totalData += obj[i].sales[j].totalQty;
+
+                        detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
+                        detailPengisi += '<div class="col-3 detailName">' + obj[i].sales[j].namaPengisi[0] + '</div>';
+                        detailPengisi += '<div class="col-9"><div class="row">';
+                        detailPengisi += '<div class="detailFullName">' + obj[i].sales[j].namaPengisi + '</div></div>';
+                        detailPengisi += '<div class="row"><div class="detailSales">';
+                        detailPengisi += obj[i].sales[j].sales;
+                        detailPengisi += '</div></div></div></div>';
+
+                        if(indexRow == 0){
+                            document.getElementById('namaPengisi1').innerHTML = obj[i].sales[j].namaPengisi[0];
+                        }
+                        if(indexRow == 1){
+                            document.getElementById('namaPengisi2').innerHTML = obj[i].sales[j].namaPengisi[0];
+                        }
+                        if(indexRow == 2){
+                            document.getElementById('namaPengisi3').innerHTML = obj[i].sales[j].namaPengisi[0];
+                        }
+                        indexRow++;
+                    }
+                    dataFill += '</div>';
+                }
+                document.getElementById('dataFill').innerHTML = dataFill;
+                document.getElementById('dataBottom').innerHTML = dataBottom;
+                document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();
+                document.getElementById('pengisiFill').innerHTML = detailPengisi;
+                document.getElementById('namaPengisi4').innerHTML = (indexRow-3);
             },
             error: function(req, err) {
                 console.log(err);
