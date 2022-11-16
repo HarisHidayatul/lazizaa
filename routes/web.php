@@ -87,6 +87,7 @@ Route::get('typeSales/item/outlet/delete', [typeSalesController::class, 'destroy
 
 Route::get('salesHarian/show/list/{id}', [salesHarianController::class, 'showList']);
 Route::get('salesHarian/user/showTable/{id}/{date}', [salesHarianController::class, 'show']); //show id untuk outlet
+Route::get('salesHarian/user/showAllData/{id}/{date}', [salesHarianController::class, 'showAllData']); //show id untuk outlet
 Route::get('salesHarian/show/revision/all', [salesHarianController::class, 'showDateRevision']); //menampilkan semua tanggal revisi
 Route::get('salesHarian/show/revision/done', [salesHarianController::class, 'showDateRevisionDone']); //menampilkan semua tanggal revisi
 
@@ -213,6 +214,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('user/salesHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.salesHarian',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/detail/salesHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.salesHarianDetail',[
             'dateSelect' => $dateSelect
         ]);
     });

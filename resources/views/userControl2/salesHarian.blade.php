@@ -269,7 +269,7 @@
         .totalRp::before{
             content: 'Rp. ';
             position: absolute;
-            right: 100px;
+            left: 58%;
         }
     </style>
 </head>

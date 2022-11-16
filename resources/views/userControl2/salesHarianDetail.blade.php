@@ -75,9 +75,9 @@
             /* identical to box height, or 28px */
 
 
-            /* Information/main */
+            /* Warning/main */
 
-            color: #0000FF;
+            color: #FFA500;
 
         }
 
@@ -135,16 +135,6 @@
         }
 
         h6 {
-            /* Semibold/base */
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 140%;
-        }
-
-        h7 {
             /* Semibold/2XS */
             font-family: 'Montserrat';
             font-style: normal;
@@ -178,59 +168,103 @@
             border-radius: 6px;
         }
 
-        .contentSo {
-            border-bottom: 1px solid #E0E0E0;
-            margin-top: 20px
-        }
 
-        .imgSo {
-            height: 21px;
-            margin-top: -5px
-        }
-
-        .leftSo {
-            margin-top: -6px;
-            width: 450px;
-        }
-
-        .rightSo {
-            margin-top: -3px;
-        }
-
-        .itemSo {
-            margin-left: 0px;
-        }
-
-        .namaPengisi::before {
+        .namaPengisi1::before {
             content: '';
-            width: 25px;
-            height: 25px;
+            width: 22px;
+            height: 22px;
+            border: 1px solid #F6F4F4;
+            border-radius: 50px;
+            background-color: #FF6E92;
+            position: absolute;
+            z-index: -1;
+            right: -7px;
+            top: -4px;
+        }
+
+        .namaPengisi1 {
+            cursor: pointer;
+            position: absolute;
+            z-index: 1;
+            top: 360px;
+            right: 70px;
+            color: white;
+        }
+
+        .namaPengisi2::before {
+            content: '';
+            width: 22px;
+            height: 22px;
             border: 1px solid #F6F4F4;
             border-radius: 50px;
             background-color: #B20731;
-
             position: absolute;
-            right: 27px;
             z-index: -1;
-            top: 355px;
+            right: -7px;
+            top: -4px;
         }
 
-        .namaPengisi {
-            right: 10px;
-            z-index: 1;
-            /* color: white; */
-            margin-top: 10px;
-            margin-right: 15px;
+        .namaPengisi2 {
             cursor: pointer;
-            color: #FFFFFF;
+            position: absolute;
+            z-index: 1;
+            top: 360px;
+            right: 55px;
+            color: white;
         }
+
+        .namaPengisi3::before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            border: 1px solid #F6F4F4;
+            border-radius: 50px;
+            background-color: #BEBEBE;
+            position: absolute;
+            z-index: -1;
+            right: -7px;
+            top: -4px;
+        }
+
+        .namaPengisi3 {
+            cursor: pointer;
+            position: absolute;
+            z-index: 1;
+            top: 360px;
+            right: 40px;
+            color: white;
+        }
+
+        .namaPengisi4::before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            border: 1px solid #F6F4F4;
+            border-radius: 50px;
+            background-color: #F62F60;
+            position: absolute;
+            z-index: -1;
+            right: -7px;
+            top: -4px;
+        }
+
+        .namaPengisi4 {
+            cursor: pointer;
+            position: absolute;
+            z-index: 1;
+            top: 360px;
+            right: 25px;
+            color: white;
+        }
+
 
         .modalContent {
             margin-top: 385px;
             position: absolute;
             right: 20px;
             width: 200px;
-            height: 50px;
+            height: 150px;
+            overflow-y: auto;
         }
 
         .detailName {
@@ -278,11 +312,113 @@
             font-size: 13px;
             line-height: 12px;
             margin-left: -14px;
-            margin-top: 7px;
+            margin-top: 3px;
         }
-        .iconImage{
+
+        .detailSales {
+            /* Regular/2XS */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 12px;
+
+            margin-left: -14px;
+            margin-top: 3px;
+        }
+
+        .iconImage {
             height: 20px;
             margin-left: 0px;
+        }
+
+        .typeSales {
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            margin-left: 5px;
+            margin-top: 10px;
+        }
+
+        .itemSales {
+            /* Semibold/base */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            margin-left: 5px;
+            margin-top: 15px;
+        }
+
+        .iconStatus {
+            height: 18px;
+            margin-top: 10px;
+            margin-left: 8px;
+
+        }
+
+        .cuText {
+            /* Regular/base */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 140%;
+            margin-left: 5px;
+        }
+
+        .cuVal {
+
+            /* Semibold/base */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+        }
+
+        .cuRow {
+            margin-top: 10px;
+        }
+
+        .totalText {
+            /* Semibold/base */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            margin-left: 5px;
+        }
+
+        .totalVal {
+            /* Semibold/base */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+        }
+        .totalRow{
+            padding-bottom: 15px;
+
+        }
+        .borderCuTotal{
+            margin-top: 5px;
+            border: 1px solid #E0E0E0;
+            margin-left: 5px;
+            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -308,10 +444,10 @@
         <h2 style="margin-left: 5px;">Lazizaa Sukodono</h2>
     </div>
     <div class="d-flex justify-content-center">
-        <img src="{{ url('img/dashboard/laporanSo.png') }}" alt="soImage" style="height: 64px; margin-top: 25px">
+        <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="salesImage" style="height: 64px; margin-top: 25px">
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 20px">
-        <h3>Laporan SO</h3>
+        <h3>Laporan Sales</h3>
     </div>
     <div class="d-flex justify-content-center">
         <h4 id="dateSelected">Selasa, 01 November 2022</h4>
@@ -321,10 +457,47 @@
         <div style="margin-left: 20px; margin-right: 20px;">
             <div class="d-flex justify-content-between boxPengisi">
                 <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
-                <h7 class="namaPengisi" id="namaPengisi" onclick="showPengisi();">.</h7>
+                <div>
+                    <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();">S</h6>
+                    <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();">S</h6>
+                    <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();">S</h6>
+                    <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();">S</h6>
+                </div>
             </div>
             <div style="height: 15px;content: ''"></div>
-            <div id="contentSo"></div>
+            {{-- <div id="contentSo"></div> --}}
+            <div>
+                <div class="d-flex justify-content-start typeSales">Organik</div>
+                <div class="d-flex justify-content-start">
+                    <div class="itemSales">Dine In</div>
+                    <img src="{{ url('img/icon/direvisi.png') }}" class="iconStatus" alt="icon status">
+                </div>
+                <div class="d-flex justify-content-between cuRow">
+                    <div class="cuText">CU</div>
+                    <div class="cuVal">46</div>
+                </div>
+                <div class="d-flex justify-content-between borderCuTotal"></div>
+                <div class="d-flex justify-content-between totalRow">
+                    <div class="totalText">Total</div>
+                    <div class="totalVal">Rp. 546.064</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex justify-content-start typeSales">Organik</div>
+                <div class="d-flex justify-content-start">
+                    <div class="itemSales">Dine In</div>
+                    <img src="{{ url('img/icon/direvisi.png') }}" class="iconStatus" alt="icon status">
+                </div>
+                <div class="d-flex justify-content-between cuRow">
+                    <div class="cuText">CU</div>
+                    <div class="cuVal">46</div>
+                </div>
+                <div class="d-flex justify-content-between borderCuTotal"></div>
+                <div class="d-flex justify-content-between totalRow">
+                    <div class="totalText">Total</div>
+                    <div class="totalVal">Rp. 546.064</div>
+                </div>
+            </div>
             <button type="button" class="btn" onclick="goToEdit();">Edit</button>
             <div style="content: ''; height: 150px"></div>
         </div>
@@ -333,8 +506,15 @@
         <div class="modal-dialog">
             <div class="modal-content modalContent">
                 <div class="row" style="margin-left: 5px; margin-top: 5px">
-                    <div class="col-2 detailName" id="namaPengisi2">S</div>
-                    <div class="col-10 detailFullName" id="namaLengkap2">Nama Lengkap S</div>
+                    <div class="col-3 detailName" id="namaPengisi2">S</div>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="detailFullName" id="namaLengkap2">Nama Lengkap S</div>
+                        </div>
+                        <div class="row">
+                            <div class="detailSales">Takeaway</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -368,48 +548,16 @@
 
     function showAllData() {
         $.ajax({
-            url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
-                "{{ $dateSelect }}",
+            url: "{{ url('salesHarian/user/showAllData/') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                dateSelected,
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(response);
-                var contentSo = '';
-                for (var i = 0; i < obj.itemfso.length; i++) {
-                    var urlImage = '{{ url('img/soImage') }}' + '/' + obj.itemfso[i]['icon'];
-                    var urlIcon = "{{ url('img/icon') }}";
-                    contentSo +=
-                        '<div class="d-flex justify-content-between contentSo"><div class="row leftSo"><div class="col-1">'
-                    contentSo += '<img src="' + urlImage + '"' + ' alt="so icon" class="imgSo">';
-                    contentSo += '</div><div class="col-4 itemSo">';
-                    contentSo += '<h5>' + obj.itemfso[i]['item'] + '</h5></div>';
-                    if (obj.itemfso[i]['idRev'] == 2) {
-                        contentSo += '<div class="col-7">';
-                        contentSo +=
-                            '<img src="'+urlIcon+'/'+'tertunda.png'+'" alt="menu icon" class="iconImage">';
-                        contentSo += '</div>';
-                    }
-                    if (obj.itemfso[i]['idRev'] == 3) {
-                        contentSo += '<div class="col-7">';
-                        contentSo +=
-                            '<img src="'+urlIcon+'/'+'direvisi.png'+'" alt="menu icon" class="iconImage">';
-                        contentSo += '</div>';
-                    }
-                    
-                    contentSo += '</div><div class="row rightSo"><div class="col-1">';
-                    contentSo += '<h6>' + obj.itemfso[i]['qty'] + '</h6>';
-                    contentSo += '</div><div class="col itemSo">';
-                    contentSo += '<h6>' + obj.itemfso[i]['satuan'] + '</h6>';
-                    contentSo += '</div></div></div>';
-                }
-                document.getElementById('contentSo').innerHTML = contentSo;
-                document.getElementById('namaPengisi').innerHTML = obj.pengisi[0];
-                document.getElementById('namaPengisi2').innerHTML = obj.pengisi[0];
-                document.getElementById('namaLengkap2').innerHTML = obj.pengisi;
+                console.log(obj);
+
             },
             error: function(req, err) {
                 console.log(err);
-                // return 0
             }
         });
     }

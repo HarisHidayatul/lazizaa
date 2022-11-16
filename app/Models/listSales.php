@@ -14,6 +14,9 @@ class listSales extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 
+    public function typeSaless(){
+        return $this->belongsTo(typeSales::class,'typeSales','id');
+    }
     protected $fillable = [
         'typeSales',
         'sales',

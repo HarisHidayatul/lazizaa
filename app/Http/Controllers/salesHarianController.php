@@ -117,6 +117,59 @@ class salesHarianController extends Controller
         ]);
     }
 
+    public function showAllData($id, $date)
+    {
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
+        // @dd($tanggalAll);
+        $datasales = null;
+        $allDataArray = [];
+        if ($tanggalAll != null) {
+            $datasales = salesharian::where('idOutlet', '=', $id)->where('idTanggal', '=', $tanggalAll['id'])->first();
+            if ($datasales != null) {
+                // @dd($datasales->listSaless[0]->typeSaless);
+                //Collect based on typeSales
+                $allTypeSales = typeSales::all();
+                // @dd($allTypeSales);
+                for ($i = 0; $i < $allTypeSales->count(); $i++) {
+                    $idType = $allTypeSales[$i]->id;
+                    $dataOnType = [];
+                    for ($j = 0; $j < $datasales->listSaless->count(); $j++) {
+                        if ($datasales->listSaless[$j]->typeSales == $idType) {
+                            $idCuRevisi = $datasales->listSaless[$j]->pivot->idRevisiCu;
+                            $idTotalRevisi = $datasales->listSaless[$j]->pivot->idRevisiTotal;
+                            $cuQty = $datasales->listSaless[$j]->pivot->cu;
+                            $totalQty = $datasales->listSaless[$j]->pivot->total;
+                            $userPengisi = dUser::find($datasales->listSaless[$j]->pivot->idPengisi);
+                            if ($idCuRevisi == '2') {
+                                //Jika statusnya revisi pada CU
+                                $cuQty = $datasales->listSaless[$j]->pivot->cuRevisi;
+                            }
+                            if ($idTotalRevisi == '2') {
+                                $totalQty = $datasales->listSaless[$j]->pivot->totalRevisi;
+                            }
+                            array_push($dataOnType, (object)[
+                                'idSalesFill' => $datasales->listSaless[$j]->pivot->id,
+                                'sales' => $datasales->listSaless[$j]->sales,
+                                'idCuRev' => $idCuRevisi,
+                                'idTotalRev' => $idTotalRevisi,
+                                'cuQty' => $cuQty,
+                                'totalQty' => $totalQty,
+                                'namaPengisi' => $userPengisi['Username'],
+                            ]);
+                        }
+                    }
+                    if($dataOnType != null){
+                        array_push($allDataArray,(object)[
+                            'type' => $allTypeSales[$i]->type,
+                            'sales' => $dataOnType
+                        ]);
+                    }
+                }
+            }
+        }
+        return response()->json($allDataArray);
+    }
+
     public function showDateRevision()
     {
         $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
