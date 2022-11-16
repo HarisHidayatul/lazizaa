@@ -222,6 +222,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
+    Route::get('user/edit/salesHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.salesHarianEdit',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
     Route::get('user/wasteHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.wasteHarian',[
             'dateSelect' => $dateSelect

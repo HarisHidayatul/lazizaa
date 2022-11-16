@@ -600,7 +600,7 @@
     }
 
     function goToEdit() {
-        window.location.href = "{{ url('user/edit/soHarian') }}" + "/" + "{{ $dateSelect }}";
+        window.location.href = "{{ url('user/edit/salesHarian') }}" + "/" + "{{ $dateSelect }}";
     }
 
     function showAllData() {
