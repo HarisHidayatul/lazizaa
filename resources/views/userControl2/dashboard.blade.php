@@ -450,25 +450,28 @@
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
-    let days = ["Rabu", "Kamis", "Jumat", "Sabtu", "Minggu", "Senin", "Selasa"];
+    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu","Minggu"];
 
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
 
     function soClick() {
-        if (statusSo == 0) 
-        {
-            window.location.href = "{{ url('user/soHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
-        }else{
-            window.location.href = "{{ url('user/detail/soHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
+        if (statusSo == 0) {
+            window.location.href = "{{ url('user/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) + '-' +
+                dateSelect;
+        } else {
+            window.location.href = "{{ url('user/detail/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
+                '-' + dateSelect;
         }
     }
-    function salesClick(){
-        if (statusSales == 0) 
-        {
-            window.location.href = "{{ url('user/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
-        }else{
-            window.location.href = "{{ url('user/detail/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
+
+    function salesClick() {
+        if (statusSales == 0) {
+            window.location.href = "{{ url('user/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
+                '-' + dateSelect;
+        } else {
+            window.location.href = "{{ url('user/detail/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+                1) + '-' + dateSelect;
         }
     }
 
@@ -644,11 +647,18 @@
         }
         dateSelect = indexDate;
         var newDate = currentYear;
-        newDate += '-' + currentMonth;
+        newDate += '-' + (currentMonth + 1);
         newDate += '-' + dateSelect;
         var day = new Date(newDate);
-        var stringDay = days[day.getDay()] + ', ' + dateSelect + ' ' + months[currentMonth];
+        var stringDay = '';
+        if ((currentMonth == 0)&&(currentYear==2023)) {
+            //Terdapat bug untuk hari pada Januari 2023
+            stringDay = days[day.getDay()+1] + ', ' + dateSelect + ' ' + months[currentMonth];
+        }else{
+            stringDay = days[day.getDay()] + ', ' + dateSelect + ' ' + months[currentMonth];
+        }
         console.log(stringDay);
+        console.log(newDate);
         document.getElementById('dateSelected').innerHTML = stringDay;
         showCalendar(currentMonth, currentYear);
     }
