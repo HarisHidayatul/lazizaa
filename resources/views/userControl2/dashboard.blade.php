@@ -380,7 +380,7 @@
                     <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus" id="soStatus">
                 </div>
             </div>
-            <div class="row d-flex justify-content-between layoutBottom">
+            <div class="row d-flex justify-content-between layoutBottom" onclick="salesClick();">
                 <div class="row">
                     <div class="col-3">
                         <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="laporanSo" class="soIcon">
@@ -461,6 +461,14 @@
             window.location.href = "{{ url('user/soHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
         }else{
             window.location.href = "{{ url('user/detail/soHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
+        }
+    }
+    function salesClick(){
+        if (statusSales == 0) 
+        {
+            window.location.href = "{{ url('user/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
+        }else{
+            window.location.href = "{{ url('user/detail/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth+1) + '-'+ dateSelect;
         }
     }
 

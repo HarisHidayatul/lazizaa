@@ -323,7 +323,8 @@
                 });
             }
         }
-        goToDashboard();
+        // goToDashboard();
+        window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected;
     }
 
     function sendAddData() {

@@ -348,7 +348,9 @@
                 });
             }
         }
-        goToDashboard();
+        // goToDashboard();
+        // window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected;
+        sendAddData();
     }
 
     function searchIndexSoItem(idItem) {
@@ -392,7 +394,8 @@
                 });
             }
         }
-        goToDashboard();
+        // goToDashboard();
+        window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected;
     }
 
     function sendAddData() {

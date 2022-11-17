@@ -403,7 +403,8 @@
                 });
             }
         }
-        goToDashboard();
+        // goToDashboard();
+        window.location.href = "{{ url('user/detail/salesHarian') }}" + '/' + dateSelected;
     }
 
     function goToDashboard() {
