@@ -153,6 +153,7 @@ Route::get('waste/edit/qty/data/{id}', [wasteController::class, 'editQty']);
 Route::get('waste/show/revision/all', [wasteController::class, 'showDateRevision']);
 Route::get('waste/show/revision/done', [wasteController::class, 'showDateRevisionDone']);
 Route::get('waste/edit/cu/rev/data', [wasteController::class, 'editQtyRev']);
+Route::get('waste/user/showAllData/{id}/{date}', [wasteController::class, 'showAllData']); //show id untuk outlet
 
 
 Route::get('wasteHarian', function () {
@@ -229,6 +230,16 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('user/wasteHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.wasteHarian',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/detail/wasteHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.wasteHarianDetail',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/request/wasteHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.wasteHarianRequest',[
             'dateSelect' => $dateSelect
         ]);
     });

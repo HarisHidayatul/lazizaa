@@ -393,7 +393,7 @@
                     <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong2" class="soStatus" id="salesStatus">
                 </div>
             </div>
-            <div class="row d-flex justify-content-between layoutBottom">
+            <div class="row d-flex justify-content-between layoutBottom" onclick="wasteClick();">
                 <div class="row">
                     <div class="col-3">
                         <img src="{{ url('img/dashboard/laporanWaste.png') }}" alt="laporanSo" class="soIcon">
@@ -471,6 +471,16 @@
                 '-' + dateSelect;
         } else {
             window.location.href = "{{ url('user/detail/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+                1) + '-' + dateSelect;
+        }
+    }
+
+    function wasteClick(){
+        if (statusWaste == 0) {
+            window.location.href = "{{ url('user/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
+                '-' + dateSelect;
+        } else {
+            window.location.href = "{{ url('user/detail/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth +
                 1) + '-' + dateSelect;
         }
     }

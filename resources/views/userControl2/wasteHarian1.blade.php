@@ -298,7 +298,7 @@
             success: function(response) {
                 // console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
+                // console.log(obj);
                 var dataDropdown = '';
                 for (var i = 0; i < obj.dataItem.length; i++) {
                     dataDropdown += '<option value=';
@@ -416,7 +416,7 @@
         }
         selectJenisBrand = selectIndex;
         var objSelect = objItemBrand[selectIndex];
-        console.log(objSelect);
+        // console.log(objSelect);
         // var item = '';
         var dataDropdown = '';
         for (var i = 0; i < objSelect?.length; i++) {
@@ -429,7 +429,7 @@
             dataDropdown += objSelect[i].Item;
             dataDropdown += '</option>';
         }
-        console.log(dataDropdown);
+        // console.log(dataDropdown);
         // document.getElementById("BrandItem").innerHTML = item;
         $('#showItemOnBrand').empty().append(dataDropdown);
         document.getElementById('satuan').innerText = $('#showItemOnBrand').find(':selected').data('satuan');
@@ -443,7 +443,7 @@
                 // console.log(response);
                 dataWaste.length = 0;
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
+                // console.log(obj);
                 var dataTable = '';
                 var indexLoop = 0;
                 for (var i = 0; i < obj.itemWaste.length; i++) {

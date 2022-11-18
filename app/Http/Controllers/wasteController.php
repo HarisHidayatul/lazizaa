@@ -164,7 +164,7 @@ class wasteController extends Controller
                     'jenis' => $jenis->jenis,
                     'idQtyRev' => $idQuantityRevisi,
                     'qty' => $qty,
-                    'namaPengisi' => $userPengisi['Username'],
+                    'namaPengisi' => $userPengisi['Nama Lengkap'],
                 ]);
             }
             array_push($waste, (object)[
@@ -176,6 +176,52 @@ class wasteController extends Controller
             'countItem' => $dataWaste->count(),
             'itemWaste' => $waste
         ]);
+    }
+
+    public function showAllData($id, $date)
+    {
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
+        // @dd($tanggalAll);
+        $dataWaste = null;
+        $allDataArray = [];
+        if ($tanggalAll != null) {
+            $dataWaste = wasteHarian::where('idOutlet', '=', $id)->where('idTanggal', '=', $tanggalAll['id'])->first();
+            // @dd($dataWaste);
+            if ($dataWaste != null) {
+                //Collect based on typeWaste
+                $allTypeWaste = jenisBahan::all();
+                
+                for ($i = 0; $i < $allTypeWaste->count(); $i++) {
+                    $idType = $allTypeWaste[$i]->id;
+                    $dataOnType = [];
+                    for ($j = 0; $j < $dataWaste->listItemWastes->count(); $j++) {
+                        if ($dataWaste->listItemWastes[$j]->idJenisBahan == $idType) {
+                            $userPengisi = dUser::find($dataWaste->listItemWastes[$j]->pivot->idPengisi);
+                            $idRevQty = $dataWaste->listItemWastes[$j]->pivot->idRevQuantity;
+                            $qty = $dataWaste->listItemWastes[$j]->pivot->quantity;
+                            if($idRevQty == 2){
+                                $qty = $dataWaste->listItemWastes[$j]->pivot->quantity;
+                            }
+                            array_push($dataOnType, (object)[
+                                'idWasteFill' => $dataWaste->listItemWastes[$j]->pivot->id,
+                                'item' => $dataWaste->listItemWastes[$j]->Item,
+                                'satuan' => $dataWaste->listItemWastes[$j]->satuans->Satuan,
+                                'idRevQty' => $idRevQty,
+                                'qty' => $qty,
+                                'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            ]);
+                        }
+                    }
+                    if($dataOnType != null){
+                        array_push($allDataArray,(object)[
+                            'type' => $allTypeWaste[$i]->jenis,
+                            'waste' => $dataOnType
+                        ]);
+                    }
+                }
+            }
+        }
+        return response()->json($allDataArray);
     }
 
     public function showAndCreateID(Request $request)

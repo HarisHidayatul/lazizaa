@@ -258,7 +258,7 @@
             color: #BEBEBE;
         }
 
-        .selectItemContainer {
+        .selectSatuanContainer {
             overflow-y: auto;
             height: 100px;
             width: 88%;
@@ -271,18 +271,18 @@
             z-index: 99;
         }
 
-        .selectItemContainer::-webkit-scrollbar {
+        .selectSatuanContainer::-webkit-scrollbar {
             width: 10px;
         }
 
-        .selectItemContainer::-webkit-scrollbar-track {
+        .selectSatuanContainer::-webkit-scrollbar-track {
             /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0); */
             background: #F1F1F1;
             border-radius: 10px;
             width: 3px;
         }
 
-        .selectItemContainer::-webkit-scrollbar-thumb {
+        .selectSatuanContainer::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background: #B20731;
             /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0); */
@@ -369,12 +369,12 @@
             color: #585858;
         }
 
-        .jumlahInput {
-            border-right: none;
+        .namaItemReq {
+            /* border-right: none; */
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
-            /* font-size: 14.2174px; */
+            font-size: 14px;
             line-height: 140%;
             /* identical to box height, or 20px */
 
@@ -388,24 +388,7 @@
             border-radius: 5.68696px;
         }
 
-        .satuan {
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            line-height: 140%;
-            /* identical to box height, or 20px */
-
-
-            /* Greyscale/60 */
-
-            color: #585858;
-            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
-            border-radius: 5.68696px;
-        }
-
         .requestItem {
-
             /* Semibold/XS */
 
             font-family: 'Montserrat';
@@ -506,23 +489,21 @@
             <div class="d-flex justify-content-center">
                 <div id="radioButtonUser"></div>
             </div>
-            <div class="itemLabel">Item</div>
+            <div class="jumlahLabel">Nama Item</div>
+            <div class="input-group mb-3" style="margin-top: 10px">
+                <input type="text" class="form-control namaItemReq" placeholder="Masukkan nama item" id="namaItemReq">
+            </div>
+            <div class="itemLabel">Satuan</div>
             {{-- <input type="text"> --}}
-            <div class="itemShow" id="itemShow" onclick="itemShowClick();">Pilih item</div>
-            <div class="selectItemContainer" id="selectItem">
+            <div class="itemShow" id="itemShow" onclick="itemShowClick();">Pilih satuan</div>
+            <div class="selectSatuanContainer" id="selectSatuan">
                 {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
                 <div id="itemAll"></div>
             </div>
-            <div class="jumlahLabel">Jumlah</div>
-            <div class="input-group mb-3" style="margin-top: 10px">
-                <input type="number" class="form-control jumlahInput" placeholder="0" id="jumlahInput">
-                <div class="input-group-append">
-                    <span class="input-group-text satuan" style="background: white" id="satuan"></span>
-                </div>
-            </div>
+            
             <div style="content: ''; height: 50px"></div>
             <div class="row">
-                <div class="col-6 requestItem">Requset Item?</div>
+                <div class="col-6 requestItem"></div>
                 <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
             </div>
             <div style="content: ''; height: 25px"></div>
@@ -539,7 +520,7 @@
     var dateSelected = "{{ $dateSelect }}";
     var dropdownItem = true;
     var selectJenisBrand = null;
-    var selectItemIndex = null;
+    var selectSatuanIndex = null;
 
     var sendOrEdit = true; // true for send and edit for false
 
@@ -558,10 +539,10 @@
     function itemShowClick() {
         if (dropdownItem) {
             dropdownItem = false;
-            document.getElementById('selectItem').style.visibility = "hidden";
+            document.getElementById('selectSatuan').style.visibility = "hidden";
         } else {
             dropdownItem = true;
-            document.getElementById('selectItem').style.visibility = "visible";
+            document.getElementById('selectSatuan').style.visibility = "visible";
         }
     }
 
@@ -576,7 +557,6 @@
 
         itemShowClick();
         getItemBrand();
-        refreshData();
     });
 
     function goToDashboard() {
@@ -628,161 +608,12 @@
     function radioSelBrand(selectIndex) {
         //Off kan drop down dulu
         dropdownItem = false;
-        document.getElementById('selectItem').style.visibility = "hidden";
+        document.getElementById('selectSatuan').style.visibility = "hidden";
 
         if (document.getElementById("radioBrand" + selectIndex) != null) {
             document.getElementById("radioBrand" + selectIndex).checked = true;
         }
         selectJenisBrand = selectIndex;
-        var objSelect = objItemBrand[selectIndex];
-        // console.log(objSelect);
-        // var item = '';
-        var dataDropdown = '';
-        for (var i = 0; i < objSelect?.length; i++) {
-            dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
-            dataDropdown += i;
-            dataDropdown += ')">';
-            dataDropdown += objSelect[i].Item;
-            dataDropdown += '</div>';
-        }
-        document.getElementById('itemAll').innerHTML = dataDropdown;
-        setDropDown(0);
-    }
-
-    function setDropDown(selectIndex) {
-        //Off kan drop down
-        dropdownItem = false;
-        sendOrEdit = true;
-        document.getElementById('selectItem').style.visibility = "hidden";
-        selectItemIndex = selectIndex;
-
-        var itemSelect = objItemBrand[selectJenisBrand][selectIndex]?.Item;
-        console.log(objItemBrand[selectJenisBrand][selectIndex]);
-        document.getElementById('jumlahInput').value = '';
-        document.getElementById('itemShow').innerHTML = itemSelect;
-        document.getElementById('satuan').innerHTML = objItemBrand[selectJenisBrand][selectIndex]?.Satuan;
-    }
-
-    function refreshData() {
-        $.ajax({
-            url: "{{ url('waste/user/showTable/') }}" + '/' + "{{ session('idOutlet') }}" + '/' + dateSelected,
-            type: 'get',
-            success: function(response) {
-                console.log(response);
-                var dataDetail = '';
-                var obj = JSON.parse(JSON.stringify(response));
-                var urlImage = '{{ url('img/dashboard/laporanWaste.png') }}';
-                var indexLoop = 0;
-                objItemEdit.length = 0;
-                for (var i = 0; i < obj.itemWaste.length; i++) {
-                    for (var j = 0; j < obj.itemWaste[i].Item.length; j++) {
-                        dataDetail += '<div class="row rowDetail" onclick="editItem(' +
-                            indexLoop +
-                            ');"><div class="col-2"><img src="';
-                        dataDetail += urlImage;
-                        dataDetail += '" alt="waste"style="height: 40px"></div>';
-                        dataDetail += '<div class="col-5"><div class="row menuDetail">';
-                        dataDetail += obj.itemWaste[i].Item[j].Item;
-                        dataDetail += '</div><div class="row jenisDetail">';
-                        dataDetail += obj.itemWaste[i].Item[j].jenis;
-                        dataDetail += '</div></div><div class="col-5 satuanDetail">';
-                        dataDetail += obj.itemWaste[i].Item[j].qty;
-                        dataDetail += ' ';
-                        dataDetail += obj.itemWaste[i].Item[j].Satuan;
-                        dataDetail += '</div></div>';
-                        objItemEdit.push(obj.itemWaste[i].Item[j]);
-                        indexLoop++;
-                    }
-                }
-                document.getElementById('dataDetail').innerHTML = dataDetail;
-                document.getElementById('jumlahInput').value = '';
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        });
-    }
-
-    function editItem(selectIndex) {
-        // console.log(objItemEdit[selectIndex]);
-        sendOrEdit = false;
-        indexEdit = selectIndex;
-        document.getElementById('itemShow').innerHTML = objItemEdit[selectIndex]?.Item;
-        document.getElementById('jumlahInput').value = objItemEdit[selectIndex]?.qty;
-        document.getElementById('satuan').innerHTML = objItemEdit[selectIndex]?.Satuan;
-    }
-
-    function submitEditWaste() {
-        var valueInput = document.getElementById('jumlahInput').value;
-        var valueEdit = objItemEdit[indexEdit]?.qty;
-        if (valueEdit != valueInput) {
-            $.ajax({
-                url: "{{ url('waste/edit/qty/data/') }}" + "/" + objItemEdit[indexEdit]?.idWasteFill,
-                type: 'get',
-                data: {
-                    quantityRevisi: valueInput,
-                    idPengisi: "{{ session('idPengisi') }}"
-                },
-                success: function(response) {
-                    // console.log(response);
-                    refreshData();
-                    radioSelBrand(selectJenisBrand);
-                },
-                error: function(req, err) {
-                    console.log(err);
-                    // return 0
-                }
-            });
-        }
-    }
-
-    function sendAddData() {
-        if (sendOrEdit) {
-            submitWasteHarian();
-        } else {
-            submitEditWaste();
-        }
-    }
-
-    function submitWasteHarian() {
-        $.ajax({
-            url: "{{ url('waste/data/getId') }}",
-            type: 'get',
-            data: {
-                // tanggal: document.getElementById('dateAdd').value,
-                tanggal: dateSelected,
-                idOutlet: "{{ session('idOutlet') }}"
-            },
-            success: function(response) {
-                // console.log(response);
-                idWaste = response;
-                sendDataToServer(idWaste)
-            },
-            error: function(req, err) {
-                console.log(err);
-                // return 0
-            }
-        });
-    }
-
-    function sendDataToServer(idWastes) {
-        $.ajax({
-            url: "{{ url('waste/store/data') }}",
-            type: 'get',
-            data: {
-                idWaste: idWastes,
-                idListItem: objItemBrand[selectJenisBrand][selectItemIndex]?.id,
-                quantity: document.getElementById('jumlahInput').value,
-                idPengisi: "{{ session('idPengisi') }}"
-            },
-            success: function(response) {
-                refreshData();
-                document.getElementById('jumlahInput').value = '';
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        });
     }
 </script>
 
