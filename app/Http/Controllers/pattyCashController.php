@@ -153,7 +153,7 @@ class pattyCashController extends Controller
                 array_push($pattyCashArray, (object)[
                     'idPattyCashFill' => $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->id,
                     'Item' => $dataPattyCash[$i]->listItemPattyCashs[$j]->Item,
-                    'Satuan' => $dataPattyCash[$i]->listItemPattyCashs[$j]->Satuan,
+                    'Satuan' => $dataPattyCash[$i]->listItemPattyCashs[$j]->satuans->Satuan,
                     'idListpattyCash' => $dataPattyCash[$i]->listItemPattyCashs[$j]->id,
                     'idQtyRev' => $idQuantityRevisi,
                     'idTotalRev' => $idTotalRevisi,

@@ -170,12 +170,12 @@
         }
 
         .containAll {
-            max-width: 750px;
+            /* max-width: 750px; */
         }
 
         @media only screen and (min-width: 600px) {
             .containAll {
-                margin-left: 25vw;
+                /* margin-left: 25vw; */
             }
             .bottom{
                 border-radius: 36px 36px 36px 36px;
@@ -190,35 +190,40 @@
 </head>
 
 <body>
-    <div class="containAll">
-        <div class="row justify-content-center head">
-            <img src="img/lazizaaHome.png" alt="">
-            <h3>Pelaporan administrasi outlet</h3>
-        </div>
-        <div class="bottom">
-            <div class="wrap-form">
-                <h1>Log in</h1>
-                <div class="border-login"></div>
-                <form action="{{ url('user/login') }}" method="post">
-                    @csrf
-                    <div class="form-group">
-                        <h2>Username</h2>
-                        <input type="text" name="username" class="form-control inputForm"
-                            placeholder="Masukkan username" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <h2>Kata Sandi</h2>
-                        <input type="password" name="password" class="form-control inputForm"
-                            placeholder="Masukkan kata sandi">
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input checkBox" id="exampleCheck1">
-                        <label class="form-check-label textSavePassword" for="exampleCheck1">Simpan kata sandi?</label>
-                    </div>
-                    <button type="submit" class="btn block">Log in</button>
-                </form>
+    <div class="d-flex justify-content-center containAll">
+        <div>
+            <div class="row justify-content-center head">
+                <img src="img/lazizaaHome.png" alt="">
+                <h3>Pelaporan administrasi outlet</h3>
+            </div>
+            <div class="bottom">
+                <div class="wrap-form">
+                    <h1>Log in</h1>
+                    <div class="border-login"></div>
+                    <form action="{{ url('user/login') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <h2>Username</h2>
+                            <input type="text" name="username" class="form-control inputForm"
+                                placeholder="Masukkan username" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <h2>Kata Sandi</h2>
+                            <input type="password" name="password" class="form-control inputForm"
+                                placeholder="Masukkan kata sandi">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input checkBox" id="exampleCheck1">
+                            <label class="form-check-label textSavePassword" for="exampleCheck1">Simpan kata sandi?</label>
+                        </div>
+                        <button type="submit" class="btn block">Log in</button>
+                    </form>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="">
+        
     </div>
     {{-- <div class="login-form">
         <form action="{{ url('user/login') }}" method="post">

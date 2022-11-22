@@ -215,6 +215,7 @@ class wasteController extends Controller
                     if($dataOnType != null){
                         array_push($allDataArray,(object)[
                             'type' => $allTypeWaste[$i]->jenis,
+                            'idTtype' => $allTypeWaste[$i]->id,
                             'waste' => $dataOnType
                         ]);
                     }
@@ -273,6 +274,28 @@ class wasteController extends Controller
                 'Satuan' => $listWaste[$i]->satuans['Satuan'],
                 'Outlet' => $outlet['Nama Store'],
                 'Brand' => $brand['Nama Brand'],
+                'jenisBahan' => $listWaste[$i]->jenisBahans['jenis']
+            ]);
+        }
+        return response()->json([
+            'countItem' => $listWaste->count(),
+            'listWaste' => $arraylistWaste
+        ]);
+    }
+
+    public function showRevisiOutlet($id){
+        $listWaste = reqItemWaste::where('idOutlet','=',$id)->get();
+        $arraylistWaste = [];
+        // @dd($listWaste[0]->satuans);
+        for ($i = 0; $i < $listWaste->count(); $i++) {
+            $outlet = $listWaste[$i]->doutlets;
+            $brand = $listWaste[$i]->dbrands;
+            array_push($arraylistWaste, (object)[
+                'id' => $listWaste[$i]['id'],
+                'Item' => $listWaste[$i]['Item'],
+                'Satuan' => $listWaste[$i]->satuans['Satuan'],
+                // 'Outlet' => $outlet['Nama Store'],
+                // 'Brand' => $brand['Nama Brand'],
                 'jenisBahan' => $listWaste[$i]->jenisBahans['jenis']
             ]);
         }

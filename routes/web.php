@@ -141,6 +141,7 @@ Route::get('pattyCash', function () {
 Route::get('waste/items/show', [wasteController::class, 'showAll']);
 Route::get('waste/items/store', [wasteController::class, 'storeItem']);
 Route::get('waste/items/show/revisi', [wasteController::class, 'showAllRevisi']);
+Route::get('waste/items/show/rev/{id}',[wasteController::class, 'showRevisiOutlet']);//revision by id outlet
 Route::get('waste/items/store/revision', [wasteController::class, 'storeItemRevision']);
 Route::get('waste/brand/show/item', [wasteController::class, 'showItemOnBrand']);
 Route::get('waste/brands/store/item', [wasteController::class, 'storeBrandItem']);
@@ -245,6 +246,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('user/pattyCashHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.pattyCashHarian',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/pattyCashHarian1/{dateSelect}', function($dateSelect){
+        return view('userControl2.pattyCashHarian1',[
             'dateSelect' => $dateSelect
         ]);
     });

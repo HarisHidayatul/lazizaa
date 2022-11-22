@@ -491,7 +491,8 @@
             </div>
             <div class="jumlahLabel">Nama Item</div>
             <div class="input-group mb-3" style="margin-top: 10px">
-                <input type="text" class="form-control namaItemReq" placeholder="Masukkan nama item" id="namaItemReq">
+                <input type="text" class="form-control namaItemReq" placeholder="Masukkan nama item"
+                    id="namaItemReq">
             </div>
             <div class="itemLabel">Satuan</div>
             {{-- <input type="text"> --}}
@@ -500,11 +501,11 @@
                 {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
                 <div id="itemAll"></div>
             </div>
-            
+
             <div style="content: ''; height: 50px"></div>
             <div class="row">
                 <div class="col-6 requestItem"></div>
-                <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
+                <div class="col-6"><button type="button" class="btn" onclick="sendRevisiItem()">Simpan</button></div>
             </div>
             <div style="content: ''; height: 25px"></div>
             <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
@@ -530,6 +531,8 @@
     var objItemBrand = [];
     var objItemEdit = [];
     var indexEdit = null;
+
+    var satuanAll = [];
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
@@ -557,6 +560,8 @@
 
         itemShowClick();
         getItemBrand();
+        getAllSatuan();
+        refreshData();
     });
 
     function goToDashboard() {
@@ -577,7 +582,7 @@
                 idBrand: "{{ session('idBrand') }}",
             },
             success: function(response) {
-                // console.log(response);
+                console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
                 var radioButton = '';
                 for (var i = 0; i < obj.listWaste.length; i++) {
@@ -585,8 +590,9 @@
                     radioButton +=
                         '<input class="radioCustom form-check-input" type="radio" name="selJenisBrand" ';
                     radioButton += 'onclick="radioSelBrand(' +
-                        i +
-                        ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + i + '"/>';
+                        obj.listWaste[i].idJenis +
+                        ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + obj.listWaste[i]
+                        .idJenis + '"/>';
                     radioButton += '<label for="' + obj.listWaste[i].jenisBahan +
                         '" class="radioCustom-label form-check-label">' + obj.listWaste[i]
                         .jenisBahan +
@@ -605,6 +611,96 @@
         })
     }
 
+    function getAllSatuan() {
+        $.ajax({
+            url: "{{ url('show/satuan') }}",
+            type: 'get',
+            success: function(response) {
+                // console.log(response);
+                var obj = JSON.parse(JSON.stringify(response));
+                // console.log(obj);
+                var dataDropdown = '';
+                satuanAll = obj.dataItem;
+                for (var i = 0; i < obj.dataItem.length; i++) {
+                    dataDropdown += '<div class="itemSelect" onclick="setDropDownSatuan(' + i;
+                    // dataDropdown += obj.dataItem[i].id;
+                    dataDropdown += ')">';
+                    dataDropdown += obj.dataItem[i].Satuan;
+                    dataDropdown += '</div>';
+                }
+                document.getElementById('itemAll').innerHTML = dataDropdown;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function setDropDownSatuan(selectIndex) {
+        console.log(satuanAll[selectIndex]);
+        selectSatuanIndex = satuanAll[selectIndex]?.id;
+        console.log(selectSatuanIndex);
+        document.getElementById('itemShow').innerHTML = satuanAll[selectIndex]?.Satuan;
+        itemShowClick();
+    }
+
+    function sendRevisiItem() {
+        $.ajax({
+            url: "{{ url('waste/items/store/revision') }}",
+            type: 'get',
+            data: {
+                Item: document.getElementById('namaItemReq').value,
+                idSatuan: selectSatuanIndex,
+                idOutlet: "{{ session('idOutlet') }}",
+                idJenisBahan: selectJenisBrand
+            },
+            success: function(response) {
+                refreshData();
+                document.getElementById('namaItemReq').value = "";
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function refreshData() {
+        $.ajax({
+            url: "{{ url('waste/items/show/rev') }}" + '/' + "{{ session('idOutlet') }}",
+            type: 'get',
+            success: function(response) {
+                console.log(response);
+                var dataDetail = '';
+                var obj = JSON.parse(JSON.stringify(response));
+                var urlImage = '{{ url('img/dashboard/laporanWaste.png') }}';
+                var indexLoop = 0;
+                objItemEdit.length = 0;
+                for (var i = 0; i < obj.listWaste.length; i++) {
+                    dataDetail += '<div class="row rowDetail" onclick="editItem(' +
+                        indexLoop +
+                        ');"><div class="col-2"><img src="';
+                    dataDetail += urlImage;
+                    dataDetail += '" alt="waste"style="height: 40px"></div>';
+                    dataDetail += '<div class="col-5"><div class="row menuDetail">';
+                    dataDetail += obj.listWaste[i].Item;
+                    dataDetail += '</div><div class="row jenisDetail">';
+                    dataDetail += obj.listWaste[i].jenisBahan;
+                    dataDetail += '</div></div><div class="col-5 satuanDetail">';
+                    // dataDetail += obj.listWaste[i].qty;
+                    // dataDetail += ' ';
+                    dataDetail += obj.listWaste[i].Satuan;
+                    dataDetail += '</div></div>';
+                    indexLoop++;
+                }
+                document.getElementById('dataDetail').innerHTML = dataDetail;
+                document.getElementById('namaItemReq').value = '';
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
+    }
+
     function radioSelBrand(selectIndex) {
         //Off kan drop down dulu
         dropdownItem = false;
@@ -614,6 +710,7 @@
             document.getElementById("radioBrand" + selectIndex).checked = true;
         }
         selectJenisBrand = selectIndex;
+        console.log(selectJenisBrand);
     }
 </script>
 
