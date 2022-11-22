@@ -122,6 +122,7 @@
             /* Greyscale/10 */
 
             color: #FFFFFF;
+            cursor: pointer;
         }
 
         .containerBottom {
@@ -429,7 +430,9 @@
             font-weight: 700;
             font-size: 14px;
             line-height: 140%;
-            margin-left: -9px;
+            margin-left: -5px;
+            text-align: left;
+            /* margin-left: -9px; */
         }
 
         .jenisDetail {
@@ -472,6 +475,84 @@
         .container {
             /* width: 150px; */
         }
+
+        .modalContent {
+            width: 286px;
+            height: auto;
+            background: #ffffff;
+            position: absolute;
+            margin-top: 250px;
+            float: left;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .closeModal {
+            /* background: #000000;!important */
+            background: #B20731;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 10px;
+            margin-left: 10px;
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            /* or 22px */
+            text-align: center;
+            color: #FFFFFF;
+            padding-top: 10px;
+        }
+
+        .modalTitle {
+
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 140%;
+            /* identical to box height, or 28px */
+
+            text-align: center;
+
+            color: #000000;
+        }
+
+        .subModalTittle {
+            /* Regular/SM */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 140%;
+            /* identical to box height, or 20px */
+
+            text-align: center;
+
+        }
+
+        .subNameModal {
+            /* Regular/XS */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            /* identical to box height */
+
+            text-align: center;
+            margin-top: 5px;
+            /* Main color/Red/50 */
+
+            color: #B20731;
+        }
     </style>
 </head>
 
@@ -493,10 +574,10 @@
     </div>
     <div class="d-flex justify-content-center containerTop">
         <div class="row headerTop">
-            <div class="col menuNotSel" style="margin-top: 15px">SO</div>
-            <div class="col menuNotSel" style="margin-top: 15px">Sales</div>
-            <div class="col menuSel" style="margin-top: 15px">Waste</div>
-            <div class="col menuNotSel" style="margin-top: 5px">Patty Cash</div>
+            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSoHarian();">SO</div>
+            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
+            <div class="col menuSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
+            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Patty Cash</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">
@@ -522,7 +603,7 @@
             </div>
             <div style="content: ''; height: 50px"></div>
             <div class="row">
-                <div class="col-6 requestItem">Requset Item?</div>
+                <div class="col-6 requestItem" onclick="goToRequestItem();">Requset Item?</div>
                 <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
             </div>
             <div style="content: ''; height: 25px"></div>
@@ -530,6 +611,28 @@
             {{-- <div style="content: ''; height: 25px"></div> --}}
             <div id="dataDetail"></div>
             <div style="content: ''; height: 50px"></div>
+        </div>
+    </div>
+    <div id="itemDouble" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content modalContent">
+                <div style="content: '';height:15px"></div>
+                <div class="d-flex justify-content-center modalTitle">
+                    <img src="{{ url('img/icon/iconModal.png') }}" alt="" style="height: 60px; width: 60px;">
+                </div>
+                <div style="content: '';height:5px"></div>
+                <div style="content: '';height:5px"></div>
+                <div class="d-flex justify-content-center modalTitle">Item telah di input</div>
+                <div style="content: '';height:5px"></div>
+                <div class="d-flex justify-content-center subModalTittle">Gunakan fitur edit / revisi</div>
+                <div style="content: '';height:10px"></div>
+                <div class="d-flex justify-content-center subNameModal">Klik nama item yang telah di input &#10140; ubah
+                </div>
+                <div class="d-flex justify-content-center subNameModal">kolom Qty atau Total &#10140; klik simpan</div>
+                <div style="content: '';height:25px"></div>
+                <div class="closeModal" data-dismiss="modal" aria-hidden="true">Ok</div>
+                <div style="content: '';height:15px"></div>
+            </div>
         </div>
     </div>
 </body>
@@ -555,6 +658,22 @@
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
+    function goToSoHarian(){
+        window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToSalesHarian(){
+        window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToWasteHarian(){
+        window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToPattyCashHarian(){
+        window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
+    }
+
     function itemShowClick() {
         if (dropdownItem) {
             dropdownItem = false;
@@ -563,6 +682,10 @@
             dropdownItem = true;
             document.getElementById('selectItem').style.visibility = "visible";
         }
+    }
+
+    function goToRequestItem(){
+        window.location.href = "{{ url('user/request/wasteHarian') }}" + '/' + dateSelected;
     }
 
     $(document).ready(function() {
@@ -682,7 +805,17 @@
                         dataDetail += urlImage;
                         dataDetail += '" alt="waste"style="height: 40px"></div>';
                         dataDetail += '<div class="col-5"><div class="row menuDetail">';
+                        // dataDetail += '<div class="col-9 menuDetail">';
                         dataDetail += obj.itemWaste[i].Item[j].Item;
+                        if (obj.itemWaste[i].Item[j].idQtyRev == 2) {
+                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                            dataDetail += '<img src="' + urlImageRev +
+                                '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
+                        } else if (obj.itemWaste[i].Item[j].idQtyRev == 2) {
+                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                            dataDetail += '<img src="' + urlImageRev +
+                                '" alt="status icon" class="status">';
+                        }
                         dataDetail += '</div><div class="row jenisDetail">';
                         dataDetail += obj.itemWaste[i].Item[j].jenis;
                         dataDetail += '</div></div><div class="col-5 satuanDetail">';
@@ -776,6 +909,10 @@
                 idPengisi: "{{ session('idPengisi') }}"
             },
             success: function(response) {
+                // console.log(response);
+                if (response == 0) {
+                    $('#itemDouble').modal('show');
+                }
                 refreshData();
                 document.getElementById('jumlahInput').value = '';
             },

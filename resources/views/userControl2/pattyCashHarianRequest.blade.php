@@ -12,9 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.6.0/autoNumeric.min.js"></script>
-
-    <title>Patty Cash Harian</title>
+    <title>Pembelian Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -99,7 +97,7 @@
             width: 75px;
             height: 40px;
             margin-top: 0px;
-            margin-left: -20px;
+            margin-left: -8px;
             z-index: -1;
             /* Greyscale/10 */
 
@@ -124,7 +122,6 @@
             /* Greyscale/10 */
 
             color: #FFFFFF;
-            cursor: pointer;
         }
 
         .containerBottom {
@@ -261,7 +258,7 @@
             color: #BEBEBE;
         }
 
-        .selectItemContainer {
+        .selectSatuanContainer {
             overflow-y: auto;
             height: 100px;
             width: 88%;
@@ -274,18 +271,18 @@
             z-index: 99;
         }
 
-        .selectItemContainer::-webkit-scrollbar {
+        .selectSatuanContainer::-webkit-scrollbar {
             width: 10px;
         }
 
-        .selectItemContainer::-webkit-scrollbar-track {
+        .selectSatuanContainer::-webkit-scrollbar-track {
             /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0); */
             background: #F1F1F1;
             border-radius: 10px;
             width: 3px;
         }
 
-        .selectItemContainer::-webkit-scrollbar-thumb {
+        .selectSatuanContainer::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background: #B20731;
             /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0); */
@@ -372,15 +369,15 @@
             color: #585858;
         }
 
-        .jumlahInput {
+        .namaItemReq {
             /* border-right: none; */
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
-            font-size: 14.2174px;
+            font-size: 14px;
             line-height: 140%;
             /* identical to box height, or 20px */
-            background: white;
+
 
             /* Greyscale/20 */
 
@@ -391,57 +388,7 @@
             border-radius: 5.68696px;
         }
 
-        .totalRp {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14.2174px;
-            line-height: 140%;
-            /* identical to box height, or 20px */
-
-            /* Greyscale/20 */
-            color: #E0E0E0;
-
-            border: 1.0663px solid #E0E0E0;
-            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
-            border-radius: 5.68696px;
-            background: white;
-            border-right: none;
-        }
-
-        .totalVal {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14.2174px;
-            line-height: 140%;
-            /* identical to box height, or 20px */
-
-
-            /* Greyscale/20 */
-
-            color: #E0E0E0;
-        }
-
-        .satuan {
-            border-left: none;
-            font-family: 'Montserrat';
-            font-style: normal;
-            background: white;
-            font-weight: 600;
-            line-height: 140%;
-            font-size: 14.2174px;
-            /* identical to box height, or 20px */
-
-            /* Greyscale/60 */
-
-            color: #585858;
-            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
-            border-radius: 5.68696px;
-        }
-
         .requestItem {
-
             /* Semibold/XS */
 
             font-family: 'Montserrat';
@@ -489,7 +436,7 @@
             font-weight: 600;
             font-size: 12px;
             line-height: 15px;
-            color: #008000;
+            color: #B20731;
             margin-top: 8px;
             text-align: end;
         }
@@ -507,84 +454,6 @@
 
         .container {
             /* width: 150px; */
-        }
-
-        .modalContent {
-            width: 286px;
-            height: auto;
-            background: #ffffff;
-            position: absolute;
-            margin-top: 250px;
-            float: left;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .closeModal {
-            /* background: #000000;!important */
-            background: #B20731;
-            height: 40px;
-            border-radius: 8px;
-            margin-right: 10px;
-            margin-left: 10px;
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 140%;
-            /* or 22px */
-            text-align: center;
-            color: #FFFFFF;
-            padding-top: 10px;
-        }
-
-        .modalTitle {
-
-            /* Semibold/Large */
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 140%;
-            /* identical to box height, or 28px */
-
-            text-align: center;
-
-            color: #000000;
-        }
-
-        .subModalTittle {
-            /* Regular/SM */
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 13px;
-            line-height: 140%;
-            /* identical to box height, or 20px */
-
-            text-align: center;
-
-        }
-
-        .subNameModal {
-            /* Regular/XS */
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 15px;
-            /* identical to box height */
-
-            text-align: center;
-            margin-top: 5px;
-            /* Main color/Red/50 */
-
-            color: #B20731;
         }
     </style>
 </head>
@@ -607,51 +476,37 @@
     </div>
     <div class="d-flex justify-content-center containerTop">
         <div class="row headerTop">
-            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSoHarian();">SO</div>
-            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
-            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
-            <div class="col menuSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Patty Cash</div>
+            <div class="col menuNotSel" style="margin-top: 15px">SO</div>
+            <div class="col menuNotSel" style="margin-top: 15px">Sales</div>
+            <div class="col menuNotSel" style="margin-top: 15px">Waste</div>
+            <div class="col menuSel" style="margin-top: 5px">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">
         <div class="container" style="margin-left: 5px;margin-right: 10px">
             <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
             <div style="content: '';height: 15px"></div>
+            <div class="jumlahLabel">Nama Item</div>
             <div class="d-flex justify-content-center">
                 <div id="radioButtonUser"></div>
             </div>
-            <div class="itemLabel">Item</div>
-            {{-- <input type="text"> --}}
-            <div class="itemShow" onclick="itemShowClick();">
-                <div class="d-flex justify-content-between">
-                    <div id="itemShow" style="margin-left: -2px">Pilih item</div>
-                    <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
-                            style="height: 12px"></div>
-                </div>
+            <div class="jumlahLabel">Nama Item</div>
+            <div class="input-group mb-3" style="margin-top: 10px">
+                <input type="text" class="form-control namaItemReq" placeholder="Masukkan nama item"
+                    id="namaItemReq">
             </div>
-            <div class="selectItemContainer" id="selectItem">
+            <div class="itemLabel">Satuan</div>
+            {{-- <input type="text"> --}}
+            <div class="itemShow" id="itemShow" onclick="itemShowClick();">Pilih satuan</div>
+            <div class="selectSatuanContainer" id="selectSatuan">
                 {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
                 <div id="itemAll"></div>
             </div>
-            <div class="jumlahLabel">Quantity</div>
-            <div class="input-group mb-3" style="margin-top: 10px">
-                <input type="number" class="form-control jumlahInput" placeholder="0" id="jumlahInput"
-                    style="border-right: none;">
-                <div class="input-group-append">
-                    <span class="input-group-text satuan" style="background: white" id="satuan"></span>
-                </div>
-            </div>
-            <div class="jumlahLabel">Total</div>
-            <div class="input-group mb-3" style="margin-top: 10px">
-                <div class="input-group-append" style="border-right: none;">
-                    <span class="input-group-text totalRp">Rp</span>
-                </div>
-                <input class="form-control totalVal" id="totalVal" placeholder="0" style="border-left: none;">
-            </div>
+
             <div style="content: ''; height: 50px"></div>
             <div class="row">
-                <div class="col-6 requestItem">Requset Item?</div>
-                <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
+                <div class="col-6 requestItem"></div>
+                <div class="col-6"><button type="button" class="btn" onclick="sendRevisiItem()">Simpan</button></div>
             </div>
             <div style="content: ''; height: 25px"></div>
             <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
@@ -660,79 +515,39 @@
             <div style="content: ''; height: 50px"></div>
         </div>
     </div>
-    <div id="itemDouble" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content modalContent">
-                <div style="content: '';height:15px"></div>
-                <div class="d-flex justify-content-center modalTitle">
-                    <img src="{{ url('img/icon/iconModal.png') }}" alt="" style="height: 60px; width: 60px;">
-                </div>
-                <div style="content: '';height:5px"></div>
-                <div style="content: '';height:5px"></div>
-                <div class="d-flex justify-content-center modalTitle">Item telah di input</div>
-                <div style="content: '';height:5px"></div>
-                <div class="d-flex justify-content-center subModalTittle">Gunakan fitur edit / revisi</div>
-                <div style="content: '';height:10px"></div>
-                <div class="d-flex justify-content-center subNameModal">Klik nama item yang telah di input &#10140; ubah
-                </div>
-                <div class="d-flex justify-content-center subNameModal">kolom Qty atau Total &#10140; klik simpan</div>
-                <div style="content: '';height:25px"></div>
-                <div class="closeModal" data-dismiss="modal" aria-hidden="true">Ok</div>
-                <div style="content: '';height:15px"></div>
-            </div>
-        </div>
-    </div>
 </body>
 <script>
     var dataId = [];
     var idSo = 0;
     var dateSelected = "{{ $dateSelect }}";
     var dropdownItem = true;
-    // var selectJenisBrand = null;
-    var selectItemIndex = null;
+    var selectJenisBrand = null;
+    var selectSatuanIndex = null;
 
     var sendOrEdit = true; // true for send and edit for false
 
-    var idPattyCash = 0;
+    var idWaste = 0;
 
     var idJenisBrand = [];
     var objItemBrand = [];
     var objItemEdit = [];
     var indexEdit = null;
 
+    var satuanAll = [];
+
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-    var totalInput = new AutoNumeric('#totalVal', {
-        decimalPlaces: '0'
-    });
-
     function itemShowClick() {
         if (dropdownItem) {
             dropdownItem = false;
-            document.getElementById('selectItem').style.visibility = "hidden";
+            document.getElementById('selectSatuan').style.visibility = "hidden";
         } else {
             dropdownItem = true;
-            document.getElementById('selectItem').style.visibility = "visible";
+            document.getElementById('selectSatuan').style.visibility = "visible";
         }
-    }
-
-    function goToSoHarian(){
-        window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
-    }
-
-    function goToSalesHarian(){
-        window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
-    }
-
-    function goToWasteHarian(){
-        window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
-    }
-
-    function goToPattyCashHarian(){
-        window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
     }
 
     $(document).ready(function() {
@@ -746,6 +561,7 @@
 
         itemShowClick();
         getItemBrand();
+        getAllSatuan();
         refreshData();
     });
 
@@ -761,24 +577,57 @@
 
     function getItemBrand() {
         $.ajax({
-            url: "{{ url('pattyCash/brand/show/item') }}",
+            url: "{{ url('waste/brand/show/item') }}",
             type: 'get',
             data: {
                 idBrand: "{{ session('idBrand') }}",
             },
             success: function(response) {
+                console.log(response);
+                var obj = JSON.parse(JSON.stringify(response));
+                var radioButton = '';
+                for (var i = 0; i < obj.listWaste.length; i++) {
+                    radioButton += '<div class="form-check form-check-inline">';
+                    radioButton +=
+                        '<input class="radioCustom form-check-input" type="radio" name="selJenisBrand" ';
+                    radioButton += 'onclick="radioSelBrand(' +
+                        obj.listWaste[i].idJenis +
+                        ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + obj.listWaste[i]
+                        .idJenis + '"/>';
+                    radioButton += '<label for="' + obj.listWaste[i].jenisBahan +
+                        '" class="radioCustom-label form-check-label">' + obj.listWaste[i]
+                        .jenisBahan +
+                        '</label>' +
+                        ' </div>';
+                    idJenisBrand.push(obj.listWaste[i].idJenis);
+                    objItemBrand.push(obj.listWaste[i].waste);
+                    selectJenisBrand = 0;
+                }
+                document.getElementById("radioButtonUser").innerHTML = radioButton;
+                radioSelBrand(selectJenisBrand);
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function getAllSatuan() {
+        $.ajax({
+            url: "{{ url('show/satuan') }}",
+            type: 'get',
+            success: function(response) {
                 // console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
-                objItemBrand.length = 0;
+                // console.log(obj);
                 var dataDropdown = '';
-                for (var i = 0; i < obj?.dataItem.length; i++) {
-                    dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
-                    dataDropdown += i;
+                satuanAll = obj.dataItem;
+                for (var i = 0; i < obj.dataItem.length; i++) {
+                    dataDropdown += '<div class="itemSelect" onclick="setDropDownSatuan(' + i;
+                    // dataDropdown += obj.dataItem[i].id;
                     dataDropdown += ')">';
-                    dataDropdown += obj.dataItem[i].Item;
+                    dataDropdown += obj.dataItem[i].Satuan;
                     dataDropdown += '</div>';
-                    objItemBrand.push(obj.dataItem[i]);
                 }
                 document.getElementById('itemAll').innerHTML = dataDropdown;
             },
@@ -788,67 +637,64 @@
         })
     }
 
-    function setDropDown(selectIndex) {
-        //Off kan drop down
-        dropdownItem = false;
-        sendOrEdit = true;
-        document.getElementById('selectItem').style.visibility = "hidden";
-        selectItemIndex = selectIndex;
+    function setDropDownSatuan(selectIndex) {
+        console.log(satuanAll[selectIndex]);
+        selectSatuanIndex = satuanAll[selectIndex]?.id;
+        console.log(selectSatuanIndex);
+        document.getElementById('itemShow').innerHTML = satuanAll[selectIndex]?.Satuan;
+        itemShowClick();
+    }
 
-        var itemSelect = objItemBrand[selectIndex]?.Item;
-        console.log(objItemBrand[selectIndex]);
-        document.getElementById('jumlahInput').value = '';
-        totalInput.set('0');
-        document.getElementById('itemShow').innerHTML = itemSelect;
-        document.getElementById('satuan').innerHTML = objItemBrand[selectIndex]?.Satuan;
+    function sendRevisiItem() {
+        $.ajax({
+            url: "{{ url('waste/items/store/revision') }}",
+            type: 'get',
+            data: {
+                Item: document.getElementById('namaItemReq').value,
+                idSatuan: selectSatuanIndex,
+                idOutlet: "{{ session('idOutlet') }}",
+                idJenisBahan: selectJenisBrand
+            },
+            success: function(response) {
+                refreshData();
+                document.getElementById('namaItemReq').value = "";
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
     }
 
     function refreshData() {
         $.ajax({
-            url: "{{ url('/') }}" + '/' + "{{ 'pattyCash/user/showTable/' }}" +
-                "{{ session('idOutlet') }}" + '/' + dateSelected,
+            url: "{{ url('waste/items/show/rev') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
             success: function(response) {
                 console.log(response);
                 var dataDetail = '';
                 var obj = JSON.parse(JSON.stringify(response));
-                var urlImage = '{{ url('img/dashboard/laporanPattyCash.png') }}';
+                var urlImage = '{{ url('img/dashboard/laporanWaste.png') }}';
                 var indexLoop = 0;
                 objItemEdit.length = 0;
-                console.log(obj);
-                for (var i = 0; i < obj.itemPattyCash.length; i++) {
-                    for (var j = 0; j < obj.itemPattyCash[i].Item.length; j++) {
-                        dataDetail += '<div class="row rowDetail" onclick="editItem(' +
-                            indexLoop +
-                            ');"><div class="col-2"><img src="';
-                        dataDetail += urlImage;
-                        dataDetail += '" alt="waste"style="height: 40px"></div>';
-                        dataDetail += '<div class="col-5"><div class="row menuDetail">';
-                        dataDetail += obj.itemPattyCash[i].Item[j].Item;
-                        if ((obj.itemPattyCash[i].Item[j].idQtyRev == 2)||(obj.itemPattyCash[i].Item[j].idTotalRev == 2)) {
-                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
-                            dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
-                        } else if ((obj.itemPattyCash[i].Item[j].idQtyRev == 3)||(obj.itemPattyCash[i].Item[j].idTotalRev == 3)){
-                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
-                            dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status">';
-                        }
-                        dataDetail += '</div><div class="row jenisDetail">';
-                        dataDetail += obj.itemPattyCash[i].Item[j].qty;
-                        dataDetail += ' ';
-                        dataDetail += obj.itemPattyCash[i].Item[j].Satuan;
-                        dataDetail += '</div></div><div class="col-5 satuanDetail">';
-                        dataDetail += 'Rp ';
-                        dataDetail += ' ';
-                        dataDetail += obj.itemPattyCash[i].Item[j].total.toLocaleString().replace(',', '.');
-                        dataDetail += '</div></div>';
-                        objItemEdit.push(obj.itemPattyCash[i].Item[j]);
-                        indexLoop++;
-                    }
+                for (var i = 0; i < obj.listWaste.length; i++) {
+                    dataDetail += '<div class="row rowDetail" onclick="editItem(' +
+                        indexLoop +
+                        ');"><div class="col-2"><img src="';
+                    dataDetail += urlImage;
+                    dataDetail += '" alt="waste"style="height: 40px"></div>';
+                    dataDetail += '<div class="col-5"><div class="row menuDetail">';
+                    dataDetail += obj.listWaste[i].Item;
+                    dataDetail += '</div><div class="row jenisDetail">';
+                    dataDetail += obj.listWaste[i].jenisBahan;
+                    dataDetail += '</div></div><div class="col-5 satuanDetail">';
+                    // dataDetail += obj.listWaste[i].qty;
+                    // dataDetail += ' ';
+                    dataDetail += obj.listWaste[i].Satuan;
+                    dataDetail += '</div></div>';
+                    indexLoop++;
                 }
                 document.getElementById('dataDetail').innerHTML = dataDetail;
-                // document.getElementById('jumlahInput').value = '';
+                document.getElementById('namaItemReq').value = '';
             },
             error: function(req, err) {
                 console.log(err);
@@ -856,113 +702,16 @@
         });
     }
 
-    function editItem(selectIndex) {
-        console.log(objItemEdit[selectIndex]);
-        sendOrEdit = false;
-        indexEdit = selectIndex;
-        document.getElementById('itemShow').innerHTML = objItemEdit[selectIndex]?.Item;
-        document.getElementById('jumlahInput').value = objItemEdit[selectIndex]?.qty;
-        totalInput.set(objItemEdit[selectIndex]?.total);
-        document.getElementById('satuan').innerHTML = objItemEdit[selectIndex]?.Satuan;
-    }
+    function radioSelBrand(selectIndex) {
+        //Off kan drop down dulu
+        dropdownItem = false;
+        document.getElementById('selectSatuan').style.visibility = "hidden";
 
-    function submitEditPattyCash() {
-        // var valueInput = document.getElementById('jumlahInput').value;
-        // var valueEdit = objItemEdit[indexEdit]?.qty;
-        console.log(objItemEdit[indexEdit]);
-        var qtyValEdit = document.getElementById("jumlahInput").value;
-        var totalValEdit = totalInput.rawValue;
-        var qtyTableFill = objItemEdit[indexEdit]?.qty;
-        var totalTableFill = objItemEdit[indexEdit]?.total;
-        if (qtyValEdit != qtyTableFill) {
-            $.ajax({
-                url: "{{ url('pattyCash/edit/qty/data/') }}" + "/" + objItemEdit[indexEdit]?.idPattyCashFill,
-                type: 'get',
-                data: {
-                    quantityRevisi: qtyValEdit,
-                    idPengisi: "{{ session('idPengisi') }}"
-                },
-                success: function(response) {
-                    // console.log(response);
-                    refreshData();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                    // return 0
-                }
-            });
+        if (document.getElementById("radioBrand" + selectIndex) != null) {
+            document.getElementById("radioBrand" + selectIndex).checked = true;
         }
-        if (totalValEdit != totalTableFill) {
-            $.ajax({
-                url: "{{ url('pattyCash/edit/total/data/') }}" + "/" + objItemEdit[indexEdit]?.idPattyCashFill,
-                type: 'get',
-                data: {
-                    totalRevisi: totalValEdit,
-                    idPengisi: "{{ session('idPengisi') }}"
-                },
-                success: function(response) {
-                    refreshData();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                    // return 0
-                }
-            });
-        }
-    }
-
-    function sendAddData() {
-        if (sendOrEdit) {
-            submitPattyCashHarian();
-        } else {
-            submitEditPattyCash();
-        }
-    }
-
-    function submitPattyCashHarian() {
-        $.ajax({
-            url: "{{ url('pattyCash/data/getId') }}",
-            type: 'get',
-            data: {
-                // tanggal: document.getElementById('dateAdd').value,
-                tanggal: dateSelected,
-                idOutlet: "{{ session('idOutlet') }}"
-            },
-            success: function(response) {
-                // console.log(response);
-                idPattyCash = response;
-                sendDataToServer(idPattyCash)
-            },
-            error: function(req, err) {
-                console.log(err);
-                // return 0
-            }
-        });
-    }
-
-    function sendDataToServer(idPattyCashs) {
-        $.ajax({
-            url: "{{ url('pattyCash/store/data') }}",
-            type: 'get',
-            data: {
-                idPattyCash: idPattyCashs,
-                idListItem: objItemBrand[selectItemIndex]?.id,
-                quantity: document.getElementById('jumlahInput').value,
-                total: parseInt(totalInput.rawValue),
-                idPengisi: "{{ session('idPengisi') }}"
-            },
-            success: function(response) {
-                if (response == 0) {
-                    $('#itemDouble').modal('show');
-                }
-                refreshData();
-                document.getElementById('jumlahInput').value = '';
-                totalInput.set(0);
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        });
+        selectJenisBrand = selectIndex;
+        console.log(selectJenisBrand);
     }
 </script>
 

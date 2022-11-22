@@ -122,6 +122,7 @@
             /* Greyscale/10 */
 
             color: #FFFFFF;
+            cursor: pointer;
         }
 
         .containerBottom {
@@ -251,10 +252,10 @@
     </div>
     <div class="d-flex justify-content-center containerTop">
         <div class="row headerTop">
-            <div class="col menuSel" style="margin-top: 15px">SO</div>
-            <div class="col menuNotSel" style="margin-top: 15px">Sales</div>
-            <div class="col menuNotSel" style="margin-top: 15px">Waste</div>
-            <div class="col menuNotSel" style="margin-top: 5px">Patty Cash</div>
+            <div class="col menuSel" style="margin-top: 15px" onclick="goToSoHarian();">SO</div>
+            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
+            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
+            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Patty Cash</div>
         </div>
     </div>
     <div class="d-flex justify-content-start containerBottom">
@@ -292,6 +293,22 @@
         showItemOutlet("{{ session('idOutlet') }}");
         console.log("{{ $dateSelect }}");
     });
+
+    function goToSoHarian(){
+        window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToSalesHarian(){
+        window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToWasteHarian(){
+        window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToPattyCashHarian(){
+        window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
+    }
 
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";

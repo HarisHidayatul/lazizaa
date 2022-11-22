@@ -565,7 +565,7 @@
     });
 
     function goToDashboard() {
-        window.location.href = "{{ url('user/dashboard') }}";
+        window.location.href = "{{ url('user/wasteHarian/') }}" + '/'+ dateSelected;
     }
 
     function selectIndex(index) {

@@ -406,7 +406,7 @@
                     <img src="{{ url('img/dashboard/kosong1.png') }}" alt="terisi" class="soStatus" id="wasteStatus">
                 </div>
             </div>
-            <div class="row d-flex justify-content-between layoutBottom">
+            <div class="row d-flex justify-content-between layoutBottom" onclick="pattyCashClick();">
                 <div class="row">
                     <div class="col-3">
                         <img src="{{ url('img/dashboard/laporanPattyCash.png') }}" alt="laporanSo" class="soIcon">
@@ -481,6 +481,15 @@
                 '-' + dateSelect;
         } else {
             window.location.href = "{{ url('user/detail/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+                1) + '-' + dateSelect;
+        }
+    }
+    function pattyCashClick(){
+        if(statusPattyCash == 0){
+            window.location.href = "{{ url('user/pattyCashHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
+                '-' + dateSelect;
+        }else{
+            window.location.href = "{{ url('user/detail/pattyCashHarian') }}" + "/" + currentYear + '-' + (currentMonth +
                 1) + '-' + dateSelect;
         }
     }

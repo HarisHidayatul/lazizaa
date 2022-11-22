@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Detail SO Harian</title>
+    <title>Detail Patty Cash Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -601,7 +601,7 @@
     }
 
     function goToEdit() {
-        window.location.href = "{{ url('user/edit/salesHarian') }}" + "/" + "{{ $dateSelect }}";
+        window.location.href = "{{ url('user/pattyCashHarian') }}" + "/" + "{{ $dateSelect }}";
     }
 
     function showAllData() {
@@ -675,64 +675,6 @@
                     }
                     indexRow++;
                 }
-                // for (var i = 0; i < obj.length; i++) {
-                //     dataFill += '<div><div class="d-flex justify-content-start typeSales">';
-                //     dataFill += obj[i].type;
-                //     dataFill += '</div>';
-                //     for (var j = 0; j < obj[i].sales.length; j++) {
-                //         dataFill += '<div class="d-flex justify-content-start">';
-                //         dataFill += '<div class="itemSales">' + obj[i].sales[j].sales + '</div>';
-                //         if ((obj[i].sales[j].idCuRev == 2) || (obj[i].sales[j].idTotalRev == 2)) {
-                //             var urlImage = "{{ url('img/icon/tertunda.png') }}";
-                //             dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
-                //         } else if ((obj[i].sales[j].idCuRev == 3) || (obj[i].sales[j].idTotalRev == 3)) {
-                //             var urlImage = "{{ url('img/icon/direvisi.png') }}";
-                //             dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
-                //         } else {
-                //             dataFill += '';
-                //         }
-                //         dataFill += '</div><div class="d-flex justify-content-between cuRow">';
-                //         dataFill += '<div class="cuText">CU</div>';
-                //         dataFill += '<div class="cuVal">' + obj[i].sales[j].cuQty + '</div></div>';
-                //         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
-                //         dataFill += '<div class="d-flex justify-content-between totalRow">';
-                //         dataFill += '<div class="totalText">Total</div>';
-                //         dataFill += '<div class="totalVal">Rp. ' + obj[i].sales[j].totalQty.toLocaleString()
-                //             .replace(',', '.') + '</div></div>';
-
-                //         dataBottom += '<div class="d-flex justify-content-between listPrice">';
-                //         dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
-                //         dataBottom += '<div class="valBottom">' + obj[i].sales[j].totalQty.toLocaleString()
-                //             .replace(',', '.') + '</div>';
-                //         dataBottom += '</div>';
-                //         totalData += obj[i].sales[j].totalQty;
-
-                //         detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
-                //         detailPengisi += '<div class="col-3 detailName">' + obj[i].sales[j].namaPengisi[0] +
-                //             '</div>';
-                //         detailPengisi += '<div class="col-9"><div class="row">';
-                //         detailPengisi += '<div class="detailFullName">' + obj[i].sales[j].namaPengisi +
-                //             '</div></div>';
-                //         detailPengisi += '<div class="row"><div class="detailSales">';
-                //         detailPengisi += obj[i].sales[j].sales;
-                //         detailPengisi += '</div></div></div></div>';
-
-                //         if (indexRow == 0) {
-                //             document.getElementById('namaPengisi1').innerHTML = obj[i].sales[j].namaPengisi[
-                //                 0];
-                //         }
-                //         if (indexRow == 1) {
-                //             document.getElementById('namaPengisi2').innerHTML = obj[i].sales[j].namaPengisi[
-                //                 0];
-                //         }
-                //         if (indexRow == 2) {
-                //             document.getElementById('namaPengisi3').innerHTML = obj[i].sales[j].namaPengisi[
-                //                 0];
-                //         }
-                //         indexRow++;
-                //     }
-                //     dataFill += '</div>';
-                // }
                 document.getElementById('dataFill').innerHTML = dataFill;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
                 document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();

@@ -244,6 +244,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
+    Route::get('user/request/pattyCashHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.pattyCashHarianRequest',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
     Route::get('user/pattyCashHarian1/{dateSelect}', function($dateSelect){
         return view('userControl2.pattyCashHarian1',[
             'dateSelect' => $dateSelect
