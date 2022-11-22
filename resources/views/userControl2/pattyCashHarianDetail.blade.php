@@ -75,9 +75,9 @@
             /* identical to box height, or 28px */
 
 
-            /* Warning/main */
+            /* Success/main */
 
-            color: #FFA500;
+            color: #008000;
 
         }
 
@@ -395,7 +395,7 @@
 
             font-family: 'Montserrat';
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             font-size: 16px;
             line-height: 140%;
             margin-left: 5px;
@@ -418,7 +418,7 @@
 
         .borderCuTotal {
             margin-top: 5px;
-            border: 1px solid #E0E0E0;
+            /* border: 1px solid #E0E0E0; */
             margin-left: 5px;
             margin-bottom: 8px;
         }
@@ -451,7 +451,7 @@
             color: #B20731;
         }
 
-        .valBottom::before{
+        .valBottom::before {
             content: 'Rp. ';
             position: absolute;
             right: 90px;
@@ -476,7 +476,7 @@
             margin-bottom: 15px;
         }
 
-        
+
 
         .totalBottom {
             /* Semibold/Large */
@@ -534,10 +534,11 @@
         <h2 style="margin-left: 5px;">Lazizaa Sukodono</h2>
     </div>
     <div class="d-flex justify-content-center">
-        <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="salesImage" style="height: 64px; margin-top: 25px">
+        <img src="{{ url('img/dashboard/laporanPattyCash.png') }}" alt="salesImage"
+            style="height: 64px; margin-top: 25px">
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 20px">
-        <h3>Laporan Sales</h3>
+        <h3>Laporan Pembelian</h3>
     </div>
     <div class="d-flex justify-content-center">
         <h4 id="dateSelected">Selasa, 01 November 2022</h4>
@@ -561,7 +562,7 @@
                 <div id="dataBottom"></div>
                 <div class="d-flex justify-content-between borderTotal"></div>
                 <div class="d-flex justify-content-between totalSales">
-                    <div class="totalBottom">Total Sales</div>
+                    <div class="totalBottom">Total</div>
                     <div class="totalBottomVal" id="totalAll">Rp 0</div>
                 </div>
             </div>
@@ -600,13 +601,13 @@
     }
 
     function goToEdit() {
-        window.location.href = "{{ url('user/salesHarian') }}" + "/" + "{{ $dateSelect }}";
+        window.location.href = "{{ url('user/edit/salesHarian') }}" + "/" + "{{ $dateSelect }}";
     }
 
     function showAllData() {
         $.ajax({
-            url: "{{ url('salesHarian/user/showAllData/') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
-                dateSelected,
+            url: "{{ url('/') }}" + '/' + "{{ 'pattyCash/user/showTable/' }}" +
+                "{{ session('idOutlet') }}" + '/' + dateSelected,
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
@@ -615,64 +616,128 @@
                 var dataBottom = '';
                 var detailPengisi = '';
                 var totalData = 0;
-                var indexRow =0;
-                for (var i = 0; i < obj.length; i++) {
-                    dataFill += '<div><div class="d-flex justify-content-start typeSales">';
-                    dataFill += obj[i].type;
-                    dataFill += '</div>';
-                    for (var j = 0; j < obj[i].sales.length; j++) {
-                        dataFill += '<div class="d-flex justify-content-start">';
-                        dataFill += '<div class="itemSales">' + obj[i].sales[j].sales + '</div>';
-                        if ((obj[i].sales[j].idCuRev == 2) || (obj[i].sales[j].idTotalRev == 2)) {
-                            var urlImage = "{{ url('img/icon/tertunda.png') }}";
-                            dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
-                        } else if ((obj[i].sales[j].idCuRev == 3) || (obj[i].sales[j].idTotalRev == 3)) {
-                            var urlImage = "{{ url('img/icon/direvisi.png') }}";
-                            dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
-                        } else {
-                            dataFill += '';
-                        }
-                        dataFill += '</div><div class="d-flex justify-content-between cuRow">';
-                        dataFill += '<div class="cuText">CU</div>';
-                        dataFill += '<div class="cuVal">' + obj[i].sales[j].cuQty + '</div></div>';
-                        dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
-                        dataFill += '<div class="d-flex justify-content-between totalRow">';
-                        dataFill += '<div class="totalText">Total</div>';
-                        dataFill += '<div class="totalVal">Rp. ' + obj[i].sales[j].totalQty.toLocaleString()
-                            .replace(',', '.') + '</div></div>';
-
-                        dataBottom += '<div class="d-flex justify-content-between listPrice">';
-                        dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
-                        dataBottom += '<div class="valBottom">' + obj[i].sales[j].totalQty.toLocaleString().replace(',', '.') + '</div>';
-                        dataBottom += '</div>';
-                        totalData += obj[i].sales[j].totalQty;
-
-                        detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
-                        detailPengisi += '<div class="col-3 detailName">' + obj[i].sales[j].namaPengisi[0] + '</div>';
-                        detailPengisi += '<div class="col-9"><div class="row">';
-                        detailPengisi += '<div class="detailFullName">' + obj[i].sales[j].namaPengisi + '</div></div>';
-                        detailPengisi += '<div class="row"><div class="detailSales">';
-                        detailPengisi += obj[i].sales[j].sales;
-                        detailPengisi += '</div></div></div></div>';
-
-                        if(indexRow == 0){
-                            document.getElementById('namaPengisi1').innerHTML = obj[i].sales[j].namaPengisi[0];
-                        }
-                        if(indexRow == 1){
-                            document.getElementById('namaPengisi2').innerHTML = obj[i].sales[j].namaPengisi[0];
-                        }
-                        if(indexRow == 2){
-                            document.getElementById('namaPengisi3').innerHTML = obj[i].sales[j].namaPengisi[0];
-                        }
-                        indexRow++;
+                var indexRow = 0;
+                for (var i = 0; i < obj.itemPattyCash[0].Item.length; i++) {
+                    dataFill += '<div class="d-flex justify-content-start">';
+                    dataFill += '<div class="itemSales">' + obj.itemPattyCash[0].Item[i].Item + '</div>';
+                    if ((obj.itemPattyCash[0].Item[i].idQtyRev == 2) || (obj.itemPattyCash[0].Item[i]
+                            .idTotalRev == 2)) {
+                        var urlImage = "{{ url('img/icon/tertunda.png') }}";
+                        dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
+                    } else if ((obj.itemPattyCash[0].Item[i].idQtyRev == 3) || (obj.itemPattyCash[0].Item[i]
+                            .idTotalRev == 3)) {
+                        var urlImage = "{{ url('img/icon/direvisi.png') }}";
+                        dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
+                    } else {
+                        dataFill += '';
                     }
-                    dataFill += '</div>';
+                    dataFill += '</div><div class="d-flex justify-content-between cuRow">';
+                    dataFill += '<div class="cuText">Qty</div>';
+                    dataFill += '<div class="cuVal">' + obj.itemPattyCash[0].Item[i].qty + ' ' + obj
+                        .itemPattyCash[0].Item[i].Satuan + '</div></div>';
+                    dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
+                    dataFill += '<div class="d-flex justify-content-between totalRow">';
+                    dataFill += '<div class="totalText">Total</div>';
+                    dataFill += '<div class="totalVal">Rp. ' + obj.itemPattyCash[0].Item[i].total
+                        .toLocaleString()
+                        .replace(',', '.') + '</div></div>';
+
+                    dataBottom += '<div class="d-flex justify-content-between listPrice">';
+                    dataBottom += '<div class="listBottom">' + obj.itemPattyCash[0].Item[i].Item + '</div>';
+                    dataBottom += '<div class="valBottom">' + obj.itemPattyCash[0].Item[i].total
+                        .toLocaleString()
+                        .replace(',', '.') + '</div>';
+                    dataBottom += '</div>';
+                    totalData += obj.itemPattyCash[0].Item[i].total;
+
+
+                    detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
+                    detailPengisi += '<div class="col-3 detailName">' + obj.itemPattyCash[0].Item[i].namaPengisi[0] +
+                        '</div>';
+                    detailPengisi += '<div class="col-9"><div class="row">';
+                    detailPengisi += '<div class="detailFullName">' + obj.itemPattyCash[0].Item[i].namaPengisi +
+                        '</div></div>';
+                    detailPengisi += '<div class="row"><div class="detailSales">';
+                    detailPengisi += obj.itemPattyCash[0].Item[i].Item;
+                    detailPengisi += '</div></div></div></div>';
+
+                    if (indexRow == 0) {
+                        document.getElementById('namaPengisi1').innerHTML = obj.itemPattyCash[0].Item[i].namaPengisi[
+                            0];
+                    }
+                    if (indexRow == 1) {
+                        document.getElementById('namaPengisi2').innerHTML = obj.itemPattyCash[0].Item[i].namaPengisi[
+                            0];
+                    }
+                    if (indexRow == 2) {
+                        document.getElementById('namaPengisi3').innerHTML = obj.itemPattyCash[0].Item[i].namaPengisi[
+                            0];
+                    }
+                    indexRow++;
                 }
+                // for (var i = 0; i < obj.length; i++) {
+                //     dataFill += '<div><div class="d-flex justify-content-start typeSales">';
+                //     dataFill += obj[i].type;
+                //     dataFill += '</div>';
+                //     for (var j = 0; j < obj[i].sales.length; j++) {
+                //         dataFill += '<div class="d-flex justify-content-start">';
+                //         dataFill += '<div class="itemSales">' + obj[i].sales[j].sales + '</div>';
+                //         if ((obj[i].sales[j].idCuRev == 2) || (obj[i].sales[j].idTotalRev == 2)) {
+                //             var urlImage = "{{ url('img/icon/tertunda.png') }}";
+                //             dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
+                //         } else if ((obj[i].sales[j].idCuRev == 3) || (obj[i].sales[j].idTotalRev == 3)) {
+                //             var urlImage = "{{ url('img/icon/direvisi.png') }}";
+                //             dataFill += '<img src="' + urlImage + '" class="iconStatus" alt="icon status">';
+                //         } else {
+                //             dataFill += '';
+                //         }
+                //         dataFill += '</div><div class="d-flex justify-content-between cuRow">';
+                //         dataFill += '<div class="cuText">CU</div>';
+                //         dataFill += '<div class="cuVal">' + obj[i].sales[j].cuQty + '</div></div>';
+                //         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
+                //         dataFill += '<div class="d-flex justify-content-between totalRow">';
+                //         dataFill += '<div class="totalText">Total</div>';
+                //         dataFill += '<div class="totalVal">Rp. ' + obj[i].sales[j].totalQty.toLocaleString()
+                //             .replace(',', '.') + '</div></div>';
+
+                //         dataBottom += '<div class="d-flex justify-content-between listPrice">';
+                //         dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
+                //         dataBottom += '<div class="valBottom">' + obj[i].sales[j].totalQty.toLocaleString()
+                //             .replace(',', '.') + '</div>';
+                //         dataBottom += '</div>';
+                //         totalData += obj[i].sales[j].totalQty;
+
+                //         detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
+                //         detailPengisi += '<div class="col-3 detailName">' + obj[i].sales[j].namaPengisi[0] +
+                //             '</div>';
+                //         detailPengisi += '<div class="col-9"><div class="row">';
+                //         detailPengisi += '<div class="detailFullName">' + obj[i].sales[j].namaPengisi +
+                //             '</div></div>';
+                //         detailPengisi += '<div class="row"><div class="detailSales">';
+                //         detailPengisi += obj[i].sales[j].sales;
+                //         detailPengisi += '</div></div></div></div>';
+
+                //         if (indexRow == 0) {
+                //             document.getElementById('namaPengisi1').innerHTML = obj[i].sales[j].namaPengisi[
+                //                 0];
+                //         }
+                //         if (indexRow == 1) {
+                //             document.getElementById('namaPengisi2').innerHTML = obj[i].sales[j].namaPengisi[
+                //                 0];
+                //         }
+                //         if (indexRow == 2) {
+                //             document.getElementById('namaPengisi3').innerHTML = obj[i].sales[j].namaPengisi[
+                //                 0];
+                //         }
+                //         indexRow++;
+                //     }
+                //     dataFill += '</div>';
+                // }
                 document.getElementById('dataFill').innerHTML = dataFill;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
                 document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
-                document.getElementById('namaPengisi4').innerHTML = (indexRow-3);
+                document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
             },
             error: function(req, err) {
                 console.log(err);

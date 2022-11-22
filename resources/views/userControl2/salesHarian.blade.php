@@ -266,7 +266,8 @@
             width: 50vw;
             max-width: 280px;
         }
-        .totalRp::before{
+
+        .totalRp::before {
             content: 'Rp. ';
             position: absolute;
             left: 58%;
@@ -319,9 +320,14 @@
 <script>
     var dataIdType = [];
     var dataIdItem = [];
+
+    var dataIdItemEdit = [];
+    var dataCuEdit = [];
+    var dataTotalEdit = [];
+    var dataSalesEdit = [];
+
     var nameIdType = [];
     var nameIdItem = [];
-    var dataSales = [];
 
     var cuDataTable = [];
     var totalDataTable = [];
@@ -346,7 +352,42 @@
         // console.log(day.getDay());
         document.getElementById('dateSelected').innerHTML = stringDay;
         getListAllType();
+
     });
+
+    function getAllData() {
+        $.ajax({
+            url: "{{ url('salesHarian/user/showTable/') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                dateSelected,
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                for (var i = 0; i < obj.itemSales[0].Item.length; i++) {
+                    for (var j = 0; j < dataIdItem.length; j++) {
+                        if (obj.itemSales[0].Item[i].idListSales == dataIdItem[j]) {
+                            var idRow = 'r' + j;
+
+                            dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
+                            dataCuEdit.push(obj.itemSales[0].Item[i].cuQty);
+                            dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
+                            dataSalesEdit.push(obj.itemSales[0].Item[i].idSalesFill);
+
+                            valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
+                            document.getElementById(idRow + 'c0').value = obj.itemSales[0].Item[i].cuQty;
+                            // document.getElementById(idRow + 'c1').value = obj.itemSales[0].Item[i].totalQty;
+                        }
+                        // console.log("Tessss");
+                    }
+                }
+                sumValueInput();
+                // dataIdItem
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
+    }
 
     function submitSalesHarian() {
         $.ajax({
@@ -401,6 +442,56 @@
                         console.log(err);
                     }
                 });
+            }
+        }
+        for (var i = 0; i < dataIdItemEdit.length; i++) {
+            for (var j = 0; j < dataIdItem.length; j++) {
+                if (dataIdItemEdit[i] == dataIdItem[j]) {
+                    var idRow = 'r' + j;
+                    var valTotalInput = parseInt(valueTotalAll[j].rawValue);
+                    var valCuInput = document.getElementById(idRow + 'c0').value;
+                    if (valTotalInput != dataTotalEdit[i]) {
+                        $.ajax({
+                            url: "{{ url('salesHarian/edit/total/data/') }}" + "/" + dataSalesEdit[i],
+                            type: 'get',
+                            data: {
+                                totalRevisi: valTotalInput,
+                                idPengisi: "{{ session('idPengisi') }}"
+                            },
+                            success: function(response) {
+
+                            },
+                            error: function(req, err) {
+                                console.log(err);
+                                // return 0
+                            }
+                        });
+                    }
+                    if (valCuInput != dataCuEdit[i]) {
+                        $.ajax({
+                            url: "{{ url('salesHarian/edit/cu/data/') }}" + "/" + dataSalesEdit[i],
+                            type: 'get',
+                            data: {
+                                cuRevisi: valCuInput,
+                                idPengisi: "{{ session('idPengisi') }}"
+                            },
+                            success: function(response) {
+                                // console.log(response);
+                            },
+                            error: function(req, err) {
+                                console.log(err);
+                                // return 0
+                            }
+                        });
+                    }
+                    // dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
+                    // dataCuEdit.push(obj.itemSales[0].Item[i].cuQty);
+                    // dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
+
+                    // valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
+                    // document.getElementById(idRow + 'c0').value = obj.itemSales[0].Item[i].cuQty;
+                }
+                // console.log("Tessss");
             }
         }
         // goToDashboard();
@@ -493,6 +584,7 @@
                         decimalPlaces: '0'
                     }));
                 }
+                getAllData();
             },
             error: function(req, err) {
                 console.log(err);
@@ -514,15 +606,16 @@
         // console.log(sumData);
         copyInputToText();
     }
-    function copyInputToText(){
-        for(var i =0;i<row;i++){
-            var idTotal = 'r' + i +'c1';
+
+    function copyInputToText() {
+        for (var i = 0; i < row; i++) {
+            var idTotal = 'r' + i + 'c1';
             var idBottomTotal = 't' + i;
             var valueIdTotal = 0;
-            if(document.getElementById(idTotal).value != ''){
+            if (document.getElementById(idTotal).value != '') {
                 valueIdTotal = document.getElementById(idTotal).value;
             }
-            document.getElementById(idBottomTotal).innerHTML = valueIdTotal.toLocaleString().replace(',','.');
+            document.getElementById(idBottomTotal).innerHTML = valueIdTotal.toLocaleString().replace(',', '.');
         }
     }
 </script>

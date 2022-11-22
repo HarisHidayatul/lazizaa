@@ -159,7 +159,7 @@ class pattyCashController extends Controller
                     'idTotalRev' => $idTotalRevisi,
                     'qty' => $qty,
                     'total' => $total,
-                    'namaPengisi' => $userPengisi['Username'],
+                    'namaPengisi' => $userPengisi['Nama Lengkap'],
                 ]);
             }
             array_push($pattyCash, (object)[

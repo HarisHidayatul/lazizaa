@@ -209,11 +209,6 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
-    Route::get('user/edit/soHarian/{dateSelect}', function($dateSelect){
-        return view('userControl2.soHarianEdit',[
-            'dateSelect' => $dateSelect
-        ]);
-    });
     Route::get('user/salesHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.salesHarian',[
             'dateSelect' => $dateSelect
@@ -221,11 +216,6 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('user/detail/salesHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.salesHarianDetail',[
-            'dateSelect' => $dateSelect
-        ]);
-    });
-    Route::get('user/edit/salesHarian/{dateSelect}', function($dateSelect){
-        return view('userControl2.salesHarianEdit',[
             'dateSelect' => $dateSelect
         ]);
     });
@@ -246,6 +236,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('user/pattyCashHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.pattyCashHarian',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/detail/pattyCashHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.pattyCashHarianDetail',[
             'dateSelect' => $dateSelect
         ]);
     });

@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>SO Harian</title>
+    <title>SO Harian Edit</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -241,7 +241,7 @@
                     <img src="{{ url('img/back.png') }}" alt="back icon" class="imageBack">
                 </div>
                 <div class="col">
-                    <h4 class="laporanMenu">Laporan harian</h4>
+                    <h4 class="laporanMenu">Laporan Harian</h4>
                 </div>
             </div>
             <div>
@@ -262,7 +262,7 @@
             <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
             <h3 style="margin-top: 20px">Laporan SO</h3>
             <div id="groupAddItem"></div>
-            <button type="button" class="btn" onclick="sendAddData()">Simpan</button>
+            <button type="button" class="btn" onclick="searchAllEdit()">Simpan</button>
             <div style="content: ''; height: 125px"></div>
         </div>
     </div>
@@ -271,11 +271,13 @@
     var dataId = [];
     var idSo = 0;
     var dateSelected = "{{ $dateSelect }}";
+    var tempDataEdit = []; //idIndexOnElementInput, idSoFill, qty
+    var dataAllEdit = []; //idSoFill,qty
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
-    let days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
 
     $(document).ready(function() {
@@ -293,6 +295,75 @@
 
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
+    }
+
+    function getDataFillSo() {
+        $.ajax({
+            url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
+                "{{ $dateSelect }}",
+            type: 'get',
+            success: function(response) {
+                var elementInput = document.getElementsByName("addname");
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                tempDataEdit.length = 0;
+                for (var i = 0; i < obj.itemfso.length; i++) {
+                    // contentSo += '<h6>' + obj.itemfso[i]['qty'] + '</h6>';
+                    // elementInput[searchIndexSoItem(obj.itemfso[i].idItem)].value = obj.itemfso[i].qty;
+                    if (searchIndexSoItem(obj.itemfso[i].idItem)[0] == true) {
+                        elementInput[searchIndexSoItem(obj.itemfso[i].idItem)[1]].value = obj.itemfso[i]
+                            .qty;
+                        tempDataEdit.push([searchIndexSoItem(obj.itemfso[i].idItem)[1], obj.itemfso[i]
+                            .idSoFill, obj.itemfso[i].qty
+                        ]);
+                    }
+                }
+                console.log(tempDataEdit);
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function searchAllEdit() {
+        dataAllEdit.length = 0;
+        var elementInput = document.getElementsByName("addname");
+        for (var i = 0; i < tempDataEdit.length; i++) {
+            var getValueElement = elementInput[tempDataEdit[i][0]].value;
+            if (getValueElement != tempDataEdit[i][2]) {
+                console.log(getValueElement);
+                $.ajax({
+                    url: '{{ url('soHarian/edit/data/') }}' + '/' + tempDataEdit[i][1],
+                    type: 'get',
+                    data: {
+                        quantityRevisi: getValueElement
+                    },
+                    success: function(response) {
+                    },
+                    error: function(req, err) {
+                        console.log(err);
+                        // return 0
+                    }
+                });
+            }
+        }
+        // goToDashboard();
+        // window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected;
+        sendAddData();
+    }
+
+    function searchIndexSoItem(idItem) {
+        var idIndex = 0;
+        var foundItem = false;
+        for (var i = 0; i < dataId.length; i++) {
+            if (dataId[i] == idItem) {
+                idIndex = i;
+                foundItem = true;
+                break;
+            }
+        }
+        return [foundItem, idIndex];
     }
 
     function sendDataToServer(idSo2) {
@@ -374,6 +445,7 @@
                 }
                 // document.getElementById('dateAdd').
                 $('#groupAddItem').empty().append(order_data);
+                getDataFillSo();
             },
             error: function(req, err) {
                 console.log(err);
