@@ -553,6 +553,15 @@
 
             color: #B20731;
         }
+        input[type='number']:focus {
+            border: 1.0663px solid #B20731;
+            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
+            border-radius: 5.68696px;
+            border-right: none;
+        }
+        .input-group-focus{
+            border-color: #B20731;!important
+        }
     </style>
 </head>
 
@@ -577,7 +586,7 @@
             <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSoHarian();">SO</div>
             <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
             <div class="col menuSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
-            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Patty Cash</div>
+            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">
@@ -589,7 +598,13 @@
             </div>
             <div class="itemLabel">Item</div>
             {{-- <input type="text"> --}}
-            <div class="itemShow" id="itemShow" onclick="itemShowClick();">Pilih item</div>
+            <div class="itemShow" onclick="itemShowClick();">
+                <div class="d-flex justify-content-between">
+                    <div id="itemShow" style="margin-left: -2px">Pilih item</div>
+                    <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
+                            style="height: 12px"></div>
+                </div>
+            </div>
             <div class="selectItemContainer" id="selectItem">
                 {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
                 <div id="itemAll"></div>
@@ -696,6 +711,12 @@
 
         dataId.length = 0;
         // console.log("{{ $dateSelect }}");
+
+        $("#jumlahInput").focus(function(e) {
+            document.getElementById('satuan').classList.add("input-group-focus");
+        }).blur(function(e) {
+            document.getElementById('satuan').classList.remove("input-group-focus");
+        });
 
         itemShowClick();
         getItemBrand();

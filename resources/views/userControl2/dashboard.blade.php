@@ -109,8 +109,16 @@
             position: absolute;
         }
 
+        .imageLogOut {
+            /* width: 85px; */
+            height: 20px;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+        }
+
         .containerr {
-            margin-top: 75px;
+            /* margin-top: 75px; */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -264,7 +272,7 @@
 
         .rowHeight {
             content: "";
-            height: 100px
+            height: 60px;
         }
 
         .container2 {
@@ -306,6 +314,22 @@
             height: 20px;
             margin-right: 10px
         }
+
+        .textOutlet {
+            /* Semibold/Large */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 140%;
+            /* identical to box height, or 28px */
+
+
+            /* Main color/Red/50 */
+            color: #B20731;
+            margin-right: 22vw;
+        }
     </style>
 </head>
 
@@ -325,6 +349,13 @@
             </div>
         </div>
     </div>
+    <div style="content:'';height:95px;"></div>
+    <div class="d-flex justify-content-center" style="justify-content: center;">
+        <img src="{{ url('img/icon/mapPoint.png') }}" alt="" style="height: 23px; margin-left: 0px;">
+        <div class="textOutlet">{{ session('Outlet') }}</div>
+        <img src="{{ url('img/icon/backRight.png') }}" alt="" style="height: 10px; margin-top:10px;">
+    </div>
+    <div class="container2"></div>
     <div class="container2"></div>
     <div class="containerr">
         <div class="row">
@@ -357,9 +388,6 @@
         </div>
         <div class="row">
             <div class="rowHeight"></div>
-        </div>
-        <div class="row">
-            <h1>Lazizaa Sukodono</h1>
         </div>
         <div class="row">
             <h2 id="dateSelected">Selasa, 1 November</h2>
@@ -412,7 +440,7 @@
                         <img src="{{ url('img/dashboard/laporanPattyCash.png') }}" alt="laporanSo" class="soIcon">
                     </div>
                     <div class="col" style="margin-top: 3px; margin-left: -12px;">
-                        <h5>Laporan Patty Cash</h5>
+                        <h5>Laporan Pembelian</h5>
                     </div>
                 </div>
                 <div>
@@ -423,14 +451,18 @@
         </div>
 
     </div>
-    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <img src="{{ url('img/dashboard/closeIcon.png') }}" alt="close icon" class="imageClose"
                         data-dismiss="modal">
-                    <img src="{{ url('img/dashboard/lazizaaLogo.png') }}" alt="logo icon" class="imageLogo">
+                    <img src="{{ url(session('brandImage')) }}" alt="logo icon" class="imageLogo">
+                    <div class="menuSidebar">
+                        <div class="dashboardTab">Dashboard</div>
+                    </div>
+                    <img src="{{ url('img/dashboard/logout.png') }}" alt="logo icon" class="imageLogOut">
                 </div>
             </div>
         </div>
@@ -450,10 +482,15 @@
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
-    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu","Minggu"];
+    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
+
+    $(document).ready(function() {
+        getDataOnAllDate();
+        $('#exampleModal').modal('show');
+    });
 
     function soClick() {
         if (statusSo == 0) {
@@ -475,7 +512,7 @@
         }
     }
 
-    function wasteClick(){
+    function wasteClick() {
         if (statusWaste == 0) {
             window.location.href = "{{ url('user/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
@@ -484,12 +521,14 @@
                 1) + '-' + dateSelect;
         }
     }
-    function pattyCashClick(){
-        if(statusPattyCash == 0){
+
+    function pattyCashClick() {
+        if (statusPattyCash == 0) {
             window.location.href = "{{ url('user/pattyCashHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
-        }else{
-            window.location.href = "{{ url('user/detail/pattyCashHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+        } else {
+            window.location.href = "{{ url('user/detail/pattyCashHarian') }}" + "/" + currentYear + '-' + (
+                currentMonth +
                 1) + '-' + dateSelect;
         }
     }
@@ -573,9 +612,6 @@
         }
         return dataTemp;
     }
-    $(document).ready(function() {
-        getDataOnAllDate();
-    });
 
     function next(indexDate) {
         if (indexDate != 0) {
@@ -670,10 +706,10 @@
         newDate += '-' + dateSelect;
         var day = new Date(newDate);
         var stringDay = '';
-        if ((currentMonth == 0)&&(currentYear==2023)) {
+        if ((currentMonth == 0) && (currentYear == 2023)) {
             //Terdapat bug untuk hari pada Januari 2023
-            stringDay = days[day.getDay()+1] + ', ' + dateSelect + ' ' + months[currentMonth];
-        }else{
+            stringDay = days[day.getDay() + 1] + ', ' + dateSelect + ' ' + months[currentMonth];
+        } else {
             stringDay = days[day.getDay()] + ', ' + dateSelect + ' ' + months[currentMonth];
         }
         console.log(stringDay);

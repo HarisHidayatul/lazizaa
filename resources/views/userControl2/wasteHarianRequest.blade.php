@@ -479,7 +479,7 @@
             <div class="col menuNotSel" style="margin-top: 15px">SO</div>
             <div class="col menuNotSel" style="margin-top: 15px">Sales</div>
             <div class="col menuSel" style="margin-top: 15px">Waste</div>
-            <div class="col menuNotSel" style="margin-top: 5px">Patty Cash</div>
+            <div class="col menuNotSel" style="margin-top: 5px">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">

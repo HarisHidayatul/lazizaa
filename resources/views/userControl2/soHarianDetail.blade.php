@@ -305,7 +305,7 @@
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 5px;">
         <img src="{{ url('img/pointMap.png') }}" alt="map" style="height: 18px; margin-top: 1px">
-        <h2 style="margin-left: 5px;">Lazizaa Sukodono</h2>
+        <h2 style="margin-left: 5px;">{{ session('Outlet') }}</h2>
     </div>
     <div class="d-flex justify-content-center">
         <img src="{{ url('img/dashboard/laporanSo.png') }}" alt="soImage" style="height: 64px; margin-top: 25px">
@@ -363,7 +363,7 @@
     }
 
     function goToEdit() {
-        window.location.href = "{{ url('user/edit/soHarian') }}" + "/" + "{{ $dateSelect }}";
+        window.location.href = "{{ url('user/soHarian') }}" + "/" + "{{ $dateSelect }}";
     }
 
     function showAllData() {

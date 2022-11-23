@@ -99,7 +99,7 @@
             width: 75px;
             height: 40px;
             margin-top: 0px;
-            margin-left: -20px;
+            margin-left: -10px;
             z-index: -1;
             /* Greyscale/10 */
 
@@ -391,6 +391,12 @@
             border-radius: 5.68696px;
         }
 
+        .jumlahInput:focus {
+            border: 1.0663px solid #B20731;
+            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
+            border-radius: 5.68696px;
+        }
+
         .totalRp {
             font-family: 'Montserrat';
             font-style: normal;
@@ -421,6 +427,12 @@
             /* Greyscale/20 */
 
             color: #E0E0E0;
+        }
+
+        .totalVal:focus {
+            border: 1.0663px solid #B20731;
+            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
+            border-radius: 5.68696px;
         }
 
         .satuan {
@@ -586,6 +598,9 @@
 
             color: #B20731;
         }
+        .input-group-focus{
+            border-color: #B20731;!important
+        }
     </style>
 </head>
 
@@ -610,7 +625,7 @@
             <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSoHarian();">SO</div>
             <div class="col menuNotSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
             <div class="col menuNotSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
-            <div class="col menuSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Patty Cash</div>
+            <div class="col menuSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">
@@ -644,13 +659,13 @@
             <div class="jumlahLabel">Total</div>
             <div class="input-group mb-3" style="margin-top: 10px">
                 <div class="input-group-append" style="border-right: none;">
-                    <span class="input-group-text totalRp">Rp</span>
+                    <span class="input-group-text totalRp" id="totalRp">Rp</span>
                 </div>
                 <input class="form-control totalVal" id="totalVal" placeholder="0" style="border-left: none;">
             </div>
             <div style="content: ''; height: 50px"></div>
             <div class="row">
-                <div class="col-6 requestItem">Requset Item?</div>
+                <div class="col-6 requestItem" onclick="goToRequestItem();">Requset Item?</div>
                 <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
             </div>
             <div style="content: ''; height: 25px"></div>
@@ -673,7 +688,8 @@
                 <div style="content: '';height:5px"></div>
                 <div class="d-flex justify-content-center subModalTittle">Gunakan fitur edit / revisi</div>
                 <div style="content: '';height:10px"></div>
-                <div class="d-flex justify-content-center subNameModal">Klik nama item yang telah di input &#10140; ubah
+                <div class="d-flex justify-content-center subNameModal">Klik nama item yang telah di input &#10140;
+                    ubah
                 </div>
                 <div class="d-flex justify-content-center subNameModal">kolom Qty atau Total &#10140; klik simpan</div>
                 <div style="content: '';height:25px"></div>
@@ -719,20 +735,24 @@
         }
     }
 
-    function goToSoHarian(){
+    function goToSoHarian() {
         window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
     }
 
-    function goToSalesHarian(){
+    function goToSalesHarian() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
     }
 
-    function goToWasteHarian(){
+    function goToWasteHarian() {
         window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
     }
 
-    function goToPattyCashHarian(){
+    function goToPattyCashHarian() {
         window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToRequestItem() {
+        window.location.href = "{{ url('user/request/pattyCashHarian') }}" + '/' + dateSelected;
     }
 
     $(document).ready(function() {
@@ -747,6 +767,17 @@
         itemShowClick();
         getItemBrand();
         refreshData();
+
+        $("#jumlahInput").focus(function(e) {
+            document.getElementById('satuan').classList.add("input-group-focus");
+        }).blur(function(e) {
+            document.getElementById('satuan').classList.remove("input-group-focus");
+        });
+        $("#totalVal").focus(function(e) {
+            document.getElementById('totalRp').classList.add("input-group-focus");
+        }).blur(function(e) {
+            document.getElementById('totalRp').classList.remove("input-group-focus");
+        });
     });
 
     function goToDashboard() {
@@ -825,11 +856,13 @@
                         dataDetail += '" alt="waste"style="height: 40px"></div>';
                         dataDetail += '<div class="col-5"><div class="row menuDetail">';
                         dataDetail += obj.itemPattyCash[i].Item[j].Item;
-                        if ((obj.itemPattyCash[i].Item[j].idQtyRev == 2)||(obj.itemPattyCash[i].Item[j].idTotalRev == 2)) {
+                        if ((obj.itemPattyCash[i].Item[j].idQtyRev == 2) || (obj.itemPattyCash[i].Item[j]
+                                .idTotalRev == 2)) {
                             var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
                             dataDetail += '<img src="' + urlImageRev +
                                 '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
-                        } else if ((obj.itemPattyCash[i].Item[j].idQtyRev == 3)||(obj.itemPattyCash[i].Item[j].idTotalRev == 3)){
+                        } else if ((obj.itemPattyCash[i].Item[j].idQtyRev == 3) || (obj.itemPattyCash[i]
+                                .Item[j].idTotalRev == 3)) {
                             var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
                             dataDetail += '<img src="' + urlImageRev +
                                 '" alt="status icon" class="status">';

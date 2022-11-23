@@ -126,6 +126,7 @@
 
             color: #FFFFFF;
             cursor: pointer;
+            text-align: center;
         }
 
         .containerBottom {
@@ -298,7 +299,7 @@
             <div class="col menuNotSel" style="margin-top: 15px;margin-left: 10px" onclick="goToSoHarian();">SO</div>
             <div class="col menuSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
             <div class="col menuNotSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
-            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Patty Cash</div>
+            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-start containerBottom">

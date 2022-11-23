@@ -229,6 +229,24 @@ class pattyCashController extends Controller
             'listPattyCash' => $arraylistPattyCash
         ]);
     }
+    public function showRevisiOutlet($id){
+        $listPattyCash = reqItemPattyCash::where('idOutlet','=',$id)->get();
+        $arraylistPattyCash = [];
+        // @dd($listPattyCash[0]->satuans);
+        for ($i = 0; $i < $listPattyCash->count(); $i++) {
+            $outlet = $listPattyCash[$i]->doutlets;
+            $brand = $listPattyCash[$i]->dbrands;
+            array_push($arraylistPattyCash, (object)[
+                'id' => $listPattyCash[$i]['id'],
+                'Item' => $listPattyCash[$i]['Item'],
+                'Satuan' => $listPattyCash[$i]->satuans['Satuan']
+            ]);
+        }
+        return response()->json([
+            'countItem' => $listPattyCash->count(),
+            'listPattyCash' => $arraylistPattyCash
+        ]);
+    }
 
     public function showAll()
     {

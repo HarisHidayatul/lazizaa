@@ -242,6 +242,12 @@
             color: #B20731;
         }
 
+        input[type='text']:focus {
+            border: 1.0663px solid #B20731;
+            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
+            border-radius: 5.68696px;
+        }
+
         .radioCustom:checked~label {
             color: #B20731;
         }
@@ -360,7 +366,7 @@
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 16px;
             line-height: 140%;
             margin-top: 20px;
             margin-bottom: -5px;
@@ -412,7 +418,8 @@
             font-weight: 700;
             font-size: 14px;
             line-height: 140%;
-            margin-left: -9px;
+            margin-left: 0px;
+            margin-top: 8px;
         }
 
         .jenisDetail {
@@ -485,8 +492,9 @@
     <div class="d-flex justify-content-center containerBottom">
         <div class="container" style="margin-left: 5px;margin-right: 10px">
             <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
+            <div class="jumlahLabel">Request</div>
             <div style="content: '';height: 15px"></div>
-            <div class="jumlahLabel">Nama Item</div>
+            {{-- <div class="jumlahLabel">Nama Item</div> --}}
             <div class="d-flex justify-content-center">
                 <div id="radioButtonUser"></div>
             </div>
@@ -506,7 +514,8 @@
             <div style="content: ''; height: 50px"></div>
             <div class="row">
                 <div class="col-6 requestItem"></div>
-                <div class="col-6"><button type="button" class="btn" onclick="sendRevisiItem()">Simpan</button></div>
+                <div class="col-6"><button type="button" class="btn" onclick="sendRevisiItem()">Simpan</button>
+                </div>
             </div>
             <div style="content: ''; height: 25px"></div>
             <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
@@ -560,56 +569,18 @@
         // console.log("{{ $dateSelect }}");
 
         itemShowClick();
-        getItemBrand();
         getAllSatuan();
         refreshData();
     });
 
     function goToDashboard() {
-        window.location.href = "{{ url('user/dashboard') }}";
+        window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
     }
 
     function selectIndex(index) {
         // console.log(selectedIndex[index]);
         document.getElementById('itemShow').innerHTML = selectedIndex[index];
         itemShowClick();
-    }
-
-    function getItemBrand() {
-        $.ajax({
-            url: "{{ url('waste/brand/show/item') }}",
-            type: 'get',
-            data: {
-                idBrand: "{{ session('idBrand') }}",
-            },
-            success: function(response) {
-                console.log(response);
-                var obj = JSON.parse(JSON.stringify(response));
-                var radioButton = '';
-                for (var i = 0; i < obj.listWaste.length; i++) {
-                    radioButton += '<div class="form-check form-check-inline">';
-                    radioButton +=
-                        '<input class="radioCustom form-check-input" type="radio" name="selJenisBrand" ';
-                    radioButton += 'onclick="radioSelBrand(' +
-                        obj.listWaste[i].idJenis +
-                        ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + obj.listWaste[i]
-                        .idJenis + '"/>';
-                    radioButton += '<label for="' + obj.listWaste[i].jenisBahan +
-                        '" class="radioCustom-label form-check-label">' + obj.listWaste[i]
-                        .jenisBahan +
-                        '</label>' +
-                        ' </div>';
-                    idJenisBrand.push(obj.listWaste[i].idJenis);
-                    objItemBrand.push(obj.listWaste[i].waste);
-                    selectJenisBrand = 0;
-                }
-                document.getElementById("radioButtonUser").innerHTML = radioButton;
-                radioSelBrand(selectJenisBrand);
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        })
     }
 
     function getAllSatuan() {
@@ -647,13 +618,12 @@
 
     function sendRevisiItem() {
         $.ajax({
-            url: "{{ url('waste/items/store/revision') }}",
+            url: "{{ url('pattyCash/items/store/revision') }}",
             type: 'get',
             data: {
                 Item: document.getElementById('namaItemReq').value,
                 idSatuan: selectSatuanIndex,
-                idOutlet: "{{ session('idOutlet') }}",
-                idJenisBahan: selectJenisBrand
+                idOutlet: "{{ session('idOutlet') }}"
             },
             success: function(response) {
                 refreshData();
@@ -667,29 +637,30 @@
 
     function refreshData() {
         $.ajax({
-            url: "{{ url('waste/items/show/rev') }}" + '/' + "{{ session('idOutlet') }}",
+            url: "{{ url('pattyCash/items/revisi/outlet') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
             success: function(response) {
                 console.log(response);
                 var dataDetail = '';
                 var obj = JSON.parse(JSON.stringify(response));
-                var urlImage = '{{ url('img/dashboard/laporanWaste.png') }}';
+                var urlImage = '{{ url('img/dashboard/laporanPattyCash.png') }}';
                 var indexLoop = 0;
                 objItemEdit.length = 0;
-                for (var i = 0; i < obj.listWaste.length; i++) {
+                for (var i = 0; i < obj.listPattyCash.length; i++) {
                     dataDetail += '<div class="row rowDetail" onclick="editItem(' +
                         indexLoop +
                         ');"><div class="col-2"><img src="';
                     dataDetail += urlImage;
                     dataDetail += '" alt="waste"style="height: 40px"></div>';
-                    dataDetail += '<div class="col-5"><div class="row menuDetail">';
-                    dataDetail += obj.listWaste[i].Item;
+                    dataDetail +=
+                        '<div class="col-5" style="margin-left: -10px;"><div class="row menuDetail">';
+                    dataDetail += obj.listPattyCash[i].Item;
                     dataDetail += '</div><div class="row jenisDetail">';
-                    dataDetail += obj.listWaste[i].jenisBahan;
+                    // dataDetail += obj.listPattyCash[i].jenisBahan;
                     dataDetail += '</div></div><div class="col-5 satuanDetail">';
-                    // dataDetail += obj.listWaste[i].qty;
+                    // dataDetail += obj.listPattyCash[i].qty;
                     // dataDetail += ' ';
-                    dataDetail += obj.listWaste[i].Satuan;
+                    dataDetail += obj.listPattyCash[i].Satuan;
                     dataDetail += '</div></div>';
                     indexLoop++;
                 }

@@ -531,7 +531,7 @@
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 5px;">
         <img src="{{ url('img/pointMap.png') }}" alt="map" style="height: 18px; margin-top: 1px">
-        <h2 style="margin-left: 5px;">Lazizaa Sukodono</h2>
+        <h2 style="margin-left: 5px;">{{ session('Outlet') }}</h2>
     </div>
     <div class="d-flex justify-content-center">
         <img src="{{ url('img/dashboard/laporanPattyCash.png') }}" alt="salesImage"
@@ -617,6 +617,10 @@
                 var detailPengisi = '';
                 var totalData = 0;
                 var indexRow = 0;
+                var namaPengisi1 = '';
+                var namaPengisi2 = '';
+                var namaPengisi3 = '';
+                var namaPengisi4 = '';
                 for (var i = 0; i < obj.itemPattyCash[0].Item.length; i++) {
                     dataFill += '<div class="d-flex justify-content-start">';
                     dataFill += '<div class="itemSales">' + obj.itemPattyCash[0].Item[i].Item + '</div>';
@@ -652,34 +656,64 @@
 
 
                     detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
-                    detailPengisi += '<div class="col-3 detailName">' + obj.itemPattyCash[0].Item[i].namaPengisi[0] +
+                    detailPengisi += '<div class="col-3 detailName">' + obj.itemPattyCash[0].Item[i]
+                        .namaPengisi[0] +
                         '</div>';
                     detailPengisi += '<div class="col-9"><div class="row">';
-                    detailPengisi += '<div class="detailFullName">' + obj.itemPattyCash[0].Item[i].namaPengisi +
+                    detailPengisi += '<div class="detailFullName">' + obj.itemPattyCash[0].Item[i]
+                        .namaPengisi +
                         '</div></div>';
                     detailPengisi += '<div class="row"><div class="detailSales">';
                     detailPengisi += obj.itemPattyCash[0].Item[i].Item;
                     detailPengisi += '</div></div></div></div>';
 
                     if (indexRow == 0) {
-                        document.getElementById('namaPengisi1').innerHTML = obj.itemPattyCash[0].Item[i].namaPengisi[
-                            0];
+                        namaPengisi1 = obj.itemPattyCash[0].Item[i].namaPengisi[0];
                     }
                     if (indexRow == 1) {
-                        document.getElementById('namaPengisi2').innerHTML = obj.itemPattyCash[0].Item[i].namaPengisi[
-                            0];
+                        namaPengisi2 = obj.itemPattyCash[0].Item[i].namaPengisi[0];
                     }
                     if (indexRow == 2) {
-                        document.getElementById('namaPengisi3').innerHTML = obj.itemPattyCash[0].Item[i].namaPengisi[
-                            0];
+                        namaPengisi3 = obj.itemPattyCash[0].Item[i].namaPengisi[0];
                     }
                     indexRow++;
+                }
+                if (indexRow == 0) {
+                    document.getElementById('namaPengisi1').style.visibility = "hidden";
+                    document.getElementById('namaPengisi2').style.visibility = "hidden";
+                    document.getElementById('namaPengisi3').style.visibility = "hidden";
+                    document.getElementById('namaPengisi4').style.visibility = "hidden";
+                } else if (indexRow == 1) {
+                    document.getElementById('namaPengisi1').style.visibility = "hidden";
+                    document.getElementById('namaPengisi2').style.visibility = "hidden";
+                    document.getElementById('namaPengisi3').style.visibility = "hidden";
+                    document.getElementById('namaPengisi4').innerHTML = namaPengisi1;
+                }else if(indexRow == 2){
+                    document.getElementById('namaPengisi1').style.visibility = "hidden";
+                    document.getElementById('namaPengisi2').style.visibility = "hidden";
+                    document.getElementById('namaPengisi3').innerHTML = namaPengisi1;
+                    document.getElementById('namaPengisi4').innerHTML = namaPengisi2;
+                }else if(indexRow == 3){
+                    document.getElementById('namaPengisi1').style.visibility = "hidden";
+                    document.getElementById('namaPengisi2').innerHTML = namaPengisi1;
+                    document.getElementById('namaPengisi3').innerHTML = namaPengisi2;
+                    document.getElementById('namaPengisi4').innerHTML = namaPengisi3;                    
+                }else if(indexRow == 4){
+                    document.getElementById('namaPengisi1').innerHTML = namaPengisi1;
+                    document.getElementById('namaPengisi2').innerHTML = namaPengisi2;
+                    document.getElementById('namaPengisi3').innerHTML = namaPengisi3;
+                    document.getElementById('namaPengisi4').innerHTML = namaPengisi4;    
+                }else{
+                    document.getElementById('namaPengisi1').innerHTML = namaPengisi1;
+                    document.getElementById('namaPengisi2').innerHTML = namaPengisi2;
+                    document.getElementById('namaPengisi3').innerHTML = namaPengisi3;
+                    document.getElementById('namaPengisi4').innerHTML = (indexRow-3);
                 }
                 document.getElementById('dataFill').innerHTML = dataFill;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
                 document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
-                document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
+                // document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
             },
             error: function(req, err) {
                 console.log(err);
