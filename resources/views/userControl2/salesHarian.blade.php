@@ -274,6 +274,11 @@
             position: absolute;
             left: 58%;
         }
+        input[type='number']:focus {
+            border: 1.0663px solid #B20731;
+            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
+            border-radius: 5.68696px;
+        }
     </style>
 </head>
 
