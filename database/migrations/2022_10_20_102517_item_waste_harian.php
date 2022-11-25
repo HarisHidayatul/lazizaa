@@ -50,6 +50,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idJenisBahan');
             $table->foreign('idJenisBahan')->references('id')->on('jenisBahan');
 
+            $table->unsignedBigInteger('idBrand');
+            $table->foreign('idBrand')->references('id')->on('dBrand');
+
             $table->timestamps();
         });
 

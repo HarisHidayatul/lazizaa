@@ -118,7 +118,7 @@
                 idRev: idRev,
             },
             success: function(response) {
-                getListAllRevision();
+                getListAllRequest();
                 getListAllItem();
                 getItemBrand();
             },
@@ -183,7 +183,7 @@
                 idJenisBahan: idJenis[selectJenis]
             },
             success: function(response) {
-                getListAllRevision();
+                getListAllRequest();
                 document.getElementById('tambahNamaItemReq').value = "";
             },
             error: function(req, err) {
@@ -285,9 +285,9 @@
         })
     }
 
-    function getListAllRevision() {
+    function getListAllRequest() {
         $.ajax({
-            url: "{{ url('waste/items/show/revisi') }}",
+            url: "{{ url('waste/items/show/req') }}",
             type: 'get',
             success: function(response) {
                 var order_data = '';
@@ -435,7 +435,7 @@
         getAllSatuan();
         getListAllOutlet();
         getListAllBrand();
-        getListAllRevision();
+        getListAllRequest();
     })
 </script>
 

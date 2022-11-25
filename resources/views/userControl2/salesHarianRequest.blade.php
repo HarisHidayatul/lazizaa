@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Pembelian Harian</title>
+    <title>Sales Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -96,8 +96,8 @@
             position: absolute;
             width: 75px;
             height: 40px;
-            margin-top: 0px;
-            margin-left: -8px;
+            margin-top: -10px;
+            margin-left: -18px;
             z-index: -1;
             /* Greyscale/10 */
 
@@ -147,6 +147,14 @@
             align-items: center;
             text-align: center;
 
+        }
+
+        h5 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
         }
 
         label {
@@ -240,12 +248,6 @@
             /* Main color/Red/50 */
             cursor: pointer;
             color: #B20731;
-        }
-
-        input[type='text']:focus {
-            border: 1.0663px solid #B20731;
-            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
-            border-radius: 5.68696px;
         }
 
         .radioCustom:checked~label {
@@ -366,7 +368,7 @@
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 140%;
             margin-top: 20px;
             margin-bottom: -5px;
@@ -418,8 +420,7 @@
             font-weight: 700;
             font-size: 14px;
             line-height: 140%;
-            margin-left: 0px;
-            margin-top: 8px;
+            margin-left: -9px;
         }
 
         .jenisDetail {
@@ -462,7 +463,13 @@
         .container {
             /* width: 150px; */
         }
-        
+
+        input[type='text']:focus {
+            border: 1.0663px solid #B20731;
+            box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
+            border-radius: 5.68696px;
+        }
+
         .itemExist {
             font-family: 'Montserrat';
             font-style: normal;
@@ -495,9 +502,9 @@
     <div class="d-flex justify-content-center containerTop">
         <div class="row headerTop">
             <div class="col menuNotSel" style="margin-top: 15px">SO</div>
-            <div class="col menuNotSel" style="margin-top: 15px">Sales</div>
+            <div class="col menuSel" style="margin-top: 15px">Sales</div>
             <div class="col menuNotSel" style="margin-top: 15px">Waste</div>
-            <div class="col menuSel" style="margin-top: 5px">Pembeli an</div>
+            <div class="col menuNotSel" style="margin-top: 5px">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">
@@ -505,21 +512,30 @@
             <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
             <div class="jumlahLabel">Request</div>
             <div style="content: '';height: 15px"></div>
-            {{-- <div class="jumlahLabel">Nama Item</div> --}}
-            <div class="d-flex justify-content-center">
-                <div id="radioButtonUser"></div>
+            <div class="jumlahLabel">Kategori</div>
+            <div class="itemShow" onclick="kategoriShowClick();">
+                <div class="d-flex justify-content-between">
+                    <div id="itemShow" style="margin-left: -2px">Pilih Kategori</div>
+                    <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
+                            style="height: 12px"></div>
+                </div>
             </div>
-            <div class="jumlahLabel">Nama Item</div>
-            <div class="input-group mb-3" style="margin-top: 10px">
-                <input type="text" class="form-control namaItemReq" placeholder="Masukkan nama item"
-                    id="namaItemReq">
-            </div>
-            <div class="itemLabel">Satuan</div>
-            {{-- <input type="text"> --}}
-            <div class="itemShow" id="itemShow" onclick="itemShowClick();">Pilih satuan</div>
-            <div class="selectSatuanContainer" id="selectSatuan">
+            <div class="selectSatuanContainer" id="selectKategori">
                 {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
                 <div id="itemAll"></div>
+            </div>
+            <div class="itemLabel">Nama Sales</div>
+            {{-- <input type="text"> --}}
+            <div class="itemShow" onclick="salesShowClick();">
+                <div class="d-flex justify-content-between">
+                    <div id="itemSales" style="margin-left: -2px">Pilih Nama Sales</div>
+                    <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
+                            style="height: 12px"></div>
+                </div>
+            </div>
+            <div class="selectSatuanContainer" id="selectSales">
+                {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
+                <div id="itemAll2"></div>
             </div>
             <div style="content: ''; height: 13px"></div>
             <div class="d-flex justify-content-start" id="itemExist">
@@ -531,7 +547,7 @@
                 </div>
             </div>
             <div style="content: ''; height: 25px"></div>
-            <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
+            <h5 style="margin-top: 18px">{{ session('Brand') }}</h5>
             {{-- <div style="content: ''; height: 25px"></div> --}}
             <div id="dataDetail"></div>
             <div style="content: ''; height: 50px"></div>
@@ -542,9 +558,14 @@
     var dataId = [];
     var idSo = 0;
     var dateSelected = "{{ $dateSelect }}";
-    var dropdownItem = true;
+    var dropdownKategori = true;
+    var dropdownSales = true;
+
     var selectJenisBrand = null;
-    var selectSatuanIndex = null;
+    var selectKategoriId = null;
+
+    var selectKategori = null;
+    var selectSales = null;
 
     var sendOrEdit = true; // true for send and edit for false
 
@@ -555,20 +576,34 @@
     var objItemEdit = [];
     var indexEdit = null;
 
-    var satuanAll = [];
+    var kategoriAll = [];
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-    function itemShowClick() {
-        if (dropdownItem) {
-            dropdownItem = false;
-            document.getElementById('selectSatuan').style.visibility = "hidden";
+    function kategoriShowClick() {
+        if (dropdownKategori) {
+            dropdownKategori = false;
+            document.getElementById('selectKategori').style.visibility = "hidden";
         } else {
-            dropdownItem = true;
-            document.getElementById('selectSatuan').style.visibility = "visible";
+            dropdownKategori = true;
+            document.getElementById('selectKategori').style.visibility = "visible";
+            dropdownSales = false;
+            document.getElementById('selectSales').style.visibility = "hidden";
+        }
+    }
+
+    function salesShowClick() {
+        if (dropdownSales) {
+            dropdownSales = false;
+            document.getElementById('selectSales').style.visibility = "hidden";
+        } else {
+            dropdownSales = true;
+            document.getElementById('selectSales').style.visibility = "visible";
+            dropdownKategori = false;
+            document.getElementById('selectKategori').style.visibility = "hidden";
         }
     }
 
@@ -576,42 +611,43 @@
         var day = new Date(dateSelected);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateSelected').innerHTML = stringDay;
-        document.getElementById('dateSelected2').innerHTML = stringDay;
+        // document.getElementById('dateSelected2').innerHTML = stringDay;
 
         dataId.length = 0;
         // console.log("{{ $dateSelect }}");
 
-        itemShowClick();
-        getAllSatuan();
+        kategoriShowClick();
+        salesShowClick();
+        getAllSales();
         refreshData();
     });
 
     function goToDashboard() {
-        window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
+        window.location.href = "{{ url('user/salesHarian/') }}" + '/' + dateSelected;
     }
 
     function selectIndex(index) {
         // console.log(selectedIndex[index]);
         document.getElementById('itemShow').innerHTML = selectedIndex[index];
-        itemShowClick();
+        kategoriShowClick();
     }
 
-    function getAllSatuan() {
+
+    function getAllSales() {
         $.ajax({
-            url: "{{ url('show/satuan') }}",
+            url: "{{ url('salesHarian/show/list/all') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
             success: function(response) {
-                // console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
-                // console.log(obj);
+                console.log(obj);
                 var dataDropdown = '';
-                satuanAll = obj.dataItem;
-                for (var i = 0; i < obj.dataItem.length; i++) {
-                    dataDropdown += '<div class="itemSelect" onclick="setDropDownSatuan(' + i;
+                for (var i = 0; i < obj.listSales.length; i++) {
+                    dataDropdown += '<div class="itemSelect" onclick="setDropDownKategori(' + i;
                     // dataDropdown += obj.dataItem[i].id;
                     dataDropdown += ')">';
-                    dataDropdown += obj.dataItem[i].Satuan;
+                    dataDropdown += obj.listSales[i].type;
                     dataDropdown += '</div>';
+                    kategoriAll.push(obj.listSales[i]);
                 }
                 document.getElementById('itemAll').innerHTML = dataDropdown;
             },
@@ -621,36 +657,52 @@
         })
     }
 
-    function setDropDownSatuan(selectIndex) {
-        console.log(satuanAll[selectIndex]);
-        selectSatuanIndex = satuanAll[selectIndex]?.id;
-        console.log(selectSatuanIndex);
-        document.getElementById('itemShow').innerHTML = satuanAll[selectIndex]?.Satuan;
-        itemShowClick();
+    function setDropDownKategori(selectIndex) {
+        var dataDropdown = '';
+        selectKategori = selectIndex;
+        console.log(kategoriAll[selectIndex]);
+        selectKategoriId = kategoriAll[selectIndex]?.id;
+        console.log(selectKategoriId);
+        document.getElementById('itemShow').innerHTML = kategoriAll[selectIndex]?.type;
+        kategoriShowClick();
+        
+        for (var i = 0; i < kategoriAll[selectIndex].sales.length; i++) {
+            dataDropdown += '<div class="itemSelect" onclick="setDropDownSales(' + i;
+            // dataDropdown += dataItem[i].id;
+            dataDropdown += ')">';
+            dataDropdown += kategoriAll[selectIndex].sales[i].sales;
+            dataDropdown += '</div>';
+        }
+        document.getElementById('itemAll2').innerHTML = dataDropdown;
+    }
+    function setDropDownSales(selectIndex){
+        console.log(kategoriAll[selectKategori].sales[selectIndex]);
+        document.getElementById('itemSales').innerHTML = kategoriAll[selectKategori].sales[selectIndex].sales;
+        selectSales = selectIndex;
+        salesShowClick();
     }
 
     function sendRevisiItem() {
         $.ajax({
-            url: "{{ url('pattyCash/items/store/revision') }}",
+            url: "{{ url('salesHarian/items/store/revision') }}",
             type: 'get',
             data: {
-                Item: document.getElementById('namaItemReq').value,
-                idSatuan: selectSatuanIndex,
-                idBrand: "{{ session('idBrand') }}",
-                idOutlet: "{{ session('idOutlet') }}"
+                idOutlet: "{{ session('idOutlet') }}",
+                idSales: kategoriAll[selectKategori].sales[selectSales].id,
             },
             success: function(response) {
                 console.log(response);
                 if (response == 0) {
                     var imgSrc = "{{ url('img/icon/warningIcon.png') }}";
-                    var imgLayout = '<img src="'+imgSrc+'" alt="" style="height: 20px;"><div class="itemExist">Item telah ditambahkan</div>';
+                    var imgLayout = '<img src="' + imgSrc +
+                        '" alt="" style="height: 20px;"><div class="itemExist">Item telah ditambahkan</div>';
                     document.getElementById('itemExist').innerHTML = imgLayout;
                     console.log(imgLayout);
                 } else {
                     document.getElementById('itemExist').innerHTML = '';
                 }
                 refreshData();
-                document.getElementById('namaItemReq').value = "";
+                // document.getElementById('namaItemReq').value = "";
             },
             error: function(req, err) {
                 console.log(err);
@@ -660,52 +712,37 @@
 
     function refreshData() {
         $.ajax({
-            url: "{{ url('pattyCash/items/revisi/outlet') }}" + '/' + "{{ session('idOutlet') }}",
+            url: "{{ url('salesHarian/items/show/rev') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
             success: function(response) {
                 console.log(response);
                 var dataDetail = '';
                 var obj = JSON.parse(JSON.stringify(response));
-                var urlImage = '{{ url('img/dashboard/laporanPattyCash.png') }}';
+                var urlImage = '{{ url('img/dashboard/laporanSales.png') }}';
                 var indexLoop = 0;
                 objItemEdit.length = 0;
-                for (var i = 0; i < obj.listPattyCash.length; i++) {
-                    dataDetail += '<div class="row rowDetail" onclick="editItem(' +
-                        indexLoop +
-                        ');"><div class="col-2"><img src="';
+                for (var i = 0; i < obj.listSales.length; i++) {
+                    dataDetail += '<div class="row rowDetail"><div class="col-2"><img src="';
                     dataDetail += urlImage;
                     dataDetail += '" alt="waste"style="height: 40px"></div>';
-                    dataDetail +=
-                        '<div class="col-5" style="margin-left: -10px;"><div class="row menuDetail">';
-                    dataDetail += obj.listPattyCash[i].Item;
+                    dataDetail += '<div class="col-5"><div class="row menuDetail">';
+                    dataDetail += obj.listSales[i].sales;
                     dataDetail += '</div><div class="row jenisDetail">';
-                    // dataDetail += obj.listPattyCash[i].jenisBahan;
+                    // dataDetail += obj.listSales[i].jenisBahan;
                     dataDetail += '</div></div><div class="col-5 satuanDetail">';
-                    // dataDetail += obj.listPattyCash[i].qty;
+                    // dataDetail += obj.listSales[i].qty;
                     // dataDetail += ' ';
-                    dataDetail += obj.listPattyCash[i].Satuan;
+                    // dataDetail += obj.listSales[i].Satuan;
                     dataDetail += '</div></div>';
                     indexLoop++;
                 }
                 document.getElementById('dataDetail').innerHTML = dataDetail;
-                document.getElementById('namaItemReq').value = '';
+                // document.getElementById('namaItemReq').value = '';
             },
             error: function(req, err) {
                 console.log(err);
             }
         });
-    }
-
-    function radioSelBrand(selectIndex) {
-        //Off kan drop down dulu
-        dropdownItem = false;
-        document.getElementById('selectSatuan').style.visibility = "hidden";
-
-        if (document.getElementById("radioBrand" + selectIndex) != null) {
-            document.getElementById("radioBrand" + selectIndex).checked = true;
-        }
-        selectJenisBrand = selectIndex;
-        console.log(selectJenisBrand);
     }
 </script>
 

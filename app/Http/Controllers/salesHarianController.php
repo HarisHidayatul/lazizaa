@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\doutlet;
 use App\Models\dUser;
+use App\Models\listSales;
+use App\Models\outletListSales;
 use App\Models\perevisiSales;
+use App\Models\reqItemSales;
 use App\Models\salesFill;
 use App\Models\salesharian;
 use App\Models\tanggalAll;
@@ -60,6 +63,52 @@ class salesHarianController extends Controller
             echo 1;
         } else {
             echo 0;
+        }
+    }
+
+    public function storeItemRevision(Request $request)
+    {
+        // @dd($request);
+        $checkRevisi = reqItemSales::where('idOutlet', '=', $request->idOutlet)
+            ->where('idSales', '=', $request->idSales)
+            ->first();
+        // @dd($checkRevisi);
+        if ($checkRevisi == null) {
+            $dataArray = [
+                'idOutlet' => $request->idOutlet,
+                'idSales' => $request->idSales,
+            ];
+            reqItemSales::create($dataArray);
+            echo 1;
+        } else {
+            echo 0;
+        }
+    }
+
+    public function storeRevisionCheck(Request $request)
+    {
+        $status = $request->status;
+        $idRev = $request->idRev;
+
+        $reqSales = reqItemSales::find($idRev);
+        
+        if ($status == '1') {
+            //status 1 untuk accept
+            $checkExist = outletListSales::where('idOutlet', '=', $reqSales->idOutlet)
+            ->where('idListSales', '=', $reqSales->idSales)
+            ->first();
+            if ($checkExist == null) {
+                $dataArray = [
+                    'idOutlet' => $reqSales->idOutlet,
+                    'idListSales' => $reqSales->idSales,
+                ];
+                outletListSales::create($dataArray);
+            }
+            $reqSales->delete();
+        }
+        if ($status == '2') {
+            //status 2 untuk delete
+            $reqSales->delete();
         }
     }
 
@@ -158,8 +207,8 @@ class salesHarianController extends Controller
                             ]);
                         }
                     }
-                    if($dataOnType != null){
-                        array_push($allDataArray,(object)[
+                    if ($dataOnType != null) {
+                        array_push($allDataArray, (object)[
                             'type' => $allTypeSales[$i]->type,
                             'sales' => $dataOnType
                         ]);
@@ -233,6 +282,26 @@ class salesHarianController extends Controller
         return response()->json([
             // 'countItem' => $datasales->count(),
             'itemSales' => $salesDate
+        ]);
+    }
+
+    public function showAllRequest(){
+        $reqSales = reqItemSales::all();
+        $arrayreqSales = [];
+        // @dd($reqSales[0]->satuans);
+        for ($i = 0; $i < $reqSales->count(); $i++) {
+            $outlet = $reqSales[$i]->doutlets;
+            $brand = $outlet->dBrands;
+            array_push($arrayreqSales, (object)[
+                'id' => $reqSales[$i]['id'],
+                'sales' => $reqSales[$i]->listSaless->sales,
+                'outlet' => $outlet['Nama Store'],
+                'brand' => $brand['Nama Brand']
+            ]);
+        }
+        return response()->json([
+            'countItem' => $reqSales->count(),
+            'reqSales' => $arrayreqSales
         ]);
     }
 
@@ -319,6 +388,61 @@ class salesHarianController extends Controller
         return response()->json([
             'countItem' => $listSales->count(),
             'listSales' => $arrayListSales
+        ]);
+    }
+    public function showListBasedType()
+    {
+        $listSales = listSales::all();
+        $allTypeSales = typeSales::all();
+        $arrayListSales = [];
+        $arrayIdType = [];
+        $newListSales = [];
+        for ($i = 0; $i < $listSales->count(); $i++) {
+            array_push($arrayListSales, (object)[
+                'id' => $listSales[$i]['id'],
+                'sales' => $listSales[$i]['sales'],
+                'typeSales' => $listSales[$i]['typeSales']
+            ]);
+            array_push($arrayIdType, $listSales[$i]['typeSales']);
+        }
+        // @dd($allTypeSales);
+        for ($i = 0; $i < $allTypeSales->count(); $i++) {
+            $idType = $allTypeSales[$i]->id;
+            $tempArray = [];
+            for ($j = 0; $j < count($arrayIdType); $j++) {
+                if ($idType == $arrayIdType[$j]) {
+                    array_push($tempArray, $arrayListSales[$j]);
+                    // break;
+                }
+            }
+            if ($tempArray != null) {
+                array_push($newListSales, (object)[
+                    'id' => $idType,
+                    'type' => $allTypeSales[$i]->type,
+                    'sales' => $tempArray
+                ]);
+            }
+        }
+        return response()->json([
+            'countItem' => $listSales->count(),
+            'listSales' => $newListSales
+        ]);
+    }
+
+    public function showRevisiOutlet($id)
+    {
+        $listSales = reqItemSales::where('idOutlet', '=', $id)->orderBy('id', 'DESC')->get();
+        $arraylistSales = [];
+        // @dd($listSales[0]->satuans);
+        for ($i = 0; $i < $listSales->count(); $i++) {
+            array_push($arraylistSales, (object)[
+                'id' => $listSales[$i]->listSaless->id,
+                'sales' => $listSales[$i]->listSaless->sales
+            ]);
+        }
+        return response()->json([
+            'countItem' => $listSales->count(),
+            'listSales' => $arraylistSales
         ]);
     }
 

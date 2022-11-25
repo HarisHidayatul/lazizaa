@@ -37,6 +37,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
 
+            $table->unsignedBigInteger('idBrand');
+            $table->foreign('idBrand')->references('id')->on('dBrand');
+
             $table->timestamps();
         });
 

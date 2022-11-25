@@ -149,6 +149,14 @@
 
         }
 
+        h5 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+        }
+
         label {
             font-family: 'Montserrat';
             font-style: normal;
@@ -455,10 +463,22 @@
         .container {
             /* width: 150px; */
         }
+
         input[type='text']:focus {
             border: 1.0663px solid #B20731;
             box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
             border-radius: 5.68696px;
+        }
+
+        .itemExist {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 15px;
+            color: #B20731;
+            margin-top: 3px;
+            margin-left: 6px
         }
     </style>
 </head>
@@ -501,19 +521,28 @@
             </div>
             <div class="itemLabel">Satuan</div>
             {{-- <input type="text"> --}}
-            <div class="itemShow" id="itemShow" onclick="itemShowClick();">Pilih satuan</div>
+            <div class="itemShow" onclick="itemShowClick();">
+                <div class="d-flex justify-content-between">
+                    <div id="itemShow" style="margin-left: -2px">Pilih satuan</div>
+                    <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
+                            style="height: 12px"></div>
+                </div>
+            </div>
+            <div style="content: ''; height: 13px"></div>
+            <div class="d-flex justify-content-start" id="itemExist">
+            </div>
             <div class="selectSatuanContainer" id="selectSatuan">
                 {{-- <div class="itemSelect" onclick="selectIndex(0)">AAAA</div> --}}
                 <div id="itemAll"></div>
             </div>
-
             <div style="content: ''; height: 50px"></div>
             <div class="row">
                 <div class="col-6 requestItem"></div>
-                <div class="col-6"><button type="button" class="btn" onclick="sendRevisiItem()">Simpan</button></div>
+                <div class="col-6"><button type="button" class="btn" onclick="sendRevisiItem()">Simpan</button>
+                </div>
             </div>
             <div style="content: ''; height: 25px"></div>
-            <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
+            <h5 style="margin-top: 18px">{{ session('Brand') }}</h5>
             {{-- <div style="content: ''; height: 25px"></div> --}}
             <div id="dataDetail"></div>
             <div style="content: ''; height: 50px"></div>
@@ -558,7 +587,7 @@
         var day = new Date(dateSelected);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateSelected').innerHTML = stringDay;
-        document.getElementById('dateSelected2').innerHTML = stringDay;
+        // document.getElementById('dateSelected2').innerHTML = stringDay;
 
         dataId.length = 0;
         // console.log("{{ $dateSelect }}");
@@ -570,7 +599,7 @@
     });
 
     function goToDashboard() {
-        window.location.href = "{{ url('user/wasteHarian/') }}" + '/'+ dateSelected;
+        window.location.href = "{{ url('user/wasteHarian/') }}" + '/' + dateSelected;
     }
 
     function selectIndex(index) {
@@ -657,9 +686,19 @@
                 Item: document.getElementById('namaItemReq').value,
                 idSatuan: selectSatuanIndex,
                 idOutlet: "{{ session('idOutlet') }}",
+                idBrand: "{{ session('idBrand') }}",
                 idJenisBahan: selectJenisBrand
             },
             success: function(response) {
+                console.log(response);
+                if (response == 0) {
+                    var imgSrc = "{{ url('img/icon/warningIcon.png') }}";
+                    var imgLayout = '<img src="'+imgSrc+'" alt="" style="height: 20px;"><div class="itemExist">Item telah ditambahkan</div>';
+                    document.getElementById('itemExist').innerHTML = imgLayout;
+                    console.log(imgLayout);
+                } else {
+                    document.getElementById('itemExist').innerHTML = '';
+                }
                 refreshData();
                 document.getElementById('namaItemReq').value = "";
             },

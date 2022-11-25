@@ -87,6 +87,17 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('reqItemSales', function(Blueprint $table){
+            $table->id();
+
+            $table->unsignedBigInteger('idOutlet');
+            $table->foreign('idOutlet')->references('id')->on('doutlet');
+            
+            $table->unsignedBigInteger('idSales');
+            $table->foreign('idSales')->references('id')->on('listSales');
+            $table->timestamps();
+        });
     }
 
     /**

@@ -86,14 +86,19 @@ Route::get('typeSales/item/outlet/store', [typeSalesController::class, 'storeIte
 Route::get('typeSales/item/outlet/delete', [typeSalesController::class, 'destroyItemOnOutlet']);
 
 Route::get('salesHarian/show/list/{id}', [salesHarianController::class, 'showList']);
+Route::get('salesHarian/show/list/all/{id}',[salesHarianController::class,'showListBasedType']);//show all item based on id outlet
 Route::get('salesHarian/user/showTable/{id}/{date}', [salesHarianController::class, 'show']); //show id untuk outlet
 Route::get('salesHarian/user/showAllData/{id}/{date}', [salesHarianController::class, 'showAllData']); //show id untuk outlet
 Route::get('salesHarian/show/revision/all', [salesHarianController::class, 'showDateRevision']); //menampilkan semua tanggal revisi
 Route::get('salesHarian/show/revision/done', [salesHarianController::class, 'showDateRevisionDone']); //menampilkan semua tanggal revisi
+Route::get('salesHarian/items/show/req', [salesHarianController::class, 'showAllRequest']);
+Route::get('salesHarian/items/store/request', [salesHarianController::class, 'storeRevisionCheck']);
 
 
 Route::get('salesHarian/data/getId', [salesHarianController::class, 'showAndCreateID']);
 Route::get('salesHarian/store/data', [salesHarianController::class, 'store']);
+Route::get('salesHarian/items/store/revision', [salesHarianController::class, 'storeItemRevision']);
+Route::get('salesHarian/items/show/rev/{id}',[salesHarianController::class, 'showRevisiOutlet']);//revision by id outlet
 
 Route::get('salesHarian/edit/cu/data/{id}', [salesHarianController::class, 'editCu']);
 Route::get('salesHarian/edit/cu/rev/data', [salesHarianController::class, 'editCuRev']);
@@ -141,7 +146,7 @@ Route::get('pattyCash', function () {
 
 Route::get('waste/items/show', [wasteController::class, 'showAll']);
 Route::get('waste/items/store', [wasteController::class, 'storeItem']);
-Route::get('waste/items/show/revisi', [wasteController::class, 'showAllRevisi']);
+Route::get('waste/items/show/req', [wasteController::class, 'showAllRequest']);
 Route::get('waste/items/show/rev/{id}',[wasteController::class, 'showRevisiOutlet']);//revision by id outlet
 Route::get('waste/items/store/revision', [wasteController::class, 'storeItemRevision']);
 Route::get('waste/brand/show/item', [wasteController::class, 'showItemOnBrand']);
@@ -217,6 +222,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('user/detail/salesHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.salesHarianDetail',[
+            'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/request/salesHarian/{dateSelect}', function($dateSelect){
+        return view('userControl2.salesHarianRequest',[
             'dateSelect' => $dateSelect
         ]);
     });

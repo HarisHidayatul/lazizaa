@@ -50,19 +50,19 @@ class soHarian extends Seeder
             array(
                 [
                     'Nama Brand' => 'Lazizaa',
-                    'Image'      => '/img/lazizaa.jpg',
+                    'Image'      => '/img/dashboard/lazizaaLogo.png',
                     'Keterangan' => $faker->text(),
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ],
                 [
                     'Nama Brand' => 'Babarafi',
-                    'Image'      => '/img/babarafi.jpg',
+                    'Image'      => '/img/dashboard/babarafiLogo.png',
                     'Keterangan' => $faker->text(),
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ],
                 [
                     'Nama Brand' => 'Kopi Ambyar',
-                    'Image'      => '/img/kopiambyar.jpg',
+                    'Image'      => '/img/dashboard/kopiAmbyarLogo.png',
                     'Keterangan' => $faker->text(),
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ]

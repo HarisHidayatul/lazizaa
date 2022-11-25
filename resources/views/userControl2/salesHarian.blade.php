@@ -224,7 +224,7 @@
             border-radius: 6px;
             width: 96px;
             height: 44px;
-            margin-top: 50px;
+            /* margin-top: 50px; */
             float: right;
         }
 
@@ -274,10 +274,30 @@
             position: absolute;
             left: 58%;
         }
+
         input[type='number']:focus {
             border: 1.0663px solid #B20731;
             box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
             border-radius: 5.68696px;
+        }
+
+        .requestItem {
+
+            /* Semibold/XS */
+
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            margin-top: 15px;
+            /* identical to box height */
+
+
+            /* Main color/Red/50 */
+            color: #B20731;
+
+            cursor: pointer;
         }
     </style>
 </head>
@@ -319,7 +339,13 @@
                     <h7 id="totalALL">Rp. 0</h7>
                 </div>
             </div>
-            <button type="button" class="btn" onclick="submitSalesHarian();">Simpan</button>
+            <div style="content: ''; height: 55px"></div>
+            <div class="row">
+                <div class="col-6 requestItem" onclick="goToRequestItem();">Requset Item?</div>
+                <div class="col-6">
+                    <button type="button" class="btn" onclick="submitSalesHarian();">Simpan</button>
+                </div>
+            </div>
             <div style="content: ''; height: 125px"></div>
         </div>
     </div>
@@ -351,20 +377,24 @@
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-    function goToSoHarian(){
+    function goToSoHarian() {
         window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
     }
 
-    function goToSalesHarian(){
+    function goToSalesHarian() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
     }
 
-    function goToWasteHarian(){
+    function goToWasteHarian() {
         window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
     }
 
-    function goToPattyCashHarian(){
+    function goToPattyCashHarian() {
         window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToRequestItem(){
+        window.location.href = "{{ url('user/request/salesHarian') }}" + '/' + dateSelected;
     }
 
     $(document).ready(function() {

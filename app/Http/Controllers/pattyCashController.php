@@ -87,12 +87,24 @@ class pattyCashController extends Controller
 
     public function storeItemRevision(Request $request)
     {
-        $dataArray = [
-            'Item' => $request->Item,
-            'idSatuan' => $request->idSatuan,
-            'idOutlet' => $request->idOutlet
-        ];
-        reqItemPattyCash::create($dataArray);
+        $idBrand = doutlet::find($request->idOutlet)->dBrands->id;
+        $checkRevisi = reqItemPattyCash::where('idBrand', '=', $idBrand)
+            ->where('Item', '=', $request->Item)
+            ->where('idSatuan', '=', $request->idSatuan)
+            ->first();
+        // @dd($checkRevisi);
+        if ($checkRevisi == null) {
+            $dataArray = [
+                'Item' => $request->Item,
+                'idSatuan' => $request->idSatuan,
+                'idBrand' => $idBrand,
+                'idOutlet' => $request->idOutlet
+            ];
+            reqItemPattyCash::create($dataArray);
+            echo 1;
+        } else {
+            echo 0;
+        }
     }
     public function storeRevisionCheck(Request $request)
     {
@@ -230,7 +242,7 @@ class pattyCashController extends Controller
         ]);
     }
     public function showRevisiOutlet($id){
-        $listPattyCash = reqItemPattyCash::where('idOutlet','=',$id)->get();
+        $listPattyCash = reqItemPattyCash::where('idOutlet','=',$id)->orderBy('id', 'DESC')->get();
         $arraylistPattyCash = [];
         // @dd($listPattyCash[0]->satuans);
         for ($i = 0; $i < $listPattyCash->count(); $i++) {

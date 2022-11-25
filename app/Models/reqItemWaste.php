@@ -32,6 +32,7 @@ class reqItemWaste extends Model
         'Item',
         'idSatuan',
         'idOutlet',
+        'idBrand',
         'idJenisBahan',
         'created_at',
         'update_at',

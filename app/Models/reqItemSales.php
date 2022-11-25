@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class reqItemPattyCash extends Model
+class reqItemSales extends Model
 {
     use HasFactory;
-    public $table = 'reqItemPattyCash';
+    public $table = 'reqItemSales';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     
@@ -16,20 +16,15 @@ class reqItemPattyCash extends Model
         return $this->belongsTo(doutlet::class,'idOutlet','id');
     }
 
-    public function dbrands(){
-        return $this->hasOneThrough(dBrand::class,doutlet::class,'id','id','idOutlet','idBrand');
-    }
-
-    public function satuans(){
-        return $this->belongsTo(satuan::class,'idSatuan','id');
+    public function listSaless(){
+        return $this->belongsTo(listSales::class,'idSales','id');
     }
 
     protected $fillable = [
-        'Item',
-        'idSatuan',
         'idOutlet',
-        'idBrand',
+        'idSales',
         'created_at',
         'update_at',
     ];
+    
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,12 +25,27 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <h6>Nama Type Yang Tersedia : </h6>
     <div id='showType'></div>
     <h6>Tambahkan Type: </h6>
     <h7>Nama Type : </h7><input type="text" id="tambahTypeSales"><br><br>
     <button onclick="sendAddType()">Send Type</button><br><br>
+
+    <h6>Pending Item (Request): </h6><br>
+    <table class="table table-bordered" style="width: 50%" id="revisionTable">
+        <thead>
+            <tr>
+                <th>Nama Sales</th>
+                <th>Outlet</th>
+                <th>Accept</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <h6>Pilih Type: </h6>
     <select id='selType' style='width: 200px;'>
@@ -45,7 +61,8 @@
     <input type="text" id="addItemSalesOnType">
     <button id="ItemAddOnType" onclick="sendAddItem()" disabled>Add Item</button><br><br>
 
-    <br><h7>Hapus Item Didalam Tipe Ini : </h7><br><br>
+    <br>
+    <h7>Hapus Item Didalam Tipe Ini : </h7><br><br>
     <select id='delItemOnType' style='width: 200px;'>
     </select>
     <button id="ItemDelOnType" onclick="delItemOnTypeBtn()" disabled>Del Item</button><br><br>
@@ -69,16 +86,45 @@
     <select id="delItem" style='width: 200px;'>
     </select>
     <button onclick="delItemOnOutlet()">Del Item</button><br><br>
-    
+
     <script>
-        
-        function delItemOnOutlet(){
+        $(document).on("click", "[id^=a]", function(event, ui) {
+            //function for accept (when clicked)
+            var idClickAccept = this.id.substring(1);
+            // alert(idClickAccept+'a');
+            processAcceptDel('1', idClickAccept);
+        });
+        $(document).on("click", "[id^=b]", function(event, ui) {
+            //function for delete (when clicked)
+            var idClickDelete = this.id.substring(1);
+            // alert(idClickDelete+'b');
+            processAcceptDel('2', idClickDelete);
+        });
+
+        function processAcceptDel(status, idRev) {
+            $.ajax({
+                url: "{{ url('salesHarian/items/store/request') }}",
+                type: 'get',
+                data: {
+                    status: status,
+                    idRev: idRev,
+                },
+                success: function(response) {
+                    getListAllRequest();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function delItemOnOutlet() {
             $.ajax({
                 url: "{{ url('typeSales/item/outlet/delete') }}",
                 type: 'get',
-                data:{
-                    idOutlet : $('#showOutletItem').val(),
-                    idListSales : $('#delItem').val()
+                data: {
+                    idOutlet: $('#showOutletItem').val(),
+                    idListSales: $('#delItem').val()
 
                 },
                 success: function(response) {
@@ -89,13 +135,14 @@
                 }
             });
         }
-        function setItemOnOutlet(){
+
+        function setItemOnOutlet() {
             $.ajax({
                 url: "{{ url('typeSales/item/outlet/store') }}",
                 type: 'get',
-                data:{
-                    idOutlet : $('#showOutletItem').val(),
-                    idListSales : $('#allItem').val()
+                data: {
+                    idOutlet: $('#showOutletItem').val(),
+                    idListSales: $('#allItem').val()
 
                 },
                 success: function(response) {
@@ -106,9 +153,10 @@
                 }
             });
         }
-        function getItemOnOutlet(id){
+
+        function getItemOnOutlet(id) {
             $.ajax({
-                url: "{{ url('typeSales/outlet/show/item/') }}" +'/' + id,
+                url: "{{ url('typeSales/outlet/show/item/') }}" + '/' + id,
                 type: 'get',
                 success: function(response) {
                     console.log(response);
@@ -131,7 +179,8 @@
                 }
             });
         }
-        function getAllItem(){
+
+        function getAllItem() {
             $.ajax({
                 url: "{{ url('typeSales/items/show') }}",
                 type: 'get',
@@ -157,6 +206,40 @@
                 }
             });
         }
+
+        function getListAllRequest() {
+            $.ajax({
+                url: "{{ url('salesHarian/items/show/req') }}",
+                type: 'get',
+                success: function(response) {
+                    var order_data = '';
+                    var obj = JSON.parse(JSON.stringify(response));
+                    console.log(obj);
+                    for (var i = 0; i < obj.reqSales.length; i++) {
+                        order_data += '<tr>';
+                        order_data += '<td>';
+                        order_data += obj.reqSales[i].sales;
+                        order_data += '</td>';
+                        order_data += '<td>';
+                        order_data += obj.reqSales[i].outlet;
+                        order_data += '</td>';
+                        order_data +=
+                            '<td><a href="#" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Accept" id="a' +
+                            obj.reqSales[i].id + '">&#xe5ca;</i></a></td>';
+                        order_data +=
+                            '<td><a href="#" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete" id="b' +
+                            obj.reqSales[i].id + '">&#xe14c;</i></a></td>';
+                        order_data += '</tr>';
+                    }
+                    $('#revisionTable>tbody').empty().append(order_data);
+
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            });
+        }
+
         function showOutlet() {
             $.ajax({
                 url: "{{ url('show/outlet') }}",
@@ -179,13 +262,15 @@
                 }
             });
         }
-        function setOutlet(){
+
+        function setOutlet() {
             var namaOutlet = $('#showOutletItem option:selected').text();
             var typeId = $('#showOutletItem').val();
             getItemOnOutlet(typeId);
             document.getElementById('selectedOutlet').innerHTML = (namaOutlet + ' id = ' + typeId);
-            
+
         }
+
         function setType() {
             var nameType = $('#selType option:selected').text();
             var typeId = $('#selType').val();
@@ -196,12 +281,13 @@
             getListItemOnType(typeId);
             // getTypeOutlet(typeId);
         }
-        function sendAddItem(){
+
+        function sendAddItem() {
             $.ajax({
                 url: "{{ url('typeSales/item/store') }}",
                 type: 'get',
                 data: {
-                    idType:  $('#selType').val(),
+                    idType: $('#selType').val(),
                     NamaItem: document.getElementById('addItemSalesOnType').value,
                 },
                 success: function(response) {
@@ -212,9 +298,10 @@
                     console.log(err);
                 }
             })
-            
+
         }
-        function sendAddType(){
+
+        function sendAddType() {
             $.ajax({
                 url: "{{ url('typeSales/store') }}",
                 type: 'get',
@@ -230,9 +317,10 @@
                 }
             })
         }
-        function getListItemOnType(id){
+
+        function getListItemOnType(id) {
             $.ajax({
-                url: "{{ url('typeSales/item/show/') }}" +'/' + id,
+                url: "{{ url('typeSales/item/show/') }}" + '/' + id,
                 type: 'get',
                 success: function(response) {
                     console.log(response);
@@ -256,6 +344,7 @@
                 }
             });
         }
+
         function getListAllType() {
             $.ajax({
                 url: "{{ url('typeSales/show') }}",
@@ -286,7 +375,9 @@
             getListAllType();
             showOutlet();
             getAllItem();
+            getListAllRequest();
         })
     </script>
 </body>
+
 </html>

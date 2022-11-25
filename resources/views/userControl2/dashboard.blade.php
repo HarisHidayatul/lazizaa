@@ -103,7 +103,7 @@
         }
 
         .imageLogo {
-            width: 85px;
+            /* width: 85px; */
             height: 30px;
             margin-top: 25%;
             position: absolute;

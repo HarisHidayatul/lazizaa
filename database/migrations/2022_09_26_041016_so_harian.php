@@ -183,6 +183,7 @@ return new class extends Migration
         Schema::dropIfExists('fsoharian');
         Schema::dropIfExists('listItemSO');        
         
+        Schema::dropIfExists('reqItemSales');
         Schema::dropIfExists('outletListSales');
         Schema::dropIfExists('salesFill');
         Schema::dropIfExists('listSales');

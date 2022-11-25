@@ -47,9 +47,9 @@ class wasteController extends Controller
     public function store(Request $request)
     {
         //
-        $data = wasteFill::where('idWaste','=',$request->idWaste)
-                ->where('idListItem','=',$request->idListItem)->first();
-        if($data == null){
+        $data = wasteFill::where('idWaste', '=', $request->idWaste)
+            ->where('idListItem', '=', $request->idListItem)->first();
+        if ($data == null) {
             $dataArray = [
                 'idWaste' => $request->idWaste,
                 'idListItem' => $request->idListItem,
@@ -60,7 +60,7 @@ class wasteController extends Controller
             ];
             wasteFill::create($dataArray);
             echo 1;
-        }else{
+        } else {
             echo 0;
         }
     }
@@ -78,13 +78,27 @@ class wasteController extends Controller
 
     public function storeItemRevision(Request $request)
     {
-        $dataArray = [
-            'Item' => $request->Item,
-            'idSatuan' => $request->idSatuan,
-            'idOutlet' => $request->idOutlet,
-            'idJenisBahan' => $request->idJenisBahan
-        ];
-        reqItemWaste::create($dataArray);
+        // @dd($request);
+        $idBrand = doutlet::find($request->idOutlet)->dBrands->id;
+        $checkRevisi = reqItemWaste::where('idBrand', '=', $idBrand)
+            ->where('Item', '=', $request->Item)
+            ->where('idSatuan', '=', $request->idSatuan)
+            ->where('idJenisBahan','=',$request->idJenisBahan)
+            ->first();
+        // @dd($checkRevisi);
+        if ($checkRevisi == null) {
+            $dataArray = [
+                'Item' => $request->Item,
+                'idSatuan' => $request->idSatuan,
+                'idOutlet' => $request->idOutlet,
+                'idBrand' => $idBrand,
+                'idJenisBahan' => $request->idJenisBahan
+            ];
+            reqItemWaste::create($dataArray);
+            echo 1;
+        } else {
+            echo 0;
+        }
     }
 
     public function storeBrandItem(Request $request)
@@ -116,7 +130,7 @@ class wasteController extends Controller
             $dataArray = [
                 'Item' => $item,
                 'idSatuan' => $idSatuan,
-                'idJenisBahan' =>$idJenisBahan
+                'idJenisBahan' => $idJenisBahan
             ];
             $id = listItemWaste::create($dataArray)->id;
             brandWaste::create([
@@ -190,7 +204,7 @@ class wasteController extends Controller
             if ($dataWaste != null) {
                 //Collect based on typeWaste
                 $allTypeWaste = jenisBahan::all();
-                
+
                 for ($i = 0; $i < $allTypeWaste->count(); $i++) {
                     $idType = $allTypeWaste[$i]->id;
                     $dataOnType = [];
@@ -199,7 +213,7 @@ class wasteController extends Controller
                             $userPengisi = dUser::find($dataWaste->listItemWastes[$j]->pivot->idPengisi);
                             $idRevQty = $dataWaste->listItemWastes[$j]->pivot->idRevQuantity;
                             $qty = $dataWaste->listItemWastes[$j]->pivot->quantity;
-                            if($idRevQty == 2){
+                            if ($idRevQty == 2) {
                                 $qty = $dataWaste->listItemWastes[$j]->pivot->quantity;
                             }
                             array_push($dataOnType, (object)[
@@ -212,8 +226,8 @@ class wasteController extends Controller
                             ]);
                         }
                     }
-                    if($dataOnType != null){
-                        array_push($allDataArray,(object)[
+                    if ($dataOnType != null) {
+                        array_push($allDataArray, (object)[
                             'type' => $allTypeWaste[$i]->jenis,
                             'idTtype' => $allTypeWaste[$i]->id,
                             'waste' => $dataOnType
@@ -260,7 +274,7 @@ class wasteController extends Controller
         echo $dataa;
     }
 
-    public function showAllRevisi()
+    public function showAllRequest()
     {
         $listWaste = reqItemWaste::all();
         $arraylistWaste = [];
@@ -283,8 +297,9 @@ class wasteController extends Controller
         ]);
     }
 
-    public function showRevisiOutlet($id){
-        $listWaste = reqItemWaste::where('idOutlet','=',$id)->get();
+    public function showRevisiOutlet($id)
+    {
+        $listWaste = reqItemWaste::where('idOutlet', '=', $id)->orderBy('id', 'DESC')->get();
         $arraylistWaste = [];
         // @dd($listWaste[0]->satuans);
         for ($i = 0; $i < $listWaste->count(); $i++) {
@@ -294,8 +309,6 @@ class wasteController extends Controller
                 'id' => $listWaste[$i]['id'],
                 'Item' => $listWaste[$i]['Item'],
                 'Satuan' => $listWaste[$i]->satuans['Satuan'],
-                // 'Outlet' => $outlet['Nama Store'],
-                // 'Brand' => $brand['Nama Brand'],
                 'jenisBahan' => $listWaste[$i]->jenisBahans['jenis']
             ]);
         }
@@ -312,7 +325,7 @@ class wasteController extends Controller
         $jenisBahanArray = array();
 
         for ($i = 0; $i < $jenisBahan->count(); $i++) {
-            array_push($jenisBahanArray, array($jenisBahan[$i]->id,$jenisBahan[$i]->jenis));
+            array_push($jenisBahanArray, array($jenisBahan[$i]->id, $jenisBahan[$i]->jenis));
         }
         // @dd($jenisBahanArray[1][1]);
         // @dd($dataa);
@@ -327,15 +340,15 @@ class wasteController extends Controller
             ]);
         }
         // @dd($arrayData[0]->Item);
-        $arraySortData =[];
-        for($i=0;$i<count($jenisBahanArray);$i++){
+        $arraySortData = [];
+        for ($i = 0; $i < count($jenisBahanArray); $i++) {
             $arrayItem = [];
-            for($j=0;$j<count($arrayData);$j++){
-                if($jenisBahanArray[$i][0]==$arrayData[$j]->idJenisBahan){
-                    array_push($arrayItem,$arrayData[$j]);
+            for ($j = 0; $j < count($arrayData); $j++) {
+                if ($jenisBahanArray[$i][0] == $arrayData[$j]->idJenisBahan) {
+                    array_push($arrayItem, $arrayData[$j]);
                 }
             }
-            array_push($arraySortData,(object)[
+            array_push($arraySortData, (object)[
                 'jenisBahan' => $jenisBahanArray[$i][1],
                 'idJenis' => $jenisBahanArray[$i][0],
                 'waste' => $arrayItem
@@ -454,7 +467,7 @@ class wasteController extends Controller
                         if ($idQtyRevisi == '3') {
                             $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantity;
                         } else {
-                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantityRevisi;   
+                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantityRevisi;
                         }
                         $userPengisi = dUser::find($datawaste[$i]->listItemWastes[$j]->pivot->idPengisi);
                         $userPerevisi = dUser::find($datawaste[$i]->listItemWastes[$j]->pivot->idPerevisi);
