@@ -94,7 +94,6 @@ Route::get('salesHarian/show/revision/done', [salesHarianController::class, 'sho
 Route::get('salesHarian/items/show/req', [salesHarianController::class, 'showAllRequest']);
 Route::get('salesHarian/items/store/request', [salesHarianController::class, 'storeRevisionCheck']);
 
-
 Route::get('salesHarian/data/getId', [salesHarianController::class, 'showAndCreateID']);
 Route::get('salesHarian/store/data', [salesHarianController::class, 'store']);
 Route::get('salesHarian/items/store/revision', [salesHarianController::class, 'storeItemRevision']);
@@ -117,7 +116,6 @@ Route::get('pattyCash/items/revisi/outlet/{id}', [pattyCashController::class, 's
 Route::get('pattyCash/brand/show', [pattyCashController::class, 'showAllBrand']);
 Route::get('pattyCash/brand/show/item', [pattyCashController::class, 'showItemOnBrand']);
 Route::get('pattyCash/user/showTable/{id}/{date}', [pattyCashController::class, 'show']); //show id untuk outlet
-
 
 Route::get('pattyCash/show/revision/all', [pattyCashController::class, 'showDateRevision']);
 Route::get('pattyCash/show/revision/done', [pattyCashController::class, 'showDateRevisionDone']);
