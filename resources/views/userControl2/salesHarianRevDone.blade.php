@@ -432,7 +432,8 @@
             text-align: end;
             margin-top: 1px;
         }
-        .arrowRight{
+
+        .arrowRight {
             color: #585858;
         }
     </style>
@@ -458,8 +459,8 @@
         <div class="container1">
             <div class="revHeader">Revisi sales</div>
             <div class="d-flex justify-content-between boxTop">
-                <div class="subBoxTop">Belum</div>
-                <div class="subBoxTop subActive">Sudah</div>
+                <div class="subBoxTop" onclick="goToSalesBelum();">Belum</div>
+                <div class="subBoxTop subActive" onclick="goToSalesSudah();">Sudah</div>
             </div>
             <div style="content: ''; height:20px;"></div>
             {{-- <div class="dateTop">Selasa 1 November</div>
@@ -539,10 +540,19 @@
         document.getElementById('requestTab').style.display = "none";
         showRevAll();
     });
+
     $('#exampleModal').on('hidden.bs.modal', function() {
         // do something…
         requestShow();
     })
+
+    function goToSalesBelum(){
+        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
+    }
+
+    function goToSalesSudah(){
+        window.location.href = "{{ url('user/rev/salesHarian/done') }}";
+    }
 
     function requestShow() {
         document.getElementById('requestTab').style.display = "block";
@@ -577,6 +587,10 @@
         window.location.href = "{{ url('user/logout') }}";
     }
 
+    function goToRevSales(idSalesFill) {
+        window.location.href = "{{ url('user/rev/salesHarian/done/date') }}" + '/' + idSalesFill;
+    }
+
     function showRevAll() {
         $.ajax({
             url: "{{ url('salesHarian/show/revision/done/outlet') }}" + '/' + "{{ session('idOutlet') }}",
@@ -594,7 +608,10 @@
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';
                     for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
                         for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                            dataRev += '<div class="d-flex justify-content-between boxDetail">';
+                            dataRev +=
+                                '<div class="d-flex justify-content-between boxDetail" onclick="goToRevSales(' +
+                                obj.itemSales[i].Item[j].Item[k].idSalesFill +
+                                ');">';
                             dataRev += '<div class="d-flex justify-content-start">';
                             dataRev += '<div><img src="' + urlImage +
                                 '" alt="" style="height: 35px;"></div>';
@@ -602,7 +619,8 @@
                                 '<div style="margin-left: 10px; margin-top:3px;"><div class="detailTitle">';
                             dataRev += obj.itemSales[i].Item[j].Item[k].sales;
                             dataRev += '</div><div class="detailSubTitle">';
-                            dataRev += obj.itemSales[i].Item[j].Item[k].namaPengisi;
+                            dataRev += obj.itemSales[i].Item[j].Item[k].namaPengisi + obj.itemSales[i].Item[
+                                j].Item[k].idSalesFill;
                             dataRev += '</div></div></div><div><div style="content: ' + "'';" +
                                 'height: 6px;"></div>';
                             dataRev += '<div class="arrowRight">&#10095;</div>';

@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Detail SO Harian</title>
+    <title>Detail Sales Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -55,7 +55,7 @@
         }
 
         .containerBottom {
-            margin-top: 30px;
+            /* margin-top: 30px; */
             /* height: 500px; */
 
             background: #FCFBFB;
@@ -186,7 +186,7 @@
             cursor: pointer;
             position: absolute;
             z-index: 1;
-            top: 360px;
+            top: 480px;
             right: 70px;
             color: white;
         }
@@ -208,7 +208,7 @@
             cursor: pointer;
             position: absolute;
             z-index: 1;
-            top: 360px;
+            top: 480px;
             right: 55px;
             color: white;
         }
@@ -230,7 +230,7 @@
             cursor: pointer;
             position: absolute;
             z-index: 1;
-            top: 360px;
+            top: 480px;
             right: 40px;
             color: white;
         }
@@ -252,7 +252,7 @@
             cursor: pointer;
             position: absolute;
             z-index: 1;
-            top: 360px;
+            top: 480px;
             right: 25px;
             color: white;
         }
@@ -510,6 +510,61 @@
             color: #B20731;
 
         }
+
+        .revisiWrap {
+            margin: 0px 20px;
+        }
+
+        .wrapBottom {
+            background: #B20731;
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.1), 0px -2.22px 11.1008px -1.11008px rgba(50, 50, 71, 0.08);
+            border-radius: 32px;
+        }
+
+        .titleWrap {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 140%;
+            padding-top: 10px;
+            color: #FFFFFF;
+        }
+
+        .titleSubRev {
+            /* Semibold/XS */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            margin-bottom: 5px;
+            /* identical to box height */
+            /* Greyscale/10 */
+            color: #FFFFFF;
+        }
+
+        .borderRev {
+            content: '';
+            margin-top: 10px;
+            margin-left: 20px;
+            width: 1px;
+            height: 25px;
+            background: #FCFBFB;
+        }
+
+        .detailSubRev {
+            /* Semibold/base */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            /* or 22px */
+
+            /* Greyscale/10 */
+            color: #FFFFFF;
+        }
     </style>
 </head>
 
@@ -530,7 +585,7 @@
         <h1>Detail Laporan</h1>
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 5px;">
-        <img src="{{ url('img/pointMap.png') }}" alt="map" style="height: 18px; margin-top: 1px">
+        <img src="{{ url('img/pointMap.png') }}" alt="map" style="height: 18px; margin-top: 1px;">
         <h2 style="margin-left: 5px;">{{ session('Outlet') }}</h2>
     </div>
     <div class="d-flex justify-content-center">
@@ -542,48 +597,69 @@
     <div class="d-flex justify-content-center">
         <h4 id="dateSelected">Selasa, 01 November 2022</h4>
     </div>
-    <div class="containerBottom">
-        <div style="height: 20px;content: ''"></div>
-        <div style="margin-left: 20px; margin-right: 20px;">
-            <div class="d-flex justify-content-between boxPengisi">
-                <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
-                <div>
-                    <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
-                </div>
-            </div>
+    <div style="height: 50px;content: ''"></div>
+    <div class="wrapBottom">
+        <div class="revisiWrap">
+            <div class="titleWrap">Revisi</div>
+            <div style="content: ''; height: 10px;"></div>
             <div class="d-flex justify-content-between">
                 <div>
-                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Status</h5>
+                    <div class="titleSubRev">Dine In</div>
+                    <div class="detailSubRev">CU <span id="cuRev">47</span></div>
+                </div>
+                <div class="borderRev"></div>
+                <div style="text-align: end;">
+                    <div class="titleSubRev">Total</div>
+                    <div class="detailSubRev">Rp <span id="totalRev">600.323</span></div>
+                </div>
+            </div>
+            <div style="content: ''; height: 10px;"></div>
+        </div>
+        {{-- <div style="content: ''; height:50px;"></div> --}}
+        <div class="containerBottom">
+            <div style="height: 20px;content: ''"></div>
+            <div style="margin-left: 20px; margin-right: 20px;">
+                <div class="d-flex justify-content-between boxPengisi">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
+                    <div>
+                        <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Status</h5>
+                    </div>
+                    <div>
+                        <h5 style="margin-top: 7px; margin-left: 10px; color: #B20731; font-weight: 600;">Belum</h5>
+                    </div>
                 </div>
                 <div>
-                    <h5 style="margin-top: 7px; margin-left: 10px; color: #008000; font-weight: 600;">Sudah</h5>
+                    <div style="height: 15px; content: '';"></div>
+                    <div id="dataFill"></div>
+                    <div style="content: ''; height: 30px"></div>
+                    <div>
+                        <div id="dataBottom"></div>
+                        <div class="d-flex justify-content-between borderTotal"></div>
+                        <div class="d-flex justify-content-between totalSales">
+                            <div class="totalBottom">Total Sales</div>
+                            <div class="totalBottomVal" id="totalAll">Rp 0</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="goToEdit();">Edit</button>
+                    <div style="content: ''; height: 150px"></div>
                 </div>
             </div>
-            <div style="height: 15px;content: ''"></div>
-            <div id="dataFill"></div>
-            <div style="content: ''; height: 30px"></div>
-            <div>
-                <div id="dataBottom"></div>
-                <div class="d-flex justify-content-between borderTotal"></div>
-                <div class="d-flex justify-content-between totalSales">
-                    <div class="totalBottom">Total Sales</div>
-                    <div class="totalBottomVal" id="totalAll">Rp 0</div>
+        </div>
+        <div id="pengisiModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content modalContent">
+                    <div id="pengisiFill"></div>
                 </div>
             </div>
-            <button type="button" class="btn" onclick="goToEdit();">Edit</button>
-            <div style="content: ''; height: 150px"></div>
         </div>
-    </div>
-    <div id="pengisiModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content modalContent">
-                <div id="pengisiFill"></div>
-            </div>
-        </div>
-    </div>
 </body>
 <script>
     var dateSelected = "";
@@ -626,11 +702,12 @@
                 var day = new Date(allData.tanggal);
                 console.log(day);
                 var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] +
-                    ' ' + (day.getYear() + 1900);
+                    ' ' + (day
+                        .getYear() + 1900);
                 document.getElementById('dateSelected').innerHTML = stringDay;
-                // document.getElementById('cuRev').innerHTML = allData.cu;
-                // document.getElementById('totalRev').innerHTML = allData.total.toLocaleString().replace(',',
-                //     '.');
+                document.getElementById('cuRev').innerHTML = allData.cu;
+                document.getElementById('totalRev').innerHTML = allData.total.toLocaleString().replace(',',
+                    '.');
                 for (var i = 0; i < obj.length; i++) {
                     dataFill += '<div><div class="d-flex justify-content-start typeSales">';
                     dataFill += obj[i].type;
@@ -729,7 +806,7 @@
     }
 
     function goToDashboard() {
-        window.location.href = "{{ url('user/rev/salesHarian/done') }}";
+        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
     }
 </script>
 

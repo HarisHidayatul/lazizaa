@@ -455,8 +455,8 @@
         <div class="container1">
             <div class="revHeader">Revisi sales</div>
             <div class="d-flex justify-content-between boxTop">
-                <div class="subBoxTop subActive">Belum</div>
-                <div class="subBoxTop">Sudah</div>
+                <div class="subBoxTop subActive" onclick="goToSalesBelum();">Belum</div>
+                <div class="subBoxTop" onclick="goToSalesSudah();">Sudah</div>
             </div>
             <div style="content: ''; height:20px;"></div>
             {{-- <div class="dateTop">Selasa 1 November</div>
@@ -490,7 +490,7 @@
                         <div class="row menuNotActive menuActive" id="dashboardMenu" onclick="dashboardShow();">
                             <div class="col-1"><img src="{{ url('img/dashboard/dashboardIconActive.png') }}"
                                     alt="" style="height: 20px;margin-top:-2px;" id="dashboardIcon"></div>
-                            <div class="col-6" style="text-align: left">Dashboard</div>
+                            <div class="col-6" style="text-align: left" onclick="goToDashboard();">Dashboard</div>
                             <div class="col-3" style="text-align: right"></div>
                         </div>
                         <div class="row menuNotActive" style="margin-top: 25px;" onclick="requestShow();"
@@ -507,14 +507,20 @@
                             <div class="row rowRequest">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
-                        <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu">
+                        <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu" onclick="revisiShow();">
                             <div class="col-1">
-                                <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}" alt=""
-                                        style="height: 20px;margin-top:-2px; margin-left:-15px;" id="revisiIcon">
-                                </div>
+                                <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}"
+                                        alt="" style="height: 20px;margin-top:-2px; margin-left:-15px;" id="revisiIcon"></div>
                             </div>
                             <div class="col-6" style="text-align: left">Revisi</div>
                             <div class="col-3" style="text-align: right" id="arrowRevisi">&#10095;</div>
+                        </div>
+                        <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="revisiTab">
+                            <div style="content: '';height:5px;"></div>
+                            <div class="row rowRequest activeRequest" onclick="goToRevisiSales();">Sales</div>
+                            <div class="row rowRequest">Waste</div>
+                            <div class="row rowRequest">Pembelian</div>
+                            <div style="content: '';height:10px;"></div>
                         </div>
                     </div>
 
@@ -531,9 +537,18 @@
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
+
+    function goToSalesBelum() {
+        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
+    }
+
+    function goToSalesSudah() {
+        window.location.href = "{{ url('user/rev/salesHarian/done') }}";
+    }
+    
+
     $(document).ready(function() {
-        requestShow();
-        document.getElementById('requestTab').style.display = "none";
+        revisiShow();
         showRevAll();
     });
     $('#exampleModal').on('hidden.bs.modal', function() {
@@ -541,14 +556,22 @@
         requestShow();
     })
 
+    
+    function goToDashboard() {
+        window.location.href = "{{ url('user/dashboard') }}";
+    }    
+    function goToRevisiSales(){
+        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
+    }
     function requestShow() {
         document.getElementById('requestTab').style.display = "block";
         document.getElementById('revisiMenu').classList.remove("menuActive");
         document.getElementById('requestMenu').classList.add("menuActive");
         // $("#requestIcon").attr("src","img/dashboard/requestIconActive.png");
         document.getElementById('arrowRequest').classList.add("arrowChange");
-        document.getElementById('requestIcon').src = "{{ url('img/dashboard/requestIconActive.png') }}";
+        document.getElementById('requestIcon').src="{{ url('img/dashboard/requestIconActive.png') }}";
         dashboardHide();
+        revisiHide();
     }
 
     function requestHide() {
@@ -556,22 +579,43 @@
         document.getElementById('requestMenu').classList.remove("menuActive");
         // $("#requestIcon").attr("src","img/dashboard/requestIcon.png");
         document.getElementById('arrowRequest').classList.remove("arrowChange");
-        document.getElementById('requestIcon').src = "{{ url('img/dashboard/requestIcon.png') }}";
+        document.getElementById('requestIcon').src="{{ url('img/dashboard/requestIcon.png') }}";
     }
-
-    function dashboardShow() {
+    function dashboardShow(){
         document.getElementById('dashboardMenu').classList.add("menuActive");
-        document.getElementById('dashboardIcon').src = "{{ url('img/dashboard/dashboardIconActive.png') }}";
+        document.getElementById('dashboardIcon').src="{{ url('img/dashboard/dashboardIconActive.png') }}";
+        requestHide();
+        revisiHide();
+        goToDashboard();
+    }
+    function dashboardHide(){
+        document.getElementById('dashboardMenu').classList.remove("menuActive");
+        document.getElementById('dashboardIcon').src="{{ url('img/dashboard/dashboardIcon.png') }}";
+    }
+    function revisiShow(){
+        document.getElementById('revisiTab').style.display = "block";
+        document.getElementById('revisiMenu').classList.add("menuActive");
+        // $("#requestIcon").attr("src","img/dashboard/requestIconActive.png");
+        document.getElementById('arrowRevisi').classList.add("arrowChange");
+        document.getElementById('revisiIcon').src="{{ url('img/dashboard/revisiIconActive.png') }}";
+        dashboardHide();
         requestHide();
     }
-
-    function dashboardHide() {
-        document.getElementById('dashboardMenu').classList.remove("menuActive");
-        document.getElementById('dashboardIcon').src = "{{ url('img/dashboard/dashboardIcon.png') }}";
+    function revisiHide(){
+        document.getElementById('revisiTab').style.display = "none";
+        document.getElementById('revisiMenu').classList.remove("menuActive");
+        document.getElementById('arrowRevisi').classList.remove("arrowChange");
+        document.getElementById('revisiIcon').src="{{ url('img/dashboard/revisiIcon.png') }}";
     }
 
     function logout() {
         window.location.href = "{{ url('user/logout') }}";
+    }
+
+
+    function goToRevSales(idSalesFill) {
+        console.log(idSalesFill);
+        window.location.href = "{{ url('user/rev/salesHarian/all/date') }}" + '/' + idSalesFill;
     }
 
     function showRevAll() {
@@ -591,7 +635,10 @@
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';
                     for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
                         for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                            dataRev += '<div class="d-flex justify-content-between boxDetail">';
+                            dataRev +=
+                                '<div class="d-flex justify-content-between boxDetail" onclick="goToRevSales(' +
+                                obj.itemSales[i].Item[j].Item[k].idSalesFill +
+                                ');">';
                             dataRev += '<div class="d-flex justify-content-start">';
                             dataRev += '<div><img src="' + urlImage +
                                 '" alt="" style="height: 35px;"></div>';

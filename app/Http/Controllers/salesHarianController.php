@@ -227,8 +227,14 @@ class salesHarianController extends Controller
         $datasales = null;
         $allDataArray = [];
         $datasales = $salesFill->salesHarians;
-        $cu = null;
-        $total = null;
+        $cu = $salesFill->cu;
+        $total = $salesFill->total;
+        if($salesFill->idRevisiCu == '2'){
+            $cu = $salesFill->cuRevisi;
+        }
+        if($salesFill->idRevisiTotal == '2'){
+            $total = $salesFill->totalRevisi;
+        }
         if ($datasales != null) {
             // @dd($datasales->listSaless[0]->typeSaless);
             //Collect based on typeSales
@@ -251,8 +257,6 @@ class salesHarianController extends Controller
                         if ($idTotalRevisi == '2') {
                             $totalQty = $datasales->listSaless[$j]->pivot->totalRevisi;
                         }
-                        $cu = $cuQty;
-                        $total = $totalQty;
                         array_push($dataOnType, (object)[
                             'idSalesFill' => $datasales->listSaless[$j]->pivot->id,
                             'sales' => $datasales->listSaless[$j]->sales,

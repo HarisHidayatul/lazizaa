@@ -551,13 +551,20 @@
                             <div class="row rowRequest">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
-                        <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu">
+                        <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu" onclick="revisiShow();">
                             <div class="col-1">
                                 <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}"
                                         alt="" style="height: 20px;margin-top:-2px; margin-left:-15px;" id="revisiIcon"></div>
                             </div>
                             <div class="col-6" style="text-align: left">Revisi</div>
                             <div class="col-3" style="text-align: right" id="arrowRevisi">&#10095;</div>
+                        </div>
+                        <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="revisiTab">
+                            <div style="content: '';height:5px;"></div>
+                            <div class="row rowRequest activeRequest" onclick="goToRevisiSales();">Sales</div>
+                            <div class="row rowRequest">Waste</div>
+                            <div class="row rowRequest">Pembelian</div>
+                            <div style="content: '';height:10px;"></div>
                         </div>
                     </div>
 
@@ -589,15 +596,21 @@
 
     $(document).ready(function() {
         getDataOnAllDate();
-        $('#exampleModal').modal('show');
-        document.getElementById('requestTab').style.display = "none";
-
+        // $('#exampleModal').modal('show');
+        dashboardShow();
     });
     $('#exampleModal').on('hidden.bs.modal', function() {
         // do something…
         dashboardShow();
     })
 
+    
+    function goToDashboard() {
+        window.location.href = "{{ url('user/dashboard') }}";
+    }    
+    function goToRevisiSales(){
+        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
+    }
     function requestShow() {
         document.getElementById('requestTab').style.display = "block";
         document.getElementById('revisiMenu').classList.remove("menuActive");
@@ -606,6 +619,7 @@
         document.getElementById('arrowRequest').classList.add("arrowChange");
         document.getElementById('requestIcon').src="{{ url('img/dashboard/requestIconActive.png') }}";
         dashboardHide();
+        revisiHide();
     }
 
     function requestHide() {
@@ -619,10 +633,26 @@
         document.getElementById('dashboardMenu').classList.add("menuActive");
         document.getElementById('dashboardIcon').src="{{ url('img/dashboard/dashboardIconActive.png') }}";
         requestHide();
+        revisiHide();
     }
     function dashboardHide(){
         document.getElementById('dashboardMenu').classList.remove("menuActive");
         document.getElementById('dashboardIcon').src="{{ url('img/dashboard/dashboardIcon.png') }}";
+    }
+    function revisiShow(){
+        document.getElementById('revisiTab').style.display = "block";
+        document.getElementById('revisiMenu').classList.add("menuActive");
+        // $("#requestIcon").attr("src","img/dashboard/requestIconActive.png");
+        document.getElementById('arrowRevisi').classList.add("arrowChange");
+        document.getElementById('revisiIcon').src="{{ url('img/dashboard/revisiIconActive.png') }}";
+        dashboardHide();
+        requestHide();
+    }
+    function revisiHide(){
+        document.getElementById('revisiTab').style.display = "none";
+        document.getElementById('revisiMenu').classList.remove("menuActive");
+        document.getElementById('arrowRevisi').classList.remove("arrowChange");
+        document.getElementById('revisiIcon').src="{{ url('img/dashboard/revisiIcon.png') }}";
     }
 
     function logout() {

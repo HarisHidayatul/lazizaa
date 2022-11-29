@@ -239,6 +239,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/rev/salesHarian/done', function(){
         return view('userControl2.salesHarianRevDone');
     });
+    Route::get('user/rev/salesHarian/all/date/{idSalesFill}', function($idSalesFill){
+        return view('userControl2.salesHarianRevAllDetail',[
+            'idSalesFill' => $idSalesFill
+        ]);
+    });
     Route::get('user/rev/salesHarian/done/date/{idSalesFill}', function($idSalesFill){
         return view('userControl2.salesHarianRevDoneDetail',[
             'idSalesFill' => $idSalesFill
