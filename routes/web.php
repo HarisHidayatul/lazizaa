@@ -89,8 +89,13 @@ Route::get('salesHarian/show/list/{id}', [salesHarianController::class, 'showLis
 Route::get('salesHarian/show/list/all/{id}',[salesHarianController::class,'showListBasedType']);//show all item based on id outlet
 Route::get('salesHarian/user/showTable/{id}/{date}', [salesHarianController::class, 'show']); //show id untuk outlet
 Route::get('salesHarian/user/showAllData/{id}/{date}', [salesHarianController::class, 'showAllData']); //show id untuk outlet
+Route::get('salesHarian/show/salesFill/{id}', [salesHarianController::class, 'showOnSalesFill']);//menampilkan data seperti showAllData
+
 Route::get('salesHarian/show/revision/all', [salesHarianController::class, 'showDateRevision']); //menampilkan semua tanggal revisi
+Route::get('salesHarian/show/revision/outlet/{id}', [salesHarianController::class, 'showRevisionOutlet']); //menampilkan revisi outlet berdasarkan id
 Route::get('salesHarian/show/revision/done', [salesHarianController::class, 'showDateRevisionDone']); //menampilkan semua tanggal revisi
+Route::get('salesHarian/show/revision/done/outlet/{id}', [salesHarianController::class, 'showRevisionDoneOutlet']);
+
 Route::get('salesHarian/items/show/req', [salesHarianController::class, 'showAllRequest']);
 Route::get('salesHarian/items/store/request', [salesHarianController::class, 'storeRevisionCheck']);
 
@@ -226,6 +231,17 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/request/salesHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.salesHarianRequest',[
             'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/rev/salesHarian/all', function(){
+        return view('userControl2.salesHarianRevAll');
+    });
+    Route::get('user/rev/salesHarian/done', function(){
+        return view('userControl2.salesHarianRevDone');
+    });
+    Route::get('user/rev/salesHarian/done/date/{idSalesFill}', function($idSalesFill){
+        return view('userControl2.salesHarianRevDoneDetail',[
+            'idSalesFill' => $idSalesFill
         ]);
     });
     Route::get('user/wasteHarian/{dateSelect}', function($dateSelect){

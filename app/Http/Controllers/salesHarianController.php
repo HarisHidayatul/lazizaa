@@ -91,12 +91,12 @@ class salesHarianController extends Controller
         $idRev = $request->idRev;
 
         $reqSales = reqItemSales::find($idRev);
-        
+
         if ($status == '1') {
             //status 1 untuk accept
             $checkExist = outletListSales::where('idOutlet', '=', $reqSales->idOutlet)
-            ->where('idListSales', '=', $reqSales->idSales)
-            ->first();
+                ->where('idListSales', '=', $reqSales->idSales)
+                ->first();
             if ($checkExist == null) {
                 $dataArray = [
                     'idOutlet' => $reqSales->idOutlet,
@@ -219,6 +219,67 @@ class salesHarianController extends Controller
         return response()->json($allDataArray);
     }
 
+    public function showOnSalesFill($id)
+    {
+        $salesFill = salesFill::find($id);
+        // @dd($salesFill->salesHarians->tanggalAlls);
+        // @dd($tanggalAll);
+        $datasales = null;
+        $allDataArray = [];
+        $datasales = $salesFill->salesHarians;
+        $cu = null;
+        $total = null;
+        if ($datasales != null) {
+            // @dd($datasales->listSaless[0]->typeSaless);
+            //Collect based on typeSales
+            $allTypeSales = typeSales::all();
+            // @dd($allTypeSales);
+            for ($i = 0; $i < $allTypeSales->count(); $i++) {
+                $idType = $allTypeSales[$i]->id;
+                $dataOnType = [];
+                for ($j = 0; $j < $datasales->listSaless->count(); $j++) {
+                    if ($datasales->listSaless[$j]->typeSales == $idType) {
+                        $idCuRevisi = $datasales->listSaless[$j]->pivot->idRevisiCu;
+                        $idTotalRevisi = $datasales->listSaless[$j]->pivot->idRevisiTotal;
+                        $cuQty = $datasales->listSaless[$j]->pivot->cu;
+                        $totalQty = $datasales->listSaless[$j]->pivot->total;
+                        $userPengisi = dUser::find($datasales->listSaless[$j]->pivot->idPengisi);
+                        if ($idCuRevisi == '2') {
+                            //Jika statusnya revisi pada CU
+                            $cuQty = $datasales->listSaless[$j]->pivot->cuRevisi;
+                        }
+                        if ($idTotalRevisi == '2') {
+                            $totalQty = $datasales->listSaless[$j]->pivot->totalRevisi;
+                        }
+                        $cu = $cuQty;
+                        $total = $totalQty;
+                        array_push($dataOnType, (object)[
+                            'idSalesFill' => $datasales->listSaless[$j]->pivot->id,
+                            'sales' => $datasales->listSaless[$j]->sales,
+                            'idCuRev' => $idCuRevisi,
+                            'idTotalRev' => $idTotalRevisi,
+                            'cuQty' => $cuQty,
+                            'totalQty' => $totalQty,
+                            'namaPengisi' => $userPengisi['Nama Lengkap'],
+                        ]);
+                    }
+                }
+                if ($dataOnType != null) {
+                    array_push($allDataArray, (object)[
+                        'type' => $allTypeSales[$i]->type,
+                        'sales' => $dataOnType
+                    ]);
+                }
+            }
+        }
+        return response()->json([
+            'sales' => $allDataArray,
+            'tanggal' => $salesFill->salesHarians->tanggalAlls->Tanggal,
+            'cu' => $cu,
+            'total' => $total,
+        ]);
+    }
+
     public function showDateRevision()
     {
         $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
@@ -285,7 +346,75 @@ class salesHarianController extends Controller
         ]);
     }
 
-    public function showAllRequest(){
+    public function showRevisionOutlet($id)
+    {
+        //menampilkan revisi berdasarkan idOutlet
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        // @dd($tanggalAll[0]->salesharians);
+        $salesDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $datasales = $tanggalAll[$h]->salesharians->where('idOutlet', '=', $id);
+            $revisionDateFound = false;
+            // @dd($datasales[0]->listsaless);
+            $salesOutlet = [];
+            for ($i = 0; $i < $datasales->count(); $i++) {
+                $salesArray = [];
+                $revisionFound = false;
+                for ($j = 0; $j < ($datasales[$i]->listSaless->count()); $j++) {
+                    $idCuRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiCu;
+                    $idTotalRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiTotal;
+                    if (($idCuRevisi == '2') or ($idTotalRevisi == '2')) {
+                        $revisionFound = true;
+                        $cuQty = 0;
+                        $totalQty = 0;
+                        if ($idCuRevisi == '2') {
+                            $cuQty = $datasales[$i]->listSaless[$j]->pivot->cuRevisi;
+                        } else {
+                            $cuQty = $datasales[$i]->listSaless[$j]->pivot->cu;
+                        }
+                        if ($idTotalRevisi == '2') {
+                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->totalRevisi;
+                        } else {
+                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->total;
+                        }
+                        $userPengisi = dUser::find($datasales[$i]->listSaless[$j]->pivot->idPengisi);
+                        array_push($salesArray, (object)[
+                            'idSalesFill' => $datasales[$i]->listSaless[$j]->pivot->id,
+                            // 'idListSales' => $datasales[$i]->listSaless[$j]->id,
+                            'sales' => $datasales[$i]->listSaless[$j]->sales,
+                            'idCuRev' => $idCuRevisi,
+                            'idTotalRev' => $idTotalRevisi,
+                            'cuQty' => $cuQty,
+                            'totalQty' => $totalQty,
+                            'namaPengisi' => $userPengisi['Nama Lengkap'],
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($datasales[$i]['idOutlet']);
+                    array_push($salesOutlet, (object)[
+                        // 'Tanggal' => $datasales[$i]['Tanggal'],
+                        // 'Outlet' => $outlet['Nama Store'],
+                        'Item' => $salesArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($salesDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $salesOutlet
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'itemSales' => $salesDate
+        ]);
+    }
+
+    public function showAllRequest()
+    {
         $reqSales = reqItemSales::all();
         $arrayreqSales = [];
         // @dd($reqSales[0]->satuans);
@@ -302,6 +431,74 @@ class salesHarianController extends Controller
         return response()->json([
             'countItem' => $reqSales->count(),
             'reqSales' => $arrayreqSales
+        ]);
+    }
+
+    public function showRevisionDoneOutlet($id)
+    {
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        // @dd($tanggalAll[0]->salesharians);
+        $salesDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $datasales = $tanggalAll[$h]->salesharians->where('idOutlet', '=', $id);
+            // @dd($datasales[0]->listsaless);
+            $salesOutlet = [];
+            $revisionDateFound = false;
+            for ($i = 0; $i < $datasales->count(); $i++) {
+                $salesArray = [];
+                $revisionFound = false;
+                for ($j = 0; $j < ($datasales[$i]->listSaless->count()); $j++) {
+                    $idCuRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiCu;
+                    $idTotalRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiTotal;
+                    if (($idCuRevisi == '3') or ($idTotalRevisi == '3')) {
+                        $revisionFound = true;
+                        $cuQty = 0;
+                        $totalQty = 0;
+                        if ($idCuRevisi == '2') {
+                            $cuQty = $datasales[$i]->listSaless[$j]->pivot->cuRevisi;
+                        } else {
+                            $cuQty = $datasales[$i]->listSaless[$j]->pivot->cu;
+                        }
+                        if ($idTotalRevisi == '2') {
+                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->totalRevisi;
+                        } else {
+                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->total;
+                        }
+                        $userPengisi = dUser::find($datasales[$i]->listSaless[$j]->pivot->idPengisi);
+                        $userPerevisi = dUser::find($datasales[$i]->listSaless[$j]->pivot->idPerevisi);
+                        array_push($salesArray, (object)[
+                            'idSalesFill' => $datasales[$i]->listSaless[$j]->pivot->id,
+                            // 'idListSales' => $datasales[$i]->listSaless[$j]->id,
+                            'sales' => $datasales[$i]->listSaless[$j]->sales,
+                            'idCuRev' => $idCuRevisi,
+                            'idTotalRev' => $idTotalRevisi,
+                            'cuQty' => $cuQty,
+                            'totalQty' => $totalQty,
+                            'namaPengisi' => $userPengisi['Username'],
+                            'namaPerevisi' => $userPerevisi['Username']
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($datasales[$i]['idOutlet']);
+                    array_push($salesOutlet, (object)[
+                        // 'Tanggal' => $datasales[$i]['Tanggal'],
+                        'Outlet' => $outlet['Nama Store'],
+                        'Item' => $salesArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($salesDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $salesOutlet
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'itemSales' => $salesDate
         ]);
     }
 

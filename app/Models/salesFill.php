@@ -13,6 +13,10 @@ class salesFill extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 
+    public function salesHarians(){
+        return $this->belongsTo(salesharian::class,'idSales','id');
+    }
+
     protected $fillable = [
         'idListSales',
         'idSales',
