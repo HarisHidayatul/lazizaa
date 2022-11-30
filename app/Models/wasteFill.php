@@ -12,6 +12,14 @@ class wasteFill extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 
+    public function wasteHarians(){
+        return $this->belongsTo(wasteHarian::class,'idWaste','id');
+    }
+
+    public function listItemWastes(){
+        return $this->belongsTo(listItemWaste::class,'idListItem','id');
+    }
+
     protected $fillable = [
         'idWaste',
         'idListItem',

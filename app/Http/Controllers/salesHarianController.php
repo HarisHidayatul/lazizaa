@@ -148,7 +148,7 @@ class salesHarianController extends Controller
                         'idTotalRev' => $idTotalRevisi,
                         'cuQty' => $cuQty,
                         'totalQty' => $totalQty,
-                        'namaPengisi' => $userPengisi['Username'],
+                        'namaPengisi' => $userPengisi['Nama Lengkap'],
                     ]);
                 }
                 array_push($sales, (object)[
@@ -323,7 +323,7 @@ class salesHarianController extends Controller
                             'idTotalRev' => $idTotalRevisi,
                             'cuQty' => $cuQty,
                             'totalQty' => $totalQty,
-                            'namaPengisi' => $userPengisi['Username'],
+                            'namaPengisi' => $userPengisi['Nama Lengkap'],
                         ]);
                     }
                 }
@@ -478,8 +478,8 @@ class salesHarianController extends Controller
                             'idTotalRev' => $idTotalRevisi,
                             'cuQty' => $cuQty,
                             'totalQty' => $totalQty,
-                            'namaPengisi' => $userPengisi['Username'],
-                            'namaPerevisi' => $userPerevisi['Username']
+                            'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            'namaPerevisi' => $userPerevisi['Nama Lengkap']
                         ]);
                     }
                 }
@@ -546,8 +546,8 @@ class salesHarianController extends Controller
                             'idTotalRev' => $idTotalRevisi,
                             'cuQty' => $cuQty,
                             'totalQty' => $totalQty,
-                            'namaPengisi' => $userPengisi['Username'],
-                            'namaPerevisi' => $userPerevisi['Username']
+                            'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            'namaPerevisi' => $userPerevisi['Nama Lengkap']
                         ]);
                     }
                 }

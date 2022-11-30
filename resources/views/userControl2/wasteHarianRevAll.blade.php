@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Dashboard User</title>
+    <title>Waste Revisi</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -432,10 +432,6 @@
             text-align: end;
             margin-top: 1px;
         }
-
-        .arrowRight {
-            color: #585858;
-        }
     </style>
 </head>
 
@@ -457,10 +453,10 @@
     </div>
     <div class="d-flex justify-content-center">
         <div class="container1">
-            <div class="revHeader">Revisi sales</div>
+            <div class="revHeader">Revisi waste</div>
             <div class="d-flex justify-content-between boxTop">
-                <div class="subBoxTop" onclick="goToSalesBelum();">Belum</div>
-                <div class="subBoxTop subActive" onclick="goToSalesSudah();">Sudah</div>
+                <div class="subBoxTop subActive" onclick="goToWasteBelum();">Belum</div>
+                <div class="subBoxTop" onclick="goToWasteSudah();">Sudah</div>
             </div>
             <div style="content: ''; height:20px;"></div>
             {{-- <div class="dateTop">Selasa 1 November</div>
@@ -475,8 +471,8 @@
                 </div>
                 <div>
                     <div style="content: '';height: 6px;"></div>
-                    <div class="detailRev">CU &#10132; <span style="color: #FFA500;">10</span></div>
-                    <div class="detailRev">Total &#10132; <span style="color: #FFA500;">Rp. 20.222</span></div>
+                    <div class="detailRev">CU &#10132; <span style="color: #B20731;">10</span></div>
+                    <div class="detailRev">Total &#10132; <span style="color: #B20731;">Rp. 20.222</span></div>
                 </div>
             </div> --}}
             <div id="dataRev"></div>
@@ -521,8 +517,8 @@
                         </div>
                         <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="revisiTab">
                             <div style="content: '';height:5px;"></div>
-                            <div class="row rowRequest activeRequest" onclick="goToRevisiSales();">Sales</div>
-                            <div class="row rowRequest">Waste</div>
+                            <div class="row rowRequest" onclick="goToRevisiSales();">Sales</div>
+                            <div class="row rowRequest activeRequest">Waste</div>
                             <div class="row rowRequest">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
@@ -541,24 +537,24 @@
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
+
+    function goToWasteBelum() {
+        window.location.href = "{{ url('user/rev/wasteHarian/all') }}";
+    }
+
+    function goToWasteSudah() {
+        window.location.href = "{{ url('user/rev/wasteHarian/done') }}";
+    }
+    
+
     $(document).ready(function() {
         revisiShow();
-        document.getElementById('requestTab').style.display = "none";
         showRevAll();
     });
-
     $('#exampleModal').on('hidden.bs.modal', function() {
         // do something…
         requestShow();
     })
-
-    function goToSalesBelum(){
-        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
-    }
-
-    function goToSalesSudah(){
-        window.location.href = "{{ url('user/rev/salesHarian/done') }}";
-    }
 
     
     function goToDashboard() {
@@ -616,53 +612,53 @@
         window.location.href = "{{ url('user/logout') }}";
     }
 
-    function goToRevSales(idSalesFill) {
-        window.location.href = "{{ url('user/rev/salesHarian/done/date') }}" + '/' + idSalesFill;
+
+    function goToRevWaste(idWalesFill) {
+        console.log(idWalesFill);
+        window.location.href = "{{ url('user/rev/wasteHarian/all/date') }}" + '/' + idWalesFill;
     }
 
     function showRevAll() {
         $.ajax({
-            url: "{{ url('salesHarian/show/revision/done/outlet') }}" + '/' + "{{ session('idOutlet') }}",
+            url: "{{ url('waste/show/revision/outlet') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
                 var dataRev = '';
-                var urlImage = "{{ url('img/dashboard/laporanSales.png') }}";
-                for (var i = 0; i < obj.itemSales.length; i++) {
+                var urlImage = "{{ url('img/dashboard/laporanWaste.png') }}";
+                for (var i = 0; i < obj.itemWaste.length; i++) {
                     //Perbarui tanggal
-                    var day = new Date(obj.itemSales[i].Tanggal);
+                    var day = new Date(obj.itemWaste[i].Tanggal);
                     var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day
                         .getMonth()];
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';
-                    for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                        for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
+                    for (var j = 0; j < obj.itemWaste[i].Item.length; j++) {
+                        for (var k = 0; k < obj.itemWaste[i].Item[j].Item.length; k++) {
                             dataRev +=
-                                '<div class="d-flex justify-content-between boxDetail" onclick="goToRevSales(' +
-                                obj.itemSales[i].Item[j].Item[k].idSalesFill +
+                                '<div class="d-flex justify-content-between boxDetail" onclick="goToRevWaste(' +
+                                obj.itemWaste[i].Item[j].Item[k].idWasteFill +
                                 ');">';
                             dataRev += '<div class="d-flex justify-content-start">';
                             dataRev += '<div><img src="' + urlImage +
-                                '" alt="" style="height: 35px;"></div>';
+                                '" alt="" style="height: 25px; margin-top: 5px;"></div>';
                             dataRev +=
                                 '<div style="margin-left: 10px; margin-top:3px;"><div class="detailTitle">';
-                            dataRev += obj.itemSales[i].Item[j].Item[k].sales;
+                            dataRev += obj.itemWaste[i].Item[j].Item[k].waste;
                             dataRev += '</div><div class="detailSubTitle">';
-                            dataRev += obj.itemSales[i].Item[j].Item[k].namaPengisi + obj.itemSales[i].Item[
-                                j].Item[k].idSalesFill;
+                            dataRev += obj.itemWaste[i].Item[j].Item[k].namaPengisi;
                             dataRev += '</div></div></div><div><div style="content: ' + "'';" +
-                                'height: 6px;"></div>';
-                            dataRev += '<div class="arrowRight">&#10095;</div>';
-                            // if (obj.itemSales[i].Item[j].Item[k].idCuRev == 3) {
+                                'height: 11px;"></div>';
+                            if (obj.itemWaste[i].Item[j].Item[k].idRevQty == 2) {
+                                dataRev +=
+                                    '<div class="detailRev">Qty &#10132; <span style="color: #B20731;">';
+                                dataRev += obj.itemWaste[i].Item[j].Item[k].quantity + ' ' + obj.itemWaste[i].Item[j].Item[k].satuan;
+                                dataRev += '</span></div>';
+                            }
+                            // if (obj.itemWaste[i].Item[j].Item[k].idRevQty == 2) {
                             //     dataRev +=
-                            //         '<div class="detailRev">CU &#10132; <span style="color: #FFA500;">';
-                            //     dataRev += obj.itemSales[i].Item[j].Item[k].cuQty;
-                            //     dataRev += '</span></div>';
-                            // }
-                            // if (obj.itemSales[i].Item[j].Item[k].idTotalRev == 3) {
-                            //     dataRev +=
-                            //         '<div class="detailRev">Total &#10132; <span style="color: #FFA500;">Rp. ';
-                            //     dataRev += obj.itemSales[i].Item[j].Item[k].totalQty;
+                            //         '<div class="detailRev">Total &#10132; <span style="color: #B20731;">Rp. ';
+                            //     dataRev += obj.itemWaste[i].Item[j].Item[k].quantity;
                             //     dataRev += '</span></div>';
                             // }
                             dataRev += '</div></div>';

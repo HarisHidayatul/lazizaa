@@ -15,6 +15,7 @@ use App\Models\fsoHarian;
 use App\Models\itemWaste;
 use App\Models\pattyCashHarian;
 use App\Models\salesharian;
+use App\Models\wasteHarian;
 use Database\Seeders\soHarian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -162,6 +163,12 @@ Route::get('waste/store/data', [wasteController::class, 'store']);
 Route::get('waste/edit/qty/data/{id}', [wasteController::class, 'editQty']);
 Route::get('waste/show/revision/all', [wasteController::class, 'showDateRevision']);
 Route::get('waste/show/revision/done', [wasteController::class, 'showDateRevisionDone']);
+
+Route::get('waste/show/revision/outlet/{id}', [wasteController::class, 'showRevisionOutlet']); //menampilkan revisi outlet berdasarkan id
+Route::get('waste/show/revision/done/outlet/{id}', [wasteController::class, 'showRevisionDoneOutlet']);
+Route::get('waste/show/wasteFill/{id}', [wasteController::class, 'showOnWasteFill']);//menampilkan data seperti showAllData
+
+
 Route::get('waste/edit/cu/rev/data', [wasteController::class, 'editQtyRev']);
 Route::get('waste/user/showAllData/{id}/{date}', [wasteController::class, 'showAllData']); //show id untuk outlet
 
@@ -262,6 +269,22 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/request/wasteHarian/{dateSelect}', function($dateSelect){
         return view('userControl2.wasteHarianRequest',[
             'dateSelect' => $dateSelect
+        ]);
+    });
+    Route::get('user/rev/wasteHarian/all', function(){
+        return view('userControl2.wasteHarianRevAll');
+    });
+    Route::get('user/rev/wasteHarian/done', function(){
+        return view('userControl2.wasteHarianRevDone');
+    });
+    Route::get('user/rev/wasteHarian/all/date/{idWasteFill}', function($idWasteFill){
+        return view('userControl2.wasteHarianRevAllDetail',[
+            'idWasteFill' => $idWasteFill
+        ]);
+    });
+    Route::get('user/rev/wasteHarian/done/date/{idWasteFill}', function($idWasteFill){
+        return view('userControl2.wasteHarianRevDoneDetail',[
+            'idWasteFill' => $idWasteFill
         ]);
     });
     Route::get('user/pattyCashHarian/{dateSelect}', function($dateSelect){
