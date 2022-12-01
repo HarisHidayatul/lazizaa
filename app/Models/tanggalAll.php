@@ -34,6 +34,14 @@ class tanggalAll extends Model
         return $this->hasMany(reqItemSales::class,'idTanggal','id');
     }
 
+    public function reqItemPattyCashs(){
+        return $this->hasMany(reqItemPattyCash::class,'idTanggal','id');
+    }
+
+    public function reqItemWastes(){
+        return $this->hasMany(reqItemWaste::class,'idTanggal','id');
+    }
+    
     protected $fillable = [
         'Tanggal',
         'created_at',

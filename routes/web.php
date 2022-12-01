@@ -173,6 +173,7 @@ Route::get('waste/show/revision/outlet/{id}', [wasteController::class, 'showRevi
 Route::get('waste/show/revision/done/outlet/{id}', [wasteController::class, 'showRevisionDoneOutlet']);
 Route::get('waste/show/wasteFill/{id}', [wasteController::class, 'showOnWasteFill']);//menampilkan data seperti showAllData
 
+Route::get('waste/items/show/req/all/{id}',[wasteController::class, 'showReqOutlet']);
 
 Route::get('waste/edit/cu/rev/data', [wasteController::class, 'editQtyRev']);
 Route::get('waste/user/showAllData/{id}/{date}', [wasteController::class, 'showAllData']); //show id untuk outlet
@@ -278,6 +279,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl2.wasteHarianRequest',[
             'dateSelect' => $dateSelect
         ]);
+    });
+    Route::get('user/req/wasteHarian/all', function(){
+        return view('userControl2.wasteHarianRequestAll');
     });
     Route::get('user/rev/wasteHarian/all', function(){
         return view('userControl2.wasteHarianRevAll');

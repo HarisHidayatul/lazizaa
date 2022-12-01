@@ -299,6 +299,38 @@ class wasteController extends Controller
         ]);
     }
 
+    
+    public function showReqOutlet($id)
+    {
+        //menampilkan revisi berdasarkan idOutlet => $id
+        $tanggalAll = tanggalAll::all();
+        $dataAllWaste = [];
+        for ($i = 0; $i < $tanggalAll->count(); $i++) {
+            $dataReq = [];
+            $dataFound = false;
+            $reqWaste = $tanggalAll[$i]->reqItemWastes->where('idOutlet', '=', $id);
+            for ($j = 0; $j < $reqWaste->count(); $j++) {
+                $dataFound = true;
+                array_push($dataReq, (object)[
+                    'namaPengisi' => $reqWaste[$j]->dUsers['Nama Lengkap'],
+                    'Item' => $reqWaste[$j]->Item,
+                    'satuan' => $reqWaste[$j]->satuans->Satuan,
+                    'jenis' => $reqWaste[$j]->jenisBahans->jenis
+                ]);
+            }
+            if ($dataFound) {
+                array_push($dataAllWaste, (object)[
+                    'Tanggal' => $tanggalAll[$i]->Tanggal,
+                    'reqWaste' => $dataReq
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'reqWaste' => $dataAllWaste
+        ]);
+    }
+
     public function showRevisiOutlet($id)
     {
         $listWaste = reqItemWaste::where('idOutlet', '=', $id)->orderBy('id', 'DESC')->get();

@@ -453,7 +453,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <div class="container1">
-            <div class="revHeader">Request sales</div>
+            <div class="revHeader">Request waste</div>
             <div id="dataRev"></div>
         </div>
     </div>
@@ -606,19 +606,19 @@
 
     function showRevAll() {
         $.ajax({
-            url: "{{ url('salesHarian/items/show/req/all') }}" + '/' + "{{ session('idOutlet') }}",
+            url: "{{ url('waste/items/show/req/all') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
                 var dataRev = '';
-                var urlImage = "{{ url('img/dashboard/laporanSales.png') }}";
-                for (var i = 0; i < obj.reqSales.length; i++) {
-                    var day = new Date(obj.reqSales[i].Tanggal);
+                var urlImage = "{{ url('img/dashboard/laporanWaste.png') }}";
+                for (var i = 0; i < obj.reqWaste.length; i++) {
+                    var day = new Date(obj.reqWaste[i].Tanggal);
                     var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day
                         .getMonth()];
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';
-                    for (var j = 0; j < obj.reqSales[i].reqSales.length; j++) {
+                    for (var j = 0; j < obj.reqWaste[i].reqWaste.length; j++) {
                         dataRev +=
                             '<div class="d-flex justify-content-between boxDetail">';
                         dataRev += '<div class="d-flex justify-content-start">';
@@ -626,14 +626,18 @@
                             '" alt="" style="height: 25px; margin-top: 5px;"></div>';
                         dataRev +=
                             '<div style="margin-left: 10px; margin-top:3px;"><div class="detailTitle">';
-                        dataRev += obj.reqSales[i].reqSales[j].sales;
+                        dataRev += obj.reqWaste[i].reqWaste[j].Item;
                         dataRev += '</div><div class="detailSubTitle">';
-                        dataRev += obj.reqSales[i].reqSales[j].namaPengisi;
+                        dataRev += obj.reqWaste[i].reqWaste[j].namaPengisi;
                         dataRev += '</div></div></div><div><div style="content: ' + "'';" +
                             'height: 6px;"></div>';
                         dataRev +=
-                            '<div class="detailRev"><span style="color: #FFA500;">';
-                        dataRev += obj.reqSales[i].reqSales[j].typeSales;
+                            '<div class="detailRev">';
+                        dataRev += obj.reqWaste[i].reqWaste[j].jenis;
+                        dataRev += '</div>';
+                        dataRev +=
+                            '<div class="detailRev">Satuan &#10132; <span style="color: #B20731;">';
+                        dataRev += obj.reqWaste[i].reqWaste[j].satuan;
                         dataRev += '</span></div>';
                         dataRev += '</div></div>';
                     }

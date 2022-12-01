@@ -77,7 +77,7 @@ class salesHarianController extends Controller
             $dataArray = [
                 'idOutlet' => $request->idOutlet,
                 'idSales' => $request->idSales,
-                'idTanggal'=> $request->idTanggal,
+                'idTanggal' => $request->idTanggal,
                 'idPengisi' => $request->idPengisi
             ];
             reqItemSales::create($dataArray);
@@ -231,10 +231,10 @@ class salesHarianController extends Controller
         $datasales = $salesFill->salesHarians;
         $cu = $salesFill->cu;
         $total = $salesFill->total;
-        if($salesFill->idRevisiCu == '2'){
+        if ($salesFill->idRevisiCu == '2') {
             $cu = $salesFill->cuRevisi;
         }
-        if($salesFill->idRevisiTotal == '2'){
+        if ($salesFill->idRevisiTotal == '2') {
             $total = $salesFill->totalRevisi;
         }
         if ($datasales != null) {
@@ -446,20 +446,24 @@ class salesHarianController extends Controller
         $tanggalAll = tanggalAll::all();
         // @dd($tanggalAll[0]->reqItemSaless[0]);
         $dataAllSales = [];
-        for($i=0; $i < $tanggalAll->count(); $i++){
+        for ($i = 0; $i < $tanggalAll->count(); $i++) {
             $dataReq = [];
-            $reqSales = $tanggalAll[$i]->reqItemSaless->where('idOutlet','=',$id);
-            for($j=0; $j < $reqSales->count(); $j++){
+            $dataFound = false;
+            $reqSales = $tanggalAll[$i]->reqItemSaless->where('idOutlet', '=', $id);
+            for ($j = 0; $j < $reqSales->count(); $j++) {
+                $dataFound = true;
                 array_push($dataReq, (object)[
                     'sales' => $reqSales[$j]->listSaless->sales,
                     'namaPengisi' => $reqSales[$j]->dUsers['Nama Lengkap'],
-                    'typeSales' =>$reqSales[$j]->listSaless->typeSaless->type
+                    'typeSales' => $reqSales[$j]->listSaless->typeSaless->type
                 ]);
             }
-            array_push($dataAllSales, (object)[
-                'Tanggal' => $tanggalAll[$i]->Tanggal,
-                'reqSales' => $dataReq
-            ]);
+            if ($dataFound) {
+                array_push($dataAllSales, (object)[
+                    'Tanggal' => $tanggalAll[$i]->Tanggal,
+                    'reqSales' => $dataReq
+                ]);
+            }
         }
         return response()->json([
             // 'countItem' => $datasales->count(),
