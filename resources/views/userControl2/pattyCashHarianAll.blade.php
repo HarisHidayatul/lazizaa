@@ -502,24 +502,25 @@
                         </div>
                         <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="requestTab">
                             <div style="content: '';height:5px;"></div>
-                            <div class="row rowRequest activeRequest">Sales</div>
-                            <div class="row rowRequest">Waste</div>
-                            <div class="row rowRequest">Pembelian</div>
+                            <div class="row rowRequest activeRequest" onclick="goToRequestSales();">Sales</div>
+                            <div class="row rowRequest" onclick="goToRequestWaste();">Waste</div>
+                            <div class="row rowRequest" onclick="goToRequestPattyCash();">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
-                        <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu" onclick="revisiShow();">
+                        <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu"
+                            onclick="revisiShow();">
                             <div class="col-1">
-                                <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}"
-                                        alt="" style="height: 20px;margin-top:-2px; margin-left:-15px;" id="revisiIcon"></div>
+                                <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}" alt=""
+                                        style="height: 20px;margin-top:-2px; margin-left:-15px;" id="revisiIcon"></div>
                             </div>
                             <div class="col-6" style="text-align: left">Revisi</div>
                             <div class="col-3" style="text-align: right" id="arrowRevisi">&#10095;</div>
                         </div>
                         <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="revisiTab">
                             <div style="content: '';height:5px;"></div>
-                            <div class="row rowRequest activeRequest" onclick="goToRevisiPattyCash();">Sales</div>
-                            <div class="row rowRequest">Waste</div>
-                            <div class="row rowRequest">Pembelian</div>
+                            <div class="row rowRequest" onclick="goToRevisiSales();">Sales</div>
+                            <div class="row rowRequest" onclick="goToRevisiWaste();">Waste</div>
+                            <div class="row rowRequest activeRequest" onclick="goToRevisiPattyCash();">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
                     </div>
@@ -553,23 +554,41 @@
     });
     $('#exampleModal').on('hidden.bs.modal', function() {
         // do something…
-        requestShow();
+        revisiShow();
     })
 
     
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
-    }    
-    function goToRevisiPattyCash(){
-        window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}";
     }
+
+    function goToRequestSales(){
+        window.location.href = "{{ url('user/req/salesHarian/all') }}";
+    }
+    function goToRequestWaste(){
+        window.location.href = "{{ url('user/req/wasteHarian/all') }}";
+    }
+    function goToRequestPattyCash(){
+        window.location.href = "{{ url('user/req/pattyCashHarian/all') }}";
+    }
+
+    function goToRevisiSales() {
+        window.location.href = "{{ url('user/rev/salesHarian/all') }}";
+    }
+    function goToRevisiWaste(){
+        window.location.href = "{{ url('user/rev/wasteHarian/all') }}"
+    }
+    function goToRevisiPattyCash(){
+        window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
+    }
+
     function requestShow() {
         document.getElementById('requestTab').style.display = "block";
         document.getElementById('revisiMenu').classList.remove("menuActive");
         document.getElementById('requestMenu').classList.add("menuActive");
         // $("#requestIcon").attr("src","img/dashboard/requestIconActive.png");
         document.getElementById('arrowRequest').classList.add("arrowChange");
-        document.getElementById('requestIcon').src="{{ url('img/dashboard/requestIconActive.png') }}";
+        document.getElementById('requestIcon').src = "{{ url('img/dashboard/requestIconActive.png') }}";
         dashboardHide();
         revisiHide();
     }
@@ -579,33 +598,37 @@
         document.getElementById('requestMenu').classList.remove("menuActive");
         // $("#requestIcon").attr("src","img/dashboard/requestIcon.png");
         document.getElementById('arrowRequest').classList.remove("arrowChange");
-        document.getElementById('requestIcon').src="{{ url('img/dashboard/requestIcon.png') }}";
+        document.getElementById('requestIcon').src = "{{ url('img/dashboard/requestIcon.png') }}";
     }
-    function dashboardShow(){
+
+    function dashboardShow() {
         document.getElementById('dashboardMenu').classList.add("menuActive");
-        document.getElementById('dashboardIcon').src="{{ url('img/dashboard/dashboardIconActive.png') }}";
+        document.getElementById('dashboardIcon').src = "{{ url('img/dashboard/dashboardIconActive.png') }}";
         requestHide();
         revisiHide();
         goToDashboard();
     }
-    function dashboardHide(){
+
+    function dashboardHide() {
         document.getElementById('dashboardMenu').classList.remove("menuActive");
-        document.getElementById('dashboardIcon').src="{{ url('img/dashboard/dashboardIcon.png') }}";
+        document.getElementById('dashboardIcon').src = "{{ url('img/dashboard/dashboardIcon.png') }}";
     }
-    function revisiShow(){
+
+    function revisiShow() {
         document.getElementById('revisiTab').style.display = "block";
         document.getElementById('revisiMenu').classList.add("menuActive");
         // $("#requestIcon").attr("src","img/dashboard/requestIconActive.png");
         document.getElementById('arrowRevisi').classList.add("arrowChange");
-        document.getElementById('revisiIcon').src="{{ url('img/dashboard/revisiIconActive.png') }}";
+        document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIconActive.png') }}";
         dashboardHide();
         requestHide();
     }
-    function revisiHide(){
+
+    function revisiHide() {
         document.getElementById('revisiTab').style.display = "none";
         document.getElementById('revisiMenu').classList.remove("menuActive");
         document.getElementById('arrowRevisi').classList.remove("arrowChange");
-        document.getElementById('revisiIcon').src="{{ url('img/dashboard/revisiIcon.png') }}";
+        document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIcon.png') }}";
     }
 
     function logout() {

@@ -481,9 +481,9 @@
                         </div>
                         <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="requestTab">
                             <div style="content: '';height:5px;"></div>
-                            <div class="row rowRequest activeRequest">Sales</div>
-                            <div class="row rowRequest">Waste</div>
-                            <div class="row rowRequest">Pembelian</div>
+                            <div class="row rowRequest" onclick="goToRequestSales();">Sales</div>
+                            <div class="row rowRequest" onclick="goToRequestWaste();">Waste</div>
+                            <div class="row rowRequest activeRequest" onclick="goToRequestPattyCash();">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
                         <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu"
@@ -498,8 +498,8 @@
                         <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="revisiTab">
                             <div style="content: '';height:5px;"></div>
                             <div class="row rowRequest activeRequest" onclick="goToRevisiSales();">Sales</div>
-                            <div class="row rowRequest">Waste</div>
-                            <div class="row rowRequest">Pembelian</div>
+                            <div class="row rowRequest" onclick="goToRevisiWaste();">Waste</div>
+                            <div class="row rowRequest" onclick="goToRevisiPattyCash();">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
                     </div>
@@ -528,7 +528,7 @@
 
 
     $(document).ready(function() {
-        revisiShow();
+        requestShow();
         showRevAll();
     });
     $('#exampleModal').on('hidden.bs.modal', function() {
@@ -541,8 +541,24 @@
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
+    function goToRequestSales(){
+        window.location.href = "{{ url('user/req/salesHarian/all') }}";
+    }
+    function goToRequestWaste(){
+        window.location.href = "{{ url('user/req/wasteHarian/all') }}";
+    }
+    function goToRequestPattyCash(){
+        window.location.href = "{{ url('user/req/pattyCashHarian/all') }}";
+    }
+
     function goToRevisiSales() {
         window.location.href = "{{ url('user/rev/salesHarian/all') }}";
+    }
+    function goToRevisiWaste(){
+        window.location.href = "{{ url('user/rev/wasteHarian/all') }}"
+    }
+    function goToRevisiPattyCash(){
+        window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
 
     function requestShow() {
