@@ -92,7 +92,9 @@ class wasteController extends Controller
                 'idSatuan' => $request->idSatuan,
                 'idOutlet' => $request->idOutlet,
                 'idBrand' => $idBrand,
-                'idJenisBahan' => $request->idJenisBahan
+                'idJenisBahan' => $request->idJenisBahan,
+                'idTanggal'=> $request->idTanggal,
+                'idPengisi' => $request->idPengisi
             ];
             reqItemWaste::create($dataArray);
             echo 1;

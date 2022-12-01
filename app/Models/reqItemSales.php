@@ -19,10 +19,19 @@ class reqItemSales extends Model
     public function listSaless(){
         return $this->belongsTo(listSales::class,'idSales','id');
     }
+    public function tanggalAlls(){
+        return $this->belongsTo(tanggalAll::class,'idTanggal','id');
+    }
+    
+    public function dUsers(){
+        return $this->belongsTo(dUser::class,'idPengisi','id');
+    }
 
     protected $fillable = [
         'idOutlet',
         'idSales',
+        'idPengisi',
+        'idTanggal',
         'created_at',
         'update_at',
     ];

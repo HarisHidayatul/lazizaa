@@ -27,12 +27,21 @@ class reqItemWaste extends Model
     public function jenisBahans(){
         return $this->belongsTo(jenisBahan::class,'idJenisBahan','id');
     }
+    public function tanggalAlls(){
+        return $this->belongsTo(tanggalAll::class,'idTanggal','id');
+    }
+    
+    public function dUsers(){
+        return $this->belongsTo(dUser::class,'idPengisi','id');
+    }
 
     protected $fillable = [
         'Item',
         'idSatuan',
         'idOutlet',
         'idBrand',
+        'idPengisi',
+        'idTanggal',
         'idJenisBahan',
         'created_at',
         'update_at',

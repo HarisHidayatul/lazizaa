@@ -637,7 +637,9 @@
                 Item: document.getElementById('namaItemReq').value,
                 idSatuan: selectSatuanIndex,
                 idBrand: "{{ session('idBrand') }}",
-                idOutlet: "{{ session('idOutlet') }}"
+                idOutlet: "{{ session('idOutlet') }}",
+                idTanggal: "{{ session('idTanggal') }}",
+                idPengisi: "{{ session('idPengisi') }}"
             },
             success: function(response) {
                 console.log(response);

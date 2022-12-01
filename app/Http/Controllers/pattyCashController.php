@@ -98,7 +98,9 @@ class pattyCashController extends Controller
                 'Item' => $request->Item,
                 'idSatuan' => $request->idSatuan,
                 'idBrand' => $idBrand,
-                'idOutlet' => $request->idOutlet
+                'idOutlet' => $request->idOutlet,
+                'idTanggal'=> $request->idTanggal,
+                'idPengisi' => $request->idPengisi
             ];
             reqItemPattyCash::create($dataArray);
             echo 1;

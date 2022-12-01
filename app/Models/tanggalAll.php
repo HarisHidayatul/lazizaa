@@ -30,6 +30,10 @@ class tanggalAll extends Model
         return $this->hasMany(wasteHarian::class,'idTanggal','id');
     }
 
+    public function reqItemSaless(){
+        return $this->hasMany(reqItemSales::class,'idTanggal','id');
+    }
+
     protected $fillable = [
         'Tanggal',
         'created_at',

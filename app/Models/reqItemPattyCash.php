@@ -23,12 +23,21 @@ class reqItemPattyCash extends Model
     public function satuans(){
         return $this->belongsTo(satuan::class,'idSatuan','id');
     }
+    public function tanggalAlls(){
+        return $this->belongsTo(tanggalAll::class,'idTanggal','id');
+    }
+    
+    public function dUsers(){
+        return $this->belongsTo(dUser::class,'idPengisi','id');
+    }
 
     protected $fillable = [
         'Item',
         'idSatuan',
         'idOutlet',
         'idBrand',
+        'idPengisi',
+        'idTanggal',
         'created_at',
         'update_at',
     ];

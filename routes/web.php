@@ -99,6 +99,7 @@ Route::get('salesHarian/show/revision/done/outlet/{id}', [salesHarianController:
 
 Route::get('salesHarian/items/show/req', [salesHarianController::class, 'showAllRequest']);
 Route::get('salesHarian/items/store/request', [salesHarianController::class, 'storeRevisionCheck']);
+Route::get('salesHarian/items/show/req/all/{id}',[salesHarianController::class, 'showReqOutlet']);
 
 Route::get('salesHarian/data/getId', [salesHarianController::class, 'showAndCreateID']);
 Route::get('salesHarian/store/data', [salesHarianController::class, 'store']);
@@ -243,6 +244,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl2.salesHarianRequest',[
             'dateSelect' => $dateSelect
         ]);
+    });
+    Route::get('user/req/salesHarian/all', function(){
+        return view('userControl2.salesHarianRequestAll');
     });
     Route::get('user/rev/salesHarian/all', function(){
         return view('userControl2.salesHarianRevAll');

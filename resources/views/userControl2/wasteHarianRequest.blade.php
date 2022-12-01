@@ -687,7 +687,9 @@
                 idSatuan: selectSatuanIndex,
                 idOutlet: "{{ session('idOutlet') }}",
                 idBrand: "{{ session('idBrand') }}",
-                idJenisBahan: selectJenisBrand
+                idJenisBahan: selectJenisBrand,
+                idTanggal: "{{ session('idTanggal') }}",
+                idPengisi: "{{ session('idPengisi') }}"
             },
             success: function(response) {
                 console.log(response);

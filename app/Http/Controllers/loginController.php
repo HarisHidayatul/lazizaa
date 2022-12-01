@@ -105,7 +105,16 @@ class loginController extends Controller
             //     return redirect('user/dashboard');
             // }
             if ($request->password == $data->Password) {
-                if ($data['idRole'] == '2') {//untuk role user
+                $tanggalAll = tanggalAll::where('Tanggal', '=', date("Y-m-d"))->first();
+                $tanggalID = null;
+                if ($tanggalAll == null) {
+                    $tanggalID = tanggalAll::create([
+                        'Tanggal' => date("Y-m-d"),
+                    ])->id;
+                } else {
+                    $tanggalID = $tanggalAll['id'];
+                }
+                if ($data['idRole'] == '2') { //untuk role user
                     $dOutlet = $data->doutlets;
                     $dBrand = doutlet::find($data['idOutlet'])->dBrands;
                     session(['berhasil_login' => true]);
@@ -116,29 +125,29 @@ class loginController extends Controller
                         'Outlet' => $dOutlet['Nama Store'],
                         'idPengisi' => $data['id'],
                         'idOutlet' => $data['idOutlet'],
-                        'date'    => date("Y-m-d")
+                        'date'    => date("Y-m-d"),
+                        'idTanggal' => $tanggalID
                     ]);
                     return redirect('user/dashboard');
-                }
-                else if($data['idRole']=='1'){//untuk role admin
+                } else if ($data['idRole'] == '1') { //untuk role admin
                     session(['berhasil_login' => true]);
                     session([
                         'idPengisi' => $data['id'],
                         'date'    => date("Y-m-d"),
-                        'namaPengisi' => $data['Nama Lengkap']
+                        'namaPengisi' => $data['Nama Lengkap'],
+                        'idTanggal' => $tanggalID
                     ]);
                     return redirect('accounting/revisi/so');
-                }
-                else if($data['idRole']=='3'){
+                } else if ($data['idRole'] == '3') {
                     session(['berhasil_login' => true]);
                     session([
                         'idPengisi' => $data['id'],
                         'date'    => date("Y-m-d"),
-                        'namaPengisi' => $data['Nama Lengkap']
+                        'namaPengisi' => $data['Nama Lengkap'],
+                        'idTanggal' => $tanggalID
                     ]);
                     return redirect('admin/item/so');
-                }
-                else{
+                } else {
                     return redirect('/')->with('message', 'Role tidak terdaftar');
                 }
             }
@@ -151,12 +160,12 @@ class loginController extends Controller
         $request->session()->flush();
         return redirect('/');
     }
-    public function getAllDate($idOutlet,Request $request)
+    public function getAllDate($idOutlet, Request $request)
     {
         // echo $idOutlet;
         $allData = doutlet::find($idOutlet);
         // $allTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->get();
-        $allTanggal = tanggalAll::whereYear('Tanggal','=',$request->year)->whereMonth('Tanggal','=',$request->month)->get();
+        $allTanggal = tanggalAll::whereYear('Tanggal', '=', $request->year)->whereMonth('Tanggal', '=', $request->month)->get();
 
         $dateSales = $allData->dateSales;
         $datefsoharian = $allData->datefsoharian;

@@ -689,6 +689,8 @@
             data: {
                 idOutlet: "{{ session('idOutlet') }}",
                 idSales: kategoriAll[selectKategori].sales[selectSales].id,
+                idTanggal: "{{ session('idTanggal') }}",
+                idPengisi: "{{ session('idPengisi') }}"
             },
             success: function(response) {
                 console.log(response);

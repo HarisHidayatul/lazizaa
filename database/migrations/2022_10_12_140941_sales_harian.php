@@ -96,6 +96,13 @@ return new class extends Migration
             
             $table->unsignedBigInteger('idSales');
             $table->foreign('idSales')->references('id')->on('listSales');
+
+            $table->unsignedBigInteger('idTanggal');
+            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+
+            $table->unsignedBigInteger('idPengisi');
+            $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
+
             $table->timestamps();
         });
     }

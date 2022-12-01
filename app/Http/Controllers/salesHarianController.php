@@ -77,6 +77,8 @@ class salesHarianController extends Controller
             $dataArray = [
                 'idOutlet' => $request->idOutlet,
                 'idSales' => $request->idSales,
+                'idTanggal'=> $request->idTanggal,
+                'idPengisi' => $request->idPengisi
             ];
             reqItemSales::create($dataArray);
             echo 1;
@@ -435,6 +437,33 @@ class salesHarianController extends Controller
         return response()->json([
             'countItem' => $reqSales->count(),
             'reqSales' => $arrayreqSales
+        ]);
+    }
+
+    public function showReqOutlet($id)
+    {
+        //menampilkan revisi berdasarkan idOutlet => $id
+        $tanggalAll = tanggalAll::all();
+        // @dd($tanggalAll[0]->reqItemSaless[0]);
+        $dataAllSales = [];
+        for($i=0; $i < $tanggalAll->count(); $i++){
+            $dataReq = [];
+            $reqSales = $tanggalAll[$i]->reqItemSaless->where('idOutlet','=',$id);
+            for($j=0; $j < $reqSales->count(); $j++){
+                array_push($dataReq, (object)[
+                    'sales' => $reqSales[$j]->listSaless->sales,
+                    'namaPengisi' => $reqSales[$j]->dUsers['Nama Lengkap'],
+                    'typeSales' =>$reqSales[$j]->listSaless->typeSaless->type
+                ]);
+            }
+            array_push($dataAllSales, (object)[
+                'Tanggal' => $tanggalAll[$i]->Tanggal,
+                'reqSales' => $dataReq
+            ]);
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'reqSales' => $dataAllSales
         ]);
     }
 

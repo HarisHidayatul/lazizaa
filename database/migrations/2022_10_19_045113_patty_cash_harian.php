@@ -40,6 +40,12 @@ return new class extends Migration
             $table->unsignedBigInteger('idBrand');
             $table->foreign('idBrand')->references('id')->on('dBrand');
 
+            $table->unsignedBigInteger('idTanggal');
+            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+
+            $table->unsignedBigInteger('idPengisi');
+            $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
+
             $table->timestamps();
         });
 
