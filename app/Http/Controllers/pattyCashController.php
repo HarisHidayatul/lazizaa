@@ -676,6 +676,35 @@ class pattyCashController extends Controller
             'total' => $totalPattyCashs
         ]);
     }
+    public function showReqOutlet($id)
+    {
+        //menampilkan revisi berdasarkan idOutlet => $id
+        $tanggalAll = tanggalAll::all();
+        $dataAllPattyCash = [];
+        for ($i = 0; $i < $tanggalAll->count(); $i++) {
+            $dataReq = [];
+            $dataFound = false;
+            $reqPattyCash = $tanggalAll[$i]->reqItemPattyCashs->where('idOutlet', '=', $id);
+            for ($j = 0; $j < $reqPattyCash->count(); $j++) {
+                $dataFound = true;
+                array_push($dataReq, (object)[
+                    'namaPengisi' => $reqPattyCash[$j]->dUsers['Nama Lengkap'],
+                    'Item' => $reqPattyCash[$j]->Item,
+                    'satuan' => $reqPattyCash[$j]->satuans->Satuan
+                ]);
+            }
+            if ($dataFound) {
+                array_push($dataAllPattyCash, (object)[
+                    'Tanggal' => $tanggalAll[$i]->Tanggal,
+                    'reqPattyCash' => $dataReq
+                ]);
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'reqPattyCash' => $dataAllPattyCash
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.

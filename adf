@@ -1,0 +1,39 @@
+* [33m78f7a4c[m[33m ([m[1;36mHEAD -> [m[1;32mpembayaran[m[33m, [m[1;31morigin/pembayaran[m[33m)[m Menambahkan request waste untuk UI/UX dan memfungsikannya
+* [33m2fd2458[m Menyelesaikan UI dan memfungsikan pada bagian sales harian:
+* [33m6b94335[m Menyelesaikan pattycash harian revisi all
+* [33m111b4f6[m Menambahkan UI untuk waste harian
+* [33m410616d[m Menambahkan bagian revisi pada sales harian dan memfungsikannya
+* [33ma2a743d[m Menyelesaikan UI / UX untuk revisi sales
+* [33m7b2586a[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m Memindahkan project ke main
+* [33m53b7151[m Menyelesaikan pada bagian request sales harian
+* [33me17ec92[m Menghapus beberapa fitur lama untuk bagian view
+* [33me0270df[m Menambahkan UI untuk tabrevisi dan request pada tampilan dashboard
+* [33m8e0b44e[m Menambahkan revisi untuk input focus
+* [33m0cddff5[m Menambahkan route dan menyelesaikan fitur pada so, waste, pattycash
+* [33m6d3307e[m Menambahkan fitur detail pada patty cash
+* [33m7cb1443[m Menambahkan fitur input dan edit pada patty cash harian
+* [33m5cedf5a[m Menyelesaikan fitur edit, fill, dan isi pada waste harian dengan UI dan UX yang sudah disempurnakan
+* [33m0423478[m Menyelesaikan UI UX pada bagian input waste harian
+* [33mae17793[m Membuat route pada bagian sales harian
+* [33m7b87c95[m Menyelesaikan laporan harian pada bagian sales harian
+* [33mc9e3cd7[m Menyelesaikan detail laporan pada bagian SO
+* [33m83307e6[m Menambahkan fitur untuk sales harian, hanya tampilan untuk UI dan UX nya. Belum difungsikan
+* [33m9229a01[m Menambahkan data input pada sales dengan memperbarui tampilan UI dan UX nya
+* [33m5286c45[m Menyelesaikan pada fitur UI UX dan funsional dari edit Item so
+* [33m0f60ac9[m Menyelesaikan bagian detail Laporan pada so harian baik secara UI maupun Fungsionalnya
+* [33m9aa4ce3[m Menambahkan fitur UI untuk detail pada so Harian
+* [33m26f18fe[m Menyelesaikan UI untuk bagian fill SO Harian
+* [33m1ba0b25[m Pembenahan tampilan agar sesuai dengan design UX dan integrasi ke server melalui pagenation
+* [33m0d85e74[m Menambahkan dashboard layout
+* [33m88fac75[m Menambahkan css untuk bisa responif pada form login
+* [33m35910ea[m Menyelesaikan form untuk login
+* [33m2c3a9c1[m Menambahkan add item pada bagian admin
+* [33m3e968a1[m Melakukan penambahan fitur revisi waste harian pada accounting
+* [33mb2db67c[m Menambahkan route accounting pada menu waste, so, pattycash dan sales
+* [33m60bb9b5[m Menambahkan fitur revisi pada pattycash harian
+* [33me011dfb[m Menambahkan fitur revisi pada soHarian di bagian accounting
+* [33md724540[m Menambahkan fungsi revisi untuk akunting pada fitur sales harian
+* [33m3f1402b[m Menambahkan flow database ERD
+* [33mf99af6e[m Percobaan untuk menghapus style pada waste harian
+* [33m06bd385[m Merubah style pada waste harian
+* [33mf8a6ad4[m Upload baru project ke dalam github
