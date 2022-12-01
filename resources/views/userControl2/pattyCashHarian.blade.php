@@ -853,19 +853,19 @@
                             indexLoop +
                             ');"><div class="col-2"><img src="';
                         dataDetail += urlImage;
-                        dataDetail += '" alt="waste"style="height: 40px"></div>';
+                        dataDetail += '" alt="waste"style="height: 40px;"></div>';
                         dataDetail += '<div class="col-5"><div class="row menuDetail">';
                         dataDetail += obj.itemPattyCash[i].Item[j].Item;
                         if ((obj.itemPattyCash[i].Item[j].idQtyRev == 2) || (obj.itemPattyCash[i].Item[j]
                                 .idTotalRev == 2)) {
-                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                            var urlImageRev = "{{ url('img/icon/tertunda.png') }}";
                             dataDetail += '<img src="' + urlImageRev +
                                 '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
                         } else if ((obj.itemPattyCash[i].Item[j].idQtyRev == 3) || (obj.itemPattyCash[i]
                                 .Item[j].idTotalRev == 3)) {
                             var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
                             dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status">';
+                                '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
                         }
                         dataDetail += '</div><div class="row jenisDetail">';
                         dataDetail += obj.itemPattyCash[i].Item[j].qty;
@@ -880,6 +880,7 @@
                         indexLoop++;
                     }
                 }
+                // console.log(dataDetail);
                 document.getElementById('dataDetail').innerHTML = dataDetail;
                 // document.getElementById('jumlahInput').value = '';
             },

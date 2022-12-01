@@ -140,6 +140,10 @@ Route::get('pattyCash/edit/total/data/{id}', [pattyCashController::class, 'editT
 
 Route::get('pattyCash/edit/total/rev/data', [pattyCashController::class, 'editTotalRev']);
 
+Route::get('pattyCash/show/revision/outlet/{id}', [pattyCashController::class, 'showRevisionOutlet']); //menampilkan revisi outlet berdasarkan id
+Route::get('pattyCash/show/revision/done/outlet/{id}', [pattyCashController::class, 'showRevisionDoneOutlet']);
+Route::get('pattyCash/show/pattyCashFill/{id}', [pattyCashController::class, 'showOnPattyCashFill']);//menampilkan data seperti showAllData
+
 Route::get('pattyCash/data/getId', [pattyCashController::class, 'showAndCreateID']);
 Route::get('pattyCash/store/data', [pattyCashController::class, 'store']);
 Route::get('show/satuan', [pattyCashController::class, 'showSatuan']);
@@ -302,9 +306,20 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
-    Route::get('user/pattyCashHarian1/{dateSelect}', function($dateSelect){
-        return view('userControl2.pattyCashHarian1',[
-            'dateSelect' => $dateSelect
+    Route::get('user/rev/pattyCashHarian/all', function(){
+        return view('userControl2.pattyCashHarianAll');
+    });
+    Route::get('user/rev/pattyCashHarian/done', function(){
+        return view('userControl2.pattyCashHarianRevDone');
+    });
+    Route::get('user/rev/pattyCashHarian/all/date/{idPattyCashFill}', function($idPattyCashFill){
+        return view('userControl2.pattyCashHarianRevAllDetail',[
+            'idPattyCashFill' => $idPattyCashFill
+        ]);
+    });
+    Route::get('user/rev/pattyCashHarian/done/date/{idPattyCashFill}', function($idPattyCashFill){
+        return view('userControl2.pattyCashHarianRevDoneDetail',[
+            'idPattyCashFill' => $idPattyCashFill
         ]);
     });
 });

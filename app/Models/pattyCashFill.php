@@ -12,6 +12,14 @@ class pattyCashFill extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 
+    public function pattyCashHarians(){
+        return $this->belongsTo(pattyCashHarian::class,'idPattyCash','id');
+    }
+
+    public function listItemPattyCashs(){
+        return $this->belongsTo(listItemPattyCash::class,'idPattyCash','id');
+    }
+
     protected $fillable = [
         'idPattyCash',
         'idListItem',
