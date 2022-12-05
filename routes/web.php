@@ -200,8 +200,6 @@ Route::post('user/login', [loginController::class, 'login']);
 Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/logout', [loginController::class, 'logout']);
     Route::get('user/dashboard', function () {
-        // @dd(session()->all());
-        // @dd(session('date'));
         return view('userControl2.dashboard');
     });
     
@@ -334,5 +332,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl2.pattyCashHarianRevDoneDetail',[
             'idPattyCashFill' => $idPattyCashFill
         ]);
+    });
+
+    Route::get('user/setoran', function(){
+        return view('userControl.setoran.home');
     });
 });

@@ -275,11 +275,6 @@
             height: 60px;
         }
 
-        .container2 {
-            content: "";
-            height: 20px;
-        }
-
         .bottom {
             margin-top: 65px;
             height: 1000px;
@@ -395,11 +390,97 @@
             font-weight: 600;
             color: #B20731;
         }
-        .arrowChange{
+
+        .arrowChange {
             transform: rotate(90deg);
             margin-top: -10px;
             margin-left: -3px;
-            
+
+        }
+
+        .pattyCashCard {
+            background-image: url("{{ url('img/pembayaran/card.png') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            /* optional, center the image */
+            width: 310px;
+            height: 190px;
+        }
+
+        .wasteCard {
+            background-image: url("{{ url('img/pembayaran/cardWaste.png') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            /* optional, center the image */
+            width: 310px;
+            height: 190px;
+        }
+
+        .wrapCard {
+            width: auto;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+
+        .cardFill {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .labelPattyCash {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            color: #FFFFFF;
+            margin-top: 28px;
+            margin-left: 20px;
+        }
+
+        .valuePattyCash {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 120%;
+            color: #FFFFFF;
+            margin-top: 22px;
+            margin-left: 20px;
+        }
+
+        .addPattyCash {
+            justify-content: center;
+            text-align: center;
+            display: flex;
+            width: 146px;
+            height: 40px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            margin-top: 38px;
+            margin-left: 20px;
+            padding-top: 8px;
+        }
+
+        .addPattyCash img {
+            width: 12px;
+            height: 12px;
+            margin-top: 4px;
+            margin-right: 5px;
+        }
+
+        .addPattyCash div {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            align-items: center;
+
+            color: #585858;
         }
     </style>
 </head>
@@ -426,8 +507,22 @@
         <div class="textOutlet">{{ session('Outlet') }}</div>
         <img src="{{ url('img/icon/backRight.png') }}" alt="" style="height: 10px; margin-top:10px;">
     </div>
-    <div class="container2"></div>
-    <div class="container2"></div>
+    <div style="content: ''; height: 25px;"></div>
+    <div class="wrapCard">
+        <div class="cardFill" style="content:'';width:10px;"></div>
+        <div class="pattyCashCard cardFill">
+            <div class="labelPattyCash">Saldo Patty Cash</div>
+            <div class="valuePattyCash">Rp 15.365.000</div>
+            <div class="addPattyCash">
+                <img src="{{ url('img/icon/plus.png') }}" alt="">
+                <div>Reimburse</div>
+            </div>
+        </div>
+        <div class="cardFill" style="content:'';width:10px;"></div>
+        <div class="wasteCard cardFill"></div>
+        <div class="cardFill" style="content:'';width:10px;"></div>
+    </div>
+    <div style="content: ''; height: 100px;"></div>
     <div class="containerr">
         <div class="row">
             <div class="col">
@@ -502,7 +597,8 @@
                     </div>
                 </div>
                 <div>
-                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="terisi" class="soStatus" id="wasteStatus">
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="terisi" class="soStatus"
+                        id="wasteStatus">
                 </div>
             </div>
             <div class="row d-flex justify-content-between layoutBottom" onclick="pattyCashClick();">
@@ -522,8 +618,8 @@
         </div>
 
     </div>
-    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -554,8 +650,9 @@
                         <div class="row menuNotActive" style="margin-top: 25px;" id="revisiMenu"
                             onclick="revisiShow();">
                             <div class="col-1">
-                                <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}" alt=""
-                                        style="height: 20px;margin-top:-2px; margin-left:-15px;" id="revisiIcon"></div>
+                                <div class="col-1"><img src="{{ url('img/dashboard/revisiIcon.png') }}"
+                                        alt="" style="height: 20px;margin-top:-2px; margin-left:-15px;"
+                                        id="revisiIcon"></div>
                             </div>
                             <div class="col-6" style="text-align: left">Revisi</div>
                             <div class="col-3" style="text-align: right" id="arrowRevisi">&#10095;</div>
@@ -605,28 +702,32 @@
         dashboardShow();
     })
 
-    
+
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
-    function goToRequestSales(){
+    function goToRequestSales() {
         window.location.href = "{{ url('user/req/salesHarian/all') }}";
     }
-    function goToRequestWaste(){
+
+    function goToRequestWaste() {
         window.location.href = "{{ url('user/req/wasteHarian/all') }}";
     }
-    function goToRequestPattyCash(){
+
+    function goToRequestPattyCash() {
         window.location.href = "{{ url('user/req/pattyCashHarian/all') }}";
     }
 
     function goToRevisiSales() {
         window.location.href = "{{ url('user/rev/salesHarian/all') }}";
     }
-    function goToRevisiWaste(){
+
+    function goToRevisiWaste() {
         window.location.href = "{{ url('user/rev/wasteHarian/all') }}"
     }
-    function goToRevisiPattyCash(){
+
+    function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
 
