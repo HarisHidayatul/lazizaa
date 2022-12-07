@@ -46,11 +46,11 @@
         }
 
         h3 {
-            font-size: 24px;
+            font-size: 34px;
             /* Semibold/XL */
             font-family: 'Montserrat';
             font-style: normal;
-            font-weight: 500;
+            font-weight: 600;
             /* or 29px */
             text-align: center;
             color: #FFFFFF;
@@ -177,14 +177,71 @@
             .containAll {
                 /* margin-left: 25vw; */
             }
-            .bottom{
+
+            .bottom {
                 border-radius: 36px 36px 36px 36px;
             }
         }
+
         @media only screen and (max-width: 600px) {
-            .bottom{
+            .bottom {
                 border-radius: 36px 36px 0 0;
             }
+        }
+
+        .footer {
+            margin-top: 50px;
+            width: 100%;
+            background: #B20731;
+        }
+
+        .imgFooter {
+            height: 105px;
+            width: 120px;
+            margin-bottom: -25px;
+        }
+
+        .tittleFooter {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: center;
+            color: #FFFFFF;
+            padding-bottom: 20px;
+        }
+
+        .borderFooter {
+            left: 30px;
+            width: 85vw;
+            max-width: 400px;
+            border-bottom: 1px solid #FFFFFF;
+        }
+
+        .socialMediaLabel {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+            margin-top: 25px;
+        }
+
+        .footerLaporta {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            /* identical to box height */
+
+            text-align: center;
+
+            color: #FFFFFF;
+
         }
     </style>
 </head>
@@ -194,7 +251,7 @@
         <div>
             <div class="row justify-content-center head">
                 <img src="img/lazizaaHome.png" alt="">
-                <h3>Pelaporan administrasi outlet</h3>
+                <h3>Laporta</h3>
             </div>
             <div class="bottom">
                 <div class="wrap-form">
@@ -214,7 +271,8 @@
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input checkBox" id="exampleCheck1">
-                            <label class="form-check-label textSavePassword" for="exampleCheck1">Simpan kata sandi?</label>
+                            <label class="form-check-label textSavePassword" for="exampleCheck1">Simpan kata
+                                sandi?</label>
                         </div>
                         <button type="submit" class="btn block">Log in</button>
                     </form>
@@ -222,8 +280,26 @@
             </div>
         </div>
     </div>
-    <div class="">
-        
+    <div class="d-flex justify-content-center footer">
+        <div>
+            <div class="d-flex justify-content-center">
+                <img class="imgFooter" src="{{ url('img/lazizaaHome.png') }}" alt="">
+            </div>
+            <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
+            <div class="d-flex justify-content-center borderFooter"></div>
+            <div class="socialMediaLabel">Social media</div>
+            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+                <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
+                <div style="width: 40px;"></div>
+                <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
+                <div style="width: 40px;"></div>
+                <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+        </div>
+    </div>
+
     </div>
     {{-- <div class="login-form">
         <form action="{{ url('user/login') }}" method="post">

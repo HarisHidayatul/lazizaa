@@ -480,6 +480,60 @@
             margin-top: 3px;
             margin-left: 6px
         }
+        .footer {
+            margin-top: 50px;
+            width: 100%;
+            background: #B20731;
+        }
+
+        .imgFooter {
+            height: 105px;
+            width: 120px;
+            margin-bottom: -25px;
+        }
+
+        .tittleFooter {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: center;
+            color: #FFFFFF;
+            padding-bottom: 20px;
+        }
+
+        .borderFooter {
+            left: 30px;
+            width: 85vw;
+            max-width: 400px;
+            border-bottom: 1px solid #FFFFFF;
+        }
+
+        .socialMediaLabel {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+            margin-top: 25px;
+        }
+
+        .footerLaporta {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            /* identical to box height */
+
+            text-align: center;
+
+            color: #FFFFFF;
+
+        }
     </style>
 </head>
 
@@ -501,10 +555,10 @@
     </div>
     <div class="d-flex justify-content-center containerTop">
         <div class="row headerTop">
-            <div class="col menuNotSel" style="margin-top: 15px">SO</div>
-            <div class="col menuSel" style="margin-top: 15px">Sales</div>
-            <div class="col menuNotSel" style="margin-top: 15px">Waste</div>
-            <div class="col menuNotSel" style="margin-top: 5px">Pembeli an</div>
+            <div class="col menuNotSel" style="margin-top: 15px;margin-left: 10px" onclick="goToSoHarian();">SO</div>
+            <div class="col menuSel" style="margin-top: 15px" onclick="goToSalesHarian();">Sales</div>
+            <div class="col menuNotSel" style="margin-top: 15px" onclick="goToWasteHarian();">Waste</div>
+            <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Pembeli an</div>
         </div>
     </div>
     <div class="d-flex justify-content-center containerBottom">
@@ -553,6 +607,25 @@
             <div style="content: ''; height: 50px"></div>
         </div>
     </div>
+    <div class="d-flex justify-content-center footer">
+        <div>
+            <div class="d-flex justify-content-center">
+                <img class="imgFooter" src="{{ url('img/lazizaaHome.png') }}" alt="">
+            </div>
+            <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
+            <div class="d-flex justify-content-center borderFooter"></div>
+            <div class="socialMediaLabel">Social media</div>
+            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+                <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
+                <div style="width: 40px;"></div>
+                <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
+                <div style="width: 40px;"></div>
+                <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+        </div>
+    </div>
 </body>
 <script>
     var dataId = [];
@@ -582,6 +655,26 @@
         "November", "Desember"
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+    function goToSoHarian() {
+        window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToSalesHarian() {
+        window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToWasteHarian() {
+        window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToPattyCashHarian() {
+        window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToRequestItem(){
+        window.location.href = "{{ url('user/request/salesHarian') }}" + '/' + dateSelected;
+    }
 
     function kategoriShowClick() {
         if (dropdownKategori) {

@@ -202,7 +202,6 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/dashboard', function () {
         return view('userControl2.dashboard');
     });
-    
     Route::get('admin/item/so', function () {
         return view('adminControl.setItem.soHarian');
     });
@@ -333,8 +332,35 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'idPattyCashFill' => $idPattyCashFill
         ]);
     });
-
-    Route::get('user/setoran', function(){
+    Route::get('user/setoran/home', function(){
         return view('userControl.setoran.home');
+    });
+    Route::get('user/setoran/history', function(){
+        return view('userControl.setoran.allHistory');
+    });
+    Route::get('user/setoran/penerima', function(){
+        return view('userControl.setoran.allPenerima');
+    });
+    Route::get('user/setoran/transfer', function(){
+        return view('userControl.setoran.transfer');
+    });
+    Route::get('user/setoran/transfer/all', function(){
+        return view('userControl.setoran.tambahRekening');
+    });
+    Route::get('user/setoran/transfer/add/pengirim',function(){
+        return view('userControl.setoran.tambahRekeningBaru');
+    });
+    Route::get('user/setoran/');
+    Route::get('user/setoran/eWallet/add/pengirim', function(){
+        return view('userControl.setoran.tambahEWalletBaru');
+    });
+    Route::get('user/setoran/eWallet/kirim', function(){
+        return view('userControl.setoran.kirimEWallet');
+    });
+    Route::get('user/setoran/eWallet', function(){
+        return view('userControl.setoran.eWallet');
+    });
+    Route::get('user/setoran/wait', function(){
+        return view('userControl.setoran.verifikasiWait');
     });
 });
