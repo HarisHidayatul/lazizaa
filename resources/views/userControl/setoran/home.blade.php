@@ -648,51 +648,51 @@
             <div class="revHeader">Pembayaran</div>
             <div style="content: ''; height:20px;"></div>
             <div class="listPayment">
-                <img src="{{ url('img/pembayaran/eWallet.png') }}" alt="">
+                <img src="{{ url('img/pembayaran/eWallet.png') }}" alt="" onclick="goToTambahEWallet();">
                 <div style="content: ''; width: 10vw;"></div>
-                <img src="{{ url('img/pembayaran/transfer.png') }}" alt="">
+                <img src="{{ url('img/pembayaran/transfer.png') }}" alt="" onclick="goToTambahRekening();">
             </div>
             <div style="content: ''; height:30px;"></div>
             <div class="d-flex justify-content-between">
                 <div class="lblPengirim">Pengirim</div>
-                <div class="semuaPengirim">Semua</div>
+                <div class="semuaPengirim" onclick="goToPenerima();">Semua</div>
             </div>
             <div style="content: ''; height:10px;"></div>
             <div class="pengirimAll">
-                <div class="wrapBank">
+                <div class="wrapBank" onclick="goToKirimKeTransfer();">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
                     <div>Siti</div>
                 </div>
-                <div class="wrapBank">
+                <div class="wrapBank" onclick="goToKirimKeTransfer();">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
                     <div>Siti</div>
                 </div>
-                <div class="wrapBank">
+                <div class="wrapBank" onclick="goToKirimKeTransfer();">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
                     <div>Siti</div>
                 </div>
-                <div class="wrapBank">
+                <div class="wrapBank" onclick="goToKirimKeTransfer();">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
                     <div>Siti</div>
                 </div>
-                <div class="wrapBank">
+                <div class="wrapBank" onclick="goToKirimKeTransfer();">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
                     <div>Siti</div>
                 </div>
             </div>
             <div class="wrapTransaksi">
-                <div class="active" style="flex: 0 0 68px;">Semua</div>
-                <div style="flex: 0 0 67px;">Hari ini</div>
-                <div style="flex: 0 0 129px;">1 Minggu terakhir</div>
-                <div style="flex: 0 0 117px;">30 Hari Terakhir</div>
+                <div name="sortTransaksi" onclick="listByDate(0);" class="active" style="flex: 0 0 68px;">Semua</div>
+                <div name="sortTransaksi" onclick="listByDate(1);" style="flex: 0 0 67px;">Hari ini</div>
+                <div name="sortTransaksi" onclick="listByDate(2);" style="flex: 0 0 129px;">1 Minggu terakhir</div>
+                <div name="sortTransaksi" onclick="listByDate(3);" style="flex: 0 0 117px;">30 Hari Terakhir</div>
             </div>
             <div class="d-flex justify-content-between" style="margin-top: 20px;">
                 <div class="lblPengirim">History Transaksi</div>
-                <div class="semuaPengirim">Semua</div>
+                <div class="semuaPengirim" onclick="goToAllHistory();">Semua</div>
             </div>
             <div>
                 <div class="dateTransaksi">1 November</div>
-                <div class="d-flex justify-content-between rowTransaksi">
+                <div class="d-flex justify-content-between rowTransaksi" onclick="goToEWalletDetail();">
                     <div class="d-flex justify-content-start">
                         <div>
                             <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
@@ -709,7 +709,7 @@
                     </div>
                     <div class="priceTransaksi">Rp 59.000</div>
                 </div>
-                <div class="d-flex justify-content-between rowTransaksi">
+                <div class="d-flex justify-content-between rowTransaksi" onclick="goToTransferDetail();">
                     <div class="d-flex justify-content-start">
                         <div>
                             <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
@@ -726,7 +726,7 @@
                     </div>
                     <div class="priceTransaksi">Rp 1.459.000</div>
                 </div>
-                <div class="d-flex justify-content-between rowTransaksi">
+                <div class="d-flex justify-content-between rowTransaksi" onclick="goToEWalletDetail();">
                     <div class="d-flex justify-content-start">
                         <div>
                             <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
@@ -746,7 +746,7 @@
             </div>
             <div>
                 <div class="dateTransaksi">30 Oktober</div>
-                <div class="d-flex justify-content-between rowTransaksi">
+                <div class="d-flex justify-content-between rowTransaksi" onclick="goToTransferDetail();">
                     <div class="d-flex justify-content-start">
                         <div>
                             <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
@@ -763,7 +763,7 @@
                     </div>
                     <div class="priceTransaksi">Rp 59.000</div>
                 </div>
-                <div class="d-flex justify-content-between rowTransaksi">
+                <div class="d-flex justify-content-between rowTransaksi" onclick="goToEWalletDetail();">
                     <div class="d-flex justify-content-start">
                         <div>
                             <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
@@ -844,7 +844,7 @@
             <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
             <div class="d-flex justify-content-center borderFooter"></div>
             <div class="socialMediaLabel">Social media</div>
-            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
                 <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
                 <div style="width: 40px;"></div>
                 <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
@@ -852,13 +852,58 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
 <script>
     $(document).ready(function() {});
-    $('#exampleModal').on('hidden.bs.modal', function() {})
+
+    function goToAllHistory() {
+        window.location.href = "{{ url('user/setoran/history') }}";
+    }
+
+    function goToEWalletDetail() {
+        window.location.href = "{{ url('user/setoran/eWallet/detail/home') }}";
+    }
+
+    function goToTransferDetail() {
+        window.location.href = "{{ url('user/setoran/transfer/detail/home') }}";
+    }
+
+    function goToPenerima() {
+        window.location.href = "{{ url('user/setoran/penerima') }}";
+    }
+
+    function goToTambahEWallet() {
+        window.location.href = "{{ url('user/setoran/eWallet/add/pengirim') }}";
+    }
+
+    function goToTambahRekening() {
+        window.location.href = "{{ url('user/setoran/transfer/all') }}";
+    }
+
+    function goToKirimKeTransfer() {
+        window.location.href = "{{ url('user/setoran/transfer/kirim/home') }}";
+    }
+
+    function listByDate(index) {
+        // console.log(.length);
+        var element = document.getElementsByName("sortTransaksi");
+        for (var i = 0; i < element.length; i++) {
+            if (i == index) {
+                element[i].classList.add("active");
+                continue;
+            }
+            element[i].classList.remove("active");
+        }
+    }
+
+    //sidebar
+    $('#exampleModal').on('hidden.bs.modal', function() {
+
+    })
 
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";

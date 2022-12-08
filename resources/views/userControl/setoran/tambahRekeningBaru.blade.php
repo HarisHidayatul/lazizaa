@@ -161,20 +161,21 @@
 <body>
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
-            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack">
+            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goToListBank();">
             <h4 class="kembali">Tambah rekening baru</h4>
             <div></div>
         </div>
-        <div class="d-flex justify-content-center">
-            <div style="width: 350px; margin: 0 10px;">
-                <div style="content: ''; height: 40px;"></div>
-                <div class="labelInput">Nomor rekening</div>
-                <input type="text" placeholder="Contoh: 14318161581">
-                <div class="labelInput">A.N. rekening</div>
-                <input type="text" placeholder="Contoh: Nama pemilik rekening">
-                <div style="content: ''; height: 300px;"></div>
-                <button>Tambah ke penerima baru</button>
-            </div>
+    </div>
+    <div style="height: 50px;"></div>
+    <div class="d-flex justify-content-center">
+        <div style="width: 350px; margin: 0 10px;">
+            <div style="content: ''; height: 40px;"></div>
+            <div class="labelInput">Nomor rekening</div>
+            <input type="text" placeholder="Contoh: 14318161581">
+            <div class="labelInput">A.N. rekening</div>
+            <input type="text" placeholder="Contoh: Nama pemilik rekening">
+            <div style="content: ''; height: 300px;"></div>
+            <button onclick="goToKirim();">Tambah ke penerima baru</button>
         </div>
     </div>
     <div class="d-flex justify-content-center footer">
@@ -197,5 +198,12 @@
         </div>
     </div>
 </body>
-
+<script>
+    function goToListBank() {
+        window.location.href = "{{ url('user/setoran/transfer/all') }}";
+    }
+    function goToKirim(){
+        window.location.href = "{{ url('user/setoran/transfer/kirim/tambah') }}";
+    }
+</script>
 </html>

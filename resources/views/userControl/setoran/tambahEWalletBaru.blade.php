@@ -161,20 +161,21 @@
 <body>
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
-            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack">
+            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goToHome();">
             <h4 class="kembali">Tambah E-wallet baru</h4>
             <div></div>
         </div>
-        <div class="d-flex justify-content-center">
-            <div style="width: 350px; margin: 0 10px;">
-                <div style="content: ''; height: 40px;"></div>
-                <div class="labelInput">Nomor E-wallet</div>
-                <input type="text" placeholder="Contoh: 08123456789">
-                <div class="labelInput">Nama pemilik</div>
-                <input type="text" placeholder="Contoh: Nama pemilik E-wallet">
-                <div style="content: ''; height: 300px;"></div>
-                <button>Tambah ke penerima baru</button>
-            </div>
+    </div>
+    <div style="height: 50px;"></div>
+    <div class="d-flex justify-content-center">
+        <div style="width: 350px; margin: 0 10px;">
+            <div style="content: ''; height: 40px;"></div>
+            <div class="labelInput">Nomor E-wallet</div>
+            <input type="text" placeholder="Contoh: 08123456789">
+            <div class="labelInput">Nama pemilik</div>
+            <input type="text" placeholder="Contoh: Nama pemilik E-wallet">
+            <div style="content: ''; height: 300px;"></div>
+            <button onclick="goToKirim();">Tambah ke penerima baru</button>
         </div>
     </div>
     <div class="d-flex justify-content-center footer">
@@ -185,7 +186,7 @@
             <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
             <div class="d-flex justify-content-center borderFooter"></div>
             <div class="socialMediaLabel">Social media</div>
-            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
                 <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
                 <div style="width: 40px;"></div>
                 <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
@@ -197,5 +198,12 @@
         </div>
     </div>
 </body>
-
+<script>
+    function goToHome() {
+        window.location.href = "{{ url('user/setoran/home') }}";
+    }
+    function goToKirim(){
+        window.location.href = "{{ url('user/setoran/eWallet/kirim/tambah') }}";
+    }
+</script>
 </html>

@@ -154,7 +154,7 @@
 <body>
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
-            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack">
+            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goToHome();">
             <h4 class="kembali">History setoran sales</h4>
             <div></div>
         </div>
@@ -162,7 +162,7 @@
     <div class="d-flex justify-content-center">
         <div style="width: 300px; margin-top: 65px;">
             <div class="dateTransaksi">1 November</div>
-            <div class="d-flex justify-content-between rowTransaksi">
+            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailTransfer();">
                 <div class="d-flex justify-content-start">
                     <div>
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
@@ -178,7 +178,7 @@
                 </div>
                 <div class="priceTransaksi">Rp 59.000</div>
             </div>
-            <div class="d-flex justify-content-between rowTransaksi">
+            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailEWallet();">
                 <div class="d-flex justify-content-start">
                     <div>
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
@@ -194,7 +194,7 @@
                 </div>
                 <div class="priceTransaksi">Rp 1.459.000</div>
             </div>
-            <div class="d-flex justify-content-between rowTransaksi">
+            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailTransfer();">
                 <div class="d-flex justify-content-start">
                     <div>
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
@@ -211,7 +211,7 @@
                 <div class="priceTransaksi">Rp 500.000</div>
             </div>
             <div class="dateTransaksi">30 Oktober</div>
-            <div class="d-flex justify-content-between rowTransaksi">
+            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailEWallet();">
                 <div class="d-flex justify-content-start">
                     <div>
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
@@ -227,7 +227,7 @@
                 </div>
                 <div class="priceTransaksi">Rp 59.000</div>
             </div>
-            <div class="d-flex justify-content-between rowTransaksi">
+            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailTransfer();">
                 <div class="d-flex justify-content-start">
                     <div>
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
@@ -243,7 +243,7 @@
                 </div>
                 <div class="priceTransaksi">Rp 70.000</div>
             </div>
-            <div class="d-flex justify-content-between rowTransaksi">
+            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailEWallet();">
                 <div class="d-flex justify-content-start">
                     <div>
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
@@ -281,5 +281,15 @@
         </div>
     </div>
 </body>
-
+<script>
+    function goToHome(){
+        window.location.href = "{{ url('user/setoran/home') }}";
+    }
+    function goToDetailEWallet(){
+        window.location.href = "{{ url('user/setoran/eWallet/detail/history') }}";
+    }
+    function goToDetailTransfer(){
+        window.location.href = "{{ url('user/setoran/transfer/detail/history') }}";
+    }
+</script>
 </html>

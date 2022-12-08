@@ -11,6 +11,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.6.0/autoNumeric.min.js"></script>
     <title>Document</title>
     <style>
         /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap'); */
@@ -275,6 +277,7 @@
             line-height: 140%;
             color: white;
         }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -336,7 +339,7 @@
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
             <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goBack();">
-            <h4 class="kembali">Kirim ke E-wallet</h4>
+            <h4 class="kembali">Kirim ke rekening</h4>
             <div></div>
         </div>
     </div>
@@ -354,16 +357,16 @@
                 <div class="jumlahLabel">Jumlah :</div>
                 <div class="d-flex justify-content-start" style="margin-top: 15px; margin-left: 5px;">
                     <div class="satuanLabel">Rp</div>
-                    <input class="inputJumlah" type="number" placeholder="0" id="inputJumlah">
+                    <input class="inputJumlah" type="text" placeholder="0" id="inputJumlah">
                 </div>
             </div>
             <div class="d-flex justify-content-center wrapNominal">
-                <div>50.000</div>
-                <div>100.000</div>
-                <div>200.000</div>
-                <div>500.000</div>
-                <div>1.000.000</div>
-                <div>2.000.000</div>
+                <div onclick="setJumlah(50000)">50.000</div>
+                <div onclick="setJumlah(100000)">100.000</div>
+                <div onclick="setJumlah(200000)">200.000</div>
+                <div onclick="setJumlah(500000)">500.000</div>
+                <div onclick="setJumlah(1000000)">1.000.000</div>
+                <div onclick="setJumlah(2000000)">2.000.000</div>
             </div>
             <div class="d-flex justify-content-center align-items-center wrapUpload">
                 <img src="{{ url('img/icon/uploadCamera.png') }}" alt="" style="height: 30px;">
@@ -372,7 +375,8 @@
             <div class="wrapBottom">
                 <div class="rekTujuan">Pilih rekening tujuan</div>
                 <div style="content: ''; height: 15px;"></div>
-                <div class="d-flex justify-content-between align-items-center wrapRekTujuan" onclick="showRekeningTujuan();">
+                <div class="d-flex justify-content-between align-items-center wrapRekTujuan"
+                    onclick="showRekeningTujuan();">
                     <div class="d-flex justify-content-start">
                         <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                         <div>
@@ -387,7 +391,7 @@
             </div>
         </div>
         <div id="rekeningTujuan">
-            <div class="d-flex justify-content-between align-items-center wrapListRekening">
+            <div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(0)">
                 <div class="d-flex justify-content-start">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                     <div style="margin-left: 15px;">
@@ -395,9 +399,9 @@
                         <div class="listBankNumber">014-26816111664</div>
                     </div>
                 </div>
-                <div class="circleSelect activeSelectBank"></div>
+                <div class="circleSelect activeSelectBank" name="selectPenerima"></div>
             </div>
-            <div class="d-flex justify-content-between align-items-center wrapListRekening">
+            <div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(1)">
                 <div class="d-flex justify-content-start">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                     <div style="margin-left: 15px;">
@@ -405,9 +409,9 @@
                         <div class="listBankNumber">014-26816111664</div>
                     </div>
                 </div>
-                <div class="circleSelect"></div>
+                <div class="circleSelect" name="selectPenerima"></div>
             </div>
-            <div class="d-flex justify-content-between align-items-center wrapListRekening">
+            <div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(2)">
                 <div class="d-flex justify-content-start">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                     <div style="margin-left: 15px;">
@@ -415,9 +419,10 @@
                         <div class="listBankNumber">014-26816111664</div>
                     </div>
                 </div>
-                <div class="circleSelect"></div>
+                <div class="circleSelect" name="selectPenerima"></div>
             </div>
-            <div class="d-flex justify-content-between align-items-center wrapListRekening">
+            <div class="d-flex justify-content-between align-items-center wrapListRekening"
+                onclick="selectPenerima(3)">
                 <div class="d-flex justify-content-start">
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                     <div style="margin-left: 15px;">
@@ -425,7 +430,7 @@
                         <div class="listBankNumber">014-26816111664</div>
                     </div>
                 </div>
-                <div class="circleSelect"></div>
+                <div class="circleSelect" name="selectPenerima"></div>
             </div>
         </div>
     </div>
@@ -447,7 +452,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -459,31 +465,54 @@
     $('#boxInput').click(function() {
         $('#inputJumlah').focus();
     });
-    function showRekeningTujuan(){
+
+    var inputJumlah = new AutoNumeric('#inputJumlah', {
+        decimalPlaces: '0'
+    })
+
+    function selectPenerima(index) {
+        var elementSelect = document.getElementsByName('selectPenerima');
+        for (var i = 0; i < elementSelect.length; i++) {
+            if (i == index) {
+                elementSelect[i].classList.add("activeSelectBank");
+                continue;
+            }
+            elementSelect[i].classList.remove("activeSelectBank");
+        }
+        // console.log(elementSelect.length);
+    }
+
+    function setJumlah(jumlah) {
+        inputJumlah.set(jumlah);
+    }
+
+    function showRekeningTujuan() {
         document.getElementById('rekeningTujuan').style.display = "block";
         document.getElementById('home').style.display = "none";
         rekeningTujuanActive = true;
     }
-    function hideRekeningTujuan(){
+
+    function hideRekeningTujuan() {
         document.getElementById('rekeningTujuan').style.display = "none";
         document.getElementById('home').style.display = "block";
         rekeningTujuanActive = false;
     }
-    function goBack(){
-        if(rekeningTujuanActive == true){
+
+    function goBack() {
+        if (rekeningTujuanActive == true) {
             hideRekeningTujuan();
-        }else{
-            if("{{ $fromWhere }}" == "tambah"){
-                window.location.href = "{{ url('user/setoran/eWallet/add/pengirim') }}";
-            }else if("{{ $fromWhere }}" == "semua"){
+        } else {
+            if ("{{ $fromWhere }}" == "tambah") {
+                window.location.href = "{{ url('user/setoran/treansfer/add/pengirim') }}";
+            } else if ("{{ $fromWhere }}" == "semua") {
                 window.location.href = "{{ url('user/setoran/penerima') }}";
-            }else{
+            } else {
                 window.location.href = "{{ url('user/setoran/home') }}";
             }
         }
     }
-    
-    function bayar(){
+
+    function bayar() {
         window.location.href = "{{ url('user/setoran/wait') }}";
     }
 </script>

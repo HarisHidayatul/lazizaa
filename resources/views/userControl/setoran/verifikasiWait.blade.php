@@ -123,7 +123,7 @@
             <div style="content: ''; height: 10px;"></div>
             <p>Transfer kamu akan diverifikasi oleh pihak Lazizaa</p>
             <div style="content: ''; height: 120px;"></div>
-            <button>Kembali ke beranda</button>
+            <button onclick="goToHome();">Kembali ke beranda</button>
             <div style="content: ''; height: 70px;"></div>
         </div>
     </div>
@@ -147,5 +147,9 @@
         </div>
     </div>
 </body>
-
+<script>
+    function goToHome(){
+        window.location.href = "{{ url('user/setoran/home') }}";
+    }
+</script>
 </html>

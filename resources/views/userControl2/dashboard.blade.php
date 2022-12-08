@@ -735,7 +735,7 @@
             <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
             <div class="d-flex justify-content-center borderFooter"></div>
             <div class="socialMediaLabel">Social media</div>
-            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
                 <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
                 <div style="width: 40px;"></div>
                 <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
@@ -776,7 +776,6 @@
         // do something…
         dashboardShow();
     })
-
 
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";

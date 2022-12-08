@@ -165,7 +165,7 @@
 <body>
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
-            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack">
+            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goToHome();">
             <h4 class="kembali">Penerima</h4>
             <div></div>
         </div>
@@ -303,5 +303,9 @@
         </div>
     </div>
 </body>
-
+<script>
+    function goToHome(){
+        window.location.href = "{{ url('user/setoran/home') }}";
+    }
+</script>
 </html>

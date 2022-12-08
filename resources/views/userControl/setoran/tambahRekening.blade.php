@@ -133,14 +133,14 @@
 <body>
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
-            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack">
+            <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goToHome();">
             <h4 class="kembali">Tambah rekening</h4>
             <div></div>
         </div>
     </div>
     <div class="d-flex justify-content-center">
         <div style="width: 300px; margin-top: 70px;">
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -150,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -160,7 +160,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -170,7 +170,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -180,7 +180,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -190,7 +190,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -200,7 +200,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -215,7 +215,7 @@
             <div class="tittleAll">Semua Bank</div>
 
 
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -225,7 +225,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -235,7 +235,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -245,7 +245,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -255,7 +255,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -265,7 +265,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-start rowTransaksi">
+            <div class="d-flex justify-content-start rowTransaksi" onclick="goToTambahRekeningBaru();">
                 <div>
                     <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
                 </div>
@@ -297,5 +297,12 @@
         </div>
     </div>
 </body>
-
+<script>
+    function goToHome() {
+        window.location.href = "{{ url('user/setoran/home') }}";
+    }
+    function goToTambahRekeningBaru(){
+        window.location.href = "{{ url('user/setoran/transfer/add/pengirim') }}";
+    }
+</script>
 </html>

@@ -347,18 +347,34 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/setoran/transfer/all', function(){
         return view('userControl.setoran.tambahRekening');
     });
+    Route::get('user/setoran/transfer/detail/{fromWhere}', function($fromWhere){
+        return view('userControl.setoran.detailTransfer',[
+            'fromWhere' => $fromWhere
+        ]);
+    });
     Route::get('user/setoran/transfer/add/pengirim',function(){
         return view('userControl.setoran.tambahRekeningBaru');
     });
-    Route::get('user/setoran/');
+    Route::get('user/setoran/transfer/kirim/{fromWhere}', function($fromWhere){
+        return view('userControl.setoran.kirimTransfer',[
+            'fromWhere' => $fromWhere
+        ]);
+    });
     Route::get('user/setoran/eWallet/add/pengirim', function(){
         return view('userControl.setoran.tambahEWalletBaru');
     });
-    Route::get('user/setoran/eWallet/kirim', function(){
-        return view('userControl.setoran.kirimEWallet');
+    Route::get('user/setoran/eWallet/kirim/{fromWhere}', function($fromWhere){
+        return view('userControl.setoran.kirimEWallet',[
+            'fromWhere' => $fromWhere
+        ]);
     });
     Route::get('user/setoran/eWallet', function(){
         return view('userControl.setoran.eWallet');
+    });
+    Route::get('user/setoran/eWallet/detail/{fromWhere}', function($fromWhere){
+        return view('userControl.setoran.detailEWallet',[
+            'fromWhere' => $fromWhere
+        ]);
     });
     Route::get('user/setoran/wait', function(){
         return view('userControl.setoran.verifikasiWait');
