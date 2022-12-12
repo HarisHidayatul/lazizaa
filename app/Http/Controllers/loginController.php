@@ -160,6 +160,21 @@ class loginController extends Controller
         $request->session()->flush();
         return redirect('/');
     }
+
+    public function getAllUser(){
+        $userAll = dUser::all();
+        $allUser = [];
+        for($i =0; $i < $userAll->count(); $i++){
+            array_push($allUser, (object)[
+                'id' => $userAll[$i] -> id,
+                'nama' => $userAll[$i]['Nama Lengkap']
+            ]);
+        }
+        return response()->json([
+            'user' => $allUser
+        ]);
+    }
+
     public function getAllDate($idOutlet, Request $request)
     {
         // echo $idOutlet;

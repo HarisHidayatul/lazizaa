@@ -51,7 +51,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('pengirimList',function(Blueprint $table){
+
+        Schema::create('penerimaList',function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('idBank');
@@ -59,15 +60,28 @@ return new class extends Migration
             
             $table->string('namaRekening');
             $table->string('nomorRekening');
+            
+            $table->timestamps();
+            $table->softDeletes();
         });
-        Schema::create('pengirimList',function(Blueprint $table){
+
+        Schema::create('setoran', function(Blueprint $table){
             $table->id();
 
-            $table->unsignedBigInteger('idBank');
-            $table->foreign('idBank')->references('id')->on('listBank');
+            $table->unsignedBigInteger('idPengirim');
+            $table->foreign('idPengirim')->references('id')->on('pengirimList');
             
-            $table->string('namaRekening');
-            $table->string('nomorRekening');
+            $table->unsignedBigInteger('idTujuan');
+            $table->foreign('idTujuan')->references('id')->on('penerimaList');
+
+            $table->unsignedBigInteger('idRevisi');
+            $table->foreign('idRevisi')->references('id')->on('revisi');
+
+            $table->timestamp('time',$precision =0);
+            $table->integer('qtySetor');
+            $table->string('imgTransfer');
+            
+            $table->timestamps();
         });
     }
 

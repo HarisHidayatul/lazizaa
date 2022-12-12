@@ -5,6 +5,7 @@ use App\Http\Controllers\itemSOController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\pattyCashController;
 use App\Http\Controllers\salesHarianController;
+use App\Http\Controllers\setoranController;
 use App\Http\Controllers\soFillController;
 use App\Http\Controllers\soHarianController;
 use App\Http\Controllers\typeOutletItemController;
@@ -184,6 +185,15 @@ Route::get('waste/user/showAllData/{id}/{date}', [wasteController::class, 'showA
 Route::get('wasteHarian', function () {
     return view('wasteHarian.typeWaste');
 });
+
+Route::get('setoran/bank/type/show', [setoranController::class, 'showType']);
+Route::get('setoran/bank/show/{idJenisBank}', [setoranController::class, 'showBank']);
+
+Route::get('setoran', function(){
+    return view('setoran.typeSetoran');
+});
+
+Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
 Route::get('/login', function () {
     return view('login');
