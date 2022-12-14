@@ -72,6 +72,20 @@
             margin-bottom: 20px;
         }
 
+        .topWrapImage {
+            width: 45px;
+            height: 45px;
+            padding-top: 5px;
+            background: #FFFFFF;
+            border-radius: 12px;
+        }
+
+        .topWrapImage img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
         .nameTop {
             font-family: 'Montserrat';
             font-style: normal;
@@ -216,6 +230,19 @@
             padding-right: 10px;
         }
 
+        .wrapImgRekTujuan {
+            width: 42px;
+            height: 42px;
+            background: #F9FAFB;
+            border-radius: 8px;
+        }
+
+        .wrapImgRekTujuan img{
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+
         .wrapBottom {
             padding-top: 20px;
             padding-left: 20px;
@@ -232,7 +259,23 @@
             padding-right: 15px;
             padding-left: 15px;
             height: 80px;
+            width: 85vw;
             margin-bottom: 15px;
+        }
+
+        .wrapImgRekening {
+            width: 48px;
+            height: 48px;
+            left: 20px;
+            top: 112px;
+            background: #F9FAFB;
+            border-radius: 1000px;
+        }
+
+        .wrapImgRekening img {
+            width: 43px;
+            height: 43px;
+            object-fit: contain;
         }
 
         .listBankTittle {
@@ -339,18 +382,19 @@
     <div class="fixed-top header">
         <div class="d-flex justify-content-between menuAll">
             <img src="{{ url('img/back2.png') }}" alt="back icon" class="imageBack" onclick="goBack();">
-            <h4 class="kembali">Kirim ke rekening</h4>
+            <h4 class="kembali">Kirim Dari Rekening</h4>
             <div></div>
         </div>
     </div>
-    <div style="margin-left: 10px; margin-right: 5px;">
-        <div style="content: ''; height: 100px;"></div>
+    <div class="d-flex justify-content-center" style="margin-left: 5px; margin-right: 5px; margin-top:100px;">
         <div id="home">
             <div class="d-flex justify-content-start align-items-center topWrap">
-                <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
+                <div class="topWrapImage">
+                    <img id="imageBankPengirim" src="" alt="">
+                </div>
                 <div style="margin-left: 15px;">
-                    <div class="nameTop">ABDUL RASYID R.</div>
-                    <div class="nameTop">Dana | <span>.....</span> 3267</div>
+                    <div class="nameTop" id="namaPengirim">....</div>
+                    <div class="nameTop" id="rekeningDanBankPengirim">.... | <span>.....</span> ....</div>
                 </div>
             </div>
             <div class="boxInput" id="boxInput">
@@ -378,60 +422,21 @@
                 <div class="d-flex justify-content-between align-items-center wrapRekTujuan"
                     onclick="showRekeningTujuan();">
                     <div class="d-flex justify-content-start">
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
+                        <div class="wrapImgRekTujuan">
+                            <img id="rekTujuanImg" src="" alt="">
+                        </div>
                         <div>
-                            <div class="rekTujuanLBL">PT. Lazizaa Rahmat Semesta</div>
-                            <div class="rekTujuanNum">008-268161116664</div>
+                            <div id="rekTujuanLBL" class="rekTujuanLBL"></div>
+                            <div id="rekTujuanNum" class="rekTujuanNum"></div>
                         </div>
                     </div>
                     <img src="{{ url('img/icon/backRight2.png') }}" alt="" style="height: 15px;">
                 </div>
                 <div style="content: ''; height: 35px;"></div>
-                <button onclick="bayar();">Bayar</button>
+                <button onclick="sendDataKirim();">Bayar</button>
             </div>
         </div>
         <div id="rekeningTujuan">
-            <div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(0)">
-                <div class="d-flex justify-content-start">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    <div style="margin-left: 15px;">
-                        <div class="listBankTittle">Bank BCA</div>
-                        <div class="listBankNumber">014-26816111664</div>
-                    </div>
-                </div>
-                <div class="circleSelect activeSelectBank" name="selectPenerima"></div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(1)">
-                <div class="d-flex justify-content-start">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    <div style="margin-left: 15px;">
-                        <div class="listBankTittle">Bank BCA</div>
-                        <div class="listBankNumber">014-26816111664</div>
-                    </div>
-                </div>
-                <div class="circleSelect" name="selectPenerima"></div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(2)">
-                <div class="d-flex justify-content-start">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    <div style="margin-left: 15px;">
-                        <div class="listBankTittle">Bank BCA</div>
-                        <div class="listBankNumber">014-26816111664</div>
-                    </div>
-                </div>
-                <div class="circleSelect" name="selectPenerima"></div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center wrapListRekening"
-                onclick="selectPenerima(3)">
-                <div class="d-flex justify-content-start">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    <div style="margin-left: 15px;">
-                        <div class="listBankTittle">Bank BCA</div>
-                        <div class="listBankNumber">014-26816111664</div>
-                    </div>
-                </div>
-                <div class="circleSelect" name="selectPenerima"></div>
-            </div>
         </div>
     </div>
     <div style="content: ''; height: 35px;"></div>
@@ -459,9 +464,16 @@
 </body>
 <script>
     var rekeningTujuanActive = false;
+    var indexPenerima = null;
+    var objAllPenerima = null;
+
     $(document).ready(function() {
         hideRekeningTujuan();
+        // showRekeningTujuan();
+        showAllPenerima();
+        showPengirim();
     });
+
     $('#boxInput').click(function() {
         $('#inputJumlah').focus();
     });
@@ -470,7 +482,90 @@
         decimalPlaces: '0'
     })
 
+    function sendDataKirim(){
+        $.ajax({
+            url: "{{ url('setoran/penerima/sendData') }}",
+            type: 'get',
+            data: {
+                // idBrand: "{{ session('idBrand') }}",
+                idOutlet: "{{ session('idOutlet') }}",
+                idPengirim: "{{ $idPengirim }}",
+                idTujuan: objAllPenerima.penerimaListArray[indexPenerima].id,
+                qtySetor: parseInt(inputJumlah.rawValue),
+            },
+            success: function(response) {
+                // console.log(response);
+                bayar();
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function showPengirim() {
+        $.ajax({
+            url: "{{ url('setoran/show/pengirim/list') }}" + '/' + "{{ $idPengirim }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var nomorRekeningLength = obj.nomorRekening.length;
+                var rekeningDanBankPengirim = obj.bank + ' | <span>.....</span> ';
+                rekeningDanBankPengirim += obj.nomorRekening.slice(nomorRekeningLength - 4,
+                    nomorRekeningLength);
+                document.getElementById('namaPengirim').innerHTML = obj.namaRekening;
+                document.getElementById('rekeningDanBankPengirim').innerHTML = rekeningDanBankPengirim;
+                document.getElementById('imageBankPengirim').src = "{{ url('') }}" + '/' + obj
+                    .imgBank;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function showAllPenerima() {
+        $.ajax({
+            url: "{{ url('setoran/penerima/show') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                objAllPenerima = obj;
+                var dataPengirimHTML = '';
+                var url = "{{ url('') }}";
+                console.log(obj);
+                var i = 0;
+                for (i = 0; i < obj.penerimaListArray.length; i++) {
+                    dataPengirimHTML +=
+                        '<div class="d-flex justify-content-between align-items-center wrapListRekening" onclick="selectPenerima(';
+                    dataPengirimHTML += i;
+                    dataPengirimHTML += ')">';
+                    dataPengirimHTML +=
+                        '<div class="d-flex justify-content-start"><div class="wrapImgRekening">';
+                    dataPengirimHTML += '<img src="';
+                    dataPengirimHTML += url + '/' + obj.penerimaListArray[i].imgBank + '" alt="">';
+                    dataPengirimHTML +=
+                        '</div><div style="margin-left: 15px;"><div class="listBankTittle">';
+                    dataPengirimHTML += obj.penerimaListArray[i].namaRekening;
+                    dataPengirimHTML += '</div><div class="listBankNumber">';
+                    dataPengirimHTML += obj.penerimaListArray[i].nomorRekening;
+                    dataPengirimHTML += '</div></div></div>';
+                    dataPengirimHTML += '<div class="circleSelect" name="selectPenerima"></div></div>';
+                }
+                document.getElementById('rekeningTujuan').innerHTML = dataPengirimHTML;
+                if (i > 0) {
+                    selectPenerima(0);
+                }
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
     function selectPenerima(index) {
+        indexPenerima = index;
         var elementSelect = document.getElementsByName('selectPenerima');
         for (var i = 0; i < elementSelect.length; i++) {
             if (i == index) {
@@ -479,6 +574,9 @@
             }
             elementSelect[i].classList.remove("activeSelectBank");
         }
+        document.getElementById('rekTujuanImg').src = "{{ url('') }}" + '/' + objAllPenerima.penerimaListArray[index].imgBank;
+        document.getElementById('rekTujuanLBL').innerHTML = objAllPenerima.penerimaListArray[index].namaRekening;
+        document.getElementById('rekTujuanNum').innerHTML = objAllPenerima.penerimaListArray[index].nomorRekening;
         // console.log(elementSelect.length);
     }
 
@@ -503,7 +601,7 @@
             hideRekeningTujuan();
         } else {
             if ("{{ $fromWhere }}" == "tambah") {
-                window.location.href = "{{ url('user/setoran/treansfer/add/pengirim') }}";
+                window.location.href = "{{ url('user/setoran/transfer/add/pengirim') }}";
             } else if ("{{ $fromWhere }}" == "semua") {
                 window.location.href = "{{ url('user/setoran/penerima') }}";
             } else {

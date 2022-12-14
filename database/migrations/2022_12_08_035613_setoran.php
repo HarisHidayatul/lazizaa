@@ -41,7 +41,7 @@ return new class extends Migration
             
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
-            
+
             $table->unsignedBigInteger('idBank');
             $table->foreign('idBank')->references('id')->on('listBank');
             
@@ -71,16 +71,21 @@ return new class extends Migration
             $table->unsignedBigInteger('idPengirim');
             $table->foreign('idPengirim')->references('id')->on('pengirimList');
             
+            $table->unsignedBigInteger('idOutlet');
+            $table->foreign('idOutlet')->references('id')->on('doutlet');
+            
             $table->unsignedBigInteger('idTujuan');
             $table->foreign('idTujuan')->references('id')->on('penerimaList');
 
             $table->unsignedBigInteger('idRevisi');
             $table->foreign('idRevisi')->references('id')->on('revisi');
 
-            $table->timestamp('time',$precision =0);
             $table->integer('qtySetor');
             $table->string('imgTransfer');
             
+            $table->unsignedBigInteger('idTanggal');
+            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+
             $table->timestamps();
         });
     }

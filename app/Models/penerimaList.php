@@ -14,6 +14,10 @@ class penerimaList extends Model
     public $table = 'penerimaList';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
+
+    public function listBanks(){
+        return $this->belongsTo(listBank::class,'idBank','id');
+    }
     
     protected $fillable = [
         'idBank',

@@ -40,8 +40,10 @@
 
 
     <div>Tambah pengirim : </div>
-    <input type="radio" id="transfer2" name="jenisTransaksi2" value="1" onclick="typeTransaksi2(1)"><label for="transfer2">transfer</label>
-    <input type="radio" id="eWallet2" name="jenisTransaksi2" value="2" onclick="typeTransaksi2(2)"><label for="eWallet2">eWallet</label><br>
+    <input type="radio" id="transfer2" name="jenisTransaksi2" value="1" onclick="typeTransaksi2(1)"><label
+        for="transfer2">transfer</label>
+    <input type="radio" id="eWallet2" name="jenisTransaksi2" value="2" onclick="typeTransaksi2(2)"><label
+        for="eWallet2">eWallet</label><br>
     <select name="" id="selectBankPengirim">
         <option value="">Select Bank</option>
     </select><br>
@@ -53,32 +55,127 @@
     <button>Submit</button><br><br>
 
     <div>Tambah penerima : </div>
-    <input type="radio" id="transfer3" name="jenisTransaksi3"><label for="transfer3">transfer</label>
-    <input type="radio" id="eWallet3" name="jenisTransaksi3"><label for="eWallet3">eWallet</label><br>
-    <select name="" id="">
+    <input type="radio" id="transfer3" name="jenisTransaksi3" onclick="typeTransaksi3(1)"><label
+        for="transfer3">transfer</label>
+    <input type="radio" id="eWallet3" name="jenisTransaksi3" onclick="typeTransaksi3(2)"><label
+        for="eWallet3">eWallet</label><br>
+    <select name="" id="selectBankPenerima">
         <option value="">Select Bank</option>
     </select><br>
-    <input type="text" placeholder="nama rekening">
-    <input type="number" placeholder="nomer rekening"><br>
-    <button>Submit</button><br><br>
+    <input type="text" placeholder="nama rekening" id="namaRekeningPenerima">
+    <input type="number" placeholder="nomer rekening" id="nomorRekeningPenerima"><br>
+    <button onclick="createIDPenerima();">Submit</button><br><br>
 
-    <div>Tampilkan pengirim</div>
-    <select name="" id="">
-        <option value="">Nama Pengirim</option>
+    <div>Tampilkan Penerima</div>
+    <select name="" id="penerimaAll">
+        <option value="">Nama Penerima</option>
     </select>
-    <button>Tampilkan</button>
-    <div>Nama Pengisi : </div>
-    <div>Nama Outlet : </div>
+    <button onclick="showPenerimaClick();">Tampilkan</button>
+    <div>Nama Penerima : </div>
+    <input type="text" id="namaPenerimaEdit">
     <div>Bank : </div>
+    <select name="" id="listBankEdit">
+        <option value="">Nama Bank</option>
+    </select>
     <div>Nomor Rekening : </div>
-    <div>ImageBank</div>
-    <img src="" alt="">
+    <input type="number" id="rekeningPenerimaEdit">
+    <button onclick="sendEditBank();">Submit Edit</button>
 </body>
 <script>
+    var objPenerima = null;
+    var idPenerimaEdit = 0;
     $(document).ready(function() {
         getTypeBank();
         getAllUser();
+        getAllPenerima();
+        getAllBank();
     });
+
+    function createIDPenerima() {
+        $.ajax({
+            url: "{{ url('setoran/penerima/createID') }}",
+            type: 'get',
+            data: {
+                namaRekening: document.getElementById('namaRekeningPenerima').value,
+                nomorRekening: document.getElementById('nomorRekeningPenerima').value,
+                idBank: $('#selectBankPenerima').val(),
+            },
+            success: function(response) {
+                document.getElementById('namaRekeningPenerima').value = '';
+                document.getElementById('nomorRekeningPenerima').value = '';
+                getAllPenerima();
+            },
+            error: function(req, err) {}
+        })
+    }
+
+    function showPenerimaClick() {
+        var indexList = $('#penerimaAll').val();
+        idPenerimaEdit = objPenerima.penerimaListArray[indexList].id;
+        document.getElementById('namaPenerimaEdit').value = objPenerima.penerimaListArray[indexList].namaRekening;
+        document.getElementById('rekeningPenerimaEdit').value = objPenerima.penerimaListArray[indexList].nomorRekening;
+        document.getElementById('listBankEdit').value = objPenerima.penerimaListArray[indexList].id;
+    }
+
+    function sendEditBank() {
+        $.ajax({
+            url: "{{ url('setoran/penerima/edit') }}",
+            type: 'get',
+            data: {
+                namaRekening: document.getElementById('namaPenerimaEdit').value,
+                nomorRekening: document.getElementById('rekeningPenerimaEdit').value,
+                idBank: $('#listBankEdit').val(),
+                idPenerima: idPenerimaEdit
+            },
+            success: function(response) {
+                document.getElementById('namaPenerimaEdit').value = '';
+                document.getElementById('rekeningPenerimaEdit').value = '';
+                getAllPenerima();
+                idPenerimaEdit = 0;
+            },
+            error: function(req, err) {}
+        })
+    }
+
+    function getAllBank() {
+        $.ajax({
+            url: "{{ url('setoran/bank/show/all') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                var dataJenis = '';
+                var listPenerima = '';
+                for (var i = 0; i < obj.listBank.length; i++) {
+                    listPenerima += '<option value="' + obj.listBank[i].id;
+                    listPenerima += '">' + obj.listBank[i].bank;
+                    listPenerima += '</option>';
+                }
+                $('#listBankEdit').empty().append(listPenerima);
+            },
+            error: function(req, err) {}
+        })
+    }
+
+    function getAllPenerima() {
+        $.ajax({
+            url: "{{ url('setoran/penerima/show') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                var dataJenis = '';
+                // console.log(obj);
+                objPenerima = obj;
+                var listPenerima = '';
+                for (var i = 0; i < obj.penerimaListArray.length; i++) {
+                    listPenerima += '<option value="' + i;
+                    listPenerima += '">' + obj.penerimaListArray[i].namaRekening;
+                    listPenerima += '</option>';
+                }
+                $('#penerimaAll').empty().append(listPenerima);
+            },
+            error: function(req, err) {}
+        })
+    }
 
     function getTypeBank() {
         $.ajax({
@@ -102,18 +199,17 @@
                 dataJenis += '<br>';
                 document.getElementById('typeBank').innerHTML = dataJenis;
             },
-            error: function(req, err) {
-            }
+            error: function(req, err) {}
         })
     }
 
-    function getAllUser(){
+    function getAllUser() {
         $.ajax({
             url: "{{ url('user/show/all') }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
+                // console.log(obj);
                 var listUser = '';
                 for (var i = 0; i < obj.user.length; i++) {
                     listUser += '<option value="' + obj.user[i].id;
@@ -122,12 +218,11 @@
                 }
                 $('#userAll').empty().append(listUser);
             },
-            error: function(req, err) {
-            }
+            error: function(req, err) {}
         })
     }
-    
-    function typeTransaksi1(id){
+
+    function typeTransaksi1(id) {
         // console.log(id);
         $.ajax({
             url: "{{ url('setoran/bank/show') }}" + '/' + id,
@@ -142,12 +237,11 @@
                 listBank += '<br>';
                 document.getElementById('listBank').innerHTML = listBank;
             },
-            error: function(req, err) {
-            }
+            error: function(req, err) {}
         })
     }
 
-    function typeTransaksi2(id){
+    function typeTransaksi2(id) {
         $.ajax({
             url: "{{ url('setoran/bank/show') }}" + '/' + id,
             type: 'get',
@@ -162,8 +256,26 @@
                 }
                 $('#selectBankPengirim').empty().append(listBank);
             },
-            error: function(req, err) {
-            }
+            error: function(req, err) {}
+        })
+    }
+
+    function typeTransaksi3(id) {
+        $.ajax({
+            url: "{{ url('setoran/bank/show') }}" + '/' + id,
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var listBank = '';
+                for (var i = 0; i < obj.listBank.length; i++) {
+                    listBank += '<option value="' + obj.listBank[i].id;
+                    listBank += '">' + obj.listBank[i].bank;
+                    listBank += '</option>';
+                }
+                $('#selectBankPenerima').empty().append(listBank);
+            },
+            error: function(req, err) {}
         })
     }
 </script>

@@ -15,6 +15,10 @@ class listBank extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     
+    public function jenisBanks(){
+        return $this->belongsTo(jenisBank::class,'idJenisBank','id');
+    }
+
     protected $fillable = [
         'idJenisBank',
         'created_at',

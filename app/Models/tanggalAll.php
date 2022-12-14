@@ -41,6 +41,10 @@ class tanggalAll extends Model
     public function reqItemWastes(){
         return $this->hasMany(reqItemWaste::class,'idTanggal','id');
     }
+
+    public function setorans(){
+        return $this->hasMany(setoran::class,'idTanggal','id')->orderBy('id','DESC');
+    }
     
     protected $fillable = [
         'Tanggal',

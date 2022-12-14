@@ -166,9 +166,11 @@
         }
 
         .logoBankWrap img {
-            width: 46px;
-            height: 46px;
+            width: 37px;
+            height: 37px;
             object-fit: contain;
+            margin-top: 5px;
+            margin-left: 5px;
         }
 
         .tambahEWalletLabel {
@@ -217,8 +219,10 @@
         }
 
         .pengirimWrapLogoBank img {
-            width: 46px;
-            height: 46px;
+            width: 35px;
+            height: 35px;
+            margin-top: 7px;
+            margin-left: 7px;
             object-fit: contain;
         }
 
@@ -325,72 +329,13 @@
             <div style="width: 350px; margin: 0 10px;">
                 <div style="content: ''; height: 40px;"></div>
                 <div class="labelInput">Tambah E-Wallet</div>
-                <div class="d-flex justify-content-start wrapTambahEWallet" onclick="showSetoranAddId();">
-                    <div class="logoBankWrap">
-                        <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                    </div>
-                    <div class="tambahEWalletLabel">Dana</div>
-                </div>
-                <div class="d-flex justify-content-start wrapTambahEWallet" onclick="showSetoranAddId();">
-                    <div class="logoBankWrap">
-                        <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                    </div>
-                    <div class="tambahEWalletLabel">Gopay</div>
-                </div>
-                <div class="d-flex justify-content-start wrapTambahEWallet" onclick="showSetoranAddId();">
-                    <div class="logoBankWrap">
-                        <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                    </div>
-                    <div class="tambahEWalletLabel">Shopeepay</div>
-                </div>
-                <div class="d-flex justify-content-start wrapTambahEWallet" onclick="showSetoranAddId();">
-                    <div class="logoBankWrap">
-                        <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                    </div>
-                    <div class="tambahEWalletLabel">OVO</div>
-                </div>
+                <div id="listBankAll"></div>
                 <div style="height: 30px;"></div>
                 <div class="d-flex justify-content-between">
                     <div class="pengirimLabel">Pengirim</div>
                     <div class="semuaLabel" onclick="showSearchPenerima();">Semua</div>
                 </div>
-                <div class="pengirimBank">
-                    <div class="wrapPengirimBank">
-                        <div style="height: 10px;"></div>
-                        <div class="pengirimWrapLogoBank">
-                            <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                        </div>
-                        <div class="pengirimWrapLabel">Siti</div>
-                    </div>
-                    <div class="wrapPengirimBank">
-                        <div style="height: 10px;"></div>
-                        <div class="pengirimWrapLogoBank">
-                            <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                        </div>
-                        <div class="pengirimWrapLabel">Siti</div>
-                    </div>
-                    <div class="wrapPengirimBank">
-                        <div style="height: 10px;"></div>
-                        <div class="pengirimWrapLogoBank">
-                            <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                        </div>
-                        <div class="pengirimWrapLabel">Siti</div>
-                    </div>
-                    <div class="wrapPengirimBank">
-                        <div style="height: 10px;"></div>
-                        <div class="pengirimWrapLogoBank">
-                            <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                        </div>
-                        <div class="pengirimWrapLabel">Siti</div>
-                    </div>
-                    <div class="wrapPengirimBank">
-                        <div style="height: 10px;"></div>
-                        <div class="pengirimWrapLogoBank">
-                            <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
-                        </div>
-                        <div class="pengirimWrapLabel">Siti</div>
-                    </div>
-                </div>
+                <div id="pengirimBankPart"></div>
             </div>
         </div>
     </div>
@@ -404,118 +349,9 @@
                             style="background: white; border-right: none; color:#BEBEBE;"></span>
                     </div>
                     <input type="text" class="form-control inputSearch" placeholder="Cari nama penerima"
-                        style="border-left: none;">
+                        style="border-left: none;" onkeyup="searchNama()" id="searchNama">
                 </div>
-                <div class="dateTransaksi">A</div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Abdul</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Arifin</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Achmad</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="dateTransaksi">B</div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Budi</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Burhan</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Bambang</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="dateTransaksi">C</div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Cahyo</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Candra</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start rowTransaksi">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt=""
-                            style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Cipto</div>
-                        </div>
-                        <div class="clockTransaksi">08123456789</div>
-                    </div>
-                </div>
+                <div id="searchPenerimaList"></div>
             </div>
         </div>
     </div>
@@ -525,11 +361,11 @@
             <div style="width: 350px; margin: 0 10px;">
                 <div style="content: ''; height: 40px;"></div>
                 <div class="labelInput">Nomor E-wallet</div>
-                <input type="text" placeholder="Contoh: 08123456789">
+                <input type="number" placeholder="Contoh: 08123456789" id="nomorRekening">
                 <div class="labelInput">Nama pemilik</div>
-                <input type="text" placeholder="Contoh: Nama pemilik E-wallet">
+                <input type="text" placeholder="Contoh: Nama pemilik E-wallet" id="namaRekening">
                 <div style="content: ''; height: 300px;"></div>
-                <button onclick="goToKirim();">Tambah ke penerima baru</button>
+                <button onclick="createNewId();">Tambah ke penerima baru</button>
             </div>
         </div>
     </div>
@@ -556,10 +392,62 @@
 </body>
 <script>
     var backIndex = 0;
+    var idBank = 0;
+    var objAllPenerima = null;
     $(document).ready(function() {
         showHomeAddSetoran();
+        // showSearchPenerima();
         getAllBank();
+        getListBankInPart();
+        getAllPenerimaa();
     })
+
+    function searchNama() {
+        var nama = document.getElementById('searchNama').value.toUpperCase();
+        var dataListBank = '';
+        var alphabetFirst = '';
+        var url = "{{ url('') }}";
+        for (var i = 0; i < objAllPenerima.pengirimListArray.length; i++) {
+            if (nama.length == 0) {
+                var firstChar = objAllPenerima.pengirimListArray[i].namaRekening.substring(0, 1);
+                if (firstChar != alphabetFirst) {
+                    alphabetFirst = firstChar;
+                    dataListBank += '<div class="dateTransaksi">';
+                    dataListBank += firstChar;
+                    dataListBank += '</div>';
+                }
+            }
+            if (objAllPenerima.pengirimListArray[i].namaRekening.toUpperCase().indexOf(nama) > -1) {
+                dataListBank += '<div class="d-flex justify-content-start rowTransaksi" onclick="goToKirimEWallet('+objAllPenerima.pengirimListArray[i].id+')">';
+                dataListBank += '<div class="logoBankWrap"><img src="' + url + '/' + objAllPenerima.pengirimListArray[i]
+                    .imgBank;
+                dataListBank += '" alt="" style="height: 40px;"></div>';
+                dataListBank += '<div style="margin-left: 15px;">';
+                dataListBank += '<div class="d-flex justify-content-start" style="margin-top: 2px;">';
+                dataListBank += '<div class="nameTransaksi">' + objAllPenerima.pengirimListArray[i].namaRekening +
+                    '</div></div>';
+                dataListBank += '<div class="clockTransaksi">' + objAllPenerima.pengirimListArray[i].nomorRekening +
+                    '</div></div></div>';
+            }
+        }
+        document.getElementById('searchPenerimaList').innerHTML = dataListBank;
+    }
+
+    function getAllPenerimaa() {
+        $.ajax({
+            url: "{{ url('setoran/show/pengirim/eWallet/all') }}" + '/' + "{{ session('idPengisi') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                objAllPenerima = obj;
+                searchNama();
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
 
     function getAllBank() {
         $.ajax({
@@ -568,14 +456,81 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                var dataListBank = '';
                 for (var i = 0; i < obj.listBank.length; i++) {
-                    
+                    var url = "{{ url('') }}"
+                    dataListBank +=
+                        '<div class="d-flex justify-content-start wrapTambahEWallet" onclick="showSetoranAddId(' +
+                        obj.listBank[i].id +
+                        ');">';
+                    dataListBank += '<div class="logoBankWrap">';
+                    dataListBank += '<img src="' + url + '/' + obj.listBank[i].img + '" alt="">';
+                    dataListBank += '</div><div class="tambahEWalletLabel">';
+                    dataListBank += obj.listBank[i].bank;
+                    dataListBank += '</div></div>';
                 }
+                document.getElementById('listBankAll').innerHTML = dataListBank;
             },
             error: function(req, err) {
                 console.log(err);
             }
         })
+    }
+
+    function getListBankInPart() {
+        $.ajax({
+            url: "{{ url('setoran/show/pengirim/eWallet/inPart') }}" + '/' + "{{ session('idPengisi') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var pengirimHTML = '';
+                var url = "{{ url('') }}";
+                pengirimHTML += '<div class="pengirimBank">';
+                for (var i = 0; i < obj.pengirimListArray.length; i++) {
+                    pengirimHTML +=
+                        '<div class="wrapPengirimBank" onclick="goToKirimEWallet('+obj.pengirimListArray[i].id+')"><div style="height: 10px;"></div><div class="pengirimWrapLogoBank">';
+                    pengirimHTML += '<img src="' + url + '/' + obj.pengirimListArray[i].imgBank +
+                        '" alt="">';
+                    pengirimHTML += '</div><div class="pengirimWrapLabel">';
+                    if (obj.pengirimListArray[i].namaRekening.length > 4) {
+                        pengirimHTML += obj.pengirimListArray[i].namaRekening.substring(0, 4) + "...";
+                    } else {
+                        pengirimHTML += obj.pengirimListArray[i].namaRekening;
+                    }
+                    pengirimHTML += '</div></div>';
+                }
+                pengirimHTML += '</div>';
+                document.getElementById('pengirimBankPart').innerHTML = pengirimHTML;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function createNewId() {
+        $.ajax({
+            url: "{{ url('setoran/user/pengirim/createID') }}",
+            type: 'get',
+            data: {
+                idUser: "{{ session('idPengisi') }}",
+                namaRekening: document.getElementById('namaRekening').value,
+                nomorRekening: document.getElementById('nomorRekening').value,
+                idBank: idBank
+            },
+            success: function(response) {
+                console.log(response);
+                goToKirimEWallet(response);
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function goToKirimEWallet(idPengirim){
+        window.location.href = "{{ url('user/setoran/eWallet/kirim/tambah') }}" + '/' + idPengirim;
     }
 
     function showHomeAddSetoran() {
@@ -592,44 +547,13 @@
         document.getElementById("addSetoranId").style.display = "none";
     }
 
-    function showSetoranAddId() {
+    function showSetoranAddId(indexBank) {
         backIndex = 2;
+        idBank = indexBank;
+        console.log(idBank);
         document.getElementById("homeAddSetoran").style.display = "none";
         document.getElementById("searchPenerima").style.display = "none";
         document.getElementById("addSetoranId").style.display = "block";
-    }
-
-    function goToKirim() {
-        window.location.href = "{{ url('user/setoran/eWallet/kirim/tambah') }}";
-    }
-
-    function tambahEWalletBaru() {
-        // $.ajax({
-        //     url: "{{ url('') }}",
-        //     type: 'get',
-        //     data: {
-        //         idBrand: "{{ session('idBrand') }}",
-        //     },
-        //     success: function(response) {
-        //         // console.log(response);
-        //         var obj = JSON.parse(JSON.stringify(response));
-        //         console.log(obj);
-        //         objItemBrand.length = 0;
-        //         var dataDropdown = '';
-        //         for (var i = 0; i < obj?.dataItem.length; i++) {
-        //             dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
-        //             dataDropdown += i;
-        //             dataDropdown += ')">';
-        //             dataDropdown += obj.dataItem[i].Item;
-        //             dataDropdown += '</div>';
-        //             objItemBrand.push(obj.dataItem[i]);
-        //         }
-        //         document.getElementById('itemAll').innerHTML = dataDropdown;
-        //     },
-        //     error: function(req, err) {
-        //         console.log(err);
-        //     }
-        // })
     }
 
     function goToHome() {

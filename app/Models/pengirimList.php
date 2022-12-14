@@ -15,6 +15,10 @@ class pengirimList extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     
+    public function listBanks(){
+        return $this->belongsTo(listBank::class,'idBank','id');
+    }
+
     protected $fillable = [
         'idUser',
         'idOutlet',
