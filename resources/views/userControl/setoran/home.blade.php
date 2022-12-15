@@ -460,18 +460,13 @@
         }
 
         .wrapBank {
+            margin-top: 10px;
+            margin-bottom: 10px;
             background: #FFFFFF;
             box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
             border-radius: 16px;
-            margin-right: 20px;
-        }
-
-        .wrapBank img {
-            height: 50px;
-            margin-top: 10px;
-            margin-left: 15px;
-            margin-right: 15px;
-            text-align: center;
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         .wrapBank div {
@@ -484,6 +479,21 @@
             margin-top: 15px;
             margin-bottom: 15px;
             text-align: center;
+        }
+
+        .wrapBankImage {
+            width: 42px;
+            height: 42px;
+            background: #F9FAFB;
+            border-radius: 12px;
+            margin-right: 18px;
+            margin-left: 18px;
+        }
+
+        .wrapBankImage img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
         }
 
         .pengirimAll {
@@ -671,26 +681,14 @@
                 <div class="semuaPengirim" onclick="goToPenerima();">Semua</div>
             </div>
             <div style="content: ''; height:10px;"></div>
-            <div class="pengirimAll">
-                <div class="wrapBank" onclick="goToKirimKeTransfer();">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
-                    <div>Siti</div>
-                </div>
-                <div class="wrapBank" onclick="goToKirimKeTransfer();">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
-                    <div>Siti</div>
-                </div>
-                <div class="wrapBank" onclick="goToKirimKeTransfer();">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
-                    <div>Siti</div>
-                </div>
-                <div class="wrapBank" onclick="goToKirimKeTransfer();">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
-                    <div>Siti</div>
-                </div>
-                <div class="wrapBank" onclick="goToKirimKeTransfer();">
-                    <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="">
-                    <div>Siti</div>
+            <div>
+                <div class="pengirimAll" id="pengirimAll">
+                    <div class="wrapBank" onclick="goToKirimKeTransfer();">
+                        {{-- <div class="wrapBankImage">
+                            <img src="{{ url('img/pembayaran/logoBank/transfer/bca.png') }}" alt="">
+                        </div>
+                        <div>Siti</div> --}}
+                    </div>
                 </div>
             </div>
             <div class="wrapTransaksi">
@@ -704,7 +702,7 @@
                 <div class="semuaPengirim" onclick="goToAllHistory();">Semua</div>
             </div>
             <div id="historyTransaksi">
-                <div class="dateTransaksi">1 November</div>
+                {{-- <div class="dateTransaksi">1 November</div>
                 <div class="d-flex justify-content-between rowTransaksi" onclick="goToEWalletDetail();">
                     <div class="d-flex justify-content-start">
                         <div class="historyWrapImage">
@@ -720,12 +718,12 @@
                         </div>
                     </div>
                     <div class="priceTransaksi">Rp 59.000</div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
-    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal right fade" id="exampleModal" tabindex="" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -765,10 +763,17 @@
                         </div>
                         <div style="background: #FFEAEF;border-radius: 0px 0px 6px 6px;" id="revisiTab">
                             <div style="content: '';height:5px;"></div>
-                            <div class="row rowRequest" onclick="goToRevisiSales();">Sales</div>
+                            <div class="row rowRequest activeRequest" onclick="goToRevisiSales();">Sales</div>
                             <div class="row rowRequest" onclick="goToRevisiWaste();">Waste</div>
-                            <div class="row rowRequest activeRequest" onclick="goToRevisiPattyCash();">Pembelian</div>
+                            <div class="row rowRequest" onclick="goToRevisiPattyCash();">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
+                        </div>
+                        <div style="height: 20px;"></div>
+                        <div class="row menuNotActive menuActive" id="setoranMenu" onclick="setoranShow();">
+                            <div class="col-1"><img src="{{ url('img/dashboard/setoranIconActive.png') }}"
+                                    alt="" style="height: 20px;margin-top:-2px;" id="setoranIcon"></div>
+                            <div class="col-6" style="text-align: left" onclick="goToSetoran();">Setoran</div>
+                            <div class="col-3" style="text-align: right"></div>
                         </div>
                     </div>
                     <img src="{{ url('img/dashboard/logout.png') }}" alt="logo icon" class="imageLogOut"
@@ -805,7 +810,55 @@
 
     $(document).ready(function() {
         getHistoryTransaksi();
+        getPengirimInPart();
+        setoranShow();
     });
+
+    function getPengirimInPart() {
+        $.ajax({
+            url: "{{ url('setoran/show/pengirim/inPart') }}" + '/' + "{{ session('idPengisi') }}",
+            type: 'get',
+            success: function(response) {
+                // console.log(response);
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var pengirimAll = '';
+                var url = "{{ url('') }}";
+                // pengirimAll += '<div class="pengirimAll">';
+                for (var i = 0; i < obj.pengirimListArray.length; i++) {
+                    pengirimAll += '<div class="wrapBank"';
+                    if (obj.pengirimListArray[i].idJenis == '1') {
+                        pengirimAll += ' onclick="goToKirimKeTransfer(';
+                        pengirimAll += obj.pengirimListArray[i].id;
+                        pengirimAll += ');"';
+                    } else if (obj.pengirimListArray[i].idJenis == '2') {
+                        pengirimAll += ' onclick="goToKirimKeEWallet(';
+                        pengirimAll += obj.pengirimListArray[i].id;
+                        pengirimAll += ');"';
+                    }
+                    pengirimAll += '>';
+                    pengirimAll += '<div class="wrapBankImage">';
+                    pengirimAll += '<img src="' + url + '/' + obj.pengirimListArray[i].imgBank +
+                        '" alt="">';
+                    pengirimAll += '</div><div>';
+
+                    if (obj.pengirimListArray[i].namaRekening.length > 4) {
+                        pengirimAll += obj.pengirimListArray[i].namaRekening.substring(0, 4) +
+                            "...";
+                    } else {
+                        pengirimAll += obj.pengirimListArray[i].namaRekening;
+                    }
+                    pengirimAll += '</div></div></div>';
+                }
+                // pengirimAll += '</div>';
+                // console.log(pengirimAll);
+                document.getElementById('pengirimAll').innerHTML = pengirimAll;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
 
     function getHistoryTransaksi() {
         $.ajax({
@@ -824,7 +877,15 @@
                     dataHistoryHTML += '</div>';
                     for (var j = 0; j < obj.setoran[i].setoran.length; j++) {
                         dataHistoryHTML +=
-                            '<div class="d-flex justify-content-between rowTransaksi" onclick="goToEWalletDetail();">';
+                            '<div class="d-flex justify-content-between rowTransaksi"';
+                        if (obj.setoran[i].setoran[j].idJenis == '1') {
+                            dataHistoryHTML += ' onclick="goToTransferDetail(' + obj.setoran[i].setoran[j]
+                                .id + ');"';
+                        } else if (obj.setoran[i].setoran[j].idJenis == '2') {
+                            dataHistoryHTML += ' onclick="goToEWalletDetail(' + obj.setoran[i].setoran[j]
+                                .id + ');"';
+                        }
+                        dataHistoryHTML += '>';
                         dataHistoryHTML += '<div class="d-flex justify-content-start">';
                         dataHistoryHTML += '<div class="historyWrapImage">';
                         dataHistoryHTML += '<img src="' + url + '/' + obj.setoran[i].setoran[j].imgBank +
@@ -835,7 +896,8 @@
                         dataHistoryHTML += '<div class="nameTransaksi">';
 
                         if (obj.setoran[i].setoran[j].namaRekening.length > 7) {
-                            dataHistoryHTML += obj.setoran[i].setoran[j].namaRekening.substring(0, 7) + "...";
+                            dataHistoryHTML += obj.setoran[i].setoran[j].namaRekening.substring(0, 7) +
+                                "...";
                         } else {
                             dataHistoryHTML += obj.setoran[i].setoran[j].namaRekening;
                         }
@@ -869,12 +931,12 @@
         window.location.href = "{{ url('user/setoran/history') }}";
     }
 
-    function goToEWalletDetail() {
-        window.location.href = "{{ url('user/setoran/eWallet/detail/home') }}";
+    function goToEWalletDetail(idSetoran) {
+        window.location.href = "{{ url('user/setoran/eWallet/detail/home') }}" + '/' + idSetoran;
     }
 
-    function goToTransferDetail() {
-        window.location.href = "{{ url('user/setoran/transfer/detail/home') }}";
+    function goToTransferDetail(idSetoran) {
+        window.location.href = "{{ url('user/setoran/transfer/detail/home') }}" + '/' + idSetoran;
     }
 
     function goToPenerima() {
@@ -889,8 +951,12 @@
         window.location.href = "{{ url('user/setoran/transfer/add/pengirim') }}";
     }
 
-    function goToKirimKeTransfer() {
-        window.location.href = "{{ url('user/setoran/transfer/kirim/home') }}";
+    function goToKirimKeTransfer(idPengirim) {
+        window.location.href = "{{ url('user/setoran/transfer/kirim/home') }}" + '/' + idPengirim;
+    }
+
+    function goToKirimKeEWallet(idPengirim) {
+        window.location.href = "{{ url('user/setoran/eWallet/kirim/home') }}" + '/' + idPengirim;
     }
 
     function listByDate(index) {
@@ -937,6 +1003,9 @@
     function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
+    function goToSetoran(){
+        window.location.href = "{{ url('user/setoran/home') }}"
+    }
 
     function requestShow() {
         document.getElementById('requestTab').style.display = "block";
@@ -947,6 +1016,7 @@
         document.getElementById('requestIcon').src = "{{ url('img/dashboard/requestIconActive.png') }}";
         dashboardHide();
         revisiHide();
+        setoranHide();
     }
 
     function requestHide() {
@@ -962,6 +1032,7 @@
         document.getElementById('dashboardIcon').src = "{{ url('img/dashboard/dashboardIconActive.png') }}";
         requestHide();
         revisiHide();
+        setoranHide();
         goToDashboard();
     }
 
@@ -978,6 +1049,7 @@
         document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIconActive.png') }}";
         dashboardHide();
         requestHide();
+        setoranHide();
     }
 
     function revisiHide() {
@@ -985,6 +1057,20 @@
         document.getElementById('revisiMenu').classList.remove("menuActive");
         document.getElementById('arrowRevisi').classList.remove("arrowChange");
         document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIcon.png') }}";
+    }
+
+    function setoranShow(){
+        document.getElementById('setoranMenu').classList.add("menuActive");
+        document.getElementById('setoranIcon').src = "{{ url('img/dashboard/setoranIconActive.png') }}";
+        requestHide();
+        revisiHide();
+        dashboardHide();
+        // goToSetoran
+    }
+
+    function setoranHide(){
+        document.getElementById('setoranMenu').classList.remove("menuActive");
+        document.getElementById('setoranIcon').src = "{{ url('img/dashboard/setoranIcon.png') }}";
     }
 
     function logout() {

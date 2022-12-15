@@ -160,6 +160,7 @@
             line-height: 12px;
             color: #BEBEBE;
         }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -231,23 +232,23 @@
             <div class="d-flex justify-content-center">
                 <img src="{{ url('img/icon/detailTransfer.png') }}" alt="" style="width: 86px; height: 86px;">
             </div>
-            <div class="detailNominal">Rp 1.000.000</div>
+            <div class="detailNominal">Rp <span id="qtySetoran">0</span></div>
             <div class="d-flex justify-content-between" style="margin-top: 35px;">
                 <div class="statusLabel">Status</div>
-                <img src="{{ url('img/icon/pending.png') }}" alt="" style="width: 77px; height: 25px;">
+                <img id="imageStatusSetoran" src="" alt="" style="width: 77px; height: 25px;">
             </div>
             <div class="wrapPembayaran">
                 <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
                     <div class="labelPembayaran">Pengirim</div>
-                    <div class="detailPembayaran">Abdul Rasyid R.</div>
+                    <div class="detailPembayaran" id="namaRekeningPengirim"></div>
                 </div>
                 <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
                     <div class="labelPembayaran">Tanggal</div>
-                    <div class="detailPembayaran">1 November - 12.00</div>
+                    <div class="detailPembayaran" id="dateAndTime"></div>
                 </div>
                 <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
                     <div class="labelPembayaran">Rekening</div>
-                    <div class="detailPembayaran"><span>.....</span>3267</div>
+                    <div class="detailPembayaran">.....<span id="nomorRekeningPengirim"></span></div>
                 </div>
                 <div style="border: 1px dashed #7A7A7A; margin-bottom: 10px; margin-top: 10px;"></div>
                 <div class="labelPembayaran">Bukti transfer</div>
@@ -259,11 +260,11 @@
             <div class="penerimaLabel">Penerima</div>
             <div class="d-flex justify-content-start align-items-center wrapPenerima" style="margin-top: 10px;">
                 <div class="boxBank">
-                    <img src="{{ url('img/pembayaran/logoBank/transfer/mandiri.png') }}" alt="">
+                    <img id="imageBankPenerima" src="" alt="">
                 </div>
                 <div style="margin-left: 10px;">
-                    <div class="penerimaNama">PT. Lazizaa Rahmat Semesta</div>
-                    <div class="penerimaRekening">008-26816111664</div>
+                    <div class="penerimaNama" id="namaRekeningPenerima">PT. Lazizaa Rahmat Semesta</div>
+                    <div class="penerimaRekening" id="nomorRekeningPenerima">008-26816111664</div>
                 </div>
             </div>
         </div>
@@ -284,18 +285,58 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
 <script>
-    function goBack(){
-        if("{{ $fromWhere }}" == "history"){
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "November", "Desember"
+    ];
+
+    $(document).ready(function() {
+        getDetail();
+    });
+
+    function getDetail() {
+        $.ajax({
+            url: "{{ url('setoran/show/detail') }}" + '/' + "{{ $idSetoran }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                var day = new Date(obj.date);
+                var nomorRekeningLength = obj.nomorRekeningPengirim.length;
+                var qty = obj.qty.toLocaleString();
+                console.log(obj);
+                document.getElementById('qtySetoran').innerHTML = qty.replace(",",".");
+                if (obj.idStatus == '2') {
+                    document.getElementById('imageStatusSetoran').src =
+                        "{{ url('img/icon/pending.png') }}";
+                } else {
+                    document.getElementById('imageStatusSetoran').src =
+                        "{{ url('img/icon/sukses.png') }}";
+                }
+                document.getElementById('namaRekeningPengirim').innerHTML = obj.namaRekeningPengirim;
+                document.getElementById('dateAndTime').innerHTML = day.getDate() + ' ' + months[day.getMonth()] + ' - ' + obj.time;
+                document.getElementById('nomorRekeningPengirim').innerHTML = obj.nomorRekeningPengirim.slice(nomorRekeningLength - 4,nomorRekeningLength);
+                document.getElementById('namaRekeningPenerima').innerHTML = obj.namaRekeningPenerima;
+                document.getElementById('nomorRekeningPenerima').innerHTML = obj.nomorRekeningPenerima;
+                document.getElementById('imageBankPenerima').src = "{{ url('') }}" + '/' + obj.imageBankPenerima;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function goBack() {
+        if ("{{ $fromWhere }}" == "history") {
             window.location.href = "{{ url('user/setoran/history') }}";
-        }
-        else if("{{ $fromWhere }}" == "home"){
+        } else if ("{{ $fromWhere }}" == "home") {
             window.location.href = "{{ url('user/setoran/home') }}";
         }
     }
 </script>
+
 </html>

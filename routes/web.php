@@ -198,10 +198,13 @@ Route::get('setoran/show/pengirim/eWallet/all/{idUser}', [setoranController::cla
 
 Route::get('setoran/show/pengirim/transfer/inPart/{idUser}', [setoranController::class, 'showPengirimTransferPart']);
 Route::get('setoran/show/pengirim/transfer/all/{idUser}', [setoranController::class, 'showPengirimTransferAll']);
-
+Route::get('setoran/show/pengirim/inPart/{idUser}', [setoranController::class, 'showPengirimPart']);
+Route::get('setoran/show/pengirim/all/{idUser}', [setoranController::class, 'showPengirimAll']);
+Route::get('setoran/show/detail/{idSetoran}',[setoranController::class,'showSetoranDetail']);
 
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
 Route::get('setoran/show/data/inPart/{idOutlet}', [setoranController::class, 'showSetoranPart']);
+Route::get('setoran/show/data/all/{idOutlet}', [setoranController::class,'showSetoranAll']);
 Route::get('setoran/penerima/sendData',[setoranController::class,'createSetoran']);
 
 Route::get('setoran', function () {
@@ -369,9 +372,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/setoran/transfer', function () {
         return view('userControl.setoran.transfer');
     });
-    Route::get('user/setoran/transfer/detail/{fromWhere}', function ($fromWhere) {
+    Route::get('user/setoran/transfer/detail/{fromWhere}/{idSetoran}', function ($fromWhere, $idSetoran) {
         return view('userControl.setoran.detailTransfer', [
-            'fromWhere' => $fromWhere
+            'fromWhere' => $fromWhere,
+            'idSetoran' => $idSetoran
         ]);
     });
     Route::get('user/setoran/transfer/add/pengirim', function () {
@@ -395,9 +399,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/setoran/eWallet', function () {
         return view('userControl.setoran.eWallet');
     });
-    Route::get('user/setoran/eWallet/detail/{fromWhere}', function ($fromWhere) {
+    Route::get('user/setoran/eWallet/detail/{fromWhere}/{idSetoran}', function ($fromWhere, $idSetoran) {
         return view('userControl.setoran.detailEWallet', [
-            'fromWhere' => $fromWhere
+            'fromWhere' => $fromWhere,
+            'idSetoran' => $idSetoran
         ]);
     });
     Route::get('user/setoran/wait', function () {

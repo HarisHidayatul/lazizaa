@@ -223,6 +223,30 @@ class setoranController extends Controller
         ]);
     }
 
+
+    public function showPengirimPart($idUser)
+    {
+        $pengirimList = pengirimList::where('idUser', '=', $idUser)->orderBy('id', 'DESC')->get();
+        // @dd($pengirimList);
+        $pengirimListArray = [];
+        for ($i = 0; $i < $pengirimList->count(); $i++) {
+            if ($i >= 5) {
+                break;
+            } else {
+                array_push($pengirimListArray, (object)[
+                    'id' => $pengirimList[$i]->id,
+                    'namaRekening' => $pengirimList[$i]->namaRekening,
+                    // 'bank' => $pengirimList[$i]->listBanks->bank,
+                    'idJenis' => $pengirimList[$i]->listBanks->idJenisBank,
+                    'imgBank' => $pengirimList[$i]->listBanks->imageBank
+                ]);
+            }
+        }
+        return response()->json([
+            'pengirimListArray' => $pengirimListArray
+        ]);
+    }
+
     public function showPengirimEWalletAll($idUser)
     {
         $pengirimList = pengirimList::where('idUser', '=', $idUser)->get();
@@ -267,6 +291,27 @@ class setoranController extends Controller
         ]);
     }
 
+    public function showPengirimAll($idUser)
+    {
+        $pengirimList = pengirimList::where('idUser', '=', $idUser)->get();
+        $pengirimListArray = [];
+        for ($i = 0; $i < $pengirimList->count(); $i++) {
+            array_push($pengirimListArray, (object)[
+                'id' => $pengirimList[$i]->id,
+                'namaRekening' => $pengirimList[$i]->namaRekening,
+                'nomorRekening' => $pengirimList[$i]->nomorRekening,
+                'imgBank' => $pengirimList[$i]->listBanks->imageBank,
+                'idJenisBank' => $pengirimList[$i]->listBanks->idJenisBank
+            ]);
+        }
+        usort($pengirimListArray, function ($a, $b) {
+            return strcmp($a->namaRekening, $b->namaRekening);
+        });
+        return response()->json([
+            'pengirimListArray' => $pengirimListArray
+        ]);
+    }
+
     public function showPengirimList($idPengirimList)
     {
         $pengirimList = pengirimList::find($idPengirimList);
@@ -289,6 +334,7 @@ class setoranController extends Controller
             $setoran = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
             // @dd($setoran);
             $setoranArray = [];
+            $dataFound = false;
             for ($j = 0; $j < $setoran->count(); $j++) {
                 array_push($setoranArray, (object)[
                     'id' => $setoran[$j]->id,
@@ -296,17 +342,21 @@ class setoranController extends Controller
                     'namaRekening' => $setoran[$j]->pengirimLists->namaRekening,
                     'time' => $setoran[$j]->updated_at->format('H:i'),
                     'imgBank' => $setoran[$j]->pengirimLists->listBanks->imageBank,
-                    'qty' => $setoran[$j]->qtySetor
+                    'qty' => $setoran[$j]->qtySetor,
+                    'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
                 ]);
+                $dataFound = true;
                 $countData++;
                 if ($countData > 5) {
                     break;
                 }
             }
-            array_push($allData, (object)[
-                'Tanggal' => $tanggalAll[$i]->Tanggal,
-                'setoran' => $setoranArray
-            ]);
+            if ($dataFound) {
+                array_push($allData, (object)[
+                    'Tanggal' => $tanggalAll[$i]->Tanggal,
+                    'setoran' => $setoranArray
+                ]);
+            }
             if ($countData > 5) {
                 break;
             }
@@ -314,6 +364,63 @@ class setoranController extends Controller
         return response()->json([
             'setoran' => $allData
         ]);
+    }
+
+    public function showSetoranAll($idOutlet)
+    {
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $allData = [];
+        // $countData = 1;
+        for ($i = 0; $i < $tanggalAll->count(); $i++) {
+            $setoran = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
+            // @dd($setoran);
+            $setoranArray = [];
+            $dataFound = false;
+            for ($j = 0; $j < $setoran->count(); $j++) {
+                array_push($setoranArray, (object)[
+                    'id' => $setoran[$j]->id,
+                    'idRev' => $setoran[$j]->idRevisi,
+                    'namaRekening' => $setoran[$j]->pengirimLists->namaRekening,
+                    'time' => $setoran[$j]->updated_at->format('H:i'),
+                    'imgBank' => $setoran[$j]->pengirimLists->listBanks->imageBank,
+                    'qty' => $setoran[$j]->qtySetor,
+                    'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
+                ]);
+                $dataFound = true;
+                // $countData++;
+                // if ($countData > 5) {
+                //     break;
+                // }
+            }
+            if ($dataFound) {
+                array_push($allData, (object)[
+                    'Tanggal' => $tanggalAll[$i]->Tanggal,
+                    'setoran' => $setoranArray
+                ]);
+            }
+            // if ($countData > 5) {
+            //     break;
+            // }
+        }
+        return response()->json([
+            'setoran' => $allData
+        ]);
+    }
+
+    public function showSetoranDetail($idSetoran){
+        $setoran = setoran::find($idSetoran);
+        return response()->json([
+            'namaRekeningPengirim' => $setoran->pengirimLists->namaRekening,
+            'nomorRekeningPengirim' => $setoran->pengirimLists->nomorRekening,
+            'namaRekeningPenerima' => $setoran->penerimaLists->namaRekening,
+            'nomorRekeningPenerima' => $setoran->penerimaLists->nomorRekening,
+            'imageBankPenerima' => $setoran->penerimaLists->listBanks->imageBank,
+            'idStatus' => $setoran->idRevisi,
+            'date' => $setoran->updated_at->format('Y-m-d'),
+            'time' => $setoran->updated_at->format('H:i'),
+            'qty' => $setoran->qtySetor
+        ]);
+        // @dd($setoran);
     }
 
     /**

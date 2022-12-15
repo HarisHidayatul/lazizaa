@@ -94,6 +94,19 @@
             border-bottom: 1px solid #F3F4F6;
         }
 
+        .imageWrapHistory {
+            width: 42px;
+            height: 42px;
+            background: #F9FAFB;
+            border-radius: 12px;
+        }
+
+        .imageWrapHistory img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -161,104 +174,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <div style="width: 300px; margin-top: 65px;">
-            <div class="dateTransaksi">1 November</div>
-            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailTransfer();">
-                <div class="d-flex justify-content-start">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Siti</div>
-                            <img src="{{ url('img/icon/pending.png') }}" alt=""
-                                style="height: 14px; margin-top: 2px;">
-                        </div>
-                        <div class="clockTransaksi">12.03 WIB</div>
-                    </div>
-                </div>
-                <div class="priceTransaksi">Rp 59.000</div>
-            </div>
-            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailEWallet();">
-                <div class="d-flex justify-content-start">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Cahyo</div>
-                            <img src="{{ url('img/icon/sukses.png') }}" alt=""
-                                style="height: 14px; margin-top: 2px;">
-                        </div>
-                        <div class="clockTransaksi">12.03 WIB</div>
-                    </div>
-                </div>
-                <div class="priceTransaksi">Rp 1.459.000</div>
-            </div>
-            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailTransfer();">
-                <div class="d-flex justify-content-start">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Abdul</div>
-                            <img src="{{ url('img/icon/pending.png') }}" alt=""
-                                style="height: 14px; margin-top: 2px;">
-                        </div>
-                        <div class="clockTransaksi">12.03 WIB</div>
-                    </div>
-                </div>
-                <div class="priceTransaksi">Rp 500.000</div>
-            </div>
-            <div class="dateTransaksi">30 Oktober</div>
-            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailEWallet();">
-                <div class="d-flex justify-content-start">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Candra</div>
-                            <img src="{{ url('img/icon/pending.png') }}" alt=""
-                                style="height: 14px; margin-top: 2px;">
-                        </div>
-                        <div class="clockTransaksi">12.03 WIB</div>
-                    </div>
-                </div>
-                <div class="priceTransaksi">Rp 59.000</div>
-            </div>
-            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailTransfer();">
-                <div class="d-flex justify-content-start">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Achmad</div>
-                            <img src="{{ url('img/icon/sukses.png') }}" alt=""
-                                style="height: 14px; margin-top: 2px;">
-                        </div>
-                        <div class="clockTransaksi">12.03 WIB</div>
-                    </div>
-                </div>
-                <div class="priceTransaksi">Rp 70.000</div>
-            </div>
-            <div class="d-flex justify-content-between rowTransaksi" onclick="goToDetailEWallet();">
-                <div class="d-flex justify-content-start">
-                    <div>
-                        <img src="{{ url('img/pembayaran/logoBank/bca.png') }}" alt="" style="height: 40px;">
-                    </div>
-                    <div style="margin-left: 15px;">
-                        <div class="d-flex justify-content-start" style="margin-top: 2px;">
-                            <div class="nameTransaksi">Achmad</div>
-                            <img src="{{ url('img/icon/sukses.png') }}" alt=""
-                                style="height: 14px; margin-top: 2px;">
-                        </div>
-                        <div class="clockTransaksi">12.03 WIB</div>
-                    </div>
-                </div>
-                <div class="priceTransaksi">Rp 70.000</div>
-            </div>
+            <div id="allHistoryTransaksi"></div>
         </div>
     </div>
     <div class="d-flex justify-content-center footer">
@@ -277,19 +193,104 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
 <script>
-    function goToHome(){
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "November", "Desember"
+    ];
+
+    $(document).ready(function() {
+        getAllHistory();
+    })
+
+    function getAllHistory() {
+        $.ajax({
+            url: "{{ url('setoran/show/data/all') }}" + '/' + "{{ session('idOutlet') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var allHistoryTransaksi = '';
+                var url = "{{ url('') }}";
+                for (var i = 0; i < obj.setoran.length; i++) {
+                    var day = new Date(obj.setoran[i].Tanggal);
+                    allHistoryTransaksi += '<div class="dateTransaksi">';
+                    allHistoryTransaksi += day.getDate() + ' ' + months[day.getMonth()];
+                    allHistoryTransaksi += '</div>';
+                    for (var j = 0; j < obj.setoran[i].setoran.length; j++) {
+                        allHistoryTransaksi +=
+                            '<div class="d-flex justify-content-between rowTransaksi"';
+                        if (obj.setoran[i].setoran[j].idJenis == '1') {
+                            allHistoryTransaksi += ' onclick="goToTransferDetail(' + obj.setoran[i].setoran[
+                                    j]
+                                .id + ');"';
+                        } else if (obj.setoran[i].setoran[j].idJenis == '2') {
+                            allHistoryTransaksi += ' onclick="goToEWalletDetail(' + obj.setoran[i].setoran[
+                                    j]
+                                .id + ');"';
+                        }
+                        allHistoryTransaksi += '>';
+                        allHistoryTransaksi += '<div class="d-flex justify-content-start">';
+                        allHistoryTransaksi += '<div class="imageWrapHistory">';
+                        allHistoryTransaksi += '<img src="' + url + '/' + obj.setoran[i].setoran[j]
+                            .imgBank +
+                            '" alt="">';
+                        allHistoryTransaksi += '</div>';
+                        allHistoryTransaksi += '<div style="margin-left: 15px;">';
+                        allHistoryTransaksi +=
+                            '<div class="d-flex justify-content-start" style="margin-top: 2px;">';
+                        allHistoryTransaksi += '<div class="nameTransaksi">';
+
+                        if (obj.setoran[i].setoran[j].namaRekening.length > 7) {
+                            allHistoryTransaksi += obj.setoran[i].setoran[j].namaRekening.substring(0, 7) +
+                                "...";
+                        } else {
+                            allHistoryTransaksi += obj.setoran[i].setoran[j].namaRekening;
+                        }
+
+                        // allHistoryTransaksi += obj.setoran[i].setoran[j].namaRekening;
+                        allHistoryTransaksi += '</div>';
+                        if (obj.setoran[i].setoran[j].idRev == '2') {
+                            allHistoryTransaksi += '<img src="' + url + '/' + 'img/icon/pending.png' + '"';
+                            allHistoryTransaksi += ' alt=""style="height: 14px; margin-top: 2px;">';
+                        } else {
+                            allHistoryTransaksi += '<img src="' + url + '/' + 'img/icon/sukses.png' + '"';
+                            allHistoryTransaksi += ' alt=""style="height: 14px; margin-top: 2px;">';
+                        }
+                        allHistoryTransaksi += '</div>';
+                        allHistoryTransaksi += '<div class="clockTransaksi">';
+                        allHistoryTransaksi += obj.setoran[i].setoran[j].time;
+                        allHistoryTransaksi += ' WIB</div>';
+                        allHistoryTransaksi += '</div></div>';
+                        allHistoryTransaksi += '<div class="priceTransaksi">Rp ';
+                        allHistoryTransaksi += obj.setoran[i].setoran[j].qty.toLocaleString().replace(',',
+                            '.');
+                        allHistoryTransaksi += '</div></div>';
+                    }
+                    document.getElementById('allHistoryTransaksi').innerHTML = allHistoryTransaksi;
+                }
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function goToHome() {
         window.location.href = "{{ url('user/setoran/home') }}";
     }
-    function goToDetailEWallet(){
-        window.location.href = "{{ url('user/setoran/eWallet/detail/history') }}";
+
+    function goToEWalletDetail(idSetoran) {
+        window.location.href = "{{ url('user/setoran/eWallet/detail/history') }}" + '/' + idSetoran;
     }
-    function goToDetailTransfer(){
-        window.location.href = "{{ url('user/setoran/transfer/detail/history') }}";
+
+    function goToTransferDetail(idSetoran) {
+        window.location.href = "{{ url('user/setoran/transfer/detail/history') }}" + '/' + idSetoran;
     }
 </script>
+
 </html>

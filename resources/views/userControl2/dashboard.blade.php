@@ -719,6 +719,13 @@
                             <div class="row rowRequest" onclick="goToRevisiPattyCash();">Pembelian</div>
                             <div style="content: '';height:10px;"></div>
                         </div>
+                        <div style="height: 20px;"></div>
+                        <div class="row menuNotActive" id="setoranMenu" onclick="setoranShow();">
+                            <div class="col-1"><img src="{{ url('img/dashboard/setoranIconActive.png') }}"
+                                    alt="" style="height: 20px;margin-top:-2px;" id="setoranIcon"></div>
+                            <div class="col-6" style="text-align: left" onclick="goToSetoran();">Setoran</div>
+                            <div class="col-3" style="text-align: right"></div>
+                        </div>
                     </div>
 
                     <img src="{{ url('img/dashboard/logout.png') }}" alt="logo icon" class="imageLogOut"
@@ -777,6 +784,7 @@
         dashboardShow();
     })
 
+    
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
@@ -804,6 +812,9 @@
     function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
+    function goToSetoran(){
+        window.location.href = "{{ url('user/setoran/home') }}"
+    }
 
     function requestShow() {
         document.getElementById('requestTab').style.display = "block";
@@ -814,6 +825,7 @@
         document.getElementById('requestIcon').src = "{{ url('img/dashboard/requestIconActive.png') }}";
         dashboardHide();
         revisiHide();
+        setoranHide();
     }
 
     function requestHide() {
@@ -829,6 +841,7 @@
         document.getElementById('dashboardIcon').src = "{{ url('img/dashboard/dashboardIconActive.png') }}";
         requestHide();
         revisiHide();
+        setoranHide();
         // goToDashboard();
     }
 
@@ -845,6 +858,7 @@
         document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIconActive.png') }}";
         dashboardHide();
         requestHide();
+        setoranHide();
     }
 
     function revisiHide() {
@@ -852,6 +866,20 @@
         document.getElementById('revisiMenu').classList.remove("menuActive");
         document.getElementById('arrowRevisi').classList.remove("arrowChange");
         document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIcon.png') }}";
+    }
+
+    function setoranShow(){
+        document.getElementById('setoranMenu').classList.add("menuActive");
+        document.getElementById('setoranIcon').src = "{{ url('img/dashboard/setoranIconActive.png') }}";
+        requestHide();
+        revisiHide();
+        dashboardHide();
+        // goToSetoran
+    }
+
+    function setoranHide(){
+        document.getElementById('setoranMenu').classList.remove("menuActive");
+        document.getElementById('setoranIcon').src = "{{ url('img/dashboard/setoranIcon.png') }}";
     }
 
     function logout() {
