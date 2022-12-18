@@ -408,4 +408,8 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/setoran/wait', function () {
         return view('userControl.setoran.verifikasiWait');
     });
+
+    Route::get('user/reimburse/history', function(){
+        return view('userControl.reimburse.history');
+    });
 });

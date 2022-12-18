@@ -156,7 +156,7 @@
         }
 
         .wrapNominal div {
-            flex: 0 0 28vw;
+            flex: 0 0 125px;
             height: 30px;
             /* width: 100px; */
             background: #FFEAEF;
@@ -387,7 +387,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center" style="margin-left: 5px; margin-right: 5px; margin-top:100px;">
-        <div id="home">
+        <div id="home" style="margin: 0 10px;">
             <div class="d-flex justify-content-start align-items-center topWrap">
                 <div class="topWrapImage">
                     <img id="imageBankPengirim" src="" alt="">

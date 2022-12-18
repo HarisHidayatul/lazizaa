@@ -156,7 +156,7 @@
         }
 
         .wrapNominal div {
-            flex: 0 0 28vw;
+            flex: 0 0 125px;
             height: 30px;
             /* width: 100px; */
             background: #FFEAEF;
