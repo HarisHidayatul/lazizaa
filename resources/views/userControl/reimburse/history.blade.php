@@ -139,6 +139,12 @@
             color: #585858;
         }
 
+        .statusItemTransaksi{
+            height: 15px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
         .labelQtyTransaksi {
             margin-top: 1px;
             font-family: 'Montserrat';
@@ -159,6 +165,9 @@
             color: #B20731;
         }
 
+        .activeValPembelian{
+            color: #008000;
+        }
         .labelValuePattyCash {
             font-family: 'Montserrat';
             font-style: normal;
@@ -261,13 +270,14 @@
                             </div>
                             <div style="margin-left: 15px;">
                                 <div class="d-flex justify-content-start">
-                                    <div class="labelItemTransaksi">Beras</div>
+                                    <div class="labelItemTransaksi">Reimburse</div>
+                                    <img class="statusItemTransaksi" src="{{ url('img/icon/pending.png') }}" alt="">
                                 </div>
                                 <div class="labelQtyTransaksi">5000 gr</div>
                             </div>
                         </div>
                         <div style="margin-right: 10px;">
-                            <div class="labelValuePembelian">- Rp 59.000</div>
+                            <div class="labelValuePembelian activeValPembelian">+ Rp 59.000</div>
                             <div class="labelValuePattyCash">Rp 472.000</div>
                         </div>
                     </div>

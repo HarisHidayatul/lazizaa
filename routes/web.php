@@ -200,12 +200,12 @@ Route::get('setoran/show/pengirim/transfer/inPart/{idUser}', [setoranController:
 Route::get('setoran/show/pengirim/transfer/all/{idUser}', [setoranController::class, 'showPengirimTransferAll']);
 Route::get('setoran/show/pengirim/inPart/{idUser}', [setoranController::class, 'showPengirimPart']);
 Route::get('setoran/show/pengirim/all/{idUser}', [setoranController::class, 'showPengirimAll']);
-Route::get('setoran/show/detail/{idSetoran}',[setoranController::class,'showSetoranDetail']);
+Route::get('setoran/show/detail/{idSetoran}', [setoranController::class, 'showSetoranDetail']);
 
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
 Route::get('setoran/show/data/inPart/{idOutlet}', [setoranController::class, 'showSetoranPart']);
-Route::get('setoran/show/data/all/{idOutlet}', [setoranController::class,'showSetoranAll']);
-Route::get('setoran/penerima/sendData',[setoranController::class,'createSetoran']);
+Route::get('setoran/show/data/all/{idOutlet}', [setoranController::class, 'showSetoranAll']);
+Route::get('setoran/penerima/sendData', [setoranController::class, 'createSetoran']);
 
 Route::get('setoran', function () {
     return view('setoran.typeSetoran');
@@ -409,7 +409,19 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl.setoran.verifikasiWait');
     });
 
-    Route::get('user/reimburse/history', function(){
+    Route::get('user/reimburse/history', function () {
         return view('userControl.reimburse.history');
+    });
+
+    Route::get('user/reimburse/detail', function () {
+        return view('userControl.reimburse.detail');
+    });
+
+    Route::get('user/reimburse/kirim', function(){
+        return view('userControl.reimburse.kirim');
+    });
+
+    Route::get('user/reimburse/wait', function(){
+        return view('userControl.reimburse.verifikasiWait');
     });
 });
