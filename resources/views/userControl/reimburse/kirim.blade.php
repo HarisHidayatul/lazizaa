@@ -602,6 +602,7 @@
             line-height: 140%;
             color: #BEBEBE;
         }
+
         .selectItemContainer {
             overflow-y: auto;
             height: 100px;
@@ -679,18 +680,18 @@
         <div id="inputRekeningBank" style="width: 90%; max-width: 400px;">
             <div class="addBankLabel">Bank</div>
             <div class="d-flex justify-content-between align-items-center fillBankSelect" onclick="listBankClick();">
-                <div>Pilih Bank</div>
+                <div id="fillBankSelect">Pilih Bank</div>
                 <img src="{{ url('img/icon/selectArrow.png') }}" alt="" style="height: 12px;">
             </div>
             <div class="selectItemContainer" id="selectItem">
                 <div id="itemAll">
-                    <div class="itemSelect" onclick="selectIndexBank(0)">AAAA</div>
+                    {{-- <div class="itemSelect" onclick="selectIndexBank(0)">AAAA</div> --}}
                 </div>
             </div>
             <div class="addBankLabel">Nomor rekening</div>
-            <input class="inputBank" type="text" placeholder="Contoh : 14318161581">
+            <input id="inputNomorRekening" class="inputBank" type="number" placeholder="Contoh : 14318161581">
             <div class="addBankLabel">Atas nama</div>
-            <input class="inputBank" type="text" placeholder="Contoh : Justin Beiber"><br>
+            <input id="atasNamaRekening" class="inputBank" type="text" placeholder="Contoh : Justin Beiber"><br>
             <div style="height: 200px;"></div>
             <button style="width: 100%;" onclick="lanjutClick();">Lanjut</button>
         </div>
@@ -705,7 +706,8 @@
                 </div>
             </div>
             <div class="pilihTanggal">Pilih tanggal</div>
-            <div class="d-flex justify-content-between align-items-center wrapSelectTanggal" onclick="calendarLayoutShow();">
+            <div class="d-flex justify-content-between align-items-center wrapSelectTanggal"
+                onclick="calendarLayoutShow();">
                 <div class="d-flex justify-content-start align-items-center">
                     <img src="{{ url('img/icon/calendarIcon.png') }}" alt=""
                         style="height: 24px; margin-left: 10px;">
@@ -749,7 +751,8 @@
                 </div>
                 <div style="height: 20px;"></div>
                 <div class="d-flex justify-content-center">
-                    <button class="buttonNonActive" style="width: 30vw; margin-right: 3vw;" onclick="calendarLayoutHide();">Batal</button>
+                    <button class="buttonNonActive" style="width: 30vw; margin-right: 3vw;"
+                        onclick="calendarLayoutHide();">Batal</button>
                     <button style="width: 30vw;" onclick="terapkanCalendar();">Terapkan</button>
                 </div>
                 <div style="height: 20px;"></div>
@@ -771,7 +774,7 @@
                 <div onclick="setJumlah(2000000)">2.000.000</div>
             </div>
             <div class="labelPembayaran">Pesan</div>
-            <textarea placeholder='"Untuk keperluan apa?"'></textarea>
+            <textarea id="textAreaPesan" placeholder='"Untuk keperluan apa?"'></textarea>
             <div class="wrapBottom">
                 <button onclick="sendDataKirim();" style="width: 100%">Kirim request</button>
             </div>
@@ -807,6 +810,11 @@
     let dateSelect = today.getDate();
     var indexPage = 0;
     var listBankActive = true;
+    var currentDateMonthYear = currentYear + '-' + currentMonth + '-' + dateSelect;
+
+    var objListBank = null;
+
+    var indexSelectBank = null;
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
@@ -816,43 +824,96 @@
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
 
-    function selectIndexBank(index){
+    function selectIndexBank(index) {
+        indexSelectBank = index;
+        document.getElementById('fillBankSelect').innerHTML = objListBank.listBank[indexSelectBank].bank;
         hideListBank();
     }
 
-    function listBankClick(){
-        if(listBankActive){
+    function sendDataKirim(){
+        $.ajax({
+            url: "{{ url('reimburse/store/data') }}",
+            type: 'get',
+            data: {
+                idOutlet: "{{ session('idOutlet') }}",
+                tanggal: currentDateMonthYear,
+                idBank: objListBank.listBank[indexSelectBank].id,
+                namaRekening: document.getElementById('atasNamaRekening').value,
+                nomorRekening: document.getElementById('inputNomorRekening').value,
+                pesan: document.getElementById('textAreaPesan').value,
+                qty: parseInt(inputJumlah.rawValue),
+                idPengisi: "{{ session('idPengisi') }}"
+            },
+            success: function(response) {
+                // window.location.href = "{{ url('user/reimburse/detail') }}" + '/' + response;
+                window.location.href = "{{ url('user/reimburse/wait') }}";
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function getAllBank() {
+        $.ajax({
+            url: "{{ url('setoran/bank/show/all') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                objListBank = obj;
+                var dataListAllBank = '';
+                for (var i = 0; i < obj.listBank.length; i++) {
+                    dataListAllBank += '<div class="itemSelect" onclick="selectIndexBank(';
+                    dataListAllBank += i;
+                    dataListAllBank += ')">';
+                    dataListAllBank += obj.listBank[i].bank;
+                    dataListAllBank += '</div>';
+                }
+                document.getElementById("itemAll").innerHTML = dataListAllBank;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function listBankClick() {
+        if (listBankActive) {
             hideListBank();
-        }else{
+        } else {
             showListBank();
         }
     }
-    
-    function showListBank(){
+
+    function showListBank() {
         listBankActive = true;
         document.getElementById('selectItem').style.visibility = "visible";
     }
-    function hideListBank(){
+
+    function hideListBank() {
         listBankActive = false;
         document.getElementById('selectItem').style.visibility = "hidden";
     }
 
-    function showInputRekening(){
+    function showInputRekening() {
         document.getElementById('inputRekeningBank').style.display = "block";
         document.getElementById('home').style.display = "none";
         indexPage = 0;
     }
 
-    function hideInputRekening(){
+    function hideInputRekening() {
         document.getElementById('inputRekeningBank').style.display = "none";
         document.getElementById('home').style.display = "block";
         indexPage = 1;
     }
 
     $(document).ready(function() {
+        document.getElementById('dateKirimLbl').innerHTML = today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
         calendarLayoutHide();
         showInputRekening();
         hideListBank();
+        getAllBank();
     });
 
     $('#boxInput').click(function() {
@@ -863,10 +924,11 @@
         decimalPlaces: '0'
     })
 
-    function calendarLayoutShow(){
+    function calendarLayoutShow() {
         document.getElementById('calendarLayout').style.visibility = "visible";
     }
-    function calendarLayoutHide(){
+
+    function calendarLayoutHide() {
         document.getElementById('calendarLayout').style.visibility = "hidden";
     }
 
@@ -875,15 +937,26 @@
     }
 
     function goBack() {
-        if(indexPage == 0){
-
-        }else if(indexPage == 1){
+        if (indexPage == 0) {
+            window.location.href = "{{ url('user/dashboard') }}";
+        } else if (indexPage == 1) {
             showInputRekening();
         }
     }
 
-    function lanjutClick(){
-        hideInputRekening();
+    function lanjutClick() {
+        var inputNomorRekening = document.getElementById('inputNomorRekening').value;
+        var atasNamaRekening = document.getElementById('atasNamaRekening').value;
+        document.getElementById('imageBankPengirim').src = "{{ url('') }}" + '/' + objListBank.listBank[
+            indexSelectBank].img;
+        document.getElementById('namaPengirim').innerHTML = atasNamaRekening;
+        document.getElementById('rekeningDanBankPengirim').innerHTML = objListBank.listBank[indexSelectBank].bank +
+            ' | ' + inputNomorRekening;
+        // document.getElementById()
+        // console.log();
+        if ((indexSelectBank != null) && (inputNomorRekening != '') && (atasNamaRekening != '')) {
+            hideInputRekening();
+        }
     }
 
     function bayar() {
@@ -971,15 +1044,17 @@
         showCalendar(currentMonth, currentYear);
     }
 
-    function terapkanCalendar(){
+    function terapkanCalendar() {
         var newDate = currentYear;
         newDate += '-' + (currentMonth + 1);
         newDate += '-' + dateSelect;
         var day = new Date(newDate);
         var stringDay = '';
         stringDay += dateSelect + '/' + (currentMonth + 1) + '/' + currentYear;
+        currentDateMonthYear = currentYear + '-' + currentMonth + '-' + dateSelect;
         document.getElementById('dateKirimLbl').innerHTML = stringDay;
         calendarLayoutHide();
     }
 </script>
+
 </html>

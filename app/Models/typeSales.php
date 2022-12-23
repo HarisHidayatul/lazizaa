@@ -21,7 +21,7 @@ class typeSales extends Model
     protected $fillable = [
         'type',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

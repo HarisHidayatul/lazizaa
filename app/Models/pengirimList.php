@@ -26,7 +26,7 @@ class pengirimList extends Model
         'namaRekening',
         'nomorRekening',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

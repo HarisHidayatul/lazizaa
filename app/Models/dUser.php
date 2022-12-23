@@ -33,6 +33,6 @@ class dUser extends Model
         'Nama Lengkap',
         'Email',
         'created_at',
-        'update_at'
+        'updated_at'
     ];
 }

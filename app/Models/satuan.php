@@ -18,7 +18,7 @@ class satuan extends Model
     protected $fillable = [
         'Satuan',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

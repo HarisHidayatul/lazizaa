@@ -45,11 +45,15 @@ class tanggalAll extends Model
     public function setorans(){
         return $this->hasMany(setoran::class,'idTanggal','id')->orderBy('id','DESC');
     }
+
+    public function reimburses(){
+        return $this->hasMany(reimburse::class,'idTanggal','id');
+    }
     
     protected $fillable = [
         'Tanggal',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

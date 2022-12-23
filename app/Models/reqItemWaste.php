@@ -44,6 +44,6 @@ class reqItemWaste extends Model
         'idTanggal',
         'idJenisBahan',
         'created_at',
-        'update_at',
+        'updated_at',
     ];
 }

@@ -22,7 +22,7 @@ class listBank extends Model
     protected $fillable = [
         'idJenisBank',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

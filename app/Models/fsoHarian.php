@@ -33,7 +33,7 @@ class fsoHarian extends Model
         'idOutlet',
         'idTanggal',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

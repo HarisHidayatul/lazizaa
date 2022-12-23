@@ -32,7 +32,7 @@ class dBrand extends Model
         'Keterangan',
         'Logo URL',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

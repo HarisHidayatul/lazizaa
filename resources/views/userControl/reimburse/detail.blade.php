@@ -246,7 +246,7 @@
             <div class="d-flex justify-content-center">
                 <img src="{{ url('img/icon/detailTransfer.png') }}" alt="" style="width: 86px; height: 86px;">
             </div>
-            <div class="detailNominal">Rp <span id="qtySetoran">0</span></div>
+            <div class="detailNominal">Rp <span id="jumlahTransfer">0</span></div>
             <div class="d-flex justify-content-between" style="margin-top: 35px;">
                 <div class="statusLabel">Status</div>
                 <img id="imageStatusSetoran" src="" alt="" style="width: 77px; height: 25px;">
@@ -254,19 +254,20 @@
             <div class="wrapPembayaran">
                 <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
                     <div class="labelPembayaran">Pengirim</div>
-                    <div class="detailPembayaran" id="namaRekeningPengirim"></div>
+                    <div class="detailPembayaran" id="namaPengirim"></div>
                 </div>
                 <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
                     <div class="labelPembayaran">Tanggal</div>
-                    <div class="detailPembayaran" id="dateAndTime"></div>
+                    <div class="detailPembayaran" id="tanggal"></div>
                 </div>
                 <div class="d-flex justify-content-between" style="margin-bottom: 10px;">
                     <div class="labelPembayaran">Rekening</div>
-                    <div class="detailPembayaran">.....<span id="nomorRekeningPengirim"></span></div>
+                    <div class="detailPembayaran" id="rekeningPengirim">.....<span></span></div>
                 </div>
                 <div style="border: 1px dashed #7A7A7A; margin-bottom: 10px; margin-top: 10px;"></div>
                 <div class="labelPembayaran">Pesan</div>
-                <textarea>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis auctor dapibus. Quisque sit amet nisi augue. Suspendisse eu imperdiet tellus. Duis non massa non quam hendrerit auctor ut eget quam. Nam rhoncus viverra arcu, eget semper velit fermentum ac. Nulla ornare nulla massa, eu fringilla neque euismod eu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce commodo metus eu pellentesque posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed nunc condimentum, pellentesque tortor sit amet, lacinia lorem. Curabitur elementum dapibus dictum. Nunc vel erat dapibus, placerat nisl quis, dignissim urna. Praesent efficitur lectus justo, sit amet pretium dolor aliquam at.
+                <textarea id="pesan" disabled>
+
                 </textarea>
                 <div class="labelPembayaran">Bukti transfer</div>
                 <div class="d-flex justify-content-start align-items-center wrapBukti">
@@ -277,11 +278,11 @@
             <div class="penerimaLabel">Penerima</div>
             <div class="d-flex justify-content-start align-items-center wrapPenerima" style="margin-top: 10px;">
                 <div class="boxBank">
-                    <img id="imageBankPenerima" src="" alt="">
+                    <img id="imgBankPenerima" src="" alt="">
                 </div>
                 <div style="margin-left: 10px;">
-                    <div class="penerimaNama" id="namaRekeningPenerima">PT. Lazizaa Rahmat Semesta</div>
-                    <div class="penerimaRekening" id="nomorRekeningPenerima">008-26816111664</div>
+                    <div class="penerimaNama" id="namaPenerima"></div>
+                    <div class="penerimaRekening" id="rekeningPenerima"></div>
                 </div>
             </div>
         </div>
@@ -317,42 +318,36 @@
     });
 
     function getDetail() {
-        // $.ajax({
-        //     url: "{{ url('setoran/show/detail') }}" + '/' + "",
-        //     type: 'get',
-        //     success: function(response) {
-        //         // var obj = JSON.parse(JSON.stringify(response));
-        //         // var day = new Date(obj.date);
-        //         // var nomorRekeningLength = obj.nomorRekeningPengirim.length;
-        //         // var qty = obj.qty.toLocaleString();
-        //         // console.log(obj);
-        //         // document.getElementById('qtySetoran').innerHTML = qty.replace(",",".");
-        //         // if (obj.idStatus == '2') {
-        //         //     document.getElementById('imageStatusSetoran').src =
-        //         //         "{{ url('img/icon/pending.png') }}";
-        //         // } else {
-        //         //     document.getElementById('imageStatusSetoran').src =
-        //         //         "{{ url('img/icon/sukses.png') }}";
-        //         // }
-        //         // document.getElementById('namaRekeningPengirim').innerHTML = obj.namaRekeningPengirim;
-        //         // document.getElementById('dateAndTime').innerHTML = day.getDate() + ' ' + months[day.getMonth()] + ' - ' + obj.time;
-        //         // document.getElementById('nomorRekeningPengirim').innerHTML = obj.nomorRekeningPengirim.slice(nomorRekeningLength - 4,nomorRekeningLength);
-        //         // document.getElementById('namaRekeningPenerima').innerHTML = obj.namaRekeningPenerima;
-        //         // document.getElementById('nomorRekeningPenerima').innerHTML = obj.nomorRekeningPenerima;
-        //         // document.getElementById('imageBankPenerima').src = "{{ url('') }}" + '/' + obj.imageBankPenerima;
-        //     },
-        //     error: function(req, err) {
-        //         console.log(err);
-        //     }
-        // })
+        $.ajax({
+            url: "{{ url('reimburse/show/detail') }}" + '/' + "{{ $idDetail }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                var day = new Date(obj.tanggal);
+                var url = "{{ url('') }}"
+                console.log(obj);
+                document.getElementById('namaPenerima').innerHTML = obj.namaPenerima;
+                document.getElementById('rekeningPenerima').innerHTML = obj.rekeningPenerima;
+                document.getElementById('imgBankPenerima').src = url + '/' + obj.imgBankPenerima;
+                document.getElementById('pesan').innerHTML = obj.pesan;
+                document.getElementById('tanggal').innerHTML = day.getDate() + ' ' + months[day.getMonth()];
+                document.getElementById('jumlahTransfer').innerHTML = obj.jumlahTransfer.toLocaleString();
+                if(obj.idRevisi == '2'){
+                    document.getElementById('imageStatusSetoran').src = "{{ url('img/icon/tertunda.png') }}";
+                }else{
+                    document.getElementById('imageStatusSetoran').src = "{{ url('img/icon/sukses.png') }}";
+                    document.getElementById('namaPengirim').innerHTML = obj.namaPengirim;
+                    document.getElementById('rekeningPengirim').innerHTML = obj.rekeningPengirim;
+                }
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
     }
 
     function goBack() {
-        // if ("" == "history") {
-        //     window.location.href = "{{ url('user/setoran/history') }}";
-        // } else if ("" == "home") {
-        //     window.location.href = "{{ url('user/setoran/home') }}";
-        // }
+        window.location.href = "{{ url('user/reimburse/history') }}";
     }
 </script>
 

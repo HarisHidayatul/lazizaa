@@ -563,19 +563,20 @@
         <img src="{{ url('img/icon/backRight.png') }}" alt="" style="height: 10px; margin-top:10px;">
     </div>
     <div style="content: ''; height: 25px;"></div>
-    <div class="wrapCard">
+    <div class="d-flex justify-content-center wrapCard">
         <div class="cardFill" style="content:'';width:10px;"></div>
         <div class="pattyCashCard cardFill">
-            <div class="labelPattyCash">Saldo Patty Cash</div>
-            <div class="valuePattyCash">Rp 15.365.000</div>
-            <div class="addPattyCash">
-                <img src="{{ url('img/icon/plus.png') }}" alt="">
-                <div>Reimburse</div>
+            <div onclick="goToPattyCashHistory();">
+                <div class="labelPattyCash">Saldo Patty Cash</div>
+                <div class="valuePattyCash">Rp 15.365.000</div>
+            </div>
+            <div onclick="goToReimburseForm();">
+                <div class="addPattyCash">
+                    <img src="{{ url('img/icon/plus.png') }}" alt="">
+                    <div onclick="goToReimburseForm();">Reimburse</div>
+                </div>
             </div>
         </div>
-        <div class="cardFill" style="content:'';width:10px;"></div>
-        <div class="wasteCard cardFill"></div>
-        <div class="cardFill" style="content:'';width:10px;"></div>
     </div>
     <div style="content: ''; height: 100px;"></div>
     <div class="containerr">
@@ -814,6 +815,14 @@
     }
     function goToSetoran(){
         window.location.href = "{{ url('user/setoran/home') }}"
+    }
+
+    function goToPattyCashHistory(){
+        window.location.href = "{{ url('user/reimburse/history') }}";
+    }
+
+    function goToReimburseForm(){
+        window.location.href = "{{ url('user/reimburse/kirim') }}";
     }
 
     function requestShow() {

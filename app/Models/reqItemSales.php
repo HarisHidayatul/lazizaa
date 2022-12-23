@@ -33,7 +33,7 @@ class reqItemSales extends Model
         'idPengisi',
         'idTanggal',
         'created_at',
-        'update_at',
+        'updated_at',
     ];
     
 }

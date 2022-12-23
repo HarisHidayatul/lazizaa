@@ -139,7 +139,7 @@
             color: #585858;
         }
 
-        .statusItemTransaksi{
+        .statusItemTransaksi {
             height: 15px;
             margin-top: 10px;
             margin-left: 10px;
@@ -165,9 +165,14 @@
             color: #B20731;
         }
 
-        .activeValPembelian{
+        .activeValPembelian {
             color: #008000;
         }
+
+        .pendingValPembelian {
+            color: #585858;
+        }
+
         .labelValuePattyCash {
             font-family: 'Montserrat';
             font-style: normal;
@@ -178,7 +183,7 @@
             text-align: right;
         }
 
-        .wrapPattyCash{
+        .wrapPattyCash {
             margin-top: 15px;
             margin-bottom: 15px;
             padding-bottom: 15px;
@@ -191,25 +196,25 @@
     <div class="d-flex justify-content-center">
         <div style="max-width: 400px;">
             <img src="{{ url('img/reimburse/reimburseHistory.png') }}" alt="" style="width: 100%;">
-            <div class="d-flex justify-content-start headerMenuTop" style="margin-top: -180px; margin-left: 30px;">
+            <div onclick="goBack();" class="d-flex justify-content-start headerMenuTop" style="margin-top: -180px; margin-left: 30px;">
                 <img src="{{ url('img/icon/backLeft.png') }}" alt="">
                 <div style="margin-left: 10px;">Kembali</div>
             </div>
             <div class="d-flex justify-content-center">
                 <div>
                     <div class="tittle">Saldo Patty Cash</div>
-                    <div class="priceTittle">Rp 472.000</div>
+                    <div class="priceTittle" id="totalPattyCash">Rp 0</div>
                     {{-- <div style="height: 70px;"></div> --}}
                     <div style="margin-top: 30px;">
                         <img src="{{ url('img/reimburse/reimburseStat.png') }}" alt="" style="width: 320px;">
-                        <div class="d-flex justify-content-start" style="margin-top: -70px;">
+                        <div class="d-flex justify-content-between" style="margin-top: -70px;">
                             <div style="margin-left: 47px;">
                                 <div class="detailTittle">Reimburse</div>
-                                <div class="detailPrice">+ Rp 15.200.000</div>
+                                <div class="detailPrice" id="totalReimburse">+ Rp 0</div>
                             </div>
-                            <div style="margin-left: 33px;">
+                            <div style="margin-right: 40px;">
                                 <div class="detailTittle">Pembelian</div>
-                                <div class="detailPrice">- Rp 15.200.000</div>
+                                <div class="detailPrice" id="totalPembelian">- Rp 0</div>
                             </div>
                         </div>
                     </div>
@@ -218,14 +223,17 @@
             <div class="d-flex justify-content-center">
                 <div>
                     <div class="wrapSortDate">
-                        <div style="flex: 0 0 67px;" class="active">Hari ini</div>
-                        <div style="flex: 0 0 129px;">1 Minggu Terakhir</div>
-                        <div style="flex: 0 0 117px;">30 Hari Terakhir</div>
-                        <div style="flex: 0 0 67px;">Semua</div>
+                        <div name="sortHistory" style="flex: 0 0 67px;" class="active" onclick="getAllHistory(0)">Hari
+                            ini</div>
+                        <div name="sortHistory" style="flex: 0 0 129px;" onclick="getAllHistory(1)">1 Minggu Terakhir
+                        </div>
+                        <div name="sortHistory" style="flex: 0 0 117px;" onclick="getAllHistory(2)">30 Hari Terakhir
+                        </div>
+                        <div name="sortHistory" style="flex: 0 0 67px;" onclick="getAllHistory(3)">Semua</div>
                     </div>
                     {{-- <div style="margin-top: 20px;"></div> --}}
                     <div class="historyTransaksiLabel">History Transaksi</div>
-                    <div class="dateTransaksi">1 November</div>
+                    {{-- <div class="dateTransaksi">1 November</div>
                     <div class="d-flex justify-content-between wrapPattyCash">
                         <div class="d-flex justify-content-start">
                             <div class="wrapPembelianImg d-flex justify-content-center align-items-center">
@@ -271,7 +279,8 @@
                             <div style="margin-left: 15px;">
                                 <div class="d-flex justify-content-start">
                                     <div class="labelItemTransaksi">Reimburse</div>
-                                    <img class="statusItemTransaksi" src="{{ url('img/icon/pending.png') }}" alt="">
+                                    <img class="statusItemTransaksi" src="{{ url('img/icon/pending.png') }}"
+                                        alt="">
                                 </div>
                                 <div class="labelQtyTransaksi">5000 gr</div>
                             </div>
@@ -280,12 +289,152 @@
                             <div class="labelValuePembelian activeValPembelian">+ Rp 59.000</div>
                             <div class="labelValuePattyCash">Rp 472.000</div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <div id="historyAll"></div>
                 </div>
             </div>
         </div>
     </div>
     <div style="height: 1000px;"></div>
 </body>
+<script>
+    let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
+        "November", "Desember"
+    ];
+
+    $(document).ready(function() {
+        getAllHistory(0);
+    })
+
+    function goBack(){
+        window.location.href = "{{ url('user/dashboard') }}";
+    }
+
+    function getAllHistory(index) {
+        var accessHistory = '';
+        var element = document.getElementsByName("sortHistory");
+        for (var i = 0; i < element.length; i++) {
+            if (i == index) {
+                element[i].classList.add("active");
+                continue;
+            }
+            element[i].classList.remove("active");
+        }
+        if (index == 0) {
+            accessHistory = 'today';
+        } else if (index == 1) {
+            accessHistory = '7day';
+        } else if (index == 2) {
+            accessHistory = '30day';
+        } else if (index == 3) {
+            accessHistory = 'all';
+        }
+        $.ajax({
+            url: "{{ url('reimburse/show/history/outlet') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                accessHistory,
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                var historyAll = "";
+                var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
+                var imgPending = "{{ url('img/icon/pending.png') }}";
+                console.log(obj);
+                var totalReimburse = 0;
+                var totalPembelian = 0;
+                var totalPattyCash = 0;
+
+                for (var i = 0; i < obj.dataHistory.length; i++) {
+                    var day = new Date(obj.dataHistory[i].tanggal);
+                    var stringDay = day.getDate() + ' ' + months[day.getMonth()];
+
+                    totalPattyCash = obj.dataHistory[0].pattyCash[0].saldo;
+
+                    historyAll += '<div class="dateTransaksi">' + stringDay + '</div>';
+                    for (var j = 0; j < obj.dataHistory[i].pattyCash.length; j++) {
+                        historyAll +=
+                            '<div class="d-flex justify-content-between wrapPattyCash" onClick="goToDetailPattyCash(' +
+                            "'" +
+                            obj.dataHistory[i].tanggal + "'" +
+                            ')">';
+                        historyAll += '<div class="d-flex justify-content-start">';
+                        historyAll +=
+                            '<div class="wrapPembelianImg d-flex justify-content-center align-items-center">';
+                        historyAll += '<img src="' + imgLaporanPembelian +
+                            '" alt="" style="height: 22px;">';
+                        historyAll += '</div><div style="margin-left: 15px;">';
+                        historyAll +=
+                            '<div class="d-flex justify-content-start"><div class="labelItemTransaksi">';
+                        historyAll += obj.dataHistory[i].pattyCash[j].item;
+                        historyAll += '</div></div><div class="labelQtyTransaksi">';
+                        historyAll += obj.dataHistory[i].pattyCash[j].qty + " ";
+                        historyAll += obj.dataHistory[i].pattyCash[j].satuan;
+                        historyAll += '</div></div></div>';
+                        historyAll +=
+                            '<div style="margin-right: 10px;"><div class="labelValuePembelian">- Rp ';
+                        historyAll += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
+                        historyAll += '</div><div class="labelValuePattyCash">Rp ';
+                        historyAll += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString();
+                        historyAll += '</div></div></div>';
+                        totalPembelian += obj.dataHistory[i].pattyCash[j].total;
+                    }
+                    for (var j = 0; j < obj.dataHistory[i].reimburse.length; j++) {
+                        historyAll +=
+                            '<div class="d-flex justify-content-between wrapPattyCash" onClick="goToDetailReimburse(' +
+                            obj.dataHistory[i].reimburse[j].id +
+                            ')">';
+                        historyAll += '<div class="d-flex justify-content-start">';
+                        historyAll +=
+                            '<div class="wrapPembelianImg d-flex justify-content-center align-items-center">';
+                        historyAll += '<img src="' + imgLaporanPembelian +
+                            '" alt="" style="height: 22px;">';
+                        historyAll += '</div><div style="margin-left: 15px;">';
+                        historyAll +=
+                            '<div class="d-flex justify-content-start"><div class="labelItemTransaksi">';
+                        historyAll += "Reimburse";
+                        historyAll += '</div>';
+                        if (obj.dataHistory[i].reimburse[j].idRev == '2') {
+                            historyAll += '<img class="statusItemTransaksi" src="' + imgPending +
+                                '" alt="">'
+                        }
+                        historyAll += '</div><div class="labelQtyTransaksi">';
+                        // historyAll += obj.dataHistory[i].pattyCash[j].qty + " ";
+                        // historyAll += obj.dataHistory[i].pattyCash[j].satuan;
+                        historyAll += '</div></div></div>';
+                        historyAll += '<div style="margin-right: 10px;"><div class="labelValuePembelian ';
+                        if (obj.dataHistory[i].reimburse[j].idRev == '3') {
+                            historyAll += 'activeValPembelian';
+                            totalReimburse += obj.dataHistory[i].reimburse[j].reimburse;
+                        } else {
+                            historyAll += 'pendingValPembelian';
+                        }
+                        historyAll += '">+ Rp ';
+                        historyAll += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString();
+                        historyAll += '</div><div class="labelValuePattyCash">Rp ';
+                        historyAll += obj.dataHistory[i].reimburse[j].saldo.toLocaleString();
+                        historyAll += '</div></div></div>';
+                    }
+                }
+                document.getElementById("historyAll").innerHTML = historyAll;
+                document.getElementById("totalReimburse").innerHTML = "+ Rp " + totalReimburse
+                    .toLocaleString();
+                document.getElementById("totalPembelian").innerHTML = "- Rp " + totalPembelian
+                    .toLocaleString();
+                document.getElementById("totalPattyCash").innerHTML = "Rp " + totalPattyCash
+                    .toLocaleString();
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function goToDetailReimburse(index) {
+        window.location.href = "{{ url('user/reimburse/detail') }}" + "/" + index;
+    }
+
+    function goToDetailPattyCash(index) {
+        window.location.href = "{{ url('user/detail/pattyCashHarian') }}" + "/" + index;
+    }
+</script>
 
 </html>

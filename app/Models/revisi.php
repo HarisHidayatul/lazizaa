@@ -16,7 +16,7 @@ class revisi extends Model
     protected $fillable = [
         'status',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\fsoHarianController;
 use App\Http\Controllers\itemSOController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\pattyCashController;
+use App\Http\Controllers\reimburseController;
 use App\Http\Controllers\salesHarianController;
 use App\Http\Controllers\setoranController;
 use App\Http\Controllers\soFillController;
@@ -211,6 +212,11 @@ Route::get('setoran', function () {
     return view('setoran.typeSetoran');
 });
 
+Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}', [reimburseController::class, 'showHistory']);
+Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
+Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']);
+Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
+
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
 Route::get('/login', function () {
@@ -413,15 +419,17 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl.reimburse.history');
     });
 
-    Route::get('user/reimburse/detail', function () {
-        return view('userControl.reimburse.detail');
+    Route::get('user/reimburse/detail/{idDetail}', function ($idDetail) {
+        return view('userControl.reimburse.detail', [
+            'idDetail' => $idDetail
+        ]);
     });
 
-    Route::get('user/reimburse/kirim', function(){
+    Route::get('user/reimburse/kirim', function () {
         return view('userControl.reimburse.kirim');
     });
 
-    Route::get('user/reimburse/wait', function(){
+    Route::get('user/reimburse/wait', function () {
         return view('userControl.reimburse.verifikasiWait');
     });
 });

@@ -203,6 +203,9 @@ return new class extends Migration
         Schema::dropIfExists('listItemWaste');
         Schema::dropIfExists('jenisBahan');
         
+        Schema::dropIfExists('penerimaReimburse');
+        Schema::dropIfExists('reimburse');
+
         Schema::dropIfExists('setoran');
         Schema::dropIfExists('pengirimList');
         Schema::dropIfExists('penerimaList');

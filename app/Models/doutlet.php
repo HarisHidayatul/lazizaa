@@ -56,7 +56,7 @@ class doutlet extends Model
         'Alamat Lengkap',
         'idBrand',
         'created_at',
-        'update_at',
-        'delete_at'
+        'updated_at',
+        'deleted_at'
     ];
 }

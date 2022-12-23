@@ -149,7 +149,7 @@
 </body>
 <script>
     function goToHome(){
-        window.location.href = "{{ url('user/setoran/home') }}";
+        window.location.href = "{{ url('user/dashboard') }}";
     }
 </script>
 </html>

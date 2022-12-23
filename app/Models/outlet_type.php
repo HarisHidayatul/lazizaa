@@ -19,7 +19,7 @@ class outlet_type extends Model
         'idOutlet',
         'idType',
         'created_at',
-        'update_at',
-        // 'delete_at'
+        'updated_at',
+        // 'deleted_at'
     ];
 }

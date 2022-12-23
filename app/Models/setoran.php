@@ -36,6 +36,6 @@ class setoran extends Model
         'qtySetor',
         'imgTransfer',
         'created_at',
-        'update_at'
+        'updated_at'
     ];
 }

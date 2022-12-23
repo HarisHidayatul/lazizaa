@@ -17,7 +17,7 @@ class outletListSales extends Model
         'idOutlet',
         'idListSales',
         'created_at',
-        'update_at',
-        // 'delete_at'
+        'updated_at',
+        // 'deleted_at'
     ];
 }

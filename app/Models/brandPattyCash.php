@@ -16,6 +16,6 @@ class brandPattyCash extends Model
         'idBrand',
         'idListItem',
         'created_at',
-        'update_at'
+        'updated_at'
     ];
 }
