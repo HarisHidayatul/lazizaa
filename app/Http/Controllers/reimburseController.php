@@ -134,6 +134,7 @@ class reimburseController extends Controller
         $now = Carbon::now();
         $allDate = [];
         $allHistory = [];
+        $saldoPattyCash = 0;
         // @dd($now);
         if ($countData == 'today') {
             $allDate = tanggalAll::where('Tanggal', '=', $now->format('Y-m-d'))->get();
@@ -164,6 +165,10 @@ class reimburseController extends Controller
                     $saldoTerakhir = $reimburse[$j]->saldoTerakhir;
                     $saldoSaatIni = $saldoTerakhir;
 
+                    if($i == 0){
+                        $saldoPattyCash = $saldoTerakhir;
+                    }
+
                     $pembelianHarian = $allDate[$i]->pattyCashHarians;
                     $reimburseHarian = $reimburse[$j]->penerimaReimburses;
                     // @dd($reimburseHarian);
@@ -171,6 +176,9 @@ class reimburseController extends Controller
                         for ($k = 0; $k < $reimburseHarian->count(); $k++) {
                             if ($reimburseHarian[$k]->idRevisi == '3') {
                                 $saldoSaatIni = $saldoSaatIni + $reimburseHarian[$k]->qty;
+                                if($i==0){
+                                    $saldoPattyCash = $saldoPattyCash + $reimburseHarian[$k]->qty;
+                                }
                             }
                             $dataFound = true;
                             array_push($reimburseTanggalIni, (object)[
@@ -189,7 +197,14 @@ class reimburseController extends Controller
                             for ($l = 0; $l < $pembelianList->count(); $l++) {
                                 $qtyPembelian = $pembelianList[$l]->pivot->quantity;
                                 $totalPembelian = $pembelianList[$l]->pivot->total;
+                                if($pembelianList[$l]->pivot->idRevTotal == '2'){
+                                    $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
+                                }
+
                                 $saldoSaatIni = $saldoSaatIni - $totalPembelian;
+                                if($i==0){
+                                    $saldoPattyCash = $saldoPattyCash - $totalPembelian;
+                                }
 
                                 $dataFound = true;
                                 array_push($pattyCash, (object)[
@@ -216,7 +231,8 @@ class reimburseController extends Controller
         }
         // @dd($allHistory);
         return response()->json([
-            'dataHistory' => $allHistory
+            'dataHistory' => $allHistory,
+            'saldoPattyCash' => $saldoPattyCash
         ]);
     }
 

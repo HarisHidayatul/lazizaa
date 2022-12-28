@@ -483,6 +483,63 @@
             color: #585858;
         }
 
+
+        .wrapStokSoHarian {
+            display: flex;
+            width: 330px;
+            overflow: auto;
+        }
+
+        .stokHarian {
+            /* display: block;!important */
+            background-image: url("{{ url('img/icon/stockSOTemplate.png') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            /* optional, center the image */
+            width: 310px;
+            height: 66px;
+            padding: 10px 20px;
+            flex: 0 0 310px;
+        }
+
+        .labelStockHarian {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+
+        }
+
+        .imageIconSo {
+            filter: invert(73%) sepia(59%) saturate(6350%) hue-rotate(337deg) brightness(80%) contrast(102%);
+            height: 32px;
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .lblItemSo {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 140%;
+            align-items: center;
+            color: #FFFFFF;
+        }
+
+        .qtyItemSo {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            align-items: center;
+            color: #FFFFFF;
+            margin-top: -5px;
+        }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -568,7 +625,7 @@
         <div class="pattyCashCard cardFill">
             <div onclick="goToPattyCashHistory();">
                 <div class="labelPattyCash">Saldo Patty Cash</div>
-                <div class="valuePattyCash">Rp 15.365.000</div>
+                <div class="valuePattyCash">Rp <span id="totalPattyCash">0</span></div>
             </div>
             <div onclick="goToReimburseForm();">
                 <div class="addPattyCash">
@@ -578,7 +635,23 @@
             </div>
         </div>
     </div>
-    <div style="content: ''; height: 100px;"></div>
+    <div style="content: ''; height: 25px;"></div>
+    <div id="wrapStokSoHarian" style="display: none;">
+        <div class="d-flex justify-content-center" style="margin-bottom: 15px;">
+            <div style="margin-right: 130px;">
+                <div class="labelStockHarian">Stok So Harian</div>
+                <img src="{{ url('img/icon/warningSoHarian.png') }}" alt="" style="height: 15px;">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="wrapStokSoHarian" id="listStockSOAll">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center" style="margin-right: 270px; margin-top: 10px;">
+            <img src="{{ url('img/icon/carorusel.png') }}" alt="" style="width: 89px; height: 8px;">
+        </div>
+    </div>
+    <div style="content: ''; height: 25px;"></div>
     <div class="containerr">
         <div class="row">
             <div class="col">
@@ -640,7 +713,8 @@
                     </div>
                 </div>
                 <div>
-                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong2" class="soStatus" id="salesStatus">
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong2" class="soStatus"
+                        id="salesStatus">
                 </div>
             </div>
             <div class="row d-flex justify-content-between layoutBottom" onclick="wasteClick();">
@@ -767,6 +841,8 @@
     var statusWaste = 0;
     var statusPattyCash = 0;
 
+    var indexDeleteStockSO = 0;
+
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
@@ -779,13 +855,78 @@
         getDataOnAllDate();
         // $('#exampleModal').modal('show');
         dashboardShow();
+        getSaldoPattyCash();
+        getAllLimitStockSO();
     });
     $('#exampleModal').on('hidden.bs.modal', function() {
         // do something…
         dashboardShow();
     })
 
-    
+    function getAllLimitStockSO() {
+        $.ajax({
+            url: "{{ url('soHarian/show/batas') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                currentYear + '-' + (currentMonth + 1) + '-' + dateSelect,
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var dataStockSo = '';
+                var dataFound = false;
+                for(var i =0;i< obj.dataLimitSo.length;i++){
+                    dataFound = true;
+
+                    dataStockSo += '<div name="stockSO">';
+                    dataStockSo += '<div class="stokHarian d-flex justify-content-between">';
+                    dataStockSo += '<div class="d-flex justify-content-start">';
+                    dataStockSo += '<img class="imageIconSo" src="';
+                    dataStockSo += "{{ url('img/soImage') }}" + '/' + obj.dataLimitSo[i].icon + '" alt="">';
+                    dataStockSo += '<div style="margin-left: 20px;">';
+                    dataStockSo += '<div class="lblItemSo">' + obj.dataLimitSo[i].item + '</div>';
+                    dataStockSo += '<div class="qtyItemSo">' + obj.dataLimitSo[i].quantity + ' ' + obj.dataLimitSo[i].satuan + '</div>';
+                    dataStockSo += '</div></div>';
+                    dataStockSo += '<img src="' + "{{ url('img/icon/close.png') }}" + '" alt="" style="height: 17px;" ';
+                    dataStockSo += 'onclick="deleteStockSO(' + i + ')"></div></div>';
+                }
+                document.getElementById('listStockSOAll').innerHTML = dataStockSo;
+
+                if(dataFound){
+                    document.getElementById('wrapStokSoHarian').style.display = 'block';
+                }
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function deleteStockSO(index) {
+        console.log(index);
+        var stockSOElement = document.getElementsByName('stockSO');
+        stockSOElement[index].style.display = 'none';
+
+        indexDeleteStockSO++;
+        if (indexDeleteStockSO >= stockSOElement.length) {
+            document.getElementById('wrapStokSoHarian').style.display = "none";
+        }
+    }
+
+    function getSaldoPattyCash() {
+        $.ajax({
+            url: "{{ url('reimburse/show/history/outlet') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                'today',
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                document.getElementById("totalPattyCash").innerHTML = obj.saldoPattyCash.toLocaleString();
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
@@ -813,15 +954,16 @@
     function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
-    function goToSetoran(){
+
+    function goToSetoran() {
         window.location.href = "{{ url('user/setoran/home') }}"
     }
 
-    function goToPattyCashHistory(){
+    function goToPattyCashHistory() {
         window.location.href = "{{ url('user/reimburse/history') }}";
     }
 
-    function goToReimburseForm(){
+    function goToReimburseForm() {
         window.location.href = "{{ url('user/reimburse/kirim') }}";
     }
 
@@ -877,7 +1019,7 @@
         document.getElementById('revisiIcon').src = "{{ url('img/dashboard/revisiIcon.png') }}";
     }
 
-    function setoranShow(){
+    function setoranShow() {
         document.getElementById('setoranMenu').classList.add("menuActive");
         document.getElementById('setoranIcon').src = "{{ url('img/dashboard/setoranIconActive.png') }}";
         requestHide();
@@ -886,7 +1028,7 @@
         // goToSetoran
     }
 
-    function setoranHide(){
+    function setoranHide() {
         document.getElementById('setoranMenu').classList.remove("menuActive");
         document.getElementById('setoranIcon').src = "{{ url('img/dashboard/setoranIcon.png') }}";
     }

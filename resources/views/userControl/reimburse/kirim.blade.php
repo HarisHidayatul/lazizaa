@@ -810,7 +810,7 @@
     let dateSelect = today.getDate();
     var indexPage = 0;
     var listBankActive = true;
-    var currentDateMonthYear = currentYear + '-' + currentMonth + '-' + dateSelect;
+    var currentDateMonthYear = currentYear + '-' + (currentMonth + 1) + '-' + dateSelect;
 
     var objListBank = null;
 
@@ -830,7 +830,7 @@
         hideListBank();
     }
 
-    function sendDataKirim(){
+    function sendDataKirim() {
         $.ajax({
             url: "{{ url('reimburse/store/data') }}",
             type: 'get',
@@ -909,7 +909,8 @@
     }
 
     $(document).ready(function() {
-        document.getElementById('dateKirimLbl').innerHTML = today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear();
+        document.getElementById('dateKirimLbl').innerHTML = today.getDate() + '/' + today.getMonth() + '/' +
+            today.getFullYear();
         calendarLayoutHide();
         showInputRekening();
         hideListBank();
@@ -1051,7 +1052,7 @@
         var day = new Date(newDate);
         var stringDay = '';
         stringDay += dateSelect + '/' + (currentMonth + 1) + '/' + currentYear;
-        currentDateMonthYear = currentYear + '-' + currentMonth + '-' + dateSelect;
+        currentDateMonthYear = currentYear + '-' + (currentMonth + 1) + '-' + dateSelect;
         document.getElementById('dateKirimLbl').innerHTML = stringDay;
         calendarLayoutHide();
     }

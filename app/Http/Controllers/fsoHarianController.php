@@ -8,6 +8,7 @@ use App\Models\dUser;
 use App\Models\fsoHarian;
 use App\Models\listItemSO;
 use App\Models\soFill;
+use App\Models\soHarianBatas;
 use App\Models\tanggalAll;
 use Carbon\Carbon;
 use Database\Seeders\soHarian;
@@ -52,6 +53,38 @@ class fsoHarianController extends Controller
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ];
         fsoHarian::create($dataArray);
+    }
+
+    public function storeBatas($idOutlet, Request $request)
+    {
+        $soHarianBatas = soHarianBatas::where('idOutlet', '=', $idOutlet)->get();
+        // @dd($soHarianBatas->count() == 0);
+        if ($soHarianBatas->count() == 0) {
+            $soHarianBatas = soHarianBatas::create([
+                'idOutlet' => $idOutlet,
+                'idPengisi' => $request->idPengisi,
+                'quantity' => $request->quantity,
+                'idItemSo' => $request->idItemSo
+            ]);
+        } else {
+            $soHarianBatas = $soHarianBatas->where('idItemSo', '=', $request->idItemSo);
+            // @dd();
+            if ($soHarianBatas->count() == 0) {
+                $soHarianBatas = soHarianBatas::create([
+                    'idOutlet' => $idOutlet,
+                    'idPengisi' => $request->idPengisi,
+                    'quantity' => $request->quantity,
+                    'idItemSo' => $request->idItemSo
+                ]);
+            } else {
+                $soHarianBatas = $soHarianBatas->first()->update([
+                    'quantity' => $request->quantity,
+                    'idPengisi' => $request->idPengisi
+                ]);
+            }
+        }
+        echo 1;
+        // @dd($soHarianBatas);
     }
 
     /**
@@ -111,8 +144,9 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function showOnDate($id,$date){
-        $dataDate = tanggalAll::where('Tanggal','=',$date)->first()->fsoHarians->where('idOutlet','=',$id)->first();
+    public function showOnDate($id, $date)
+    {
+        $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians->where('idOutlet', '=', $id)->first();
         // @dd($dataDate);
         $itemArray = [];
         for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
@@ -151,9 +185,8 @@ class fsoHarianController extends Controller
     public function showAllDataSo()
     {
         $outletShow = dBrand::all();
-        for($i=0;$i<$outletShow->count();$i++){
-            for($j=0;$j<$outletShow->doutlets->count();$j++){
-
+        for ($i = 0; $i < $outletShow->count(); $i++) {
+            for ($j = 0; $j < $outletShow->doutlets->count(); $j++) {
             }
         }
         @dd($outletShow->doutlets);
@@ -300,6 +333,55 @@ class fsoHarianController extends Controller
         ]);
     }
 
+    public function showBatas($idOutlet)
+    {
+        $soHarianBatas = soHarianBatas::where('idOutlet', '=', $idOutlet)->get();
+        $dataSoHarian = [];
+        for ($i = 0; $i < $soHarianBatas->count(); $i++) {
+            array_push($dataSoHarian, (object)[
+                'idItem' => $soHarianBatas[$i]->listItemSOs->id,
+                'item' => $soHarianBatas[$i]->listItemSOs->Item,
+                'quantity' => $soHarianBatas[$i]->quantity
+            ]);
+        }
+        return response()->json([
+            'dataSo' => $dataSoHarian
+        ]);
+    }
+
+    public function showDataBatasOnDate($idOutlet, $date)
+    {
+        $dataLimitSo = [];
+        $soHarianBatas = soHarianBatas::where('idOutlet', '=', $idOutlet)->get();
+        // @dd($soHarianBatas->where('idItemSo','=',1)->first());
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
+        if ($tanggalAll != null) {
+            $fsoharian = $tanggalAll->fsoharians->where('idOutlet', '=', $idOutlet)->first();
+            if ($fsoharian != null) {
+                $listItemSO = $fsoharian->listItemSOs;
+                // @dd($listItemSO[0]->pivot);
+                for ($i = 0; $i < $listItemSO->count(); $i++){
+                    $limSoHarian = $soHarianBatas->where('idItemSo','=',$listItemSO[$i]->id)->first()->quantity;
+                    $valSoHarian = $listItemSO[$i]->pivot->quantity;
+                    if($listItemSO[$i]->pivot->idRevisi == '2'){
+                        $valSoHarian = $listItemSO[$i]->pivot->quantityRevisi;
+                    }
+                    if($valSoHarian < $limSoHarian){
+                        array_push($dataLimitSo, (object)[
+                            'quantity' => $valSoHarian,
+                            'item' => $listItemSO[$i]->Item,
+                            'icon' => $listItemSO[$i]->icon,
+                            'satuan' => $listItemSO[$i]->satuans->Satuan
+                        ]);
+                    }
+                }
+            }
+        }
+        return response()->json([
+            'dataLimitSo' => $dataLimitSo
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -320,13 +402,15 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function editSoFill($id,Request $request){
+    public function editSoFill($id, Request $request)
+    {
         soFill::find($id)->update([
-            'quantityRevisi'=> $request->quantityRevisi,
+            'quantityRevisi' => $request->quantityRevisi,
             'idRevisi'      => '2'
         ]);
     }
-    public function editFsoHarian($id,Request $request){
+    public function editFsoHarian($id, Request $request)
+    {
         fsoHarian::find($id)->update([
             'idPengisi' => $request->idPengisi
         ]);

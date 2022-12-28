@@ -123,11 +123,11 @@ class soHarian extends Seeder
             'SKM'
         );
         $itemIcon = array(
-            'beras.png','milo.png','frenchfries.png','tepungOri.png','minyakpadat.png','ayamRegKecil.png',
-            'ayamRegBesar.png', 'ayamUtuh.png', 'ayamFillet.png','ayamSmall.png','doriTriming.png',
-            'chiliSachet.png','tomat.png', 'sambalBawang.png','sambalKorek.png','sambalBajak.png',
-            'sausBBQ.png','sausBP.png','lunchBox.png','rameBox.png','boxGeprek.png','bubukCandy.png','bubbleGum.png',
-            'skm.png'
+            'beras.svg','milo.svg','frenchfries.svg','tepungOri.svg','minyakpadat.svg','ayamRegKecil.svg',
+            'ayamRegBesar.svg', 'ayamUtuh.svg', 'ayamFillet.svg','ayamSmall.svg','doriTriming.svg',
+            'chiliSachet.svg','tomat.svg', 'sambalBawang.svg','sambalKorek.svg','sambalBajak.svg',
+            'sausBBQ.svg','sausBP.svg','lunchBox.svg','rameBox.svg','boxGeprek.svg','bubukCandy.svg','bubbleGum.svg',
+            'skm.svg'
         );
         for ($i = 0; $i < 24; $i++) {
             DB::table('listItemSO')->insert([

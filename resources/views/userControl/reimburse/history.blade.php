@@ -196,7 +196,8 @@
     <div class="d-flex justify-content-center">
         <div style="max-width: 400px;">
             <img src="{{ url('img/reimburse/reimburseHistory.png') }}" alt="" style="width: 100%;">
-            <div onclick="goBack();" class="d-flex justify-content-start headerMenuTop" style="margin-top: -180px; margin-left: 30px;">
+            <div onclick="goBack();" class="d-flex justify-content-start headerMenuTop"
+                style="margin-top: -180px; margin-left: 30px;">
                 <img src="{{ url('img/icon/backLeft.png') }}" alt="">
                 <div style="margin-left: 10px;">Kembali</div>
             </div>
@@ -306,7 +307,7 @@
         getAllHistory(0);
     })
 
-    function goBack(){
+    function goBack() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
@@ -341,13 +342,11 @@
                 console.log(obj);
                 var totalReimburse = 0;
                 var totalPembelian = 0;
-                var totalPattyCash = 0;
+                var totalPattyCash = obj.saldoPattyCash;
 
                 for (var i = 0; i < obj.dataHistory.length; i++) {
                     var day = new Date(obj.dataHistory[i].tanggal);
                     var stringDay = day.getDate() + ' ' + months[day.getMonth()];
-
-                    totalPattyCash = obj.dataHistory[0].pattyCash[0].saldo;
 
                     historyAll += '<div class="dateTransaksi">' + stringDay + '</div>';
                     for (var j = 0; j < obj.dataHistory[i].pattyCash.length; j++) {

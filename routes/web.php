@@ -71,6 +71,10 @@ Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRe
 Route::get('soHarian/show/data/all', [fsoHarianController::class, 'showAllDataSo']);
 Route::get('soHarian/show/revision/all', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done', [fsoHarianController::class, 'showDateRevisionDone']);
+Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
+Route::get('soHarian/setting/soBatas/show/{idOutlet}',[fsoHarianController::class, 'showBatas']);
+Route::get('soHarian/setting/soBatas/store/{idOutlet}',[fsoHarianController::class, 'storeBatas']);
+
 Route::get('fsoh/getId', [fsoHarianController::class, 'showAndCreateID']);
 
 Route::get('soHarian', function () {
@@ -264,6 +268,13 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
+
+    Route::get('user/setting/soHarian/{dateSelect}', function ($dateSelect){
+        return view('userControl2.soHarianSettingBatas', [
+            'dateSelect' => $dateSelect
+        ]);
+    });
+
     Route::get('user/salesHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.salesHarian', [
             'dateSelect' => $dateSelect

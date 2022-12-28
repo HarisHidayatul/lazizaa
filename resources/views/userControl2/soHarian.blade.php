@@ -171,6 +171,7 @@
             font-style: normal;
             font-weight: 600;
             color: #BEBEBE;
+            height: 100%;
         }
 
         .inputSo::placeholder {
@@ -214,6 +215,7 @@
 
         .input-so {
             margin-top: 10px;
+            /* width: 70%; */
         }
 
         .btn {
@@ -284,7 +286,35 @@
             text-align: center;
 
             color: #FFFFFF;
+        }
 
+        .boxWrapStock {
+            margin-left: 1%;
+            width: 45%;
+            height: auto;
+            background: #B20731;
+            border-radius: 8px;
+        }
+
+        .labelBoxWrapStock {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            line-height: 12px;
+            color: #FFFFFF;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .valueBoxWrapStock {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
         }
     </style>
 </head>
@@ -315,8 +345,11 @@
     </div>
     <div class="d-flex justify-content-start containerBottom">
         <div class="container" style="margin-left: 5px;margin-right: 10px">
-            <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
-            <h3 style="margin-top: 20px">Laporan SO</h3>
+            <div class="d-flex justify-content-between" style="margin-top: 18px">
+                <h3 id="dateSelected">Selasa, 1 November</h3>
+                <img src="{{ url('img/icon/settingSo.png') }}" alt="" style="height: 24px; margin-top: 3px;" onclick="goToSettingBatasSo();">
+            </div>
+            {{-- <h3 style="margin-top: 20px">Laporan SO</h3> --}}
             <div id="groupAddItem"></div>
             <button type="button" class="btn" onclick="searchAllEdit()">Simpan</button>
             <div style="content: ''; height: 125px"></div>
@@ -338,12 +371,14 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
 <script>
     var dataId = [];
+    var dataBatasSo = [];
     var idSo = 0;
     var dateSelected = "{{ $dateSelect }}";
     var tempDataEdit = []; //idIndexOnElementInput, idSoFill, qty
@@ -368,19 +403,23 @@
         console.log("{{ $dateSelect }}");
     });
 
-    function goToSoHarian(){
+    function goToSettingBatasSo(){
+        window.location.href = "{{ url('user/setting/soHarian') }}" + '/' + dateSelected;
+    }
+
+    function goToSoHarian() {
         window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
     }
 
-    function goToSalesHarian(){
+    function goToSalesHarian() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
     }
 
-    function goToWasteHarian(){
+    function goToWasteHarian() {
         window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
     }
 
-    function goToPattyCashHarian(){
+    function goToPattyCashHarian() {
         window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
     }
 
@@ -407,9 +446,60 @@
                         tempDataEdit.push([searchIndexSoItem(obj.itemfso[i].idItem)[1], obj.itemfso[i]
                             .idSoFill, obj.itemfso[i].qty
                         ]);
+                        changeValSO(i);
+                        
                     }
                 }
                 console.log(tempDataEdit);
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function subtractDays(numOfDays, date = new Date()) {
+        const dateCopy = new Date(date.getTime());
+
+        dateCopy.setDate(dateCopy.getDate() - numOfDays);
+
+        return dateCopy;
+    }
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    function getDataFillSoKemarin() {
+        const date = new Date("{{ $dateSelect }}");
+        const result = subtractDays(1, date);
+        $.ajax({
+            url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
+                formatDate(result),
+            type: 'get',
+            success: function(response) {
+                var elementInput = document.getElementsByName("addname");
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                // stokKemarinVal
+                for (var i = 0; i < obj.itemfso.length; i++) {
+                    if (searchIndexSoItem(obj.itemfso[i].idItem)[0] == true) {
+                        var indexIdItem = searchIndexSoItem(obj.itemfso[i].idItem)[1];
+                        document.getElementsByName('stokKemarinVal')[indexIdItem].innerHTML = obj.itemfso[i]
+                            .qty;
+                        changeValSO(i);
+                    }
+                }
             },
             error: function(req, err) {
                 console.log(err);
@@ -430,8 +520,7 @@
                     data: {
                         quantityRevisi: getValueElement
                     },
-                    success: function(response) {
-                    },
+                    success: function(response) {},
                     error: function(req, err) {
                         console.log(err);
                         // return 0
@@ -517,31 +606,91 @@
             success: function(response) {
                 var order_data = '';
                 var obj = JSON.parse(JSON.stringify(response));
+                var urlWarning = "{{ url('img/icon/warningSoHarian.png') }}";
                 console.log(obj);
                 for (var i = 0; i < obj.DataItem.length; i++) {
                     var urlImage = '{{ url('img/soImage') }}' + '/' + obj.DataItem[i]['icon'];
                     dataId.push(obj.DataItem[i]['id']);
                     order_data += '<div class="input-so">';
                     order_data += '<label>' + obj.DataItem[i]['Item'] + '</label>';
+                    order_data += '<div class="d-flex justify-content-start">';
                     order_data +=
                         '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text imgSo">';
                     order_data += '<img src="' + urlImage + '"' +
                         'alt="" style="height: 22px;margin-left:-5px"></span>';
                     order_data +=
-                        '</div><input type="number" class="form-control inputSo" name="addname" placeholder="0">';
+                        '</div><input type="number" class="form-control inputSo" name="addname" placeholder="0" onchange="changeValSO(' +
+                        i + ')">';
                     order_data +=
                         '<div class="input-group-append"><span class="input-group-text unitSo">';
                     order_data += obj.DataItem[i]['satuan'];
-                    order_data += '</span></div></div></div>'
+                    order_data += '</span></div></div>';
+
+                    order_data += '<div class="boxWrapStock">';
+                    order_data += '<div class="labelBoxWrapStock">Stok kemarin</div>';
+                    order_data += '<div class="valueBoxWrapStock"><span name="stokKemarinVal">0</span> ' +
+                        obj.DataItem[i]['satuan'] + '</div>';
+                    order_data += '</div>';
+
+
+                    order_data += '</div></div>';
+                    order_data += '<img name="imgWarningSo" src="' + urlWarning +
+                        '" alt="" style="height: 15px; visibility: hidden;">' //menambahkan melebih batas soHarian
                 }
                 // document.getElementById('dateAdd').
+                showAllBatasSo("{{ session('idOutlet') }}");
                 $('#groupAddItem').empty().append(order_data);
                 getDataFillSo();
+                getDataFillSoKemarin();
             },
             error: function(req, err) {
                 console.log(err);
             }
         });
+    }
+
+    function showAllBatasSo(id) {
+        dataBatasSo.length = 0;
+        $.ajax({
+            url: "{{ url('soHarian/setting/soBatas/show') }}" + '/' + id,
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                console.log(dataId);
+                // objFillSo = obj;
+                for (var i = 0; i < dataId.length; i++) {
+                    var j = 0;
+                    var datafound = false;
+                    for (j = 0; j < obj.dataSo.length; j++) {
+                        if (dataId[i] == obj.dataSo[j].idItem) {
+                            datafound = true;
+                            break;
+                        }
+                    }
+                    if (datafound) {
+                        dataBatasSo.push(obj.dataSo[j].quantity);
+                    } else {
+                        dataBatasSo.push(0);
+                    }
+                }
+                console.log(dataBatasSo);
+            },
+            error: function(req, err) {
+                // console.log(err);
+            }
+        });
+    }
+
+    function changeValSO(indexSo) {
+        var valInput = document.getElementsByName('addname')[indexSo].value;
+        var valBatasSo = dataBatasSo[indexSo];
+        if (valInput < valBatasSo) {
+            // console.log("Melebihi batas so harian");
+            document.getElementsByName('imgWarningSo')[indexSo].style.visibility = "visible";
+        } else {
+            document.getElementsByName('imgWarningSo')[indexSo].style.visibility = "hidden";
+        }
     }
 </script>
 

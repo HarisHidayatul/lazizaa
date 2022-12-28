@@ -165,7 +165,24 @@ return new class extends Migration
             $table->timestamps();
             // $table->softDeletes();
         });
-        
+
+        Schema::create('soHarianBatas',function(Blueprint $table){
+            $table->id();
+
+            $table->unsignedBigInteger('idItemSo');
+            $table->foreign('idItemSo')->references('id')->on('listItemSO');
+
+            $table->unsignedBigInteger('idPengisi');
+            $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
+
+            $table->unsignedBigInteger('idOutlet');
+            $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
+
+            $table->integer('quantity');
+
+            $table->timestamps();
+            // $table->softDeletes();
+        });
     }
 
     /**
@@ -176,12 +193,13 @@ return new class extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('soHarianBatas');
         Schema::dropIfExists('outlet_type');
         Schema::dropIfExists('type_item');
         Schema::dropIfExists('typeOutlet');
         Schema::dropIfExists('soFill');
         Schema::dropIfExists('fsoharian');
-        Schema::dropIfExists('listItemSO');        
+        Schema::dropIfExists('listItemSO');
         
         Schema::dropIfExists('reqItemSales');
         Schema::dropIfExists('outletListSales');
