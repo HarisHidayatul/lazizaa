@@ -83,6 +83,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idTanggal');
             $table->foreign('idTanggal')->references('id')->on('tanggalAll');
 
+            $table->unsignedBigInteger('idSesi');
+            $table->foreign('idSesi')->references('id')->on('listSesi');
+            
             $table->timestamps();
             $table->softDeletes();
         });

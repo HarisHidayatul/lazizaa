@@ -30,6 +30,19 @@ class soHarian extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
+        DB::table('listSesi')->insert(
+            array(
+                [
+                    'sesi' => 'Sesi 1'
+                ],
+                [
+                    'sesi' => 'Sesi 2'
+                ],
+                [
+                    'sesi' => 'Sesi 3'
+                ]
+            )
+        );
         DB::table('revisi')->insert(
             array(
                 [

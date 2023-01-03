@@ -28,6 +28,7 @@ class salesharian extends Model
     protected $fillable = [
         'idOutlet',
         'idTanggal',
+        'idSesi',
         'created_at',
         'updated_at',
         'deleted_at'

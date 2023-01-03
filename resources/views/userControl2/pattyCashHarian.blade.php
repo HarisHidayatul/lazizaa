@@ -14,7 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.6.0/autoNumeric.min.js"></script>
 
-    <title>Patty Cash Harian</title>
+    <title>Pembelian Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -470,14 +470,15 @@
 
             cursor: pointer;
         }
-
         .menuDetail {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 700;
             font-size: 14px;
             line-height: 140%;
-            margin-left: -9px;
+            margin-left: -5px;
+            text-align: left;
+            /* margin-left: -9px; */
         }
 
         .jenisDetail {
@@ -495,14 +496,25 @@
             color: #9C9C9C;
         }
 
-        .satuanDetail {
+        .sesiDetail {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
             font-size: 12px;
             line-height: 15px;
-            color: #008000;
-            margin-top: 8px;
+            color: #B20731;
+            margin-top: 3px;
+            text-align: end;
+        }
+
+        .valDetail {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 10px;
+            line-height: 12px;
+            color: #9C9C9C;
+            margin-top: 3px;
             text-align: end;
         }
 
@@ -604,6 +616,37 @@
              !important
         }
 
+        .wrapSesi {
+            margin-top: 50px;
+            /* margin-bottom: 10px; */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+        }
+
+        .wrapSesi div {
+            cursor: pointer;
+            width: 120px;
+            text-align: center;
+            padding-bottom: 5px;
+        }
+
+        .sesiActive {
+            color: #000000;
+            border-bottom: 3px solid #B20731;
+        }
+
+        .sesiNonActive {
+            color: #BEBEBE;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .sesiNonActive:hover {
+            border-bottom: 1px solid #B20731;
+        }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -656,7 +699,37 @@
             text-align: center;
 
             color: #FFFFFF;
+        }
+        
+        .wrapTransaksi {
+            margin-top: 40px;
+            display: flex;
+            width: 100%;
+            overflow: auto;
+        }
 
+        .wrapTransaksi div {
+            /* overflow: hidden; */
+            width: 100px;
+            height: 31px;
+            white-space: nowrap;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: center;
+            padding-top: 6px;
+            color: #B20731;
+            background: #FFEAEF;
+            border-radius: 100px;
+            margin-right: 10px;
+        }
+
+        .wrapTransaksi .active {
+            background: #B20731;
+            font-weight: 600;
+            color: #FFFFFF;
         }
     </style>
 </head>
@@ -688,6 +761,13 @@
     <div class="d-flex justify-content-center containerBottom">
         <div class="container" style="margin-left: 5px;margin-right: 10px">
             <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
+
+            <div class="d-flex justify-content-center wrapSesi">
+                <div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>
+                <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
+                <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
+            </div>
+
             <div style="content: '';height: 15px"></div>
             <div class="d-flex justify-content-center">
                 <div id="radioButtonUser"></div>
@@ -723,11 +803,21 @@
             <div style="content: ''; height: 50px"></div>
             <div class="row">
                 <div class="col-6 requestItem" onclick="goToRequestItem();">Requset Item?</div>
-                <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
+                <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button>
+                </div>
             </div>
             <div style="content: ''; height: 25px"></div>
             <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
             {{-- <div style="content: ''; height: 25px"></div> --}}
+
+            <div class="d-flex justify-content-center wrapTransaksi">
+                <div name="sortTransaksi" onclick="listBySesi(0);" class="active" style="flex: 0 0 68px;">Semua
+                </div>
+                <div name="sortTransaksi" onclick="listBySesi(1);" style="flex: 0 0 68px;">Sesi 1</div>
+                <div name="sortTransaksi" onclick="listBySesi(2);" style="flex: 0 0 68px;">Sesi 2</div>
+                <div name="sortTransaksi" onclick="listBySesi(3);" style="flex: 0 0 68px;">Sesi 3</div>
+            </div>
+
             <div id="dataDetail"></div>
             <div style="content: ''; height: 50px"></div>
         </div>
@@ -793,6 +883,10 @@
     var objItemEdit = [];
     var indexEdit = null;
 
+    var selectedSesi = 1;
+
+    var objItem = '';
+
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
@@ -810,6 +904,33 @@
             dropdownItem = true;
             document.getElementById('selectItem').style.visibility = "visible";
         }
+    }
+
+    function changeSesi(index) {
+        var sesiElement = document.getElementsByName('sesi');
+        selectedSesi = index + 1;
+        for (var i = 0; i < sesiElement.length; i++) {
+            if (i == index) {
+                sesiElement[i].classList.add("sesiActive");
+                sesiElement[i].classList.remove("sesiNonActive");
+            } else {
+                sesiElement[i].classList.add("sesiNonActive");
+                sesiElement[i].classList.remove("sesiActive");
+            }
+        }
+        // getAllData();
+    }
+    function listBySesi(index) {
+        // console.log(.length);
+        var element = document.getElementsByName("sortTransaksi");
+        for (var i = 0; i < element.length; i++) {
+            if (i == index) {
+                element[i].classList.add("active");
+                continue;
+            }
+            element[i].classList.remove("active");
+        }
+        showSesi(index);
     }
 
     function goToSoHarian() {
@@ -920,51 +1041,67 @@
                 console.log(response);
                 var dataDetail = '';
                 var obj = JSON.parse(JSON.stringify(response));
-                var urlImage = '{{ url('img/dashboard/laporanPattyCash.png') }}';
-                var indexLoop = 0;
-                objItemEdit.length = 0;
-                console.log(obj);
-                for (var i = 0; i < obj.itemPattyCash.length; i++) {
-                    for (var j = 0; j < obj.itemPattyCash[i].Item.length; j++) {
-                        dataDetail += '<div class="row rowDetail" onclick="editItem(' +
-                            indexLoop +
-                            ');"><div class="col-2"><img src="';
-                        dataDetail += urlImage;
-                        dataDetail += '" alt="waste"style="height: 40px;"></div>';
-                        dataDetail += '<div class="col-5"><div class="row menuDetail">';
-                        dataDetail += obj.itemPattyCash[i].Item[j].Item;
-                        if ((obj.itemPattyCash[i].Item[j].idQtyRev == 2) || (obj.itemPattyCash[i].Item[j]
-                                .idTotalRev == 2)) {
-                            var urlImageRev = "{{ url('img/icon/tertunda.png') }}";
-                            dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
-                        } else if ((obj.itemPattyCash[i].Item[j].idQtyRev == 3) || (obj.itemPattyCash[i]
-                                .Item[j].idTotalRev == 3)) {
-                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
-                            dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
-                        }
-                        dataDetail += '</div><div class="row jenisDetail">';
-                        dataDetail += obj.itemPattyCash[i].Item[j].qty;
-                        dataDetail += ' ';
-                        dataDetail += obj.itemPattyCash[i].Item[j].Satuan;
-                        dataDetail += '</div></div><div class="col-5 satuanDetail">';
-                        dataDetail += 'Rp ';
-                        dataDetail += ' ';
-                        dataDetail += obj.itemPattyCash[i].Item[j].total.toLocaleString().replace(',', '.');
-                        dataDetail += '</div></div>';
-                        objItemEdit.push(obj.itemPattyCash[i].Item[j]);
-                        indexLoop++;
-                    }
-                }
-                // console.log(dataDetail);
-                document.getElementById('dataDetail').innerHTML = dataDetail;
-                // document.getElementById('jumlahInput').value = '';
+                objItem = obj;
+                listBySesi(0);
+                document.getElementById('jumlahInput').value = '';
             },
             error: function(req, err) {
                 console.log(err);
             }
         });
+    }
+
+    function showSesi(indexSesi) {
+        var urlImage = '{{ url('img/dashboard/laporanPattyCash.png') }}';
+        var indexLoop = 0;
+        objItemEdit.length = 0;
+        var dataDetail = '';
+
+        for (var i = 0; i < objItem.itemPattyCash.length; i++) {
+            for (var j = 0; j < objItem.itemPattyCash[i].Item.length; j++) {
+                var dataDetail2 = '';
+                dataDetail2 += '<div class="row rowDetail" onclick="editItem(' +
+                    indexLoop +
+                    ');"><div class="col-2"><img src="';
+                dataDetail2 += urlImage;
+                dataDetail2 += '" alt="waste"style="height: 40px"></div>';
+                dataDetail2 += '<div class="col-5"><div class="row menuDetail">';
+                // dataDetail2 += '<div class="col-9 menuDetail">';
+                dataDetail2 += objItem.itemPattyCash[i].Item[j].Item;
+                if (objItem.itemPattyCash[i].Item[j].idQtyRev == 2) {
+                    var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                    dataDetail2 += '<img src="' + urlImageRev +
+                        '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
+                } else if (objItem.itemPattyCash[i].Item[j].idTotalRev == 2) {
+                    var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                    dataDetail2 += '<img src="' + urlImageRev +
+                        '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
+                }
+                dataDetail2 += '</div><div class="row jenisDetail">';
+                dataDetail2 += objItem.itemPattyCash[i].Item[j].qty;
+                dataDetail2 += ' ';
+                dataDetail2 += objItem.itemPattyCash[i].Item[j].Satuan;
+                dataDetail2 += '</div></div><div class="col-5">';
+
+                dataDetail2 += '<div class="sesiDetail">';
+                // dataDetail2 += 'ASDSA';
+                dataDetail2 += 'Sesi ';
+                dataDetail2 += objItem.itemPattyCash[i].Item[j].idSesi;
+                dataDetail2 += '</div>';
+
+                dataDetail2 += '<div class="valDetail">Rp ';
+                dataDetail2 += objItem.itemPattyCash[i].Item[j].total.toLocaleString();
+                dataDetail2 += '</div>';
+                dataDetail2 += '</div></div>';
+
+                if ((indexSesi == objItem.itemPattyCash[i].Item[j].idSesi)||(indexSesi == 0)) {
+                    dataDetail += dataDetail2;
+                    objItemEdit.push(objItem.itemPattyCash[i].Item[j]);
+                    indexLoop++;
+                }
+            }
+        }
+        document.getElementById('dataDetail').innerHTML = dataDetail;
     }
 
     function editItem(selectIndex) {
@@ -1037,7 +1174,8 @@
             data: {
                 // tanggal: document.getElementById('dateAdd').value,
                 tanggal: dateSelected,
-                idOutlet: "{{ session('idOutlet') }}"
+                idOutlet: "{{ session('idOutlet') }}",
+                idSesi: selectedSesi
             },
             success: function(response) {
                 // console.log(response);

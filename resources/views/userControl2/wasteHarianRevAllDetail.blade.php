@@ -744,7 +744,7 @@
     }
 
     function goToEdit() {
-        window.location.href = "{{ url('user/salesHarian') }}" + "/" + dateSelected;
+        window.location.href = "{{ url('user/wasteHarian') }}" + "/" + dateSelected;
     }
 
     function showAllData() {

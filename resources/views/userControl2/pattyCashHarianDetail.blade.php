@@ -601,13 +601,19 @@
     <div class="containerBottom">
         <div style="height: 20px;content: ''"></div>
         <div style="margin-left: 20px; margin-right: 20px;">
-            <div class="d-flex justify-content-between boxPengisi">
-                <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
-                <div>
-                    <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
+            <div class="boxPengisi">
+                <div class="d-flex justify-content-between">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
+                    <div>
+                        <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Sesi</h5>
+                    <h5 style="margin-top: 5px; margin-right: 5px; color: #B20731; font-weight: 600;">{{ $idSesi }}</h5>
                 </div>
             </div>
             <div style="height: 15px;content: ''"></div>
@@ -681,8 +687,8 @@
 
     function showAllData() {
         $.ajax({
-            url: "{{ url('/') }}" + '/' + "{{ 'pattyCash/user/showTable/' }}" +
-                "{{ session('idOutlet') }}" + '/' + dateSelected,
+            url: "{{ url('/') }}" + '/' + "{{ 'pattyCash/user/showAllData/' }}" +
+                "{{ session('idOutlet') }}" + '/' + dateSelected + '/' + "{{ $idSesi }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));

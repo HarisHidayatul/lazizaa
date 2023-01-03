@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Detail SO Harian</title>
+    <title>Detail Waste Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -599,13 +599,19 @@
     <div class="containerBottom">
         <div style="height: 20px;content: ''"></div>
         <div style="margin-left: 20px; margin-right: 20px;">
-            <div class="d-flex justify-content-between boxPengisi">
-                <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
-                <div>
-                    <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
-                    <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
+            <div class="boxPengisi">
+                <div class="d-flex justify-content-between">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
+                    <div>
+                        <h6 class="namaPengisi1" id="namaPengisi1" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi2" id="namaPengisi2" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi3" id="namaPengisi3" onclick="showPengisi();"></h6>
+                        <h6 class="namaPengisi4" id="namaPengisi4" onclick="showPengisi();"></h6>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Sesi</h5>
+                    <h5 style="margin-top: 5px; margin-right: 5px; color: #B20731; font-weight: 600;">{{ $idSesi }}</h5>
                 </div>
             </div>
             <div style="height: 15px;content: ''"></div>
@@ -679,7 +685,7 @@
     function showAllData() {
         $.ajax({
             url: "{{ url('waste/user/showAllData/') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
-                dateSelected,
+                dateSelected + '/' + "{{ $idSesi }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));

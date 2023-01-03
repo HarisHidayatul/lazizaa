@@ -93,7 +93,7 @@ class wasteController extends Controller
                 'idOutlet' => $request->idOutlet,
                 'idBrand' => $idBrand,
                 'idJenisBahan' => $request->idJenisBahan,
-                'idTanggal'=> $request->idTanggal,
+                'idTanggal' => $request->idTanggal,
                 'idPengisi' => $request->idPengisi
             ];
             reqItemWaste::create($dataArray);
@@ -159,6 +159,7 @@ class wasteController extends Controller
         $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
         $dataWaste = wasteHarian::where('idOutlet', '=', $id)->where('idTanggal', '=', $tanggalAll['id'])->get();
         // @dd($dataWaste[0]->listItemWastes[0]->pivot);
+        // @dd($dataWaste);
         $waste = [];
         for ($i = 0; $i < $dataWaste->count(); $i++) {
             $WasteArray = [];
@@ -174,6 +175,7 @@ class wasteController extends Controller
                 }
                 array_push($WasteArray, (object)[
                     'idWasteFill' => $dataWaste[$i]->listItemWastes[$j]->pivot->id,
+                    'idSesi' => $dataWaste[$i]->idSesi,
                     'Item' => $dataWaste[$i]->listItemWastes[$j]->Item,
                     'idListwaste' => $dataWaste[$i]->listItemWastes[$j]->id,
                     'Satuan' => $satuan->Satuan,
@@ -194,14 +196,17 @@ class wasteController extends Controller
         ]);
     }
 
-    public function showAllData($id, $date)
+    public function showAllData($id, $date, $idSesi)
     {
         $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
         // @dd($tanggalAll);
         $dataWaste = null;
         $allDataArray = [];
         if ($tanggalAll != null) {
-            $dataWaste = wasteHarian::where('idOutlet', '=', $id)->where('idTanggal', '=', $tanggalAll['id'])->first();
+            $dataWaste = wasteHarian::where('idOutlet', '=', $id)
+                ->where('idTanggal', '=', $tanggalAll['id'])
+                ->where('idSesi', '=', $idSesi)
+                ->first();
             // @dd($dataWaste);
             if ($dataWaste != null) {
                 //Collect based on typeWaste
@@ -216,7 +221,7 @@ class wasteController extends Controller
                             $idRevQty = $dataWaste->listItemWastes[$j]->pivot->idRevQuantity;
                             $qty = $dataWaste->listItemWastes[$j]->pivot->quantity;
                             if ($idRevQty == 2) {
-                                $qty = $dataWaste->listItemWastes[$j]->pivot->quantity;
+                                $qty = $dataWaste->listItemWastes[$j]->pivot->quantityRevisi;
                             }
                             array_push($dataOnType, (object)[
                                 'idWasteFill' => $dataWaste->listItemWastes[$j]->pivot->id,
@@ -241,6 +246,90 @@ class wasteController extends Controller
         return response()->json($allDataArray);
     }
 
+    public function showAllDataSesi($idOutlet, $date)
+    {
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
+        // @dd($tanggalAll);
+        // $dataWaste = null;
+        $allDataArray = [];
+        $tempDataArray = [];
+        $dataFound = false;
+        $idSesi = 0;
+        if ($tanggalAll != null) {
+            $allWaste = wasteHarian::orderBy('idSesi', 'DESC')
+                ->where('idOutlet', '=', $idOutlet)
+                ->where('idTanggal', '=', $tanggalAll['id'])
+                ->get();
+            // @dd($dataWaste);
+            $tempIdSesi = null;
+            // echo($allWaste->count());
+            for ($i = 0; $i < $allWaste->count(); $i++) {
+                $dataWaste = $allWaste[$i];
+                // @dd($dataWaste);
+                $idSesi = $dataWaste->idSesi;
+                // echo ($idSesi);
+                $dataOnSesi = [];
+
+                //Collect based on typeWaste
+                $allTypeWaste = jenisBahan::all();
+
+                for ($j = 0; $j < $allTypeWaste->count(); $j++) {
+                    $idType = $allTypeWaste[$j]->id;
+                    $dataOnType = [];
+                    for ($k = 0; $k < $dataWaste->listItemWastes->count(); $k++) {
+                        if ($dataWaste->listItemWastes[$k]->idJenisBahan == $idType) {
+                            $userPengisi = dUser::find($dataWaste->listItemWastes[$k]->pivot->idPengisi);
+                            $idRevQty = $dataWaste->listItemWastes[$k]->pivot->idRevQuantity;
+                            $qty = $dataWaste->listItemWastes[$k]->pivot->quantity;
+                            if ($idRevQty == 2) {
+                                $qty = $dataWaste->listItemWastes[$k]->pivot->quantityRevisi;
+                            }
+                            array_push($dataOnType, (object)[
+                                'idWasteFill' => $dataWaste->listItemWastes[$k]->pivot->id,
+                                'item' => $dataWaste->listItemWastes[$k]->Item,
+                                'satuan' => $dataWaste->listItemWastes[$k]->satuans->Satuan,
+                                'idRevQty' => $idRevQty,
+                                'qty' => $qty,
+                                'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            ]);
+                        }
+                    }
+                    if ($dataOnType != null) {
+                        array_push($dataOnSesi, (object)[
+                            'type' => $allTypeWaste[$j]->jenis,
+                            'idTtype' => $allTypeWaste[$j]->id,
+                            'waste' => $dataOnType
+                        ]);
+                    }
+                }
+
+                if ($tempIdSesi != $idSesi) {
+                    if ($i == 0) {
+                        array_push($tempDataArray, $dataOnSesi);
+                    } else {
+                        array_push($allDataArray, (object)[
+                            'idSesi' => $tempIdSesi,
+                            'dataWaste' => $tempDataArray
+                        ]);
+                        $tempDataArray = [];
+                        array_push($tempDataArray, $dataOnSesi);
+                    }
+                    $tempIdSesi = $idSesi;
+                } else {
+                    array_push($tempDataArray, $dataOnSesi);
+                }
+            }
+        }
+
+        array_push($allDataArray, (object)[
+            'idSesi' => $tempIdSesi,
+            'dataWaste' => $tempDataArray
+        ]);
+
+        return response()->json($allDataArray);
+    }
+
+
     public function showAndCreateID(Request $request)
     {
         $tanggalAll = tanggalAll::where('Tanggal', '=', $request->tanggal)->first();
@@ -249,28 +338,48 @@ class wasteController extends Controller
             $tanggalID = tanggalAll::create([
                 'Tanggal' => $request->tanggal,
             ])->id;
+            // echo 'a';
         } else {
             $tanggalID = $tanggalAll['id'];
+            // echo 'b';
+            // echo $tanggalID;
         }
         $idOutlet = $request->idOutlet;
+        $idSesi = $request->idSesi;
         $dataDate = wasteHarian::where('idTanggal', '=', $tanggalID)->get();
         $dataa = null;
-        if ($dataDate == null) {
+        if ($dataDate->count() == null) {
             $dataArray = [
                 'idTanggal' => $tanggalID,
                 'idOutlet' => $idOutlet,
+                'idSesi' => $idSesi
             ];
             $dataa = wasteHarian::create($dataArray)->id;
+            // echo 'c';
         } else {
-            $dataOutlet = $dataDate->where('idOutlet', '=', $idOutlet)->first();
-            if ($dataOutlet == null) {
+            $dataOutlet = $dataDate->where('idOutlet', '=', $idOutlet);
+            if ($dataOutlet->count() == null) {
                 $dataArray = [
                     'idTanggal' => $tanggalID,
-                    'idOutlet' => $idOutlet
+                    'idOutlet' => $idOutlet,
+                    'idSesi' => $idSesi
                 ];
                 $dataa = wasteHarian::create($dataArray)->id;
+                // echo 'd';
             } else {
-                $dataa = $dataOutlet->id;
+                $dataSesi = $dataOutlet->where('idSesi', '=', $idSesi)->first();
+                if ($dataSesi == null) {
+                    $dataArray = [
+                        'idTanggal' => $tanggalID,
+                        'idOutlet' => $idOutlet,
+                        'idSesi' => $idSesi
+                    ];
+                    $dataa = wasteHarian::create($dataArray)->id;
+                    // echo 'e';
+                } else {
+                    $dataa = $dataSesi->id;
+                    // echo 'f';
+                }
             }
         }
         echo $dataa;
@@ -299,7 +408,7 @@ class wasteController extends Controller
         ]);
     }
 
-    
+
     public function showReqOutlet($id)
     {
         //menampilkan revisi berdasarkan idOutlet => $id
@@ -666,7 +775,7 @@ class wasteController extends Controller
         $allDataArray = [];
         $allTypeWaste = jenisBahan::all();
         $qtyWaste = $wasteFill->quantity;
-        if($wasteFill->idRevQuantity == 2){
+        if ($wasteFill->idRevQuantity == 2) {
             $qtyWaste = $wasteFill->quantityRevisi;
         }
         for ($i = 0; $i < $allTypeWaste->count(); $i++) {

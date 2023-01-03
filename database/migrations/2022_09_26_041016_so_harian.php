@@ -16,14 +16,14 @@ return new class extends Migration
     {
         //
         //one to one relationship database
-        Schema::create('revisi',function(Blueprint $table){
+        Schema::create('revisi', function (Blueprint $table) {
             $table->id();
             $table->string('status')->unique()->nullable(false);
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('tanggalAll',function(Blueprint $table){
+        Schema::create('tanggalAll', function (Blueprint $table) {
             $table->id();
             $table->date('Tanggal'); //format yyyy-mm-dd
 
@@ -31,9 +31,16 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('satuan',function(Blueprint $table){
+        Schema::create('satuan', function (Blueprint $table) {
             $table->id();
             $table->string('Satuan')->unique()->nullable(false);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('listSesi', function (Blueprint $table){
+            $table->id();
+            $table->string('sesi');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -46,7 +53,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('dBrand',function(Blueprint $table){
+        Schema::create('dBrand', function (Blueprint $table) {
             $table->id();
             $table->string('Nama Brand')->nullable(false);
             $table->string('Keterangan');
@@ -59,20 +66,20 @@ return new class extends Migration
             $table->id();
             $table->string('Nama Store')->nullable(false);
             $table->string('Alamat Lengkap')->nullable(false);
-            
+
             $table->unsignedBigInteger('idBrand');
             $table->foreign('idBrand')->references('id')->on('dBrand');
-            
+
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('typeOutlet',function(Blueprint $table){
+        Schema::create('typeOutlet', function (Blueprint $table) {
             $table->id();
             $table->string('Nama Type');
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('outlet_type',function(Blueprint $table){
+        Schema::create('outlet_type', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
@@ -82,7 +89,7 @@ return new class extends Migration
             // $table->softDeletes();
         });
 
-        
+
         Schema::create('duser', function (Blueprint $table) {
             $table->id();
 
@@ -96,7 +103,7 @@ return new class extends Migration
             $table->string('Password')->nullable(false);
             $table->string('Nama Lengkap')->nullable(false);
             $table->string('Email')->unique()->nullable(false);
-            
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -105,7 +112,7 @@ return new class extends Migration
             $table->id();
             $table->string('Item');
             $table->string('icon');
-            
+
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
 
@@ -117,14 +124,14 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('idBahanBaku');
-            $table->foreign('idBahanBaku')->references('id')->on('typeOutlet'); 
-            
+            $table->foreign('idBahanBaku')->references('id')->on('typeOutlet');
+
             $table->unsignedBigInteger('idItem');
-            $table->foreign('idItem')->references('id')->on('listItemSO'); 
+            $table->foreign('idItem')->references('id')->on('listItemSO');
 
             $table->timestamps();
             // $table->softDeletes();
-        });//ini yang benar untuk type itemm, yang atas salah
+        }); //ini yang benar untuk type itemm, yang atas salah
 
         Schema::create('fsoharian', function (Blueprint $table) {
             $table->id();
@@ -143,7 +150,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('soFill',function(Blueprint $table){
+        Schema::create('soFill', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idSo');
@@ -166,7 +173,7 @@ return new class extends Migration
             // $table->softDeletes();
         });
 
-        Schema::create('soHarianBatas',function(Blueprint $table){
+        Schema::create('soHarianBatas', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idItemSo');
@@ -200,7 +207,7 @@ return new class extends Migration
         Schema::dropIfExists('soFill');
         Schema::dropIfExists('fsoharian');
         Schema::dropIfExists('listItemSO');
-        
+
         Schema::dropIfExists('reqItemSales');
         Schema::dropIfExists('outletListSales');
         Schema::dropIfExists('salesFill');
@@ -220,7 +227,7 @@ return new class extends Migration
         Schema::dropIfExists('wasteHarian');
         Schema::dropIfExists('listItemWaste');
         Schema::dropIfExists('jenisBahan');
-        
+
         Schema::dropIfExists('penerimaReimburse');
         Schema::dropIfExists('reimburse');
 
@@ -229,7 +236,7 @@ return new class extends Migration
         Schema::dropIfExists('penerimaList');
         Schema::dropIfExists('listBank');
         Schema::dropIfExists('jenisBank');
-        
+
         Schema::dropIfExists('salesharian');
         Schema::dropIfExists('duser');
         Schema::dropIfExists('drole');
@@ -238,5 +245,6 @@ return new class extends Migration
         Schema::dropIfExists('revisi');
         Schema::dropIfExists('satuan');
         Schema::dropIfExists('tanggalAll');
+        Schema::dropIfExists('listSesi');
     }
 };

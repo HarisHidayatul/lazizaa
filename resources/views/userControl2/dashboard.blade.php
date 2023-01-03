@@ -1052,7 +1052,7 @@
             window.location.href = "{{ url('user/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+            window.location.href = "{{ url('user/detail/all/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth +
                 1) + '-' + dateSelect;
         }
     }
@@ -1062,7 +1062,7 @@
             window.location.href = "{{ url('user/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+            window.location.href = "{{ url('user/detail/all/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth +
                 1) + '-' + dateSelect;
         }
     }
@@ -1072,7 +1072,7 @@
             window.location.href = "{{ url('user/pattyCashHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/pattyCashHarian') }}" + "/" + currentYear + '-' + (
+            window.location.href = "{{ url('user/detail/all/pattyCashHarian') }}" + "/" + currentYear + '-' + (
                 currentMonth +
                 1) + '-' + dateSelect;
         }

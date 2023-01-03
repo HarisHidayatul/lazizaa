@@ -204,8 +204,8 @@
             width: 15px;
             height: 15px;
             border-radius: 15px;
-            top: 9px;
-            left: -1px;
+            top: 8px;
+            left: -1.5px;
             position: absolute;
             /* display: inline-block; */
             visibility: visible;
@@ -450,14 +450,25 @@
             color: #9C9C9C;
         }
 
-        .satuanDetail {
+        .sesiDetail {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
             font-size: 12px;
             line-height: 15px;
             color: #B20731;
-            margin-top: 8px;
+            margin-top: 3px;
+            text-align: end;
+        }
+
+        .valDetail {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 10px;
+            line-height: 12px;
+            color: #9C9C9C;
+            margin-top: 3px;
             text-align: end;
         }
 
@@ -553,15 +564,51 @@
 
             color: #B20731;
         }
+
         input[type='number']:focus {
             border: 1.0663px solid #B20731;
             box-shadow: 0px 0px 0.394561px rgba(12, 26, 75, 0.24), 0px 1.18368px 3.15649px -0.394561px rgba(50, 50, 71, 0.05);
             border-radius: 5.68696px;
             border-right: none;
         }
-        .input-group-focus{
-            border-color: #B20731;!important
+
+        .input-group-focus {
+            border-color: #B20731;
+             !important
         }
+
+
+        .wrapSesi {
+            margin-top: 50px;
+            /* margin-bottom: 10px; */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+        }
+
+        .wrapSesi div {
+            cursor: pointer;
+            width: 120px;
+            text-align: center;
+            padding-bottom: 5px;
+        }
+
+        .sesiActive {
+            color: #000000;
+            border-bottom: 3px solid #B20731;
+        }
+
+        .sesiNonActive {
+            color: #BEBEBE;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .sesiNonActive:hover {
+            border-bottom: 1px solid #B20731;
+        }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -616,6 +663,37 @@
             color: #FFFFFF;
 
         }
+
+        .wrapTransaksi {
+            margin-top: 40px;
+            display: flex;
+            width: 100%;
+            overflow: auto;
+        }
+
+        .wrapTransaksi div {
+            /* overflow: hidden; */
+            width: 100px;
+            height: 31px;
+            white-space: nowrap;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: center;
+            padding-top: 6px;
+            color: #B20731;
+            background: #FFEAEF;
+            border-radius: 100px;
+            margin-right: 10px;
+        }
+
+        .wrapTransaksi .active {
+            background: #B20731;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 
@@ -646,6 +724,11 @@
     <div class="d-flex justify-content-center containerBottom">
         <div class="container" style="margin-left: 5px;margin-right: 10px">
             <h3 id="dateSelected" style="margin-top: 18px">Selasa, 1 November</h3>
+            <div class="d-flex justify-content-center wrapSesi">
+                <div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>
+                <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
+                <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
+            </div>
             <div style="content: '';height: 15px"></div>
             <div class="d-flex justify-content-center">
                 <div id="radioButtonUser"></div>
@@ -678,6 +761,15 @@
             <div style="content: ''; height: 25px"></div>
             <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
             {{-- <div style="content: ''; height: 25px"></div> --}}
+
+            <div class="d-flex justify-content-center wrapTransaksi">
+                <div name="sortTransaksi" onclick="listBySesi(0);" class="active" style="flex: 0 0 68px;">Semua
+                </div>
+                <div name="sortTransaksi" onclick="listBySesi(1);" style="flex: 0 0 68px;">Sesi 1</div>
+                <div name="sortTransaksi" onclick="listBySesi(2);" style="flex: 0 0 68px;">Sesi 2</div>
+                <div name="sortTransaksi" onclick="listBySesi(3);" style="flex: 0 0 68px;">Sesi 3</div>
+            </div>
+
             <div id="dataDetail"></div>
             <div style="content: ''; height: 50px"></div>
         </div>
@@ -695,7 +787,8 @@
                 <div style="content: '';height:5px"></div>
                 <div class="d-flex justify-content-center subModalTittle">Gunakan fitur edit / revisi</div>
                 <div style="content: '';height:10px"></div>
-                <div class="d-flex justify-content-center subNameModal">Klik nama item yang telah di input &#10140; ubah
+                <div class="d-flex justify-content-center subNameModal">Klik nama item yang telah di input &#10140;
+                    ubah
                 </div>
                 <div class="d-flex justify-content-center subNameModal">kolom Qty atau Total &#10140; klik simpan</div>
                 <div style="content: '';height:25px"></div>
@@ -720,7 +813,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -741,24 +835,56 @@
     var objItemEdit = [];
     var indexEdit = null;
 
+    var selectedSesi = 1;
+
+    var objItem = '';
+
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-    function goToSoHarian(){
+    function listBySesi(index) {
+        // console.log(.length);
+        var element = document.getElementsByName("sortTransaksi");
+        for (var i = 0; i < element.length; i++) {
+            if (i == index) {
+                element[i].classList.add("active");
+                continue;
+            }
+            element[i].classList.remove("active");
+        }
+        showSesi(index);
+    }
+
+    function changeSesi(index) {
+        var sesiElement = document.getElementsByName('sesi');
+        selectedSesi = index + 1;
+        for (var i = 0; i < sesiElement.length; i++) {
+            if (i == index) {
+                sesiElement[i].classList.add("sesiActive");
+                sesiElement[i].classList.remove("sesiNonActive");
+            } else {
+                sesiElement[i].classList.add("sesiNonActive");
+                sesiElement[i].classList.remove("sesiActive");
+            }
+        }
+        // getAllData();
+    }
+
+    function goToSoHarian() {
         window.location.href = "{{ url('user/soHarian') }}" + '/' + dateSelected;
     }
 
-    function goToSalesHarian(){
+    function goToSalesHarian() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + dateSelected;
     }
 
-    function goToWasteHarian(){
+    function goToWasteHarian() {
         window.location.href = "{{ url('user/wasteHarian') }}" + '/' + dateSelected;
     }
 
-    function goToPattyCashHarian(){
+    function goToPattyCashHarian() {
         window.location.href = "{{ url('user/pattyCashHarian') }}" + '/' + dateSelected;
     }
 
@@ -772,7 +898,7 @@
         }
     }
 
-    function goToRequestItem(){
+    function goToRequestItem() {
         window.location.href = "{{ url('user/request/wasteHarian') }}" + '/' + dateSelected;
     }
 
@@ -882,52 +1008,75 @@
 
     function refreshData() {
         $.ajax({
-            url: "{{ url('waste/user/showTable/') }}" + '/' + "{{ session('idOutlet') }}" + '/' + dateSelected,
+            url: "{{ url('waste/user/showTable/') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                dateSelected,
             type: 'get',
             success: function(response) {
                 console.log(response);
                 var dataDetail = '';
                 var obj = JSON.parse(JSON.stringify(response));
-                var urlImage = '{{ url('img/dashboard/laporanWaste.png') }}';
-                var indexLoop = 0;
-                objItemEdit.length = 0;
-                for (var i = 0; i < obj.itemWaste.length; i++) {
-                    for (var j = 0; j < obj.itemWaste[i].Item.length; j++) {
-                        dataDetail += '<div class="row rowDetail" onclick="editItem(' +
-                            indexLoop +
-                            ');"><div class="col-2"><img src="';
-                        dataDetail += urlImage;
-                        dataDetail += '" alt="waste"style="height: 40px"></div>';
-                        dataDetail += '<div class="col-5"><div class="row menuDetail">';
-                        // dataDetail += '<div class="col-9 menuDetail">';
-                        dataDetail += obj.itemWaste[i].Item[j].Item;
-                        if (obj.itemWaste[i].Item[j].idQtyRev == 2) {
-                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
-                            dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
-                        } else if (obj.itemWaste[i].Item[j].idQtyRev == 2) {
-                            var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
-                            dataDetail += '<img src="' + urlImageRev +
-                                '" alt="status icon" class="status">';
-                        }
-                        dataDetail += '</div><div class="row jenisDetail">';
-                        dataDetail += obj.itemWaste[i].Item[j].jenis;
-                        dataDetail += '</div></div><div class="col-5 satuanDetail">';
-                        dataDetail += obj.itemWaste[i].Item[j].qty;
-                        dataDetail += ' ';
-                        dataDetail += obj.itemWaste[i].Item[j].Satuan;
-                        dataDetail += '</div></div>';
-                        objItemEdit.push(obj.itemWaste[i].Item[j]);
-                        indexLoop++;
-                    }
-                }
-                document.getElementById('dataDetail').innerHTML = dataDetail;
+                objItem = obj;
+                // showSesi(0);
+                listBySesi(0);
                 document.getElementById('jumlahInput').value = '';
             },
             error: function(req, err) {
                 console.log(err);
             }
         });
+    }
+
+    function showSesi(indexSesi) {
+        var urlImage = '{{ url('img/dashboard/laporanWaste.png') }}';
+        var indexLoop = 0;
+        objItemEdit.length = 0;
+        var dataDetail = '';
+
+        for (var i = 0; i < objItem.itemWaste.length; i++) {
+            for (var j = 0; j < objItem.itemWaste[i].Item.length; j++) {
+                var dataDetail2 = '';
+                dataDetail2 += '<div class="row rowDetail" onclick="editItem(' +
+                    indexLoop +
+                    ');"><div class="col-2"><img src="';
+                dataDetail2 += urlImage;
+                dataDetail2 += '" alt="waste"style="height: 40px"></div>';
+                dataDetail2 += '<div class="col-5"><div class="row menuDetail">';
+                // dataDetail2 += '<div class="col-9 menuDetail">';
+                dataDetail2 += objItem.itemWaste[i].Item[j].Item;
+                if (objItem.itemWaste[i].Item[j].idQtyRev == 2) {
+                    var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                    dataDetail2 += '<img src="' + urlImageRev +
+                        '" alt="status icon" class="status" style="height:15px; margin-left: 8px;">';
+                } else if (objItem.itemWaste[i].Item[j].idQtyRev == 2) {
+                    var urlImageRev = '{{ url('img/icon/tertunda.png') }}';
+                    dataDetail2 += '<img src="' + urlImageRev +
+                        '" alt="status icon" class="status">';
+                }
+                dataDetail2 += '</div><div class="row jenisDetail">';
+                dataDetail2 += objItem.itemWaste[i].Item[j].jenis;
+                dataDetail2 += '</div></div><div class="col-5">';
+
+                dataDetail2 += '<div class="sesiDetail">';
+                // dataDetail2 += 'ASDSA';
+                dataDetail2 += 'Sesi ';
+                dataDetail2 += objItem.itemWaste[i].Item[j].idSesi;
+                dataDetail2 += '</div>';
+
+                dataDetail2 += '<div class="valDetail">';
+                dataDetail2 += objItem.itemWaste[i].Item[j].qty;
+                dataDetail2 += ' ';
+                dataDetail2 += objItem.itemWaste[i].Item[j].Satuan;
+                dataDetail2 += '</div>';
+                dataDetail2 += '</div></div>';
+
+                if ((indexSesi == objItem.itemWaste[i].Item[j].idSesi)||(indexSesi == 0)) {
+                    dataDetail += dataDetail2;
+                    objItemEdit.push(objItem.itemWaste[i].Item[j]);
+                    indexLoop++;
+                }
+            }
+        }
+        document.getElementById('dataDetail').innerHTML = dataDetail;
     }
 
     function editItem(selectIndex) {
@@ -978,6 +1127,7 @@
             data: {
                 // tanggal: document.getElementById('dateAdd').value,
                 tanggal: dateSelected,
+                idSesi: selectedSesi,
                 idOutlet: "{{ session('idOutlet') }}"
             },
             success: function(response) {
