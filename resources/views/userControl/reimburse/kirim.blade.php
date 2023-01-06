@@ -665,6 +665,82 @@
             background: #FFEAEF;
             border-radius: 10.9791px;
         }
+
+        .dateTransaksi {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            color: #6B7280;
+            margin-top: 30px;
+        }
+
+        .nameTransaksi {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            color: #585858;
+            margin-right: 7px;
+        }
+
+        .clockTransaksi {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            color: #6B7280;
+            margin-top: 1px;
+        }
+
+        .priceTransaksi {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            color: #585858;
+            margin-top: 8px;
+        }
+
+        .rowTransaksi {
+            margin-top: 15px;
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .inputSearch {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            color: #BEBEBE;
+        }
+
+        .inputSearch::placeholder {
+            color: #BEBEBE;
+        }
+
+        .logoBankWrap {
+            width: 48px;
+            height: 48px;
+            background: #F9FAFB;
+            border-radius: 12px;
+            align-items: center;
+        }
+
+        .logoBankWrap img {
+            width: 37px;
+            height: 37px;
+            object-fit: contain;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -779,6 +855,26 @@
                 <button onclick="sendDataKirim();" style="width: 100%">Kirim request</button>
             </div>
         </div>
+        <div id="searchName">
+            <div style="width: 300px; margin-top: -20px;">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text fa fa-search"
+                            style="background: white; border-right: none; color:#BEBEBE;"></span>
+                    </div>
+                    <input type="text" class="form-control inputSearch" placeholder="Cari nama penerima"
+                        style="border-left: none;" id="searchNama" onkeyup="searchNama()">
+                </div>
+                <div class="d-flex align-items-center"
+                    style="background: white; position: fixed; right: 0; left: 0; bottom: 150px; height: 60px;">
+                    <img src="{{ url('img/icon/addReimburse.png') }}" alt=""
+                        style="height: 45px; position: absolute; right: 15px;" onclick="showInputRekening();">
+                </div>
+                <div id="searchPenerimaList">
+                </div>
+                <div style="content: ''; height: 300px;"></div>
+            </div>
+        </div>
     </div>
     <div style="content: ''; height: 35px;"></div>
     </div>
@@ -790,7 +886,7 @@
             <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
             <div class="d-flex justify-content-center borderFooter"></div>
             <div class="socialMediaLabel">Social media</div>
-            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
                 <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
                 <div style="width: 40px;"></div>
                 <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
@@ -800,6 +896,7 @@
             <div style="height: 20px;"></div>
             <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
             </div>
+            {{-- <div style="height: 100px;"></div> --}}
         </div>
     </div>
 </body>
@@ -810,7 +907,13 @@
     let dateSelect = today.getDate();
     var indexPage = 0;
     var listBankActive = true;
+
+    var sendByID = false;
+    var indexTujuan = 0;
+
     var currentDateMonthYear = currentYear + '-' + (currentMonth + 1) + '-' + dateSelect;
+
+    var objAllPenerima = null;
 
     var objListBank = null;
 
@@ -824,6 +927,17 @@
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
 
+    $(document).ready(function() {
+        document.getElementById('dateKirimLbl').innerHTML = today.getDate() + '/' + (today.getMonth() + 1) +
+            '/' +
+            today.getFullYear();
+        calendarLayoutHide();
+        showSearchNama();
+        hideListBank();
+        getAllBank();
+        getAllPenerimaa();
+    });
+
     function selectIndexBank(index) {
         indexSelectBank = index;
         document.getElementById('fillBankSelect').innerHTML = objListBank.listBank[indexSelectBank].bank;
@@ -831,27 +945,49 @@
     }
 
     function sendDataKirim() {
-        $.ajax({
-            url: "{{ url('reimburse/store/data') }}",
-            type: 'get',
-            data: {
-                idOutlet: "{{ session('idOutlet') }}",
-                tanggal: currentDateMonthYear,
-                idBank: objListBank.listBank[indexSelectBank].id,
-                namaRekening: document.getElementById('atasNamaRekening').value,
-                nomorRekening: document.getElementById('inputNomorRekening').value,
-                pesan: document.getElementById('textAreaPesan').value,
-                qty: parseInt(inputJumlah.rawValue),
-                idPengisi: "{{ session('idPengisi') }}"
-            },
-            success: function(response) {
-                // window.location.href = "{{ url('user/reimburse/detail') }}" + '/' + response;
-                window.location.href = "{{ url('user/reimburse/wait') }}";
-            },
-            error: function(req, err) {
-                console.log(err);
-            }
-        })
+        if (sendByID) {
+            $.ajax({
+                url: "{{ url('reimburse/store/byIdTujuan') }}" + "/" + objAllPenerima.pengirimListArray[indexTujuan].id,
+                type: 'get',
+                data: {
+                    idOutlet: "{{ session('idOutlet') }}",
+                    tanggal: currentDateMonthYear,
+                    pesan: document.getElementById('textAreaPesan').value,
+                    qty: parseInt(inputJumlah.rawValue),
+                    idPengisi: "{{ session('idPengisi') }}"
+                },
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = "{{ url('user/reimburse/wait') }}";
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        } else {
+            $.ajax({
+                url: "{{ url('reimburse/store/data') }}",
+                type: 'get',
+                data: {
+                    idOutlet: "{{ session('idOutlet') }}",
+                    tanggal: currentDateMonthYear,
+                    idBank: objListBank.listBank[indexSelectBank].id,
+                    namaRekening: document.getElementById('atasNamaRekening').value,
+                    nomorRekening: document.getElementById('inputNomorRekening').value,
+                    pesan: document.getElementById('textAreaPesan').value,
+                    qty: parseInt(inputJumlah.rawValue),
+                    idPengisi: "{{ session('idPengisi') }}"
+                },
+                success: function(response) {
+                    console.log(response);
+                    // window.location.href = "{{ url('user/reimburse/detail') }}" + '/' + response;
+                    window.location.href = "{{ url('user/reimburse/wait') }}";
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
     }
 
     function getAllBank() {
@@ -899,23 +1035,26 @@
     function showInputRekening() {
         document.getElementById('inputRekeningBank').style.display = "block";
         document.getElementById('home').style.display = "none";
+        document.getElementById('searchName').style.display = "none";
         indexPage = 0;
+        // console.log('a');
     }
 
-    function hideInputRekening() {
+    function showInputValKirim() {
         document.getElementById('inputRekeningBank').style.display = "none";
         document.getElementById('home').style.display = "block";
+        document.getElementById('searchName').style.display = "none";
         indexPage = 1;
+        // console.log('b');
     }
 
-    $(document).ready(function() {
-        document.getElementById('dateKirimLbl').innerHTML = today.getDate() + '/' + today.getMonth() + '/' +
-            today.getFullYear();
-        calendarLayoutHide();
-        showInputRekening();
-        hideListBank();
-        getAllBank();
-    });
+    function showSearchNama() {
+        document.getElementById('searchName').style.display = "block";
+        document.getElementById('inputRekeningBank').style.display = "none";
+        document.getElementById('home').style.display = "none";
+        indexPage = 2;
+        // console.log('c');
+    }
 
     $('#boxInput').click(function() {
         $('#inputJumlah').focus();
@@ -939,9 +1078,13 @@
 
     function goBack() {
         if (indexPage == 0) {
-            window.location.href = "{{ url('user/dashboard') }}";
+            // window.location.href = "{{ url('user/dashboard') }}";
+            showSearchNama();
         } else if (indexPage == 1) {
-            showInputRekening();
+            // showInputRekening();
+            showSearchNama();
+        } else if (indexPage == 2) {
+            window.location.href = "{{ url('user/dashboard') }}";
         }
     }
 
@@ -956,8 +1099,77 @@
         // document.getElementById()
         // console.log();
         if ((indexSelectBank != null) && (inputNomorRekening != '') && (atasNamaRekening != '')) {
-            hideInputRekening();
+            showInputValKirim();
+            sendByID = false;
         }
+    }
+
+    function goToKirimById(index) {
+        indexTujuan = index;
+        var inputNomorRekening = objAllPenerima.pengirimListArray[index].nomorRekening;
+        var atasNamaRekening = objAllPenerima.pengirimListArray[index].namaRekening;
+        document.getElementById('imageBankPengirim').src = "{{ url('') }}" + '/' + objAllPenerima
+            .pengirimListArray[index].imgBank;
+        document.getElementById('namaPengirim').innerHTML = atasNamaRekening;
+        document.getElementById('rekeningDanBankPengirim').innerHTML = objAllPenerima
+            .pengirimListArray[index].bank +
+            ' | ' + inputNomorRekening;
+        // document.getElementById()
+        // console.log();
+        // if ((indexSelectBank != null) && (inputNomorRekening != '') && (atasNamaRekening != '')) {
+        showInputValKirim();
+        // }
+        sendByID = true;
+    }
+
+    function getAllPenerimaa() {
+        $.ajax({
+            url: "{{ url('reimburse/show/pengirim/all') }}" + '/' + "{{ session('idPengisi') }}",
+            type: 'get',
+            success: function(response) {
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                objAllPenerima = obj;
+                searchNama();
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function searchNama() {
+        var nama = document.getElementById('searchNama').value.toUpperCase();
+        var dataListBank = '';
+        var alphabetFirst = '';
+        var url = "{{ url('') }}";
+        for (var i = 0; i < objAllPenerima.pengirimListArray.length; i++) {
+            if (nama.length == 0) {
+                var firstChar = objAllPenerima.pengirimListArray[i].namaRekening.substring(0, 1);
+                if (firstChar != alphabetFirst) {
+                    alphabetFirst = firstChar;
+                    dataListBank += '<div class="dateTransaksi">';
+                    dataListBank += firstChar;
+                    dataListBank += '</div>';
+                }
+            }
+            if (objAllPenerima.pengirimListArray[i].namaRekening.toUpperCase().indexOf(nama) > -1) {
+                dataListBank += '<div class="d-flex justify-content-start rowTransaksi"';
+                dataListBank += ' onclick="goToKirimById(' + i + ')"';
+
+                dataListBank += ' >';
+                dataListBank += '<div class="logoBankWrap"><img src="' + url + '/' + objAllPenerima.pengirimListArray[i]
+                    .imgBank;
+                dataListBank += '" alt="" style="height: 40px;"></div>';
+                dataListBank += '<div style="margin-left: 15px;">';
+                dataListBank += '<div class="d-flex justify-content-start" style="margin-top: 2px;">';
+                dataListBank += '<div class="nameTransaksi">' + objAllPenerima.pengirimListArray[i].namaRekening +
+                    '</div></div>';
+                dataListBank += '<div class="clockTransaksi">' + objAllPenerima.pengirimListArray[i].nomorRekening +
+                    '</div></div></div>';
+            }
+        }
+        document.getElementById('searchPenerimaList').innerHTML = dataListBank;
     }
 
     function bayar() {

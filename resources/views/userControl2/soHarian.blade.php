@@ -316,6 +316,37 @@
             text-align: center;
             color: #FFFFFF;
         }
+
+        .wrapSesi {
+            margin-top: 50px;
+            /* margin-bottom: 10px; */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+        }
+
+        .wrapSesi div {
+            cursor: pointer;
+            width: 120px;
+            text-align: center;
+            padding-bottom: 5px;
+        }
+
+        .sesiActive {
+            color: #000000;
+            border-bottom: 3px solid #B20731;
+        }
+
+        .sesiNonActive {
+            color: #BEBEBE;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .sesiNonActive:hover {
+            border-bottom: 1px solid #B20731;
+        }
     </style>
 </head>
 
@@ -343,16 +374,28 @@
             <div class="col menuNotSel" style="margin-top: 5px" onclick="goToPattyCashHarian();">Pembeli an</div>
         </div>
     </div>
-    <div class="d-flex justify-content-start containerBottom">
-        <div class="container" style="margin-left: 5px;margin-right: 10px">
-            <div class="d-flex justify-content-between" style="margin-top: 18px">
-                <h3 id="dateSelected">Selasa, 1 November</h3>
-                <img src="{{ url('img/icon/settingSo.png') }}" alt="" style="height: 24px; margin-top: 3px;" onclick="goToSettingBatasSo();">
+    <div class="d-flex justify-content-center">
+        <div style="width: 100%">
+            <div class="d-flex justify-content-center containerBottom">
+                <div>
+                    <div class="container" style="margin-left: 5px;margin-right: 10px">
+                        <div class="d-flex justify-content-between" style="margin-top: 18px">
+                            <h3 id="dateSelected">Selasa, 1 November</h3>
+                            <img src="{{ url('img/icon/settingSo.png') }}" alt=""
+                                style="height: 24px; margin-top: 3px;" onclick="goToSettingBatasSo();">
+                        </div>
+                        <div class="d-flex justify-content-center wrapSesi">
+                            <div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>
+                            <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
+                            <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
+                        </div>
+                        {{-- <h3 style="margin-top: 20px">Laporan SO</h3> --}}
+                        <div id="groupAddItem"></div>
+                        <button type="button" class="btn" onclick="searchAllEdit()">Simpan</button>
+                        <div style="content: ''; height: 125px"></div>
+                    </div>
+                </div>
             </div>
-            {{-- <h3 style="margin-top: 20px">Laporan SO</h3> --}}
-            <div id="groupAddItem"></div>
-            <button type="button" class="btn" onclick="searchAllEdit()">Simpan</button>
-            <div style="content: ''; height: 125px"></div>
         </div>
     </div>
     <div class="d-flex justify-content-center footer">
@@ -363,7 +406,7 @@
             <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
             <div class="d-flex justify-content-center borderFooter"></div>
             <div class="socialMediaLabel">Social media</div>
-            <div class="d-flex justify-content-center" style="margin-top: 60px;">
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
                 <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
                 <div style="width: 40px;"></div>
                 <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
@@ -389,6 +432,23 @@
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
+    var selectedSesi = 1;
+
+    function changeSesi(index) {
+        var sesiElement = document.getElementsByName('sesi');
+        selectedSesi = index + 1;
+        for (var i = 0; i < sesiElement.length; i++) {
+            if (i == index) {
+                sesiElement[i].classList.add("sesiActive");
+                sesiElement[i].classList.remove("sesiNonActive");
+            } else {
+                sesiElement[i].classList.add("sesiNonActive");
+                sesiElement[i].classList.remove("sesiActive");
+            }
+        }
+        // getAllData();
+        getDataFillSo();
+    }
 
     $(document).ready(function() {
         var day = new Date(dateSelected);
@@ -397,13 +457,12 @@
         // console.log(day.getDay());
         document.getElementById('dateSelected').innerHTML = stringDay;
 
-
         dataId.length = 0;
         showItemOutlet("{{ session('idOutlet') }}");
         console.log("{{ $dateSelect }}");
     });
 
-    function goToSettingBatasSo(){
+    function goToSettingBatasSo() {
         window.location.href = "{{ url('user/setting/soHarian') }}" + '/' + dateSelected;
     }
 
@@ -429,28 +488,35 @@
 
     function getDataFillSo() {
         $.ajax({
-            url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
-                "{{ $dateSelect }}",
+            url: "{{ url('soHarian/user/showDetail') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+                "{{ $dateSelect }}" + '/' + selectedSesi,
             type: 'get',
             success: function(response) {
                 var elementInput = document.getElementsByName("addname");
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                console.log(dataId);
                 tempDataEdit.length = 0;
-                for (var i = 0; i < obj.itemfso.length; i++) {
-                    // contentSo += '<h6>' + obj.itemfso[i]['qty'] + '</h6>';
-                    // elementInput[searchIndexSoItem(obj.itemfso[i].idItem)].value = obj.itemfso[i].qty;
-                    if (searchIndexSoItem(obj.itemfso[i].idItem)[0] == true) {
-                        elementInput[searchIndexSoItem(obj.itemfso[i].idItem)[1]].value = obj.itemfso[i]
-                            .qty;
-                        tempDataEdit.push([searchIndexSoItem(obj.itemfso[i].idItem)[1], obj.itemfso[i]
-                            .idSoFill, obj.itemfso[i].qty
-                        ]);
-                        changeValSO(i);
-                        
+
+                for (var i = 0; i < dataId.length; i++) {
+                    var elementFound = false;
+                    var j = 0;
+                    for (j = 0; j < obj.itemfso.length; j++) {
+                        if (dataId[i] == obj.itemfso[j].idItem) {
+                            elementFound = true;
+                            break;
+                        }
                     }
+                    if (elementFound == true) {
+                        elementInput[i].value = obj.itemfso[j].qty;
+                        tempDataEdit.push([i, obj.itemfso[j].idSoFill, obj.itemfso[j].qty]);
+                        console.log('a');
+                    } else {
+                        elementInput[i].value = '';
+                    }
+                    changeValSO(i);
                 }
-                console.log(tempDataEdit);
+                // console.log(tempDataEdit);
             },
             error: function(req, err) {
                 console.log(err);
@@ -484,13 +550,13 @@
         const date = new Date("{{ $dateSelect }}");
         const result = subtractDays(1, date);
         $.ajax({
-            url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
+            url: '{{ url('soHarian/user/showDetailLastSesi') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
                 formatDate(result),
             type: 'get',
             success: function(response) {
                 var elementInput = document.getElementsByName("addname");
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
+                // console.log(obj);
                 // stokKemarinVal
                 for (var i = 0; i < obj.itemfso.length; i++) {
                     if (searchIndexSoItem(obj.itemfso[i].idItem)[0] == true) {
@@ -513,7 +579,7 @@
         for (var i = 0; i < tempDataEdit.length; i++) {
             var getValueElement = elementInput[tempDataEdit[i][0]].value;
             if (getValueElement != tempDataEdit[i][2]) {
-                console.log(getValueElement);
+                // console.log(getValueElement);
                 $.ajax({
                     url: '{{ url('soHarian/edit/data/') }}' + '/' + tempDataEdit[i][1],
                     type: 'get',
@@ -575,7 +641,7 @@
             }
         }
         // goToDashboard();
-        window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected;
+        window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected + '/' + selectedSesi;
     }
 
     function sendAddData() {
@@ -584,7 +650,9 @@
             type: 'get',
             data: {
                 tanggal: "{{ $dateSelect }}",
-                idPengisi: "{{ session('idPengisi') }}"
+                idPengisi: "{{ session('idPengisi') }}",
+                idOutlet: "{{ session('idOutlet') }}",
+                idSesi: selectedSesi
             },
             success: function(response) {
                 // console.log(response);
@@ -607,7 +675,7 @@
                 var order_data = '';
                 var obj = JSON.parse(JSON.stringify(response));
                 var urlWarning = "{{ url('img/icon/warningSoHarian.png') }}";
-                console.log(obj);
+                // console.log(obj);
                 for (var i = 0; i < obj.DataItem.length; i++) {
                     var urlImage = '{{ url('img/soImage') }}' + '/' + obj.DataItem[i]['icon'];
                     dataId.push(obj.DataItem[i]['id']);
@@ -656,8 +724,8 @@
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
-                console.log(dataId);
+                // console.log(obj);
+                // console.log(dataId);
                 // objFillSo = obj;
                 for (var i = 0; i < dataId.length; i++) {
                     var j = 0;
@@ -674,7 +742,7 @@
                         dataBatasSo.push(0);
                     }
                 }
-                console.log(dataBatasSo);
+                // console.log(dataBatasSo);
             },
             error: function(req, err) {
                 // console.log(err);

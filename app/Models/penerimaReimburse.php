@@ -14,10 +14,6 @@ class penerimaReimburse extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     
-    public function listBanks(){
-        return $this->belongsTo(listBank::class,'idBank','id');
-    }
-
     public function tanggalAlls(){
         return $this->hasOneThrough(tanggalAll::class,reimburse::class,'id','id','idReimburse','idTanggal');
     }
@@ -26,13 +22,19 @@ class penerimaReimburse extends Model
         return $this->belongsTo(penerimaList::class,'idPengirim','id');
     }
 
+    public function pengirimLists(){
+        return $this->belongsTo(pengirimList::class,'idTujuan','id');
+    }
+
+    public function listBanks(){
+        return $this->hasOneThrough(listBank::class,pengirimList::class,'id','id','idTujuan','idBank');
+    }
+
     protected $fillable = [
+        'idTujuan',
         'idPengirim',
         'idReimburse',
-        'idBank',
         'idRevisi',
-        'namaRekening',
-        'nomorRekening',
         'pesan',
         'imgTransfer',
         'qty',

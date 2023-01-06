@@ -23,7 +23,7 @@ class soHarian extends Seeder
     {
 
         $faker = Faker::create();
-        $satuan = array("Gram","Kilogram","Potong","Buah");
+        $satuan = array("gr","kg","pcs","scht");
         for($i=0;$i<count($satuan);$i++){
             DB::table('satuan')->insert([
                 'Satuan' => $satuan[$i],
@@ -110,7 +110,12 @@ class soHarian extends Seeder
                 ],
                 [
                     'Role'  => 'Supervisor',
-
+                    
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ],
+                [
+                    'Role' => 'Admin',
+                    
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ]
             )

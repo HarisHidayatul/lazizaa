@@ -373,9 +373,15 @@
     <div class="containerBottom">
         <div style="height: 20px;content: ''"></div>
         <div style="margin-left: 20px; margin-right: 20px;">
-            <div class="d-flex justify-content-between boxPengisi">
-                <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
-                <h7 class="namaPengisi" id="namaPengisi" onclick="showPengisi();">.</h7>
+            <div class="boxPengisi">
+                <div class="d-flex justify-content-between">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Pengisi</h5>
+                    <h7 class="namaPengisi" id="namaPengisi" onclick="showPengisi();">.</h7>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Sesi</h5>
+                    <h5 style="margin-top: 5px; margin-right: 15px; color: #B20731; font-weight: 600;">{{ $idSesi }}</h5>
+                </div>
             </div>
             <div style="height: 15px;content: ''"></div>
             <div id="contentSo"></div>
@@ -442,7 +448,7 @@
     function showAllData() {
         $.ajax({
             url: '{{ url('soHarian/user/showDetail') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
-                "{{ $dateSelect }}",
+                "{{ $dateSelect }}" + '/' + "{{ $idSesi }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));

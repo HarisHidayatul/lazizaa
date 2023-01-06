@@ -432,7 +432,7 @@
     }
 
     function goToDetailPattyCash(index) {
-        window.location.href = "{{ url('user/detail/pattyCashHarian') }}" + "/" + index;
+        window.location.href = "{{ url('user/detail/all/pattyCashHarian') }}" + "/" + index;
     }
 </script>
 

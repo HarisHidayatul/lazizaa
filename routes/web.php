@@ -62,18 +62,22 @@ Route::get('listType/soHarian/delete/outletOnType', [typeOutletItemController::c
 Route::get('show/outlet', [typeOutletItemController::class, 'indexOutlet']);
 
 Route::get('soHarian/user/showTable/{id}', [fsoHarianController::class, 'show']); //show id untuk outlet
-Route::get('soHarian/user/showDetail/{id}/{date}', [fsoHarianController::class, 'showOnDate']); //show id untuk outlet, berdasarkan tanggal
+Route::get('soHarian/user/showDetail/{id}/{date}/{idSesi}', [fsoHarianController::class, 'showOnDate']); //show id untuk outlet, berdasarkan tanggal
+Route::get('soHarian/user/showDetailLastSesi/{id}/{date}', [fsoHarianController::class, 'showOnDateLastSesi']);
+
 Route::get('soHarian/date/getId', [fsoHarianController::class, 'showAndCreateID']);
 Route::get('soHarian/store/data', [soFillController::class, 'store']);
 Route::get('soHarian/edit/data/{id}', [fsoHarianController::class, 'editSoFill']);
 Route::get('soHarian/edit/userFill/{id}', [fsoHarianController::class, 'editFsoHarian']);
 Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRev']);
-Route::get('soHarian/show/data/all', [fsoHarianController::class, 'showAllDataSo']);
+// Route::get('soHarian/show/data/all', [fsoHarianController::class, 'showAllDataSo']);
 Route::get('soHarian/show/revision/all', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done', [fsoHarianController::class, 'showDateRevisionDone']);
 Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
-Route::get('soHarian/setting/soBatas/show/{idOutlet}',[fsoHarianController::class, 'showBatas']);
-Route::get('soHarian/setting/soBatas/store/{idOutlet}',[fsoHarianController::class, 'storeBatas']);
+Route::get('soHarian/setting/soBatas/show/{idOutlet}', [fsoHarianController::class, 'showBatas']);
+Route::get('soHarian/setting/soBatas/store/{idOutlet}', [fsoHarianController::class, 'storeBatas']);
+
+Route::get('soHarian/user/showAllSesi/{idOutlet}/{date}', [fsoHarianController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
 
 Route::get('fsoh/getId', [fsoHarianController::class, 'showAndCreateID']);
 
@@ -97,7 +101,8 @@ Route::get('salesHarian/show/list/all/{id}', [salesHarianController::class, 'sho
 Route::get('salesHarian/user/showTable/{id}/{date}/{idSesi}', [salesHarianController::class, 'show']); //show id untuk outlet
 Route::get('salesHarian/user/showAllData/{id}/{date}/{idSesi}', [salesHarianController::class, 'showAllData']); //show id untuk outlet
 
-Route::get('salesHarian/user/showAllSesi/{idOutlet}/{date}',[salesHarianController::class, 'showAllDataSesi']);//menampilkan data di hari itu sesuai sesi
+Route::get('salesHarian/user/showAllSesi/{idOutlet}/{date}', [salesHarianController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
+
 
 Route::get('salesHarian/show/salesFill/{id}', [salesHarianController::class, 'showOnSalesFill']); //menampilkan data seperti showAllData
 
@@ -162,7 +167,7 @@ Route::get('pattyCash/store/data', [pattyCashController::class, 'store']);
 
 Route::get('show/satuan', [pattyCashController::class, 'showSatuan']);
 
-Route::get('pattyCash/user/showAllSesi/{idOutlet}/{date}',[pattyCashController::class, 'showAllDataSesi']);//menampilkan data di hari itu sesuai sesi
+Route::get('pattyCash/user/showAllSesi/{idOutlet}/{date}', [pattyCashController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
 
 Route::get('pattyCash', function () {
     return view('pattyCash.typePattyCash');
@@ -193,7 +198,7 @@ Route::get('waste/items/show/req/all/{id}', [wasteController::class, 'showReqOut
 Route::get('waste/edit/cu/rev/data', [wasteController::class, 'editQtyRev']);
 Route::get('waste/user/showAllData/{id}/{date}/{idSesi}', [wasteController::class, 'showAllData']); //show id untuk outlet
 
-Route::get('waste/user/showAllSesi/{idOutlet}/{date}',[wasteController::class, 'showAllDataSesi']);//menampilkan data di hari itu sesuai sesi
+Route::get('waste/user/showAllSesi/{idOutlet}/{date}', [wasteController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
 
 Route::get('wasteHarian', function () {
     return view('wasteHarian.typeWaste');
@@ -226,8 +231,12 @@ Route::get('setoran', function () {
 
 Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}', [reimburseController::class, 'showHistory']);
 Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
-Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']);//refresh historty
+Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
+
+Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class, 'storeReimburseIdTujuan']);
+
+Route::get('reimburse/show/pengirim/all/{idUser}', [reimburseController::class, 'showPengirimAll']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
@@ -249,7 +258,8 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl2.dashboard');
     });
     Route::get('admin/item/so', function () {
-        return view('adminControl.setItem.soHarian');
+        // return view('adminControl.setItem.soHarian');
+        return view('adminControl.setItem.index');
     });
     Route::get('admin/item/sales', function () {
         return view('adminControl.setItem.sales');
@@ -271,13 +281,19 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
-    Route::get('user/detail/soHarian/{dateSelect}', function ($dateSelect) {
+    Route::get('user/detail/soHarian/{dateSelect}/{idSesi}', function ($dateSelect, $idSesi) {
         return view('userControl2.soHarianDetail', [
+            'dateSelect' => $dateSelect,
+            'idSesi' => $idSesi
+        ]);
+    });
+    Route::get('user/detail/all/soHarian/{dateSelect}', function ($dateSelect) {
+        return view('userControl2.soHarianDetailAll', [
             'dateSelect' => $dateSelect
         ]);
     });
 
-    Route::get('user/setting/soHarian/{dateSelect}', function ($dateSelect){
+    Route::get('user/setting/soHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.soHarianSettingBatas', [
             'dateSelect' => $dateSelect
         ]);
@@ -288,14 +304,14 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
-    Route::get('user/detail/salesHarian/{dateSelect}/{idSesi}', function ($dateSelect,$idSesi) {
+    Route::get('user/detail/salesHarian/{dateSelect}/{idSesi}', function ($dateSelect, $idSesi) {
         return view('userControl2.salesHarianDetail', [
             'dateSelect' => $dateSelect,
             'idSesi' => $idSesi
         ]);
     });
 
-    Route::get('user/detail/all/salesHarian/{dateSelect}', function($dateSelect){
+    Route::get('user/detail/all/salesHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.salesHarianDetailAll', [
             'dateSelect' => $dateSelect
         ]);
@@ -331,14 +347,14 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         ]);
     });
 
-    Route::get('user/detail/wasteHarian/{dateSelect}/{idSesi}', function ($dateSelect,$idSesi) {
+    Route::get('user/detail/wasteHarian/{dateSelect}/{idSesi}', function ($dateSelect, $idSesi) {
         return view('userControl2.wasteHarianDetail', [
             'dateSelect' => $dateSelect,
             'idSesi' => $idSesi
         ]);
     });
-    
-    Route::get('user/detail/all/wasteHarian/{dateSelect}', function($dateSelect){
+
+    Route::get('user/detail/all/wasteHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.wasteHarianDetailAll', [
             'dateSelect' => $dateSelect
         ]);
@@ -374,14 +390,14 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
             'dateSelect' => $dateSelect
         ]);
     });
-    Route::get('user/detail/pattyCashHarian/{dateSelect}/{idSesi}', function ($dateSelect,$idSesi) {
+    Route::get('user/detail/pattyCashHarian/{dateSelect}/{idSesi}', function ($dateSelect, $idSesi) {
         return view('userControl2.pattyCashHarianDetail', [
             'dateSelect' => $dateSelect,
             'idSesi' => $idSesi
         ]);
     });
 
-    Route::get('user/detail/all/pattyCashHarian/{dateSelect}', function($dateSelect){
+    Route::get('user/detail/all/pattyCashHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.pattyCashHarianDetailAll', [
             'dateSelect' => $dateSelect
         ]);

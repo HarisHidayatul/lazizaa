@@ -144,9 +144,58 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function showOnDate($id, $date)
+    public function showOnDate($id, $date, $idSesi)
     {
-        $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians->where('idOutlet', '=', $id)->first();
+        $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians
+        ->where('idOutlet', '=', $id)
+        ->where('idSesi','=',$idSesi)
+        ->first();
+        // @dd($dataDate);
+        $itemArray = [];
+        $pengisi = '';
+        if($dataDate != null){
+            $pengisi = $dataDate->dUsers['Nama Lengkap'];
+            for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
+                $idSoRevisi = $dataDate->listItemSOs[$j]->pivot->idRevisi;
+                if ($idSoRevisi == '2') {
+                    //Jika statusnya revisi
+                    array_push($itemArray, (object)[
+                        'idItem' => $dataDate->listItemSOs[$j]->id,
+                        'item'   => $dataDate->listItemSOs[$j]->Item,
+                        'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
+                        'icon' => $dataDate->listItemSOs[$j]->icon,
+                        'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
+                        'qty'    => $dataDate->listItemSOs[$j]->pivot->quantityRevisi,
+                        'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
+                    ]);
+                } else {
+                    //Jika statusnya tidak direvisi maupun sudah direvisi
+                    array_push($itemArray, (object)[
+                        'idItem' => $dataDate->listItemSOs[$j]->id,
+                        'item'   => $dataDate->listItemSOs[$j]->Item,
+                        'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
+                        'icon' => $dataDate->listItemSOs[$j]->icon,
+                        'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
+                        'qty'    => $dataDate->listItemSOs[$j]->pivot->quantity,
+                        'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
+                    ]);
+                }
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datafso->count(),
+            'pengisi' => $pengisi,
+            'itemfso' => $itemArray
+        ]);
+    }
+
+    public function showOnDateLastSesi($id, $date)
+    {
+        //mengambil data dari sesi terakhir di hari
+        $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians
+        ->where('idOutlet', '=', $id)
+        // ->where('idSesi','=',$idSesi)
+        ->first();
         // @dd($dataDate);
         $itemArray = [];
         for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
@@ -182,18 +231,78 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function showAllDataSo()
+    public function showAllDataSesi($idOutlet, $date)
     {
-        $outletShow = dBrand::all();
-        for ($i = 0; $i < $outletShow->count(); $i++) {
-            for ($j = 0; $j < $outletShow->doutlets->count(); $j++) {
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
+        // @dd($tanggalAll);
+        $allDataArray = [];
+        $tempDataArray = [];
+        $dataFound = false;
+        $idSesi = 0;
+        if ($tanggalAll != null) {
+            $fsoharian = fsoharian::orderBy('idSesi', 'DESC')->where('idOutlet', '=', $idOutlet)->where('idTanggal', '=', $tanggalAll['id'])->get();
+            // @dd($fsoharian);
+            $tempIdSesi = null;
+            for ($i = 0; $i < $fsoharian->count(); $i++) {
+                $datasoHarian = $fsoharian[$i];
+                $idSesi = $datasoHarian->idSesi;
+                // if ($i == 0) {
+                //     $tempIdSesi = $idSesi;
+                // }
+                $dataOnSesi = [];
+
+                // @dd($fsoharian[1]->listItemSOs);
+
+                for ($j = 0; $j < $datasoHarian->listItemSOs->count(); $j++) {
+                    $idRevisi = $datasoHarian->listItemSOs[$j]->pivot->idRevisi;
+                    $quantity = $datasoHarian->listItemSOs[$j]->pivot->quantity;
+
+                    $userPengisi = dUser::find($datasoHarian->idPengisi);
+                    if ($idRevisi == '2') {
+                        //Jika statusnya revisi pada CU
+                        $quantity = $datasoHarian->listItemSOs[$j]->pivot->quantityRevisi;
+                    }
+
+                    array_push($dataOnSesi, (object)[
+                        'idSoFill' => $datasoHarian->listItemSOs[$j]->pivot->id,
+                        'Item' => $datasoHarian->listItemSOs[$j]->Item,
+                        'idRevisi' => $idRevisi,
+                        'quantity' => $quantity,
+                        'namaPengisi' => $userPengisi['Nama Lengkap'],
+                        'satuan' => $datasoHarian->listItemSOs[$j]->satuans->Satuan
+                    ]);
+                }
+                // @dd($datasoHarian->listItemSOs);
+
+                if ($tempIdSesi != $idSesi) {
+                    if ($i == 0) {
+                        array_push($tempDataArray, $dataOnSesi);
+                    } else {
+                        array_push($allDataArray, (object)[
+                            'idSesi' => $tempIdSesi,
+                            'dataSoHarian' => $tempDataArray
+                        ]);
+                        $tempDataArray = [];
+                        array_push($tempDataArray, $dataOnSesi);
+                    }
+                    $tempIdSesi = $idSesi;
+                } else {
+                    array_push($tempDataArray, $dataOnSesi);
+                }
             }
         }
-        @dd($outletShow->doutlets);
+        array_push($allDataArray, (object)[
+            'idSesi' => $tempIdSesi,
+            'dataSoHarian' => $tempDataArray
+        ]);
+        return response()->json($allDataArray);
     }
 
     public function showAndCreateID(Request $request)
     {
+        $idOutlet = $request->idOutlet;
+        $idSesi = $request->idSesi;
+        $idPengisi = $request->idPengisi;
         $tanggalAll = tanggalAll::where('Tanggal', '=', $request->tanggal)->first();
         $tanggalID = null;
         if ($tanggalAll == null) {
@@ -203,29 +312,43 @@ class fsoHarianController extends Controller
         } else {
             $tanggalID = $tanggalAll['id'];
         }
-
-        $idPengisi = $request->idPengisi;
-        $idOutlet = dUser::find($idPengisi)->idOutlet;
-        try {
-            $dataa = fsoHarian::where('idTanggal', '=', $tanggalID)->where('idOutlet', '=', $idOutlet)->first()->id;
-            echo $dataa;
-        } catch (Exception $e) {
-            //jika tidak ditemukan data, coba untuk create data, dan kembalikan ID
-            try {
+        $dataDate = fsoHarian::where('idTanggal', '=', $tanggalID)->get();
+        $dataa = null;
+        if ($dataDate->count() == 0) {
+            $dataArray = [
+                'idTanggal' => $tanggalID,
+                'idOutlet' => $idOutlet,
+                'idSesi' => $idSesi,
+                'idPengisi' => $idPengisi
+            ];
+            $dataa = fsoHarian::create($dataArray)->id;
+        } else {
+            $dataOutlet = $dataDate->where('idOutlet', '=', $idOutlet);
+            // @dd($dataOutlet->count());
+            if ($dataOutlet->count() == 0) {
                 $dataArray = [
                     'idTanggal' => $tanggalID,
-                    'idPengisi' => $idPengisi,
                     'idOutlet' => $idOutlet,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    'idSesi' => $idSesi,
+                    'idPengisi' => $idPengisi
                 ];
-                fsoHarian::create($dataArray);
-                $dataa = fsoHarian::where('idTanggal', '=', $tanggalID)->where('idOutlet', '=', $idOutlet)->first()->id;
-                echo $dataa;
-            } catch (Exception $e) {
-                //tidak ditemukan userID atau format tanggal salah, return 0
-                echo $e;
+                $dataa = fsoHarian::create($dataArray)->id;
+            } else {
+                $dataSesi = $dataOutlet->where('idSesi', '=', $idSesi)->first();
+                if ($dataSesi == null) {
+                    $dataArray = [
+                        'idTanggal' => $tanggalID,
+                        'idOutlet' => $idOutlet,
+                        'idSesi' => $idSesi,
+                        'idPengisi' => $idPengisi
+                    ];
+                    $dataa = fsoHarian::create($dataArray)->id;
+                } else {
+                    $dataa = $dataSesi->id;
+                }
             }
         }
+        echo $dataa;
     }
 
     public function showDateRevision()

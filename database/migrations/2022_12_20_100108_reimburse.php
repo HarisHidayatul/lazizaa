@@ -37,15 +37,13 @@ return new class extends Migration
 
             $table->unsignedBigInteger('idReimburse');
             $table->foreign('idReimburse')->references('id')->on('reimburse');
-            
-            $table->unsignedBigInteger('idBank');
-            $table->foreign('idBank')->references('id')->on('listBank');
 
             $table->unsignedBigInteger('idRevisi');
             $table->foreign('idRevisi')->references('id')->on('revisi');
 
-            $table->string('namaRekening');
-            $table->string('nomorRekening');
+            $table->unsignedBigInteger('idTujuan');
+            $table->foreign('idTujuan')->references('id')->on('pengirimList');
+
             $table->string('pesan');
             $table->string('imgTransfer');
             $table->integer('qty');

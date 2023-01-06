@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\penerimaReimburse;
+use App\Models\pengirimList;
 use App\Models\reimburse;
 use App\Models\tanggalAll;
 use Carbon\Carbon;
@@ -48,26 +49,66 @@ class reimburseController extends Controller
         //imgTransfer (default null), qty
 
         //searchTanggal
-        $tanggalAll = tanggalAll::where('Tanggal','=',$request->tanggal)->first();
-        if($tanggalAll == null){
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $request->tanggal)->first();
+        if ($tanggalAll == null) {
             $tanggalAll = tanggalAll::create([
                 'Tanggal' => $request->tanggal
             ]);
         }
-        $reimburse = $tanggalAll->reimburses->where('idOutlet','=',$request->idOutlet)->first();
-        if($reimburse == null){
+        $reimburse = $tanggalAll->reimburses->where('idOutlet', '=', $request->idOutlet)->first();
+        if ($reimburse == null) {
             $reimburse = reimburse::create([
                 'idTanggal' => $tanggalAll->id,
                 'idOutlet' => $request->idOutlet,
                 'saldoTerakhir' => '0'
             ]);
         }
-        $penerimaReimburse = penerimaReimburse::create([
-            'idPengirim' => '1', //default 1
-            'idReimburse' => $reimburse->id,
+        $tujuan = pengirimList::create([
+            'idOutlet' => $request->idOutlet,
+            'idUser' => $request->idPengisi,
             'idBank' => $request->idBank,
             'namaRekening' => $request->namaRekening,
             'nomorRekening' => $request->nomorRekening,
+        ]);
+        $penerimaReimburse = penerimaReimburse::create([
+            'idTujuan' => $tujuan->id,
+            'idPengirim' => '1', //default 1
+            'idReimburse' => $reimburse->id,
+            'pesan' => $request->pesan,
+            'idRevisi' => '2',
+            'imgTransfer' => 'none',
+            'qty' => $request->qty,
+            'idPengisi' => $request->idPengisi
+        ]);
+        echo $penerimaReimburse->id;
+        // @dd($reimburse);
+    }
+
+    public function storeReimburseIdTujuan(Request $request, $idTujuan){
+        //tanggal, id outlet => reimburse (saldo terakhir = 0 jika tidak ada)
+        //idPengirim (default 1), idBank, namaRekening, nomorRekening, pesan, idRevisi (default 2)
+        //imgTransfer (default null), qty
+
+        //searchTanggal
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $request->tanggal)->first();
+        if ($tanggalAll == null) {
+            $tanggalAll = tanggalAll::create([
+                'Tanggal' => $request->tanggal
+            ]);
+        }
+        $reimburse = $tanggalAll->reimburses->where('idOutlet', '=', $request->idOutlet)->first();
+        if ($reimburse == null) {
+            $reimburse = reimburse::create([
+                'idTanggal' => $tanggalAll->id,
+                'idOutlet' => $request->idOutlet,
+                'saldoTerakhir' => '0'
+            ]);
+        }
+        
+        $penerimaReimburse = penerimaReimburse::create([
+            'idTujuan' => $idTujuan,
+            'idPengirim' => '1', //default 1
+            'idReimburse' => $reimburse->id,
             'pesan' => $request->pesan,
             'idRevisi' => '2',
             'imgTransfer' => 'none',
@@ -102,12 +143,13 @@ class reimburseController extends Controller
         $imgBankPenerima = '';
         $idRevisi = null;
         $jumlahTransfer = 0;
+        // @dd($penerimaReimburse->listBanks);
         if ($penerimaReimburse != null) {
             // @dd($penerimaReimburse->tanggalAlls);
             $tanggal = $penerimaReimburse->tanggalAlls->Tanggal;
             $pesan = $penerimaReimburse->pesan;
-            $namaPenerima = $penerimaReimburse->namaRekening;
-            $rekeningPenerima = $penerimaReimburse->nomorRekening;
+            $namaPenerima = $penerimaReimburse->pengirimLists->namaRekening;
+            $rekeningPenerima = $penerimaReimburse->pengirimLists->nomorRekening;
             $jumlahTransfer = $penerimaReimburse->qty;
             $idRevisi = $penerimaReimburse->idRevisi;
             if ($idRevisi != '2') {
@@ -126,6 +168,31 @@ class reimburseController extends Controller
             'jumlahTransfer' => $jumlahTransfer,
             'imgBankPenerima' => $imgBankPenerima,
             'idRevisi' => $idRevisi
+        ]);
+    }
+
+    public function showPengirimAll($idUser)
+    {
+        $pengirimList = pengirimList::where('idUser', '=', $idUser)->get();
+        $pengirimListArray = [];
+        for ($i = 0; $i < $pengirimList->count(); $i++) {
+            $idJenisBank = $pengirimList[$i]->listBanks->idJenisBank;
+            if($idJenisBank == '1'){
+                array_push($pengirimListArray, (object)[
+                    'id' => $pengirimList[$i]->id,
+                    'namaRekening' => $pengirimList[$i]->namaRekening,
+                    'nomorRekening' => $pengirimList[$i]->nomorRekening,
+                    'imgBank' => $pengirimList[$i]->listBanks->imageBank,
+                    'bank' => $pengirimList[$i]->listBanks->bank,
+                    'idJenisBank' => $idJenisBank
+                ]);
+            }
+        }
+        usort($pengirimListArray, function ($a, $b) {
+            return strcmp($a->namaRekening, $b->namaRekening);
+        });
+        return response()->json([
+            'pengirimListArray' => $pengirimListArray
         ]);
     }
 
@@ -165,7 +232,7 @@ class reimburseController extends Controller
                     $saldoTerakhir = $reimburse[$j]->saldoTerakhir;
                     $saldoSaatIni = $saldoTerakhir;
 
-                    if($i == 0){
+                    if ($i == 0) {
                         $saldoPattyCash = $saldoTerakhir;
                     }
 
@@ -176,7 +243,7 @@ class reimburseController extends Controller
                         for ($k = 0; $k < $reimburseHarian->count(); $k++) {
                             if ($reimburseHarian[$k]->idRevisi == '3') {
                                 $saldoSaatIni = $saldoSaatIni + $reimburseHarian[$k]->qty;
-                                if($i==0){
+                                if ($i == 0) {
                                     $saldoPattyCash = $saldoPattyCash + $reimburseHarian[$k]->qty;
                                 }
                             }
@@ -197,12 +264,12 @@ class reimburseController extends Controller
                             for ($l = 0; $l < $pembelianList->count(); $l++) {
                                 $qtyPembelian = $pembelianList[$l]->pivot->quantity;
                                 $totalPembelian = $pembelianList[$l]->pivot->total;
-                                if($pembelianList[$l]->pivot->idRevTotal == '2'){
+                                if ($pembelianList[$l]->pivot->idRevTotal == '2') {
                                     $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
                                 }
 
                                 $saldoSaatIni = $saldoSaatIni - $totalPembelian;
-                                if($i==0){
+                                if ($i == 0) {
                                     $saldoPattyCash = $saldoPattyCash - $totalPembelian;
                                 }
 
@@ -268,6 +335,11 @@ class reimburseController extends Controller
         $dataAwalDitemukan = false;
         for ($i = 0; $i < $allDate->count(); $i++) {
             $reimburse = $allDate[$i]->reimburses;
+
+            echo "tanggal : ";
+            echo $allDate[$i]->Tanggal;
+            echo "<br>\n";
+            
             if ($reimburse != null) {
                 $pattyCash = [];
                 $tanggalFound = false;
@@ -284,6 +356,10 @@ class reimburseController extends Controller
                         ]);
                     }
 
+                    echo "saldo terakhir : ";
+                    echo $pergerakanSaldoSekarang;
+                    echo "<br>\n";
+
                     $pembelianHarian = $allDate[$i]->pattyCashHarians;
                     $reimburseHarian = $reimburse[$j]->penerimaReimburses;
                     // @dd($reimburseHarian);
@@ -291,6 +367,10 @@ class reimburseController extends Controller
                         for ($k = 0; $k < $reimburseHarian->count(); $k++) {
                             if ($reimburseHarian[$k]->idRevisi == '3') {
                                 $pergerakanSaldoSekarang = $pergerakanSaldoSekarang + $reimburseHarian[$k]->qty;
+
+                                echo "reimburse : ";
+                                echo $reimburseHarian[$k]->qty;
+                                echo "<br>\n";
                             }
                         }
                     }
@@ -302,7 +382,14 @@ class reimburseController extends Controller
                             for ($l = 0; $l < $pembelianList->count(); $l++) {
                                 $qtyPembelian = $pembelianList[$l]->pivot->quantity;
                                 $totalPembelian = $pembelianList[$l]->pivot->total;
+                                if($pembelianList[$l]->pivot->idRevTotal == 2){
+                                    $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
+                                }
                                 $pergerakanSaldoSekarang = $pergerakanSaldoSekarang - $totalPembelian;
+                                
+                                echo "pembelian : ";
+                                echo $totalPembelian;
+                                echo "<br>\n";
                             }
                         }
                         $pattyCash = array_reverse($pattyCash, false);

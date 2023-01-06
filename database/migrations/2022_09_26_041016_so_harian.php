@@ -142,9 +142,11 @@ return new class extends Migration
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
 
-
             $table->unsignedBigInteger('idTanggal');
             $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+
+            $table->unsignedBigInteger('idSesi');
+            $table->foreign('idSesi')->references('id')->on('listSesi');
 
             $table->timestamps();
             $table->softDeletes();

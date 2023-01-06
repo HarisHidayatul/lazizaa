@@ -19,7 +19,7 @@ class tanggalAll extends Model
     }
 
     public function fsoharians(){
-        return $this->hasMany(fsoHarian::class,'idTanggal','id');
+        return $this->hasMany(fsoHarian::class,'idTanggal','id')->orderBy('idSesi','DESC');
     }
 
     public function pattyCashHarians(){

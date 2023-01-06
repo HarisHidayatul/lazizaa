@@ -1042,7 +1042,7 @@
             window.location.href = "{{ url('user/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) + '-' +
                 dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
+            window.location.href = "{{ url('user/detail/all/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
         }
     }
