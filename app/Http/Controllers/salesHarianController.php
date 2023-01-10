@@ -296,6 +296,73 @@ class salesHarianController extends Controller
         return response()->json($allDataArray);
     }
 
+    public function showAllDataSesi2($idOutlet, $date)
+    {
+        $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
+        // @dd($tanggalAll);
+        $allsales = null;
+        $allDataArray = [];
+        if ($tanggalAll != null) {
+            $allsales = salesharian::orderBy('idSesi', 'ASC')->where('idOutlet', '=', $idOutlet)->where('idTanggal', '=', $tanggalAll['id'])->get();
+            $allTypeSales = typeSales::all();
+            // @dd($allTypeSales);
+            for ($i = 0; $i < $allTypeSales->count(); $i++) {
+                $idType = $allTypeSales[$i]->id;
+                $dataOnType = [];
+                for ($k = 0; $k < $allsales->count(); $k++) {
+                    $datasales = $allsales[$k];
+                    for ($j = 0; $j < $datasales->listSaless->count(); $j++) {
+                        if ($datasales->listSaless[$j]->typeSales == $idType) {
+                            $indexSales = 0;
+                            $foundSales = false;
+                            $idSales = $datasales->listSaless[$j]->id;
+                            $namaSales = $datasales->listSaless[$j]->sales;
+                            for ($indexSales = 0; $indexSales < count($dataOnType); $indexSales++) {
+                                if($dataOnType[$indexSales][0] == $idSales){
+                                    $foundSales = true;
+                                    break;
+                                }
+                            }
+                            if($foundSales == false){
+                                array_push($dataOnType, [$idSales,$namaSales,array()]);
+                            }
+                            // @dd($dataOnType[0][2]);
+
+                            $idCuRevisi = $datasales->listSaless[$j]->pivot->idRevisiCu;
+                            $idTotalRevisi = $datasales->listSaless[$j]->pivot->idRevisiTotal;
+                            $cuQty = $datasales->listSaless[$j]->pivot->cu;
+                            $totalQty = $datasales->listSaless[$j]->pivot->total;
+                            // $userPengisi = dUser::find($datasales->listSaless[$j]->pivot->idPengisi);
+                            if ($idCuRevisi == '2') {
+                                //Jika statusnya revisi pada CU
+                                $cuQty = $datasales->listSaless[$j]->pivot->cuRevisi;
+                            }
+                            if ($idTotalRevisi == '2') {
+                                $totalQty = $datasales->listSaless[$j]->pivot->totalRevisi;
+                            }
+                            array_push($dataOnType[$indexSales][2], (object)[
+                                'idSalesFill' => $datasales->listSaless[$j]->pivot->id,
+                                // 'sales' => $namaSales,
+                                'idCuRev' => $idCuRevisi,
+                                'idTotalRev' => $idTotalRevisi,
+                                'cuQty' => $cuQty,
+                                'totalQty' => $totalQty,
+                                // 'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            ]);
+                        }
+                    }
+                }
+                if ($dataOnType != null) {
+                    array_push($allDataArray, (object)[
+                        'type' => $allTypeSales[$i]->type,
+                        'sales' => $dataOnType
+                    ]);
+                }
+            }
+        }
+        return response()->json($allDataArray);
+    }
+
     public function showOnSalesFill($id)
     {
         $salesFill = salesFill::find($id);

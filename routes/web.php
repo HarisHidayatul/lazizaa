@@ -102,6 +102,7 @@ Route::get('salesHarian/user/showTable/{id}/{date}/{idSesi}', [salesHarianContro
 Route::get('salesHarian/user/showAllData/{id}/{date}/{idSesi}', [salesHarianController::class, 'showAllData']); //show id untuk outlet
 
 Route::get('salesHarian/user/showAllSesi/{idOutlet}/{date}', [salesHarianController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
+Route::get('salesHarian/user/showAllSesi2/{idOutlet}/{date}', [salesHarianController::class, 'showAllDataSesi2']); //menampilkan data di hari itu sesuai sesi
 
 
 Route::get('salesHarian/show/salesFill/{id}', [salesHarianController::class, 'showOnSalesFill']); //menampilkan data seperti showAllData
@@ -312,7 +313,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
 
     Route::get('user/detail/all/salesHarian/{dateSelect}', function ($dateSelect) {
-        return view('userControl2.salesHarianDetailAll', [
+        return view('userControl2.salesHarianDetailAll2', [
             'dateSelect' => $dateSelect
         ]);
     });
