@@ -362,6 +362,7 @@ class fsoHarianController extends Controller
             for ($i = 0; $i < $dataso->count(); $i++) {
                 $soArray = [];
                 $revisionFound = false;
+                $idSesi = $dataso[$i]->idSesi;
                 for ($j = 0; $j < ($dataso[$i]->listItemSOs->count()); $j++) {
                     $idRevisi = $dataso[$i]->listItemSOs[$j]->pivot->idRevisi;
                     if ($idRevisi == '2') {
@@ -376,7 +377,9 @@ class fsoHarianController extends Controller
                             'satuan' => $dataso[$i]->listItemSOs[$j]->satuans['Satuan'],
                             'idRev' => $idRevisi,
                             'qty' => $qty,
+                            'qtyAwal' => $dataso[$i]->listItemSOs[$j]->pivot->quantity,
                             'namaPengisi' => $userPengisi['Username'],
+                            'idSesi' => $idSesi
                         ]);
                     }
                 }
@@ -414,6 +417,7 @@ class fsoHarianController extends Controller
             for ($i = 0; $i < $dataso->count(); $i++) {
                 $soArray = [];
                 $revisionFound = false;
+                $idSesi = $dataso[$i]->idSesi;
                 for ($j = 0; $j < ($dataso[$i]->listItemSOs->count()); $j++) {
                     $idRevisi = $dataso[$i]->listItemSOs[$j]->pivot->idRevisi;
                     if ($idRevisi == '3') {
@@ -428,6 +432,7 @@ class fsoHarianController extends Controller
                             'satuan' => $dataso[$i]->listItemSOs[$j]->satuans['Satuan'],
                             'idRev' => $idRevisi,
                             'qty' => $qty,
+                            'idSesi' => $idSesi,
                             'namaPengisi' => $dataso[$i]->dUsers->Username,
                             'namaPerevisi' => $perevisi['Username'],
                         ]);

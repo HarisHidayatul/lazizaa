@@ -97,6 +97,7 @@
             font-weight: 600;
             font-size: 20px;
             line-height: 140%;
+            margin-top: 20px;
         }
 
         .itemSales {
@@ -175,6 +176,86 @@
 
             color: #B20731;
         }
+
+        .wrapEdit {
+            position: fixed;
+            right: 30px;
+            bottom: 100px;
+        }
+
+        .wrapEdit div {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            width: 106px;
+            height: 44px;
+            background: #B20731;
+            border: 1px solid white;
+            color: #FFFFFF;
+            border-radius: 6px;
+            text-align: center;
+            align-content: center;
+            align-items: center;
+            padding-top: 10px;
+            cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 50px;
+            width: 100%;
+            background: #B20731;
+        }
+
+        .imgFooter {
+            height: 105px;
+            width: 120px;
+            margin-bottom: -25px;
+        }
+
+        .tittleFooter {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: center;
+            color: #FFFFFF;
+            padding-bottom: 20px;
+        }
+
+        .borderFooter {
+            left: 30px;
+            width: 85vw;
+            max-width: 400px;
+            border-bottom: 1px solid #FFFFFF;
+        }
+
+        .socialMediaLabel {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+            margin-top: 25px;
+        }
+
+        .footerLaporta {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            /* identical to box height */
+
+            text-align: center;
+
+            color: #FFFFFF;
+
+        }
     </style>
 </head>
 
@@ -199,7 +280,8 @@
                 <h2 style="margin-left: 5px;">{{ session('Outlet') }}</h2>
             </div>
             <div class="dateTop" id="dateTop">XXXXX XX XXXXXXX</div>
-            <div class="typeSales">Organik</div>
+            <div id="allDataHTML"></div>
+            {{-- <div class="typeSales">Organik</div>
             <div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(0);">
                 <div class="d-flex justify-content-start align-items-center">
                     <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
@@ -403,10 +485,33 @@
                     <div>Total Sales</div>
                     <div>Rp. 1,638,192</div>
                 </div>
+            </div> --}}
+        </div>
+    </div>
+    <div style="height: 150px;"></div>
+    <div class="wrapEdit">
+        <div onclick="buttonEditClick();">Edit</div>
+    </div>
+    <div class="d-flex justify-content-center footer">
+        <div>
+            <div class="d-flex justify-content-center">
+                <img class="imgFooter" src="{{ url('img/lazizaaHome.png') }}" alt="">
+            </div>
+            <div class="tittleFooter">PT LAZIZAA RAHMAT SEMESTA</div>
+            <div class="d-flex justify-content-center borderFooter"></div>
+            <div class="socialMediaLabel">Social media</div>
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
+                <img src="{{ url('img/icon/instagram.png') }}" alt="" style="height: 20px; width: 20px;">
+                <div style="width: 40px;"></div>
+                <img src="{{ url('img/icon/facebook.png') }}" alt="" style="width: 12px; height: 23px;">
+                <div style="width: 40px;"></div>
+                <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
             </div>
         </div>
     </div>
-    <div style="height: 750px;"></div>
 </body>
 <script>
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
@@ -420,6 +525,7 @@
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateTop').innerHTML = stringDay;
         resetDetailSesi();
+        getAllDataSesi();
     });
 
     function getAllDataSesi() {
@@ -430,7 +536,101 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                var allDataHTML = '';
+                var totalHTML = '';
+                var indexButton = 0;
+                var totalAll = 0;
+
+                totalHTML += '<div style="margin-top: 25px;">';
                 
+                for (var i = 0; i < obj.length; i++) {
+                    allDataHTML += '<div class="typeSales">';
+                    allDataHTML += obj[i].type;
+                    allDataHTML += '</div>';
+
+                    for (var j = 0; j < obj[i].sales.length; j++) {
+                        var detailSesi = '';
+                        var totalPerSesi = '';
+                        var totalValPerSesi = 0;
+                        var cuValPerSesi = 0;
+                        detailSesi += '<div class="boxDetailSesi" name="detailSesi">';
+                        totalPerSesi += '<div style="margin-top: 15px;">';
+                        for (var k = 0; k < obj[i].sales[j][2].length; k++) {
+                            detailSesi += '<div class="detailSesi">';
+                            detailSesi += '<div class="d-flex justify-content-start">';
+                            detailSesi += '<div>Sesi ' + obj[i].sales[j][2][k].sesi + '</div>';
+                            if ((obj[i].sales[j][2][k].idCuRev == '2') || (obj[i].sales[j][2][k]
+                                    .idTotalRev == '2')) {
+                                var urlRev = "{{ url('img/icon/tertunda.png') }}";
+                                detailSesi += '<img src="' + urlRev +
+                                    '" alt="" style="height: 15px; margin-top:10px;">';
+                            } else if ((obj[i].sales[j][2][k].idCuRev == '3') || (obj[i].sales[j][2][k]
+                                    .idTotalRev == '3')) {
+                                var urlRev = "{{ url('img/icon/sukses.png') }}";
+                                detailSesi += '<img src="' + urlRev +
+                                    '" alt="" style="height: 15px; margin-top:10px;">';
+                            }
+                            detailSesi += '</div><div class="d-flex justify-content-between">';
+                            detailSesi += '<div><span>CU</span></div>';
+                            detailSesi += '<div>' + obj[i].sales[j][2][k].cuQty + '</div>';
+                            detailSesi +=
+                                '</div><div style="width: 100%; border: 1px solid #E0E0E0;"></div>';
+                            detailSesi += '<div class="d-flex justify-content-between"><div>Total</div>';
+                            detailSesi += '<div>Rp ' + obj[i].sales[j][2][k].totalQty.toLocaleString() +
+                                '</div></div></div>';
+
+                            totalPerSesi += '<div class="d-flex justify-content-between totalPerSesi">';
+                            totalPerSesi += '<div>Sesi ' + obj[i].sales[j][2][k].sesi + '</div>';
+                            totalPerSesi += '<div>Rp. ' + obj[i].sales[j][2][k].totalQty.toLocaleString() +
+                                '</div></div>';
+                            totalValPerSesi += obj[i].sales[j][2][k].totalQty;
+                            cuValPerSesi += obj[i].sales[j][2][k].cuQty;
+
+                            totalAll +=  obj[i].sales[j][2][k].totalQty;
+                        }
+
+                        totalPerSesi +=
+                            '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                        totalPerSesi +=
+                            '<div class="d-flex justify-content-between totalAll"><div>Sub Total</div>';
+                        totalPerSesi += '<div>Rp. ' + totalValPerSesi.toLocaleString() +
+                            '</div></div></div>';
+
+                        detailSesi += totalPerSesi + '</div>';
+
+                        allDataHTML +=
+                            '<div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(';
+                        allDataHTML += indexButton;
+                        allDataHTML += ');"><div class="d-flex justify-content-start align-items-center">';
+                        allDataHTML += '<img src="' + "{{ url('img/dashboard/laporanSales.png') }}" +
+                            '" alt="" style="height: 35px;">';
+                        allDataHTML += '<div style="margin-left: 10px;">';
+                        allDataHTML += '<div class="itemSales">' + obj[i].sales[j][1] + '</div>';
+                        allDataHTML += '<div class="detailSales">CU <span>';
+                        allDataHTML += cuValPerSesi;
+                        allDataHTML += '</span> Total <span>Rp ';
+                        allDataHTML += totalValPerSesi.toLocaleString();
+                        allDataHTML += '</span></div></div></div>';
+                        allDataHTML += '<img src="' + "{{ url('img/icon/arrowDown.png') }}" +
+                            '" alt="" style="height: 8px;">'
+                        allDataHTML += '</div>';
+                        allDataHTML += detailSesi;
+
+                        indexButton++;
+
+                        totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                        totalHTML += '<div>' + obj[i].sales[j][1] + '</div>';
+                        totalHTML += '<div>Rp. ' + totalValPerSesi.toLocaleString() + '</div></div>';
+                    }
+                }
+                totalHTML += '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Sales</div>';
+                totalHTML += '<div>Rp. ' + totalAll.toLocaleString() + '</div></div></div>';
+
+                allDataHTML += totalHTML;
+
+                document.getElementById('allDataHTML').innerHTML = allDataHTML;
+                resetDetailSesi();
             },
             error: function(req, err) {}
         });
@@ -450,6 +650,12 @@
         for (var i = 0; i < elementDetail.length; i++) {
             elementDetail[i].style.display = 'none';
         }
+    }
+    function goToDashboard() {
+        window.location.href = "{{ url('user/dashboard') }}";
+    }
+    function buttonEditClick() {
+        window.location.href = "{{ url('user/salesHarian') }}" + '/' + "{{ $dateSelect }}";
     }
 </script>
 

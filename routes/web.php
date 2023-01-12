@@ -269,7 +269,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('accountingControl.revisi.sales');
     });
     Route::get('accounting/revisi/so', function () {
-        return view('accountingControl.revisi.so');
+        return view('accountingControl.revisi.so.index');
     });
     Route::get('accounting/revisi/pattyCash', function () {
         return view('accountingControl.revisi.pattyCash');
