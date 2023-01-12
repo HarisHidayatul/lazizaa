@@ -71,8 +71,10 @@ Route::get('soHarian/edit/data/{id}', [fsoHarianController::class, 'editSoFill']
 Route::get('soHarian/edit/userFill/{id}', [fsoHarianController::class, 'editFsoHarian']);
 Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRev']);
 // Route::get('soHarian/show/data/all', [fsoHarianController::class, 'showAllDataSo']);
-Route::get('soHarian/show/revision/all', [fsoHarianController::class, 'showDateRevision']);
-Route::get('soHarian/show/revision/done', [fsoHarianController::class, 'showDateRevisionDone']);
+
+Route::get('soHarian/show/revision/all/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevision']);
+Route::get('soHarian/show/revision/done/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevisionDone']);
+
 Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
 Route::get('soHarian/setting/soBatas/show/{idOutlet}', [fsoHarianController::class, 'showBatas']);
 Route::get('soHarian/setting/soBatas/store/{idOutlet}', [fsoHarianController::class, 'storeBatas']);
@@ -107,9 +109,12 @@ Route::get('salesHarian/user/showAllSesi2/{idOutlet}/{date}', [salesHarianContro
 
 Route::get('salesHarian/show/salesFill/{id}', [salesHarianController::class, 'showOnSalesFill']); //menampilkan data seperti showAllData
 
-Route::get('salesHarian/show/revision/all', [salesHarianController::class, 'showDateRevision']); //menampilkan semua tanggal revisi
+Route::get('salesHarian/show/revision/all/{fromDate}/{toDate}', [salesHarianController::class, 'showDateRevision']); //menampilkan semua tanggal revisi
 Route::get('salesHarian/show/revision/outlet/{id}', [salesHarianController::class, 'showRevisionOutlet']); //menampilkan revisi outlet berdasarkan id
-Route::get('salesHarian/show/revision/done', [salesHarianController::class, 'showDateRevisionDone']); //menampilkan semua tanggal revisi
+
+Route::get('salesHarian/show/revision/done/{fromDate}/{toDate}', [salesHarianController::class, 'showDateRevisionDone']); //menampilkan semua tanggal revisi
+
+
 Route::get('salesHarian/show/revision/done/outlet/{id}', [salesHarianController::class, 'showRevisionDoneOutlet']);
 
 Route::get('salesHarian/items/show/req', [salesHarianController::class, 'showAllRequest']);
@@ -140,8 +145,8 @@ Route::get('pattyCash/brand/show/item', [pattyCashController::class, 'showItemOn
 Route::get('pattyCash/user/showTable/{id}/{date}', [pattyCashController::class, 'show']); //show id untuk outlet
 Route::get('pattyCash/user/showAllData/{id}/{date}/{idSesi}', [pattyCashController::class, 'showAllData']); //show id untuk outlet
 
-Route::get('pattyCash/show/revision/all', [pattyCashController::class, 'showDateRevision']);
-Route::get('pattyCash/show/revision/done', [pattyCashController::class, 'showDateRevisionDone']);
+Route::get('pattyCash/show/revision/all/{fromDate}/{toDate}', [pattyCashController::class, 'showDateRevision']);
+Route::get('pattyCash/show/revision/done/{fromDate}/{toDate}', [pattyCashController::class, 'showDateRevisionDone']);
 
 Route::get('pattyCash/outlet/show', [pattyCashController::class, 'showAllOutlet']);
 Route::get('pattyCash/items/store', [pattyCashController::class, 'storeItem']);
@@ -187,8 +192,9 @@ Route::get('waste/user/showTable/{id}/{date}', [wasteController::class, 'show'])
 Route::get('waste/data/getId', [wasteController::class, 'showAndCreateID']);
 Route::get('waste/store/data', [wasteController::class, 'store']);
 Route::get('waste/edit/qty/data/{id}', [wasteController::class, 'editQty']);
-Route::get('waste/show/revision/all', [wasteController::class, 'showDateRevision']);
-Route::get('waste/show/revision/done', [wasteController::class, 'showDateRevisionDone']);
+
+Route::get('waste/show/revision/all/{fromDate}/{toDate}', [wasteController::class, 'showDateRevision']);
+Route::get('waste/show/revision/done/{fromDate}/{toDate}', [wasteController::class, 'showDateRevisionDone']);
 
 Route::get('waste/show/revision/outlet/{id}', [wasteController::class, 'showRevisionOutlet']); //menampilkan revisi outlet berdasarkan id
 Route::get('waste/show/revision/done/outlet/{id}', [wasteController::class, 'showRevisionDoneOutlet']);

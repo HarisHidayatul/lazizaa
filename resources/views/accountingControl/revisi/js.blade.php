@@ -1,8 +1,17 @@
 @extends('accountingControl.layout.index')
 
 @section('filljs')
-    <script>
+    <script>        
         $(document).ready(function() {
+            var today = new Date();
+            var month = today.getMonth() + 1;
+            var stringMonth = '';
+            if(month / 10 == 0){
+                stringMonth = month;
+            }else{
+                stringMonth = '0' + month%10;
+            }
+            console.log(stringMonth);
             var topNav = [
                 ["SO Harian","{{ url('accounting/revisi/so') }}"],
                 ["Sales Harian","{{ url('accounting/revisi/sales') }}"],
@@ -21,7 +30,11 @@
             document.getElementById('linkContent').innerHTML = "Revisi";
             
             document.getElementById('revisiTabMenu').classList.add("active");
+
+            document.getElementById('startDate').value = today.getFullYear() + '-' + stringMonth + '-' + today.getDate();
+            document.getElementById('stopDate').value = today.getFullYear() + '-' + stringMonth + '-' + today.getDate();
         });
     </script>
+
     @yield('revisijs')
 @endsection

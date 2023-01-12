@@ -351,9 +351,9 @@ class fsoHarianController extends Controller
         echo $dataa;
     }
 
-    public function showDateRevision()
+    public function showDateRevision($fromDate,$toDate)
     {
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         $soDate = [];
         for ($h = 0; $h < $tanggalAll->count(); $h++) {
             $dataso = $tanggalAll[$h]->fsoharians;
@@ -406,9 +406,9 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function showDateRevisionDone()
+    public function showDateRevisionDone($fromDate,$toDate)
     {
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         $soDate = [];
         for ($h = 0; $h < $tanggalAll->count(); $h++) {
             $dataso = $tanggalAll[$h]->fsoharians;

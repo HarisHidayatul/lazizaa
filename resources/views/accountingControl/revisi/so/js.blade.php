@@ -20,8 +20,8 @@
             document.getElementById('soTabMenu').classList.add("active");
             document.getElementById('subFillContent').innerHTML = "SO Harian"
             setTable(0);
-            showAllRevisionSo();
-            showAllRevisionDoneSo();
+            // showAllRevisionSo();
+            // showAllRevisionDoneSo();
         });
 
         function revisiAllClick() {
@@ -262,8 +262,12 @@
         }
 
         function showAllRevisionSo() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            var urlDate = "{{ url('soHarian/show/revision/all') }}" + '/' + startDate;
+            urlDate += '/' + stopDate;
             $.ajax({
-                url: "{{ url('soHarian/show/revision/all') }}",
+                url: urlDate,
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
@@ -277,8 +281,12 @@
         }
 
         function showAllRevisionDoneSo() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            var urlDate = "{{ url('soHarian/show/revision/done') }}" + '/' + startDate;
+            urlDate += '/' + stopDate;
             $.ajax({
-                url: "{{ url('soHarian/show/revision/done') }}",
+                url: urlDate,
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));

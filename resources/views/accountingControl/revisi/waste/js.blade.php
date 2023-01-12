@@ -263,8 +263,12 @@
         }
 
         function showAllRevisionWaste() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            var urlDate = "{{ url('waste/show/revision/all') }}" + '/' + startDate;
+            urlDate += '/' + stopDate;
             $.ajax({
-                url: "{{ url('waste/show/revision/all') }}",
+                url: urlDate,
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
@@ -278,8 +282,13 @@
         }
 
         function showAllRevisionDoneWaste() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            var urlDate = "{{ url('waste/show/revision/done') }}" + '/' + startDate;
+            urlDate += '/' + stopDate;
+
             $.ajax({
-                url: "{{ url('waste/show/revision/done') }}",
+                url: urlDate,
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));

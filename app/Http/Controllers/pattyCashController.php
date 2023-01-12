@@ -510,9 +510,9 @@ class pattyCashController extends Controller
         ]);
     }
 
-    public function showDateRevision()
+    public function showDateRevision($fromDate,$toDate)
     {
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($tanggalAll[0]->pattyCashHarians);
         $pattyCashDate = [];
         for ($h = 0; $h < $tanggalAll->count(); $h++) {
@@ -648,9 +648,9 @@ class pattyCashController extends Controller
         ]);
     }
 
-    public function showDateRevisionDone()
+    public function showDateRevisionDone($fromDate,$toDate)
     {
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($tanggalAll[0]->pattyCashharians);
         $pattyCashDate = [];
         for ($h = 0; $h < $tanggalAll->count(); $h++) {
