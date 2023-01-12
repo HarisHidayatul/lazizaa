@@ -266,16 +266,16 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('adminControl.setItem.sales');
     });
     Route::get('accounting/revisi/sales', function () {
-        return view('accountingControl.revisi.sales');
+        return view('accountingControl.revisi.sales.index');
     });
     Route::get('accounting/revisi/so', function () {
         return view('accountingControl.revisi.so.index');
     });
     Route::get('accounting/revisi/pattyCash', function () {
-        return view('accountingControl.revisi.pattyCash');
+        return view('accountingControl.revisi.pattyCash.index');
     });
     Route::get('accounting/revisi/waste', function () {
-        return view('accountingControl.revisi.waste');
+        return view('accountingControl.revisi.waste.index');
     });
     Route::get('user/soHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.soHarian', [

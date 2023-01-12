@@ -60,25 +60,25 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link" id="soTabMenu">
+                                <a href="{{ url('accounting/revisi/so') }}" class="nav-link" id="soTabMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>SO Harian</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('accounting/revisi/sales') }}" class="nav-link">
+                                <a href="{{ url('accounting/revisi/sales') }}" class="nav-link" id="salesTabMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Sales Harian</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('accounting/revisi/pattyCash') }}" class="nav-link">
+                                <a href="{{ url('accounting/revisi/pattyCash') }}" class="nav-link" id="pattyCashTabMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Patty Cash</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('accounting/revisi/waste') }}" class="nav-link">
+                                <a href="{{ url('accounting/revisi/waste') }}" class="nav-link" id="wasteTabMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Waste</p>
                                 </a>
@@ -106,12 +106,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Revisi</h1>
+                        <h1 class="m-0" id="tittleContent"></h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Revisi</a></li>
-                            <li class="breadcrumb-item active">So Harian</li>
+                            <li class="breadcrumb-item"><a href="#" id="linkContent"></a></li>
+                            <li class="breadcrumb-item active" id="subFillContent"></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->

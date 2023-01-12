@@ -640,54 +640,56 @@
                 });
             }
         }
-        for (var i = 0; i < dataIdItemEdit.length; i++) {
-            for (var j = 0; j < dataIdItem.length; j++) {
-                if (dataIdItemEdit[i] == dataIdItem[j]) {
-                    var idRow = 'r' + j;
-                    var valTotalInput = parseInt(valueTotalAll[j].rawValue);
-                    var valCuInput = document.getElementById(idRow + 'c0').value;
-                    if (valTotalInput != dataTotalEdit[i]) {
-                        $.ajax({
-                            url: "{{ url('salesHarian/edit/total/data/') }}" + "/" + dataSalesEdit[i],
-                            type: 'get',
-                            data: {
-                                totalRevisi: valTotalInput,
-                                idPengisi: "{{ session('idPengisi') }}"
-                            },
-                            success: function(response) {
+        for (var k = 0; k < 5; k++) {
+            for (var i = 0; i < dataIdItemEdit.length; i++) {
+                for (var j = 0; j < dataIdItem.length; j++) {
+                    if (dataIdItemEdit[i] == dataIdItem[j]) {
+                        var idRow = 'r' + j;
+                        var valTotalInput = parseInt(valueTotalAll[j].rawValue);
+                        var valCuInput = document.getElementById(idRow + 'c0').value;
+                        if (valTotalInput != dataTotalEdit[i]) {
+                            $.ajax({
+                                url: "{{ url('salesHarian/edit/total/data/') }}" + "/" + dataSalesEdit[i],
+                                type: 'get',
+                                data: {
+                                    totalRevisi: valTotalInput,
+                                    idPengisi: "{{ session('idPengisi') }}"
+                                },
+                                success: function(response) {
 
-                            },
-                            error: function(req, err) {
-                                console.log(err);
-                                // return 0
-                            }
-                        });
-                    }
-                    if (valCuInput != dataCuEdit[i]) {
-                        $.ajax({
-                            url: "{{ url('salesHarian/edit/cu/data/') }}" + "/" + dataSalesEdit[i],
-                            type: 'get',
-                            data: {
-                                cuRevisi: valCuInput,
-                                idPengisi: "{{ session('idPengisi') }}"
-                            },
-                            success: function(response) {
-                                // console.log(response);
-                            },
-                            error: function(req, err) {
-                                console.log(err);
-                                // return 0
-                            }
-                        });
-                    }
-                    // dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
-                    // dataCuEdit.push(obj.itemSales[0].Item[i].cuQty);
-                    // dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
+                                },
+                                error: function(req, err) {
+                                    console.log(err);
+                                    // return 0
+                                }
+                            });
+                        }
+                        if (valCuInput != dataCuEdit[i]) {
+                            $.ajax({
+                                url: "{{ url('salesHarian/edit/cu/data/') }}" + "/" + dataSalesEdit[i],
+                                type: 'get',
+                                data: {
+                                    cuRevisi: valCuInput,
+                                    idPengisi: "{{ session('idPengisi') }}"
+                                },
+                                success: function(response) {
+                                    // console.log(response);
+                                },
+                                error: function(req, err) {
+                                    console.log(err);
+                                    // return 0
+                                }
+                            });
+                        }
+                        // dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
+                        // dataCuEdit.push(obj.itemSales[0].Item[i].cuQty);
+                        // dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
 
-                    // valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
-                    // document.getElementById(idRow + 'c0').value = obj.itemSales[0].Item[i].cuQty;
+                        // valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
+                        // document.getElementById(idRow + 'c0').value = obj.itemSales[0].Item[i].cuQty;
+                    }
+                    // console.log("Tessss");
                 }
-                // console.log("Tessss");
             }
         }
         // goToDashboard();

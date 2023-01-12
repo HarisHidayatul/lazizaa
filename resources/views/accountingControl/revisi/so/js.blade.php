@@ -18,7 +18,7 @@
 
         $(document).ready(function() {
             document.getElementById('soTabMenu').classList.add("active");
-
+            document.getElementById('subFillContent').innerHTML = "SO Harian"
             setTable(0);
             showAllRevisionSo();
             showAllRevisionDoneSo();
@@ -129,8 +129,7 @@
                 for (var j = 0; j < obj.itemSo[i].Item.length; j++) {
                     for (var k = 0; k < obj.itemSo[i].Item[j].Item.length; k++) {
                         var tempData = [];
-                        countData++;
-                        dataTable += '<tr>';
+                        dataTable += '<tr onClick="checkRow(' + countData + ')">';
 
                         dataTable += '<td>';
                         dataTable += '<input type="checkbox" value="" name="checkBoxRow">';
@@ -186,12 +185,22 @@
                         tempData.push(obj.itemSo[i].Item[j].Item[k].idSoFill);
                         dataAllSo.push(tempData);
                         // idSoFill.push(obj.itemSo[i].Item[j].Item[k].idSoFill);
+                        countData++;
                     }
                 }
             }
-            document.getElementById("toDoCountSo").innerHTML = countData;
+            document.getElementById("toDoCount").innerHTML = countData;
             // console.log(dataTable);
             $('#mainTableSo>tbody').empty().append(dataTable);
+        }
+
+        function checkRow(index) {
+            var checkBoxElement = document.getElementsByName('checkBoxRow')[index];
+            if(checkBoxElement.checked) {
+                checkBoxElement.checked = false;
+            } else {
+                checkBoxElement.checked = true;
+            }
         }
 
         function showEdit() {
@@ -247,7 +256,7 @@
                     }
                 }
             }
-            document.getElementById("doneCountSo").innerHTML = countData;
+            document.getElementById("doneCount").innerHTML = countData;
             // console.log(dataTable);
             $('#mainTableSoDone>tbody').empty().append(dataTable);
         }

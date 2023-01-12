@@ -543,16 +543,17 @@ class wasteController extends Controller
             for ($i = 0; $i < $datawaste->count(); $i++) {
                 $wasteArray = [];
                 $revisionFound = false;
+                $idSesi = $datawaste[$i]->idSesi;
                 for ($j = 0; $j < ($datawaste[$i]->listItemWastes->count()); $j++) {
                     $idQtyRevisi = $datawaste[$i]->listItemWastes[$j]->pivot->idRevQuantity;
                     if (($idQtyRevisi == '2')) {
                         $revisionFound = true;
-                        $quantity = 0;
+                        $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantity;
+                        $quantitySebelum = $quantity;
                         if ($idQtyRevisi == '2') {
                             $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantityRevisi;
-                        } else {
-                            $quantity = $datawaste[$i]->listItemWastes[$j]->pivot->quantity;
                         }
+
                         $userPengisi = dUser::find($datawaste[$i]->listItemWastes[$j]->pivot->idPengisi);
                         array_push($wasteArray, (object)[
                             'idWasteFill' => $datawaste[$i]->listItemWastes[$j]->pivot->id,
@@ -561,6 +562,8 @@ class wasteController extends Controller
                             'waste' => $datawaste[$i]->listItemWastes[$j]->Item,
                             'idQty' => $idQtyRevisi,
                             'quantity' => $quantity,
+                            'quantitySebelum' => $quantitySebelum,
+                            'idSesi' => $idSesi,
                             'jenis' => $datawaste[$i]->listItemWastes[$j]->jenisBahans['jenis'],
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
                         ]);
@@ -661,6 +664,7 @@ class wasteController extends Controller
             for ($i = 0; $i < $datawaste->count(); $i++) {
                 $wasteArray = [];
                 $revisionFound = false;
+                $idSesi = $datawaste[$i]->idSesi;
                 for ($j = 0; $j < ($datawaste[$i]->listItemWastes->count()); $j++) {
                     $idQtyRevisi = $datawaste[$i]->listItemWastes[$j]->pivot->idRevQuantity;
                     if (($idQtyRevisi == '3')) {
@@ -678,6 +682,7 @@ class wasteController extends Controller
                             // 'idListwaste' => $datawaste[$i]->listItemWastes[$j]->id,
                             'satuan' => $datawaste[$i]->listItemWastes[$j]->satuans['Satuan'],
                             'waste' => $datawaste[$i]->listItemWastes[$j]->Item,
+                            'idSesi' => $idSesi,
                             'idQty' => $idQtyRevisi,
                             'quantity' => $quantity,
                             'jenis' => $datawaste[$i]->listItemWastes[$j]->jenisBahans['jenis'],

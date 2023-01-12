@@ -523,22 +523,21 @@ class pattyCashController extends Controller
             for ($i = 0; $i < $dataPattyCash->count(); $i++) {
                 $pattyCashArray = [];
                 $revisionFound = false;
+                $idSesi = $dataPattyCash[$i]->idSesi;
                 for ($j = 0; $j < ($dataPattyCash[$i]->listItemPattyCashs->count()); $j++) {
                     $idQtyRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idRevQuantity;
                     $idTotalRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idRevTotal;
                     if (($idQtyRevisi == '2') or ($idTotalRevisi == '2')) {
                         $revisionFound = true;
-                        $qtyRevisi = 0;
-                        $total = 0;
+                        $qtyRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->quantity;
+                        $qtyBefore = $qtyRevisi;
+                        $total = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->total;
+                        $totalBefore = $total;
                         if ($idQtyRevisi == '2') {
                             $qtyRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->quantityRevisi;
-                        } else {
-                            $qtyRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->quantity;
                         }
                         if ($idTotalRevisi == '2') {
                             $total = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->totalRevisi;
-                        } else {
-                            $total = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->total;
                         }
                         $userPengisi = dUser::find($dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idPengisi);
                         array_push($pattyCashArray, (object)[
@@ -549,8 +548,11 @@ class pattyCashController extends Controller
                             'idQtyRev' => $idQtyRevisi,
                             'idTotalRev' => $idTotalRevisi,
                             'qty' => $qtyRevisi,
+                            'qtyBefore' => $qtyBefore,
                             'total' => $total,
+                            'totalBefore' => $totalBefore,
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            'idSesi' => $idSesi,
                         ]);
                     }
                 }
@@ -590,6 +592,7 @@ class pattyCashController extends Controller
             for ($i = 0; $i < $dataPattyCash->count(); $i++) {
                 $pattyCashArray = [];
                 $revisionFound = false;
+                $idSesi = $dataPattyCash[$i]->idSesi;
                 for ($j = 0; $j < ($dataPattyCash[$i]->listItemPattyCashs->count()); $j++) {
                     $idQtyRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idRevQuantity;
                     $idTotalRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idRevTotal;
@@ -617,6 +620,7 @@ class pattyCashController extends Controller
                             'idTotalRev' => $idTotalRevisi,
                             'qty' => $qtyRevisi,
                             'total' => $total,
+                            'idSesi' => $idSesi,
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
                         ]);
                     }
@@ -657,6 +661,7 @@ class pattyCashController extends Controller
             for ($i = 0; $i < $dataPattyCash->count(); $i++) {
                 $pattyCashArray = [];
                 $revisionFound = false;
+                $idSesi = $dataPattyCash[$i]->idSesi;
                 for ($j = 0; $j < ($dataPattyCash[$i]->listItemPattyCashs->count()); $j++) {
                     $idQtyRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idRevQuantity;
                     $idTotalRevisi = $dataPattyCash[$i]->listItemPattyCashs[$j]->pivot->idRevTotal;
@@ -685,6 +690,7 @@ class pattyCashController extends Controller
                             'idTotalRev' => $idTotalRevisi,
                             'qty' => $qtyRevisi,
                             'total' => $total,
+                            'idSesi' => $idSesi,
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
                             'namaPerevisi' => $userPerevisi['Nama Lengkap']
                         ]);

@@ -17,6 +17,9 @@
                 topNavHTML += '</a></li>';
             }
             document.getElementById('topNav').innerHTML = topNavHTML;
+            document.getElementById('tittleContent').innerHTML = "Revisi";
+            document.getElementById('linkContent').innerHTML = "Revisi";
+            
             document.getElementById('revisiTabMenu').classList.add("active");
         });
     </script>

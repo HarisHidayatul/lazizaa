@@ -318,13 +318,13 @@ class salesHarianController extends Controller
                             $idSales = $datasales->listSaless[$j]->id;
                             $namaSales = $datasales->listSaless[$j]->sales;
                             for ($indexSales = 0; $indexSales < count($dataOnType); $indexSales++) {
-                                if($dataOnType[$indexSales][0] == $idSales){
+                                if ($dataOnType[$indexSales][0] == $idSales) {
                                     $foundSales = true;
                                     break;
                                 }
                             }
-                            if($foundSales == false){
-                                array_push($dataOnType, [$idSales,$namaSales,array()]);
+                            if ($foundSales == false) {
+                                array_push($dataOnType, [$idSales, $namaSales, array()]);
                             }
                             // @dd($dataOnType[0][2]);
 
@@ -442,23 +442,25 @@ class salesHarianController extends Controller
             for ($i = 0; $i < $datasales->count(); $i++) {
                 $salesArray = [];
                 $revisionFound = false;
+                $idSesi = $datasales[$i]->idSesi;
                 for ($j = 0; $j < ($datasales[$i]->listSaless->count()); $j++) {
                     $idCuRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiCu;
                     $idTotalRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiTotal;
                     if (($idCuRevisi == '2') or ($idTotalRevisi == '2')) {
                         $revisionFound = true;
-                        $cuQty = 0;
-                        $totalQty = 0;
+                        $cuQty = $datasales[$i]->listSaless[$j]->pivot->cu;
+                        $cuSblm = $cuQty;
+                        $totalQty = $datasales[$i]->listSaless[$j]->pivot->total;
+                        $totalSblm = $totalQty;
+
                         if ($idCuRevisi == '2') {
                             $cuQty = $datasales[$i]->listSaless[$j]->pivot->cuRevisi;
-                        } else {
-                            $cuQty = $datasales[$i]->listSaless[$j]->pivot->cu;
                         }
+
                         if ($idTotalRevisi == '2') {
                             $totalQty = $datasales[$i]->listSaless[$j]->pivot->totalRevisi;
-                        } else {
-                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->total;
                         }
+
                         $userPengisi = dUser::find($datasales[$i]->listSaless[$j]->pivot->idPengisi);
                         array_push($salesArray, (object)[
                             'idSalesFill' => $datasales[$i]->listSaless[$j]->pivot->id,
@@ -466,9 +468,15 @@ class salesHarianController extends Controller
                             'sales' => $datasales[$i]->listSaless[$j]->sales,
                             'idCuRev' => $idCuRevisi,
                             'idTotalRev' => $idTotalRevisi,
+                            
                             'cuQty' => $cuQty,
+                            'cuSblm' => $cuSblm,
+
                             'totalQty' => $totalQty,
+                            'totalSblm' => $totalSblm,
+                            
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
+                            'idSesi' => $idSesi
                         ]);
                     }
                 }
@@ -700,6 +708,7 @@ class salesHarianController extends Controller
             for ($i = 0; $i < $datasales->count(); $i++) {
                 $salesArray = [];
                 $revisionFound = false;
+                $idSesi = $datasales[$i]->idSesi;
                 for ($j = 0; $j < ($datasales[$i]->listSaless->count()); $j++) {
                     $idCuRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiCu;
                     $idTotalRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiTotal;
@@ -728,7 +737,8 @@ class salesHarianController extends Controller
                             'cuQty' => $cuQty,
                             'totalQty' => $totalQty,
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
-                            'namaPerevisi' => $userPerevisi['Nama Lengkap']
+                            'namaPerevisi' => $userPerevisi['Nama Lengkap'],
+                            'idSesi' => $idSesi
                         ]);
                     }
                 }
