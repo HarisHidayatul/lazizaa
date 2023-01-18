@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\listItemSO;
+use App\Models\satuan;
 use Illuminate\Http\Request;
 
 class itemSOController extends Controller
@@ -31,6 +32,32 @@ class itemSOController extends Controller
         ]);
     }
 
+    public function showAllItem(){
+        $itemso = listItemSO::orderBy('id', 'DESC')->get();
+        $satuanAll = satuan::all();
+        $arraySO = [];
+        $arrayAllSatuan = [];
+        for($i =0; $i < $satuanAll->count();$i++){
+            array_push($arrayAllSatuan, (object)[
+                'id' => $satuanAll[$i]->id,
+                'satuan' => $satuanAll[$i]->Satuan
+            ]);
+        }
+        for($i=0;$i<$itemso->count();$i++)
+        {
+            array_push($arraySO,(object)[
+                'id' => $itemso[$i]['id'],
+                'item' => $itemso[$i]['Item'],
+                'idSatuan' => $itemso[$i]['idSatuan'],
+                'icon' => $itemso[$i]['icon']
+            ]);
+        }
+        return response()->json([
+            'satuan' => $arrayAllSatuan,
+            'itemSO'=> $arraySO
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -52,7 +79,8 @@ class itemSOController extends Controller
         //
         $dataArray = [
             'Item' => $request->item,
-            'idSatuan' => $request->idSatuan
+            'idSatuan' => $request->idSatuan,
+            'icon' => $request->icon
         ];
         listItemSO::create($dataArray);
     }
@@ -90,6 +118,14 @@ class itemSOController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $listItemSO = listItemSO::find($id);
+        $listItemSO->update([
+            'Item' => $request->item,
+            'idSatuan' => $request->idSatuan,
+            'icon' => $request->icon
+        ]);
+        echo 1;
+        // @dd($listItemSO);
     }
 
     /**

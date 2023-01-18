@@ -105,7 +105,7 @@ class typeSalesController extends Controller
     {
         //Tampilkan listSales dengan parameter type id ini
         // $listSales = typeSales::find($id)->listSaless;
-        $typeSales = typeSales::all();
+        $typeSales = typeSales::with('listSaless')->get();
         $arrayTypeSales = [];
         for ($i = 0; $i < $typeSales->count(); $i++) {
             $arrayListSales = [];
@@ -151,6 +151,7 @@ class typeSalesController extends Controller
             array_push($arrayListSales, (object)[
                 'id' => $listSales[$i]['id'],
                 'sales' => $listSales[$i]['sales'],
+                'type' => $listSales[$i]->typeSaless->type
             ]);
         }
         return response()->json([
@@ -180,6 +181,22 @@ class typeSalesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $listSales = listSales::find($id);
+        $listSales->update([
+            'typeSales' => $request->typeSales,
+            'sales' => $request->sales
+        ]);
+        echo 1;
+        // @dd($listSales);
+    }
+
+    public function updateType(Request $request, $id){
+        $typeSales = typeSales::find($id);
+        $typeSales->update([
+            'type' => $request->type,
+        ]);
+        echo 1;
+        // @dd($typeSales);
     }
 
     /**

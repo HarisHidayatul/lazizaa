@@ -118,8 +118,8 @@ class typeOutletItemController extends Controller
             array_push($dataArray, (object)[
                 'id' => $data[$i]['id'],
                 'Item' => $data[$i]['Item'],
-                'Satuan' => $data[$i]['Satuan'],
-
+                'Satuan' => $data[$i]->satuans->Satuan,
+                'icon' => $data[$i]['icon']
             ]);
         }
         return response()->json([
@@ -193,6 +193,15 @@ class typeOutletItemController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    public function updateType($id,Request $request){
+        $typeOutlet = typeOutlet::find($id);
+        $typeOutlet->update([
+            'Nama Type' => $request->NamaType
+        ]);
+        echo 1;
+        // @dd($typeOutlet);
     }
 
     /**

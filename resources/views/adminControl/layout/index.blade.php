@@ -10,18 +10,8 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a name="topNavbar" class="nav-link"></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a name="topNavbar" class="nav-link"></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a name="topNavbar" class="nav-link"></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a name="topNavbar" class="nav-link"></a>
-                </li>
+                <div id="topNavBar"></div>
+                
             </ul>
 
             <!-- Right navbar links -->
@@ -62,42 +52,42 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
+                   with font-awesome or any other icon font library -->
+                        <li class="nav-item menu-open" id="itemTabMenu">
+                            <a href="#" class="nav-link" id="itemSubMenu">
                                 <i class="nav-icon 	fas fa-bread-slice"></i>
                                 <p>
-                                    Item
+                                    Set Item
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/item/so') }}" class="nav-link active">
+                                    <a href="{{ url('admin/so/item') }}" class="nav-link" id="soSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>SO Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/item/sales') }}" class="nav-link">
+                                    <a href="{{ url('admin/sales/item') }}" class="nav-link" id="salesSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Sales Harian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/item/pattyCash') }}" class="nav-link">
+                                    <a href="{{ url('admin/item/pattyCash') }}" class="nav-link" id="pattyCashSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Patty Cash</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="#" class="nav-link" id="wasteSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Waste</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="#" class="nav-link" id="satuanSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Satuan</p>
                                     </a>
@@ -125,12 +115,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Set Item</h1>
+                            <h1 class="m-0" id="tittleContent"></h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Set Item</a></li>
-                                <li class="breadcrumb-item active">SO</li>
+                                <li class="breadcrumb-item"><a href="#" id="tittleFillContent">Set Item</a></li>
+                                <li class="breadcrumb-item active" id="subFillContent"></li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -144,38 +134,9 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-header border-0">
-                                    <div class="d-flex justify-content-left">
-
-                                    </div>
-                                </div>
                                 <div class="card-body">
-                                    <form>
-                                        <div class="form-row">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="tambahNamaItem"
-                                                    placeholder="Nama Item">
-                                            </div>
-                                            <div class="form-group col-sm-2">
-                                                <select class="form-control" id="showSatuanAdd">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="button" onclick="sendAddItem()"
-                                                    class="btn btn-secondary">Submit</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <table class="table table-striped" id="tableAllItem">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Item</th>
-                                                <th>Satuan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                                    {{-- <div>asfdas</div> --}}
+                                    @yield('fillBody')
                                 </div>
                             </div>
                             <!-- /.card -->

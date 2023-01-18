@@ -1,7 +1,7 @@
 @extends('adminControl.setItem.js')
 
 @section('fillStyle')
-    @yield('cssItemSoHarian')
+    @yield('setItemCSS')
     <style>
 
     </style>

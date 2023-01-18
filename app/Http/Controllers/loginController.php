@@ -6,6 +6,8 @@ use App\Models\dBrand;
 use App\Models\doutlet;
 use App\Models\dUser;
 use App\Models\fsoHarian;
+use App\Models\listSesi;
+use App\Models\salesharian;
 use App\Models\tanggalAll;
 use App\Models\User;
 use Exception;
@@ -146,7 +148,7 @@ class loginController extends Controller
                         'namaPengisi' => $data['Nama Lengkap'],
                         'idTanggal' => $tanggalID
                     ]);
-                    return redirect('admin/item/so');
+                    return redirect('admin/so/item');
                 } else {
                     return redirect('/')->with('message', 'Role tidak terdaftar');
                 }
@@ -161,12 +163,13 @@ class loginController extends Controller
         return redirect('/');
     }
 
-    public function getAllUser(){
+    public function getAllUser()
+    {
         $userAll = dUser::all();
         $allUser = [];
-        for($i =0; $i < $userAll->count(); $i++){
+        for ($i = 0; $i < $userAll->count(); $i++) {
             array_push($allUser, (object)[
-                'id' => $userAll[$i] -> id,
+                'id' => $userAll[$i]->id,
                 'nama' => $userAll[$i]['Nama Lengkap']
             ]);
         }
@@ -253,6 +256,71 @@ class loginController extends Controller
         }
         return response()->json([
             'DataTanggal' => $itemTanggal
+        ]);
+    }
+
+    public function getAllDateBetween($fromDate, $toDate)
+    {
+        //menerapkan eager eloquent
+        $allDate = tanggalAll::with('salesharians', 'fsoharians', 'pattyCashHarians', 'wasteHarians')->whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
+        // @dd($allDate[4]->salesharians);
+        $allOutlet = doutlet::all();
+        $allSesi = listSesi::orderBy('id', 'ASC')->get();
+        // @dd($allSesi);
+        //mapping => sesi 1, sesi 2, sesi 3
+        $itemTanggal = [];
+        for ($i = 0; $i < count($allDate); $i++) {
+            $itemOutlet = [];
+            for ($j = 0; $j < $allOutlet->count(); $j++) {
+                $salesData = [];
+                $fsoData = [];
+                $pattyCashData = [];
+                $wasteData = [];
+
+                for ($k = 0; $k < $allSesi->count(); $k++) {
+                    $salesHarian = $allDate[$i]->salesharians->where('idOutlet', '=', $allOutlet[$j]->id)->where('idSesi', '=', $allSesi[$k]->id);
+                    $fsoHarian = $allDate[$i]->fsoharians->where('idOutlet', '=', $allOutlet[$j]->id)->where('idSesi', '=', $allSesi[$k]->id);
+                    $pattyCashHarian = $allDate[$i]->pattyCashHarians->where('idOutlet', '=', $allOutlet[$j]->id)->where('idSesi', '=', $allSesi[$k]->id);
+                    $wasteHarian = $allDate[$i]->wasteHarians->where('idOutlet', '=', $allOutlet[$j]->id)->where('idSesi', '=', $allSesi[$k]->id);
+
+                    if (count($salesHarian) > 0) {
+                        array_push($salesData,1);
+                    }else{
+                        array_push($salesData,0);
+                    }
+
+                    if (count($fsoHarian) > 0) {
+                        array_push($fsoData,1);
+                    }else{
+                        array_push($fsoData,0);
+                    }
+
+                    if (count($pattyCashHarian) > 0) {
+                        array_push($pattyCashData,1);
+                    }else{
+                        array_push($pattyCashData,0);
+                    }
+
+                    if (count($wasteHarian) > 0) {
+                        array_push($wasteData,1);
+                    }else{
+                        array_push($wasteData,0);
+                    }
+                }
+
+                array_push($itemOutlet, (object)[
+                    'outlet' => $allOutlet[$j]['Nama Store'],
+                    'data' => array($fsoData, $salesData, $pattyCashData, $wasteData)
+                ]);
+            }
+            array_push($itemTanggal, (object)[
+                'Tanggal' => $allDate[$i]->Tanggal,
+                'itemOutlet' => $itemOutlet,
+            ]);
+        }
+
+        return response()->json([
+            'dataTanggal' => $itemTanggal
         ]);
     }
 }

@@ -50,8 +50,8 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                        with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-open">
-                        <a href="#" class="nav-link active" id="revisiTabMenu">
+                    <li class="nav-item" id="revisiTabMenu">
+                        <a href="#" class="nav-link" id="revisiSubMenu">
                             <i class="nav-icon fas fa-hourglass-half"></i>
                             <p>
                                 Revisi
@@ -84,6 +84,12 @@
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('accounting/checkExist') }}" class="nav-link" id="checkExistTabMenu">
+                            <i class="nav-icon fas fa-pen-square"></i>
+                            <p class="text">Status Input</p>
+                        </a>
                     </li>
                     <li class="nav-header">USER</li>
                     <li class="nav-item">

@@ -48,10 +48,14 @@ Route::get('/soHarian', function () {
 });
 //Flow untuk FSO Harian
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
+Route::get('itemSO/showAll',[itemSOController::class, 'showAllItem']);
+
 Route::get('itemSO/store', [itemSOController::class, 'store']);
+Route::get('itemSO/update/{id}',[itemSOController::class, 'update']);
 
 Route::get('listType/soHarian/show', [typeOutletItemController::class, 'index']);
 Route::get('listType/soHarian/store', [typeOutletItemController::class, 'store']);
+Route::get('listType/soHarian/updateType/{id}',[typeOutletItemController::class, 'updateType']);
 Route::get('listType/soHarian/store/item', [typeOutletItemController::class, 'storeItem']);
 Route::get('listType/soHarian/store/outlet', [typeOutletItemController::class, 'storeOutletOnType']);
 Route::get('listType/soHarian/show/item/{id}', [typeOutletItemController::class, 'showByItem']);
@@ -96,6 +100,8 @@ Route::get('typeSales/outlet/show/item/{id}', [typeSalesController::class, 'show
 Route::get('typeSales/store', [typeSalesController::class, 'store']);
 Route::get('typeSales/item/store', [typeSalesController::class, 'storeItem']);
 Route::get('typeSales/item/outlet/store', [typeSalesController::class, 'storeItemOnOutlet']);
+Route::get('typeSales/item/outlet/update/{id}', [typeSalesController::class, 'update']);
+Route::get('typeSales/type/update/{id}',[typeSalesController::class,'updateType']);
 Route::get('typeSales/item/outlet/delete', [typeSalesController::class, 'destroyItemOnOutlet']);
 
 Route::get('salesHarian/show/list/{id}', [salesHarianController::class, 'showList']);
@@ -254,6 +260,8 @@ Route::get('/login', function () {
 Route::get('checkLogin', [loginController::class, 'loginCheck']);
 Route::get('getAllDate/{idOutlet}', [loginController::class, 'getAllDate']);
 
+Route::get('getAllDateBetween/{fromDate}/{toDate}', [loginController::class, 'getAllDateBetween']);
+
 Route::get('/', function () {
     return view('userControl2.login');
 });
@@ -264,13 +272,31 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/dashboard', function () {
         return view('userControl2.dashboard');
     });
-    Route::get('admin/item/so', function () {
+
+    Route::get('admin/so/item', function () {
         // return view('adminControl.setItem.soHarian');
-        return view('adminControl.setItem.index');
+        return view('adminControl.setItem.so.listItem.index');
     });
-    Route::get('admin/item/sales', function () {
-        return view('adminControl.setItem.sales');
+    Route::get('admin/so/setType', function () {
+        return view('adminControl.setItem.so.setType.index');
     });
+    Route::get('admin/so/setOutlet', function () {
+        return view('adminControl.setItem.so.outletType.index');
+    });
+
+    Route::get('admin/sales/item', function () {
+        return view('adminControl.setItem.sales.listItem.index');
+    });
+    Route::get('admin/sales/setType', function () {
+        return view('adminControl.setItem.sales.setType.index');
+    });
+    Route::get('admin/sales/outletType', function () {
+        return view('adminControl.setItem.sales.outletType.index');
+    });
+    // Route::get('', function(){
+    //     return view();
+    // });
+
     Route::get('accounting/revisi/sales', function () {
         return view('accountingControl.revisi.sales.index');
     });
@@ -283,6 +309,11 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/revisi/waste', function () {
         return view('accountingControl.revisi.waste.index');
     });
+
+    Route::get('accounting/checkExist', function () {
+        return view('accountingControl.dataDiIsi.index');
+    });
+
     Route::get('user/soHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.soHarian', [
             'dateSelect' => $dateSelect

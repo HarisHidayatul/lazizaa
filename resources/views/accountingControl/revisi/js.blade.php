@@ -11,6 +11,9 @@
             }else{
                 stringMonth = '0' + month%10;
             }
+            document.getElementById('startDate').value = today.getFullYear() + '-' + stringMonth + '-' + today.getDate();
+            document.getElementById('stopDate').value = today.getFullYear() + '-' + stringMonth + '-' + today.getDate();
+            
             console.log(stringMonth);
             var topNav = [
                 ["SO Harian","{{ url('accounting/revisi/so') }}"],
@@ -29,10 +32,9 @@
             document.getElementById('tittleContent').innerHTML = "Revisi";
             document.getElementById('linkContent').innerHTML = "Revisi";
             
-            document.getElementById('revisiTabMenu').classList.add("active");
+            document.getElementById('revisiSubMenu').classList.add("active");
+            document.getElementById('revisiTabMenu').classList.add("menu-open");
 
-            document.getElementById('startDate').value = today.getFullYear() + '-' + stringMonth + '-' + today.getDate();
-            document.getElementById('stopDate').value = today.getFullYear() + '-' + stringMonth + '-' + today.getDate();
         });
     </script>
 

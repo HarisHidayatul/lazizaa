@@ -30,6 +30,16 @@
     <!-- AdminLTE -->
     <script src="{{ url('dist/js/adminlte.js') }}"></script>
 
+    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     <!-- OPTIONAL SCRIPTS -->
     <script src="{{ url('plugins/chart.js/Chart.min.js') }}"></script>
 
@@ -38,7 +48,6 @@
 </head>
 <body class="hold-transition sidebar-mini">
     @yield('mainBody')
-    @yield('fillBody')
     
     @yield('mainjs')
     @yield('filljs')
