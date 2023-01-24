@@ -7,7 +7,8 @@
             var topNavBar = [
                 ["List Item", "{{ url('admin/sales/item') }}"],
                 ["Set Type", "{{ url('admin/sales/setType') }}"],
-                ["Outlet Type", "{{ url('admin/sales/outletType') }}"]
+                ["Outlet Type", "{{ url('admin/sales/outletType') }}"],
+                ["Pending Item","{{ url('admin/sales/pendingItem') }}"]
             ];
             var topNavHTML = '';
             for (var i = 0; i < topNavBar.length; i++) {

@@ -347,70 +347,77 @@
                 for (var i = 0; i < obj.dataHistory.length; i++) {
                     var day = new Date(obj.dataHistory[i].tanggal);
                     var stringDay = day.getDate() + ' ' + months[day.getMonth()];
+                    var dataFound = false;
 
-                    historyAll += '<div class="dateTransaksi">' + stringDay + '</div>';
+                    var historyToday = '<div class="dateTransaksi">' + stringDay + '</div>';
                     for (var j = 0; j < obj.dataHistory[i].pattyCash.length; j++) {
-                        historyAll +=
+                        dataFound = true;
+                        historyToday +=
                             '<div class="d-flex justify-content-between wrapPattyCash" onClick="goToDetailPattyCash(' +
                             "'" +
                             obj.dataHistory[i].tanggal + "'" +
                             ')">';
-                        historyAll += '<div class="d-flex justify-content-start">';
-                        historyAll +=
+                        historyToday += '<div class="d-flex justify-content-start">';
+                        historyToday +=
                             '<div class="wrapPembelianImg d-flex justify-content-center align-items-center">';
-                        historyAll += '<img src="' + imgLaporanPembelian +
+                        historyToday += '<img src="' + imgLaporanPembelian +
                             '" alt="" style="height: 22px;">';
-                        historyAll += '</div><div style="margin-left: 15px;">';
-                        historyAll +=
+                        historyToday += '</div><div style="margin-left: 15px;">';
+                        historyToday +=
                             '<div class="d-flex justify-content-start"><div class="labelItemTransaksi">';
-                        historyAll += obj.dataHistory[i].pattyCash[j].item;
-                        historyAll += '</div></div><div class="labelQtyTransaksi">';
-                        historyAll += obj.dataHistory[i].pattyCash[j].qty + " ";
-                        historyAll += obj.dataHistory[i].pattyCash[j].satuan;
-                        historyAll += '</div></div></div>';
-                        historyAll +=
+                        historyToday += obj.dataHistory[i].pattyCash[j].item;
+                        historyToday += '</div></div><div class="labelQtyTransaksi">';
+                        historyToday += obj.dataHistory[i].pattyCash[j].qty + " ";
+                        historyToday += obj.dataHistory[i].pattyCash[j].satuan;
+                        historyToday += '</div></div></div>';
+                        historyToday +=
                             '<div style="margin-right: 10px;"><div class="labelValuePembelian">- Rp ';
-                        historyAll += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
-                        historyAll += '</div><div class="labelValuePattyCash">Rp ';
-                        historyAll += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString();
-                        historyAll += '</div></div></div>';
+                        historyToday += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
+                        historyToday += '</div><div class="labelValuePattyCash">Rp ';
+                        historyToday += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString();
+                        historyToday += '</div></div></div>';
                         totalPembelian += obj.dataHistory[i].pattyCash[j].total;
                     }
                     for (var j = 0; j < obj.dataHistory[i].reimburse.length; j++) {
-                        historyAll +=
+                        dataFound = true;
+                        historyToday +=
                             '<div class="d-flex justify-content-between wrapPattyCash" onClick="goToDetailReimburse(' +
                             obj.dataHistory[i].reimburse[j].id +
                             ')">';
-                        historyAll += '<div class="d-flex justify-content-start">';
-                        historyAll +=
+                        historyToday += '<div class="d-flex justify-content-start">';
+                        historyToday +=
                             '<div class="wrapPembelianImg d-flex justify-content-center align-items-center">';
-                        historyAll += '<img src="' + imgLaporanPembelian +
+                        historyToday += '<img src="' + imgLaporanPembelian +
                             '" alt="" style="height: 22px;">';
-                        historyAll += '</div><div style="margin-left: 15px;">';
-                        historyAll +=
+                        historyToday += '</div><div style="margin-left: 15px;">';
+                        historyToday +=
                             '<div class="d-flex justify-content-start"><div class="labelItemTransaksi">';
-                        historyAll += "Reimburse";
-                        historyAll += '</div>';
+                        historyToday += "Reimburse";
+                        historyToday += '</div>';
                         if (obj.dataHistory[i].reimburse[j].idRev == '2') {
-                            historyAll += '<img class="statusItemTransaksi" src="' + imgPending +
+                            historyToday += '<img class="statusItemTransaksi" src="' + imgPending +
                                 '" alt="">'
                         }
-                        historyAll += '</div><div class="labelQtyTransaksi">';
-                        // historyAll += obj.dataHistory[i].pattyCash[j].qty + " ";
-                        // historyAll += obj.dataHistory[i].pattyCash[j].satuan;
-                        historyAll += '</div></div></div>';
-                        historyAll += '<div style="margin-right: 10px;"><div class="labelValuePembelian ';
+                        historyToday += '</div><div class="labelQtyTransaksi">';
+                        // historyToday += obj.dataHistory[i].pattyCash[j].qty + " ";
+                        // historyToday += obj.dataHistory[i].pattyCash[j].satuan;
+                        historyToday += '</div></div></div>';
+                        historyToday += '<div style="margin-right: 10px;"><div class="labelValuePembelian ';
                         if (obj.dataHistory[i].reimburse[j].idRev == '3') {
-                            historyAll += 'activeValPembelian';
+                            historyToday += 'activeValPembelian';
                             totalReimburse += obj.dataHistory[i].reimburse[j].reimburse;
                         } else {
-                            historyAll += 'pendingValPembelian';
+                            historyToday += 'pendingValPembelian';
                         }
-                        historyAll += '">+ Rp ';
-                        historyAll += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString();
-                        historyAll += '</div><div class="labelValuePattyCash">Rp ';
-                        historyAll += obj.dataHistory[i].reimburse[j].saldo.toLocaleString();
-                        historyAll += '</div></div></div>';
+                        historyToday += '">+ Rp ';
+                        historyToday += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString();
+                        historyToday += '</div><div class="labelValuePattyCash">Rp ';
+                        historyToday += obj.dataHistory[i].reimburse[j].saldo.toLocaleString();
+                        historyToday += '</div></div></div>';
+                    }
+
+                    if(dataFound){
+                        historyAll += historyToday;
                     }
                 }
                 document.getElementById("historyAll").innerHTML = historyAll;
@@ -419,7 +426,7 @@
                 document.getElementById("totalPembelian").innerHTML = "- Rp " + totalPembelian
                     .toLocaleString();
                 document.getElementById("totalPattyCash").innerHTML = "Rp " + totalPattyCash
-                    .toLocaleString();
+                    .toLocaleString().replaceAll(',','.');
             },
             error: function(req, err) {
                 console.log(err);

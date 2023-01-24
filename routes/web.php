@@ -245,6 +245,7 @@ Route::get('setoran', function () {
 Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}', [reimburseController::class, 'showHistory']);
 Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
 Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
+Route::get('reimburse/update/accounting/revisi/{id}',[reimburseController::class,'updateRevisiTerima']);
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
 
 Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class, 'storeReimburseIdTujuan']);
@@ -293,6 +294,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('admin/sales/outletType', function () {
         return view('adminControl.setItem.sales.outletType.index');
     });
+    Route::get('admin/sales/pendingItem', function () {
+        return view('adminControl.setItem.sales.pendingItem.index');
+    });
     // Route::get('', function(){
     //     return view();
     // });
@@ -312,6 +316,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/checkExist', function () {
         return view('accountingControl.dataDiIsi.index');
+    });
+
+    Route::get('accounting/pattyCash', function () {
+        return view('accountingControl.pattyCash.index');
     });
 
     Route::get('user/soHarian/{dateSelect}', function ($dateSelect) {

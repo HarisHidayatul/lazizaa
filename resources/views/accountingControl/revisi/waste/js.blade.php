@@ -22,7 +22,9 @@
             document.getElementById('editTanggal').innerHTML = dataAllWaste[idClickEdit][0];
             document.getElementById('editQty').value = dataAllWaste[idClickEdit][2];
         })
-
+        function setDate(){
+            clearRevWaste();
+        }
         function setTable(index) {
             if (index == 0) {
                 document.getElementById('setTable').innerHTML =

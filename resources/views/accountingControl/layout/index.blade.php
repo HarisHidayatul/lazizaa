@@ -91,6 +91,12 @@
                             <p class="text">Status Input</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('accounting/pattyCash') }}" class="nav-link" id="pattyCashsTabMenu">
+                            <i class="nav-icon fa fa-credit-card"></i>
+                            <p class="text">Patty Cash</p>
+                        </a>
+                    </li>
                     <li class="nav-header">USER</li>
                     <li class="nav-item">
                         <a href="{{ url('user/logout') }}" class="nav-link">

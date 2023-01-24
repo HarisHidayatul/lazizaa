@@ -15,7 +15,7 @@
             <input type="date" id="startDate">
             <div>End Date : </div>
             <input type="date" id="stopDate">
-            {{-- <button type="button" class="btn btn-secondary" onclick="setDate()">Filter Date</button> --}}
+            <button type="button" class="btn btn-secondary" onclick="setDate()">Filter Date</button>
         </div>
     </div>
     <div id="setTable" style="overflow-x: auto;"></div>

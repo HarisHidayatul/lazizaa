@@ -24,6 +24,11 @@
             // showAllRevisionDoneSo();
         });
 
+        
+        function setDate(){
+            clearRevSo();
+        }
+
         function revisiAllClick() {
             var elementAll = document.getElementsByName('checkBoxRow');
             for (var i = 0; i < elementAll.length; i++) {

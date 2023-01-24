@@ -14,6 +14,9 @@
             showAllRevisionDonePattyCash();
         });
 
+        function setDate(){
+            clearRevPattyCash();
+        }
 
         function setTable(index) {
             if (index == 0) {
