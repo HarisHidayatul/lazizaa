@@ -97,6 +97,12 @@
                             <p class="text">Patty Cash</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('accounting/setoran') }}" class="nav-link" id="setoransTabMenu">
+                            <i class="nav-icon fas fa-cash-register"></i>
+                            <p class="text">Setoran Tunai</p>
+                        </a>
+                    </li>
                     <li class="nav-header">USER</li>
                     <li class="nav-item">
                         <a href="{{ url('user/logout') }}" class="nav-link">

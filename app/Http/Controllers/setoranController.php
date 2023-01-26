@@ -36,7 +36,7 @@ class setoranController extends Controller
 
     public function createSetoran(Request $request)
     {
-        $dateNow = date("Y-m-d");
+        $dateNow = $request->tanggal;
         $tanggalAll = tanggalAll::where('Tanggal', '=', $dateNow)->first();
         $tanggalID = null;
         if ($tanggalAll == null) {
@@ -325,9 +325,26 @@ class setoranController extends Controller
         ]);
     }
 
-    public function showSetoranPart($idOutlet)
+    public function showSetoranPart($idOutlet, $countData, $startDate, $stopDate)
     {
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $now = Carbon::now();
+        $tanggalAll = [];
+        $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with('setorans.pengirimLists.listBanks')->get();
+        if ($countData == 'today') {
+            $tanggalAll = $semuaTanggal->where('Tanggal', '=', $now->format('Y-m-d'));
+        } else if ($countData == '7day') {
+            $from = $now->format('Y-m-d');
+            $to = $now->subDays(7)->format('Y-m-d');
+            $tanggalAll = $semuaTanggal->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == '30day') {
+            $from = $now->format('Y-m-d');
+            $to = $now->subDays(30)->format('Y-m-d');
+            $tanggalAll = $semuaTanggal->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == 'between') {
+            $tanggalAll = $semuaTanggal->whereBetween('Tanggal', array($startDate,$stopDate));
+        } else if ($countData == 'all') {
+            $tanggalAll = $semuaTanggal;
+        }
         $allData = [];
         $countData = 1;
         for ($i = 0; $i < $tanggalAll->count(); $i++) {
@@ -336,6 +353,7 @@ class setoranController extends Controller
             $setoranArray = [];
             $dataFound = false;
             for ($j = 0; $j < $setoran->count(); $j++) {
+                // @dd($setoran[$j]->pengirimLists);
                 array_push($setoranArray, (object)[
                     'id' => $setoran[$j]->id,
                     'idRev' => $setoran[$j]->idRevisi,
@@ -346,10 +364,6 @@ class setoranController extends Controller
                     'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
                 ]);
                 $dataFound = true;
-                $countData++;
-                if ($countData > 5) {
-                    break;
-                }
             }
             if ($dataFound) {
                 array_push($allData, (object)[
@@ -357,10 +371,8 @@ class setoranController extends Controller
                     'setoran' => $setoranArray
                 ]);
             }
-            if ($countData > 5) {
-                break;
-            }
         }
+        // tanggalAll;
         return response()->json([
             'setoran' => $allData
         ]);
@@ -368,7 +380,7 @@ class setoranController extends Controller
 
     public function showSetoranAll($idOutlet)
     {
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->get();
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'DESC')->with('setorans.pengirimLists.listBanks')->get();
         $allData = [];
         // $countData = 1;
         for ($i = 0; $i < $tanggalAll->count(); $i++) {
@@ -407,14 +419,19 @@ class setoranController extends Controller
         ]);
     }
 
-    public function showSetoranDetail($idSetoran){
+    public function showSetoranDetail($idSetoran)
+    {
         $setoran = setoran::find($idSetoran);
         return response()->json([
+            'id' => $idSetoran,
             'namaRekeningPengirim' => $setoran->pengirimLists->namaRekening,
             'nomorRekeningPengirim' => $setoran->pengirimLists->nomorRekening,
+            'bankPengirim' => $setoran->pengirimLists->listBanks->bank,
             'namaRekeningPenerima' => $setoran->penerimaLists->namaRekening,
             'nomorRekeningPenerima' => $setoran->penerimaLists->nomorRekening,
             'imageBankPenerima' => $setoran->penerimaLists->listBanks->imageBank,
+            'bankPenerima' => $setoran->penerimaLists->listBanks->bank,
+            'idPenerima' => $setoran->penerimaLists->id,
             'idStatus' => $setoran->idRevisi,
             'date' => $setoran->updated_at->format('Y-m-d'),
             'time' => $setoran->updated_at->format('H:i'),
@@ -453,6 +470,11 @@ class setoranController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $setoran = setoran::find($id);
+        $setoran->update([
+            'idTujuan' => $request->idPenerima,
+            'idRevisi' => $request->idRevisi
+        ]);
     }
 
     /**

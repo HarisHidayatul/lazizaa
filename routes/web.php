@@ -48,14 +48,14 @@ Route::get('/soHarian', function () {
 });
 //Flow untuk FSO Harian
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
-Route::get('itemSO/showAll',[itemSOController::class, 'showAllItem']);
+Route::get('itemSO/showAll', [itemSOController::class, 'showAllItem']);
 
 Route::get('itemSO/store', [itemSOController::class, 'store']);
-Route::get('itemSO/update/{id}',[itemSOController::class, 'update']);
+Route::get('itemSO/update/{id}', [itemSOController::class, 'update']);
 
 Route::get('listType/soHarian/show', [typeOutletItemController::class, 'index']);
 Route::get('listType/soHarian/store', [typeOutletItemController::class, 'store']);
-Route::get('listType/soHarian/updateType/{id}',[typeOutletItemController::class, 'updateType']);
+Route::get('listType/soHarian/updateType/{id}', [typeOutletItemController::class, 'updateType']);
 Route::get('listType/soHarian/store/item', [typeOutletItemController::class, 'storeItem']);
 Route::get('listType/soHarian/store/outlet', [typeOutletItemController::class, 'storeOutletOnType']);
 Route::get('listType/soHarian/show/item/{id}', [typeOutletItemController::class, 'showByItem']);
@@ -101,7 +101,7 @@ Route::get('typeSales/store', [typeSalesController::class, 'store']);
 Route::get('typeSales/item/store', [typeSalesController::class, 'storeItem']);
 Route::get('typeSales/item/outlet/store', [typeSalesController::class, 'storeItemOnOutlet']);
 Route::get('typeSales/item/outlet/update/{id}', [typeSalesController::class, 'update']);
-Route::get('typeSales/type/update/{id}',[typeSalesController::class,'updateType']);
+Route::get('typeSales/type/update/{id}', [typeSalesController::class, 'updateType']);
 Route::get('typeSales/item/outlet/delete', [typeSalesController::class, 'destroyItemOnOutlet']);
 
 Route::get('salesHarian/show/list/{id}', [salesHarianController::class, 'showList']);
@@ -156,6 +156,7 @@ Route::get('pattyCash/show/revision/done/{fromDate}/{toDate}', [pattyCashControl
 
 Route::get('pattyCash/outlet/show', [pattyCashController::class, 'showAllOutlet']);
 Route::get('pattyCash/items/store', [pattyCashController::class, 'storeItem']);
+Route::get('pattyCash/update/item/{id}', [pattyCashController::class, 'updateItem']);
 Route::get('pattyCash/items/store/revision', [pattyCashController::class, 'storeItemRevision']);
 Route::get('pattyCash/items/store/revision/request', [pattyCashController::class, 'storeRevisionCheck']);
 Route::get('pattyCash/brands/store/item', [pattyCashController::class, 'storeBrandItem']);
@@ -232,9 +233,10 @@ Route::get('setoran/show/pengirim/transfer/all/{idUser}', [setoranController::cl
 Route::get('setoran/show/pengirim/inPart/{idUser}', [setoranController::class, 'showPengirimPart']);
 Route::get('setoran/show/pengirim/all/{idUser}', [setoranController::class, 'showPengirimAll']);
 Route::get('setoran/show/detail/{idSetoran}', [setoranController::class, 'showSetoranDetail']);
+Route::get('setoran/update/accounting/revisi/{id}', [setoranController::class, 'update']);
 
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
-Route::get('setoran/show/data/inPart/{idOutlet}', [setoranController::class, 'showSetoranPart']);
+Route::get('setoran/show/data/inPart/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart']);
 Route::get('setoran/show/data/all/{idOutlet}', [setoranController::class, 'showSetoranAll']);
 Route::get('setoran/penerima/sendData', [setoranController::class, 'createSetoran']);
 
@@ -242,10 +244,10 @@ Route::get('setoran', function () {
     return view('setoran.typeSetoran');
 });
 
-Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}', [reimburseController::class, 'showHistory']);
+Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}/{startDate}/{stopDate}', [reimburseController::class, 'showHistory']);
 Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
 Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
-Route::get('reimburse/update/accounting/revisi/{id}',[reimburseController::class,'updateRevisiTerima']);
+Route::get('reimburse/update/accounting/revisi/{id}', [reimburseController::class, 'updateRevisiTerima']);
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
 
 Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class, 'storeReimburseIdTujuan']);
@@ -300,6 +302,15 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     // Route::get('', function(){
     //     return view();
     // });
+    Route::get('admin/pattyCash/item', function () {
+        return view('adminControl.setItem.pattyCash.listItem.index');
+    });
+    Route::get('admin/pattyCash/brandItem', function () {
+        return view('adminControl.setItem.pattyCash.brandItem.index');
+    });
+    Route::get('admin/pattyCash/pendingItem', function () {
+        return view('adminControl.setItem.pattyCash.pendingItem.index');
+    });
 
     Route::get('accounting/revisi/sales', function () {
         return view('accountingControl.revisi.sales.index');
@@ -320,6 +331,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/pattyCash', function () {
         return view('accountingControl.pattyCash.index');
+    });
+
+    Route::get('accounting/setoran', function () {
+        return view('accountingControl.setoranTunai.index');
     });
 
     Route::get('user/soHarian/{dateSelect}', function ($dateSelect) {

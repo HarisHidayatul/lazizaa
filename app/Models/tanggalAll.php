@@ -43,7 +43,8 @@ class tanggalAll extends Model
     }
 
     public function setorans(){
-        return $this->hasMany(setoran::class,'idTanggal','id')->orderBy('id','DESC');
+        // return $this->hasMany(setoran::class,'idTanggal','id')->orderBy('id','DESC');
+        return $this->hasMany(setoran::class,'idTanggal','id');
     }
 
     public function reimburses(){

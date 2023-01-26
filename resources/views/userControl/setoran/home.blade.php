@@ -692,10 +692,10 @@
                 </div>
             </div>
             <div class="wrapTransaksi">
-                <div name="sortTransaksi" onclick="listByDate(0);" class="active" style="flex: 0 0 68px;">Semua</div>
-                <div name="sortTransaksi" onclick="listByDate(1);" style="flex: 0 0 67px;">Hari ini</div>
-                <div name="sortTransaksi" onclick="listByDate(2);" style="flex: 0 0 129px;">1 Minggu terakhir</div>
-                <div name="sortTransaksi" onclick="listByDate(3);" style="flex: 0 0 117px;">30 Hari Terakhir</div>
+                <div name="sortTransaksi" onclick="listByDate(0);" class="active" style="flex: 0 0 67px;">Hari ini</div>
+                <div name="sortTransaksi" onclick="listByDate(1);" style="flex: 0 0 129px;">1 Minggu terakhir</div>
+                <div name="sortTransaksi" onclick="listByDate(2);" style="flex: 0 0 117px;">30 Hari Terakhir</div>
+                <div name="sortTransaksi" onclick="listByDate(3);" style="flex: 0 0 68px;">Semua</div>
             </div>
             <div class="d-flex justify-content-between" style="margin-top: 20px;">
                 <div class="lblPengirim">History Transaksi</div>
@@ -809,7 +809,7 @@
     ];
 
     $(document).ready(function() {
-        getHistoryTransaksi();
+        getHistoryTransaksi(0);
         getPengirimInPart();
         setoranShow();
     });
@@ -860,9 +860,19 @@
         })
     }
 
-    function getHistoryTransaksi() {
+    function getHistoryTransaksi(index) {
+        var accessHistory = '';
+        if(index == '0'){
+            accessHistory = 'today';
+        }else if(index == '1'){
+            accessHistory = '7day';
+        }else if(index == '2'){
+            accessHistory = '30day';
+        }else{
+            accessHistory = 'all';
+        }
         $.ajax({
-            url: "{{ url('setoran/show/data/inPart') }}" + '/' + "{{ session('idOutlet') }}",
+            url: "{{ url('setoran/show/data/inPart') }}" + '/' + "{{ session('idOutlet') }}" + '/' + accessHistory + '/0/0',
             type: 'get',
             success: function(response) {
                 // console.log(response);
@@ -965,6 +975,7 @@
         for (var i = 0; i < element.length; i++) {
             if (i == index) {
                 element[i].classList.add("active");
+                getHistoryTransaksi(i);
                 continue;
             }
             element[i].classList.remove("active");

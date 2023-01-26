@@ -332,7 +332,7 @@
         }
         $.ajax({
             url: "{{ url('reimburse/show/history/outlet') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
-                accessHistory,
+                accessHistory + '/0/0',
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));

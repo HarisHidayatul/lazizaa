@@ -143,7 +143,7 @@ class reimburseController extends Controller
         $rekeningPenerima = '';
         $imgBankPenerima = '';
         $bankPenerima = '';
-        
+
         $idRevisi = null;
         $jumlahTransfer = 0;
         // @dd($penerimaReimburse->listBanks);
@@ -202,14 +202,14 @@ class reimburseController extends Controller
         ]);
     }
 
-    public function showHistory($idOutlet, $countData)
+    public function showHistory($idOutlet, $countData, $startDate, $stopDate)
     {
         $now = Carbon::now();
         $pergerakanSaldo = 0;
         $allDate = [];
         $allHistory = [];
         // $saldoPattyCash = 0;
-        $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with(['reimburses.penerimaReimburses.pengirimLists','reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans'])->get();
+        $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans'])->get();
 
         if ($countData == 'today') {
             $allDate = $semuaTanggal->where('Tanggal', '=', $now->format('Y-m-d'));
@@ -221,6 +221,8 @@ class reimburseController extends Controller
             $from = $now->format('Y-m-d');
             $to = $now->subDays(30)->format('Y-m-d');
             $allDate = $semuaTanggal->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == 'between') {
+            $allDate = $semuaTanggal->whereBetween('Tanggal', array($startDate, $stopDate));
         } else if ($countData == 'all') {
             $allDate = $semuaTanggal;
         }
@@ -385,7 +387,8 @@ class reimburseController extends Controller
             }
         }
     }
-    public function updateRevisiTerima($id, Request $request){
+    public function updateRevisiTerima($id, Request $request)
+    {
         $penerimaReimburse = penerimaReimburse::find($id);
         $penerimaReimburse->update([
             'idPengirim' => $request->idPengirim,

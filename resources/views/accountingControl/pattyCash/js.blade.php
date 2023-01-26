@@ -5,6 +5,19 @@
         var objPenerima = [];
         var indexReimburse = 0;
         $(document).ready(function() {
+            var today = new Date();
+            var month = today.getMonth() + 1;
+            var stringMonth = '';
+            if (month / 10 == 0) {
+                stringMonth = month;
+            } else {
+                stringMonth = '0' + month % 10;
+            }
+            document.getElementById('startDate').value = today.getFullYear() + '-' + stringMonth + '-' + today
+                .getDate();
+            document.getElementById('stopDate').value = today.getFullYear() + '-' + stringMonth + '-' + today
+                .getDate();
+
             document.getElementById('pattyCashsTabMenu').classList.add("active");
 
             document.getElementById('tittleContent').innerHTML = "Patty Cash";
@@ -19,11 +32,11 @@
             var idRevisi = 2;
             var idPengirim = document.getElementById('listPenerima').value;
             var pesan = document.getElementById('pesanPenerima').value;
-            if(document.getElementById('doneTransfer').checked) {
+            if (document.getElementById('doneTransfer').checked) {
                 idRevisi = 3;
             }
-            if(idPengirim == 0){
-                idPengirim =1;
+            if (idPengirim == 0) {
+                idPengirim = 1;
             }
             $.ajax({
                 url: "{{ url('reimburse/update/accounting/revisi') }}" + '/' + indexReimburse,
@@ -44,12 +57,7 @@
         }
 
         function setPengirim(id) {
-            for (var i = 0; i < objPenerima.penerimaListArray.length; i++) {
-                if (objPenerima.penerimaListArray[i].id == id) {
-                    document.getElementById('listPenerima').value = i;
-                    break;
-                }
-            }
+            document.getElementById('listPenerima').value = id;
         }
 
         function transferCheck() {
@@ -64,11 +72,11 @@
             }
         }
 
-        function refreshListPenerima() {
+        function refreshListPenerima(index) {
             // console.log('ASDAS');
-            var valueSelectList = document.getElementById('listPenerima').value;
-            document.getElementById('bankPengirim').innerHTML = objPenerima.penerimaListArray[valueSelectList].bank;
-            document.getElementById('rekeningPengirim').innerHTML = objPenerima.penerimaListArray[valueSelectList]
+            // var valueSelectList = document.getElementById('listPenerima').value;
+            document.getElementById('bankPengirim').innerHTML = objPenerima.penerimaListArray[index].bank;
+            document.getElementById('rekeningPengirim').innerHTML = objPenerima.penerimaListArray[index]
                 .nomorRekening;
         }
 
@@ -83,12 +91,12 @@
                     objPenerima = obj;
                     var listPenerima = '';
                     for (var i = 0; i < obj.penerimaListArray.length; i++) {
-                        listPenerima += '<option value="' + i;
-                        listPenerima += '">' + obj.penerimaListArray[i].namaRekening;
+                        listPenerima += '<option value="' + obj.penerimaListArray[i].id;
+                        listPenerima += '" data-index="' + i + '" >' + obj.penerimaListArray[i].namaRekening;
                         listPenerima += '</option>';
                     }
                     $('#listPenerima').empty().append(listPenerima);
-                    refreshListPenerima();
+                    refreshListPenerima(0);
                 },
                 error: function(req, err) {}
             })
@@ -120,10 +128,13 @@
         }
 
         function getListAllFilter() {
-            var accessHistory = document.getElementById('selDate').value;
+            // var accessHistory = document.getElementById('selDate').value;
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
             var accessOutlet = document.getElementById('selOutlet').value;
+            var urlAll = "{{ url('reimburse/show/history/outlet') }}" + '/' + accessOutlet + '/' + 'between' + '/' + startDate + '/' + stopDate;
             $.ajax({
-                url: "{{ url('reimburse/show/history/outlet') }}" + '/' + accessOutlet + '/' + accessHistory,
+                url: urlAll,
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));

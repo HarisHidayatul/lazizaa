@@ -75,7 +75,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/item/pattyCash') }}" class="nav-link" id="pattyCashSubMenu">
+                                    <a href="{{ url('admin/pattyCash/item') }}" class="nav-link" id="pattyCashSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Patty Cash</p>
                                     </a>
