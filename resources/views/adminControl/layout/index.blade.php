@@ -81,13 +81,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link" id="wasteSubMenu">
+                                    <a href="{{ url('admin/waste/item') }}" class="nav-link" id="wasteSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Waste</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link" id="satuanSubMenu">
+                                    <a href="{{ url('admin/satuan') }}" class="nav-link" id="satuanSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Satuan</p>
                                     </a>

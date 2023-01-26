@@ -122,17 +122,14 @@ class wasteController extends Controller
         $idRev = $request->idRev;
 
         $listWaste = reqItemWaste::find($idRev);
-        $item = $listWaste->Item;
-        $idSatuan = $listWaste->idSatuan;
-        $idJenisBahan = $listWaste->idJenisBahan;
         $brand = $listWaste->dbrands['id'];
 
         if ($status == '1') {
             //status 1 untuk accept
             $dataArray = [
-                'Item' => $item,
-                'idSatuan' => $idSatuan,
-                'idJenisBahan' => $idJenisBahan
+                'Item' => $request->item,
+                'idSatuan' => $request->idSatuan,
+                'idJenisBahan' => $request->idJenisBahan
             ];
             $id = listItemWaste::create($dataArray)->id;
             brandWaste::create([
@@ -388,7 +385,23 @@ class wasteController extends Controller
     public function showAllRequest()
     {
         $listWaste = reqItemWaste::all();
+        $satuan = satuan::all();
+        $jenisBahan = jenisBahan::all();
         $arraylistWaste = [];
+        $arraySatuan = [];
+        $arrayJenis = [];
+        for ($i = 0; $i < $satuan->count(); $i++) {
+            array_push($arraySatuan, (object)[
+                'id' => $satuan[$i]->id,
+                'satuan' => $satuan[$i]->Satuan
+            ]);
+        }
+        for ($i = 0; $i < $jenisBahan->count(); $i++) {
+            array_push($arrayJenis, (object)[
+                'id' => $jenisBahan[$i]->id,
+                'jenis' => $jenisBahan[$i]->jenis
+            ]);
+        }
         // @dd($listWaste[0]->satuans);
         for ($i = 0; $i < $listWaste->count(); $i++) {
             $outlet = $listWaste[$i]->doutlets;
@@ -399,12 +412,16 @@ class wasteController extends Controller
                 'Satuan' => $listWaste[$i]->satuans['Satuan'],
                 'Outlet' => $outlet['Nama Store'],
                 'Brand' => $brand['Nama Brand'],
-                'jenisBahan' => $listWaste[$i]->jenisBahans['jenis']
+                'jenisBahan' => $listWaste[$i]->jenisBahans['jenis'],
+                'idJenis' => $listWaste[$i]->idJenisBahan,
+                'idSatuan' => $listWaste[$i]->idSatuan
             ]);
         }
         return response()->json([
             'countItem' => $listWaste->count(),
-            'listWaste' => $arraylistWaste
+            'listWaste' => $arraylistWaste,
+            'satuan' => $arraySatuan,
+            'jenis' => $arrayJenis
         ]);
     }
 
@@ -506,8 +523,16 @@ class wasteController extends Controller
     public function showAll()
     {
         //tampilkan seluruh listwaste
-        $listWaste = jenisBahan::all();
+        $listWaste = jenisBahan::with('listItemWastes.satuans')->get();
         $arraylistWaste = [];
+        $arraySatuan = [];
+        $satuan = satuan::all();
+        for ($i = 0; $i < $satuan->count(); $i++) {
+            array_push($arraySatuan, (object)[
+                'id' => $satuan[$i]->id,
+                'satuan' => $satuan[$i]->Satuan
+            ]);
+        }
         // @dd($listWaste[0]->listItemWastes);
         for ($i = 0; $i < $listWaste->count(); $i++) {
             $arrayWaste = [];
@@ -516,6 +541,7 @@ class wasteController extends Controller
                     'id' => $listWaste[$i]->listItemWastes[$j]['id'],
                     'Item' => $listWaste[$i]->listItemWastes[$j]['Item'],
                     'Satuan' => $listWaste[$i]->listItemWastes[$j]->satuans['Satuan'],
+                    'idSatuan' => $listWaste[$i]->listItemWastes[$j]->idSatuan
                 ]);
             }
             array_push($arraylistWaste, (object)[
@@ -526,11 +552,12 @@ class wasteController extends Controller
         }
         return response()->json([
             'countItem' => $listWaste->count(),
-            'listWaste' => $arraylistWaste
+            'listWaste' => $arraylistWaste,
+            'satuan' => $arraySatuan
         ]);
     }
 
-    public function showDateRevision($fromDate,$toDate)
+    public function showDateRevision($fromDate, $toDate)
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($tanggalAll[0]->wasteharians);
@@ -651,7 +678,7 @@ class wasteController extends Controller
         ]);
     }
 
-    public function showDateRevisionDone($fromDate,$toDate)
+    public function showDateRevisionDone($fromDate, $toDate)
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($tanggalAll[0]->wasteharians);
@@ -862,6 +889,15 @@ class wasteController extends Controller
         //
     }
 
+    public function updateItem(Request $request, $id)
+    {
+        $listItemWaste = listItemWaste::find($id);
+        $listItemWaste->update([
+            'Item' => $request->item,
+            'idSatuan' => $request->idSatuan,
+            'idJenisBahan' => $request->idJenisBahan
+        ]);
+    }
     /**
      * Remove the specified resource from storage.
      *

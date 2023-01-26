@@ -46,6 +46,9 @@ Route::get('/soHarian', function () {
         'date'    => date("Y-m-d")
     ]);
 });
+//Flow untuk common fitur
+Route::get('common/satuan/show',[commonController::class,'showSatuan']);
+
 //Flow untuk FSO Harian
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
 Route::get('itemSO/showAll', [itemSOController::class, 'showAllItem']);
@@ -188,6 +191,7 @@ Route::get('pattyCash', function () {
 
 Route::get('waste/items/show', [wasteController::class, 'showAll']);
 Route::get('waste/items/store', [wasteController::class, 'storeItem']);
+Route::get('waste/items/update/{id}',[wasteController::class,'updateItem']);
 Route::get('waste/items/show/req', [wasteController::class, 'showAllRequest']);
 Route::get('waste/items/show/rev/{id}', [wasteController::class, 'showRevisiOutlet']); //revision by id outlet
 Route::get('waste/items/store/revision', [wasteController::class, 'storeItemRevision']);
@@ -310,6 +314,20 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('admin/pattyCash/pendingItem', function () {
         return view('adminControl.setItem.pattyCash.pendingItem.index');
+    });
+    
+    Route::get('admin/waste/item', function () {
+        return view('adminControl.setItem.waste.listItem.index');
+    });
+    Route::get('admin/waste/brandItem', function () {
+        return view('adminControl.setItem.waste.brandItem.index');
+    });
+    Route::get('admin/waste/pendingItem', function () {
+        return view('adminControl.setItem.waste.pendingItem.index');
+    });
+
+    Route::get('admin/satuan',function(){
+        return view('adminControl.setItem.satuan.index');
     });
 
     Route::get('accounting/revisi/sales', function () {
