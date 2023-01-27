@@ -30,7 +30,7 @@ class dBrand extends Model
     protected $fillable = [
         'Nama Brand',
         'Keterangan',
-        'Logo URL',
+        'Image',
         'created_at',
         'updated_at',
         'deleted_at'

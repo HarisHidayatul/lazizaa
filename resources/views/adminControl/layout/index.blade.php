@@ -53,7 +53,7 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                    with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open" id="itemTabMenu">
+                        <li class="nav-item" id="itemTabMenu">
                             <a href="#" class="nav-link" id="itemSubMenu">
                                 <i class="nav-icon 	fas fa-bread-slice"></i>
                                 <p>
@@ -94,6 +94,35 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item" id="commonTabMenu">
+                            <a href="#" class="nav-link" id="commonSubMenu">
+                                <i class="nav-icon 	fa fa-user"></i>
+                                <p>
+                                    Set User
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/common/brand') }}" class="nav-link" id="brandSubMenu">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Brand</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/common/outlet') }}" class="nav-link" id="outletSubMenu">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Outlet</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" id="userSubMenu">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>User</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-header">USER</li>
                         <li class="nav-item">
                             <a href="{{ url('user/logout') }}" class="nav-link">
@@ -119,7 +148,7 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#" id="tittleFillContent">Set Item</a></li>
+                                <li class="breadcrumb-item"><a href="#" id="tittleFillContent"></a></li>
                                 <li class="breadcrumb-item active" id="subFillContent"></li>
                             </ol>
                         </div><!-- /.col -->

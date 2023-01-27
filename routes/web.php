@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\commonController;
 use App\Http\Controllers\fsoHarianController;
 use App\Http\Controllers\itemSOController;
 use App\Http\Controllers\loginController;
@@ -47,7 +48,17 @@ Route::get('/soHarian', function () {
     ]);
 });
 //Flow untuk common fitur
-Route::get('common/satuan/show',[commonController::class,'showSatuan']);
+Route::get('common/satuan/show', [commonController::class, 'showSatuan']);
+Route::get('common/satuan/store', [commonController::class, 'storeSatuan']);
+Route::get('common/satuan/update/{id}', [commonController::class, 'updateSatuan']);
+
+Route::get('common/brand/show', [commonController::class, 'showBrand']);
+Route::get('common/brand/store', [commonController::class, 'storeBrand']);
+Route::get('common/brand/update/{id}',[commonController::class, 'updateBrand']);
+
+Route::get('common/outlet/show/{idBrand}',[commonController::class,'showOutlet']);
+Route::get('common/outlet/store',[commonController::class,'storeOutlet']);
+Route::get('common/outlet/update/{id}',[commonController::class,'updateOutlet']);
 
 //Flow untuk FSO Harian
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
@@ -191,7 +202,7 @@ Route::get('pattyCash', function () {
 
 Route::get('waste/items/show', [wasteController::class, 'showAll']);
 Route::get('waste/items/store', [wasteController::class, 'storeItem']);
-Route::get('waste/items/update/{id}',[wasteController::class,'updateItem']);
+Route::get('waste/items/update/{id}', [wasteController::class, 'updateItem']);
 Route::get('waste/items/show/req', [wasteController::class, 'showAllRequest']);
 Route::get('waste/items/show/rev/{id}', [wasteController::class, 'showRevisiOutlet']); //revision by id outlet
 Route::get('waste/items/store/revision', [wasteController::class, 'storeItemRevision']);
@@ -315,7 +326,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('admin/pattyCash/pendingItem', function () {
         return view('adminControl.setItem.pattyCash.pendingItem.index');
     });
-    
+
     Route::get('admin/waste/item', function () {
         return view('adminControl.setItem.waste.listItem.index');
     });
@@ -326,8 +337,15 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('adminControl.setItem.waste.pendingItem.index');
     });
 
-    Route::get('admin/satuan',function(){
+    Route::get('admin/satuan', function () {
         return view('adminControl.setItem.satuan.index');
+    });
+
+    Route::get('admin/common/brand', function () {
+        return view('adminControl.common.brand.index');
+    });
+    Route::get('admin/common/outlet', function () {
+        return view('adminControl.common.outlet.index');
     });
 
     Route::get('accounting/revisi/sales', function () {
