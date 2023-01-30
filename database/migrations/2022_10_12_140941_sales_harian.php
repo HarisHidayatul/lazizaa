@@ -16,7 +16,7 @@ return new class extends Migration
         //
         Schema::create('typeSales', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->nullable(false);
+            $table->string('type',25)->nullable(false);
 
             $table->timestamps();
             $table->softDeletes();
@@ -27,7 +27,8 @@ return new class extends Migration
             $table->unsignedBigInteger('typeSales');
             $table->foreign('typeSales')->references('id')->on('typeSales');
 
-            $table->string('sales')->nullable(false);
+            $table->string('sales',25)->nullable(false);
+            $table->boolean('butuhVerifikasi')->default(false);
 
             $table->timestamps();
             $table->softDeletes();
@@ -57,11 +58,15 @@ return new class extends Migration
             $table->unsignedBigInteger('idSales');
             $table->foreign('idSales')->references('id')->on('salesharian');
 
-            $table->integer('cu')->unsigned()->nullable(false);
-            $table->integer('cuRevisi')->unsigned()->default('0');
+            $table->smallInteger('cu')->unsigned()->nullable(false);
+            $table->smallInteger('cuRevisi')->unsigned()->default('0');
 
-            $table->integer('total')->unsigned()->nullable(false);
-            $table->integer('totalRevisi')->unsigned()->default('0');
+            $table->mediumInteger('total')->unsigned()->nullable(false);
+            $table->mediumInteger('totalRevisi')->unsigned()->default('0');
+
+            $table->mediumInteger('totalDiterima')->unsigned()->default('0');
+            $table->unsignedBigInteger('idRevDiterima')->default('1');
+            $table->foreign('idRevDiterima')->references('id')->on('revisi');
 
             $table->unsignedBigInteger('idRevisiCu')->default('1');
             $table->foreign('idRevisiCu')->references('id')->on('revisi');

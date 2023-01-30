@@ -80,8 +80,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idRevisi');
             $table->foreign('idRevisi')->references('id')->on('revisi');
 
-            $table->integer('qtySetor');
-            $table->string('imgTransfer');
+            $table->mediumInteger('qtySetor')->unsigned();
+            $table->string('imgTransfer',50);
             
             $table->unsignedBigInteger('idTanggal');
             $table->foreign('idTanggal')->references('id')->on('tanggalAll');

@@ -16,7 +16,7 @@ return new class extends Migration
         //
         Schema::create('jenisBahan',function(Blueprint $table){
             $table->id();
-            $table->string('jenis');
+            $table->string('jenis',25);
 
             $table->timestamps();
             $table->softDeletes();
@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::create('listItemWaste', function (Blueprint $table) {
             $table->id();
 
-            $table->string('Item');
+            $table->string('Item',25);
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
@@ -99,8 +99,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idListItem');
             $table->foreign('idListItem')->references('id')->on('listItemWaste');
 
-            $table->integer('quantity')->unsigned()->nullable(false);
-            $table->integer('quantityRevisi')->unsigned()->default('0');
+            $table->smallInteger('quantity')->unsigned()->nullable(false);
+            $table->smallInteger('quantityRevisi')->unsigned()->default('0');
 
             $table->unsignedBigInteger('idRevQuantity')->default('1');
             $table->foreign('idRevQuantity')->references('id')->on('revisi');

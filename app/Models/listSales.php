@@ -20,6 +20,7 @@ class listSales extends Model
     protected $fillable = [
         'typeSales',
         'sales',
+        'butuhVerifikasi',
         'created_at',
         'updated_at',
         'deleted_at'

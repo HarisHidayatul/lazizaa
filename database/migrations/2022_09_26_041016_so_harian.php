@@ -33,21 +33,21 @@ return new class extends Migration
 
         Schema::create('satuan', function (Blueprint $table) {
             $table->id();
-            $table->string('Satuan')->unique()->nullable(false);
+            $table->string('Satuan', 10)->unique()->nullable(false);
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('listSesi', function (Blueprint $table){
+        Schema::create('listSesi', function (Blueprint $table) {
             $table->id();
-            $table->string('sesi');
+            $table->string('sesi', 10);
             $table->timestamps();
             $table->softDeletes();
         });
 
         Schema::create('drole', function (Blueprint $table) {
             $table->id();
-            $table->string("Role")->unique()->nullable(false);
+            $table->string("Role", 10)->unique()->nullable(false);
 
             $table->timestamps();
             $table->softDeletes();
@@ -55,17 +55,17 @@ return new class extends Migration
 
         Schema::create('dBrand', function (Blueprint $table) {
             $table->id();
-            $table->string('Nama Brand')->nullable(false);
-            $table->string('Keterangan');
-            $table->string('Image');
+            $table->string('Nama Brand',25)->nullable(false);
+            $table->string('Keterangan',50);
+            $table->string('Image',50);
             // $table->string('Logo URL');
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::create('doutlet', function (Blueprint $table) {
             $table->id();
-            $table->string('Nama Store')->nullable(false);
-            $table->string('Alamat Lengkap')->nullable(false);
+            $table->string('Nama Store',50)->nullable(false);
+            $table->string('Alamat Lengkap',100)->nullable(false);
 
             $table->unsignedBigInteger('idBrand');
             $table->foreign('idBrand')->references('id')->on('dBrand');
@@ -75,7 +75,7 @@ return new class extends Migration
         });
         Schema::create('typeOutlet', function (Blueprint $table) {
             $table->id();
-            $table->string('Nama Type');
+            $table->string('Nama Type',25);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -99,10 +99,10 @@ return new class extends Migration
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
 
-            $table->string('Username')->unique();
-            $table->string('Password')->nullable(false);
-            $table->string('Nama Lengkap')->nullable(false);
-            $table->string('Email')->unique()->nullable(false);
+            $table->string('Username',25)->unique()->nullable(false);
+            $table->string('Password',25)->nullable(false);
+            $table->string('Nama Lengkap',50)->nullable(false);
+            $table->string('Email',35)->unique()->nullable(false);
 
             $table->timestamps();
             $table->softDeletes();
@@ -110,8 +110,8 @@ return new class extends Migration
 
         Schema::create('listItemSO', function (Blueprint $table) {
             $table->id();
-            $table->string('Item');
-            $table->string('icon');
+            $table->string('Item',25);
+            $table->string('icon',50);
 
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
@@ -161,9 +161,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idItemSo');
             $table->foreign('idItemSo')->references('id')->on('listItemSO');
 
-            $table->integer('quantity')->unsigned()->nullable(false);
+            $table->smallInteger('quantity')->unsigned()->nullable(false);
 
-            $table->integer('quantityRevisi')->unsigned()->default('0');
+            $table->smallInteger('quantityRevisi')->unsigned()->default('0');
 
             $table->unsignedBigInteger('idRevisi')->default('1');
             $table->foreign('idRevisi')->references('id')->on('revisi');
@@ -187,7 +187,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
 
-            $table->integer('quantity');
+            $table->smallInteger('quantity')->unsigned();
 
             $table->timestamps();
             // $table->softDeletes();

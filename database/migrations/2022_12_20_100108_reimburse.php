@@ -46,7 +46,7 @@ return new class extends Migration
 
             $table->string('pesan');
             $table->string('imgTransfer');
-            $table->integer('qty');
+            $table->mediumInteger('qty')->unsigned();
 
             $table->unsignedBigInteger('idPengisi');
             $table->foreign('idPengisi')->references('id')->on('dUser');

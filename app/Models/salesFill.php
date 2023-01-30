@@ -24,6 +24,8 @@ class salesFill extends Model
         'cuRevisi',
         'total',
         'totalRevisi',
+        'totalDiterima',
+        'idRevDiterima',
         'idRevisiCu',
         'idRevisiTotal',
         'idPengisi',

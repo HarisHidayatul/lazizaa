@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\dBrand;
 use App\Models\doutlet;
+use App\Models\drole;
+use App\Models\dUser;
 use App\Models\satuan;
 use Illuminate\Http\Request;
 
@@ -62,6 +64,17 @@ class commonController extends Controller
         ]);
     }
 
+    public function storeUser(Request $request){
+        $user = dUser::create([
+            'Username' => $request->username,
+            'Password' => $request->password,
+            'Email' => $request->email,
+            'Nama Lengkap' => $request->namaLengkap,
+            'idRole' => $request->idRole,
+            'idOutlet' => $request->idOutlet
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -71,6 +84,43 @@ class commonController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showUser($idOutlet){
+        $user = dUser::where('idOutlet','=',$idOutlet)->get();
+        $outletAll = doutlet::all();
+        $roleAll = drole::all();
+        $outletArray = [];
+        $roleArray = [];
+        $userArray = [];
+        for($i =0;$i<$outletAll->count();$i++){
+            array_push($outletArray, (object)[
+                'id' => $outletAll[$i]->id,
+                'outlet' => $outletAll[$i]['Nama Store']
+            ]);
+        }
+        for($i = 0;$i<$roleAll->count();$i++){
+            array_push($roleArray, (object)[
+                'id' => $roleAll[$i]->id,
+                'role' => $roleAll[$i]->Role
+            ]);
+        }
+        for($i=0;$i<$user->count();$i++){
+            array_push($userArray,(object)[
+                'id' => $user[$i]->id,
+                'nama' => $user[$i]['Nama Lengkap'],
+                'username' => $user[$i]['Username'],
+                'password' => $user[$i]['Password'],
+                'idRole' => $user[$i]['idRole'],
+                'idOutlet' => $user[$i]['idOutlet'],
+                'email' => $user[$i]['Email']
+            ]);
+        }
+        return response()->json([
+            'dataItem' => $userArray,
+            'outlet' => $outletArray,
+            'role' => $roleArray
+        ]);
     }
 
     public function showOutlet($idBrand){
@@ -97,6 +147,38 @@ class commonController extends Controller
             'countItem' => $outlet->count(),
             'dataItem' => $array,
             'brand' => $arrayBrand
+        ]);
+    }
+
+    public function showAllOutlet(){
+        $outlet = doutlet::all();
+        $arrayOutlet = [];
+        for($i=0;$i<$outlet->count();$i++){
+            array_push($arrayOutlet, (object)[
+                'id' => $outlet[$i]['id'],
+                'store' => $outlet[$i]['Nama Store'],
+                'alamat' => $outlet[$i]['Alamat Lengkap'],
+                'brand' => $outlet[$i]->dBrands['Nama Brand'],
+                'idBrand' => $outlet[$i]->idBrand
+            ]);
+        }
+        return response()->json([
+            'countItem' => $outlet->count(),
+            'dataItem' => $arrayOutlet
+        ]);
+    }
+
+    public function showAllRole(){
+        $role = drole::all();
+        $arrayRole = [];
+        for($i=0;$i<$role->count();$i++){
+            array_push($arrayRole,(object)[
+                'id' => $role[$i]->id,
+                'role' => $role[$i]->Role
+            ]);
+        }
+        return response()->json([
+            'dataItem' => $arrayRole
         ]);
     }
 
@@ -155,6 +237,17 @@ class commonController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function updateUser(Request $request, $id){
+        $user = dUser::find($id)->update([
+            'Username' => $request->username,
+            'Password' => $request->password,
+            'Email' => $request->email,
+            'Nama Lengkap' => $request->namaLengkap,
+            'idRole' => $request->idRole,
+            'idOutlet' => $request->idOutlet            
+        ]);
     }
 
     public function updateOutlet(Request $request, $id){

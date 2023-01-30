@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('listItemPattyCash', function (Blueprint $table) {
             $table->id();
 
-            $table->string('Item');
+            $table->string('Item',25);
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::create('reqItemPattyCash', function (Blueprint $table) {
             $table->id();
 
-            $table->string('Item');
+            $table->string('Item',25);
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
@@ -86,11 +86,11 @@ return new class extends Migration
             $table->unsignedBigInteger('idListItem');
             $table->foreign('idListItem')->references('id')->on('listItemPattyCash');
 
-            $table->integer('quantity')->unsigned()->nullable(false);
-            $table->integer('quantityRevisi')->unsigned()->default('0');
+            $table->smallInteger('quantity')->unsigned()->nullable(false);
+            $table->smallInteger('quantityRevisi')->unsigned()->default('0');
 
-            $table->integer('total')->unsigned()->nullable(false);
-            $table->integer('totalRevisi')->unsigned()->default('0');
+            $table->mediumInteger('total')->unsigned()->nullable(false);
+            $table->mediumInteger('totalRevisi')->unsigned()->default('0');
 
             $table->unsignedBigInteger('idRevQuantity')->default('1');
             $table->foreign('idRevQuantity')->references('id')->on('revisi');

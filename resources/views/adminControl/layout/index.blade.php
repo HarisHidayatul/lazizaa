@@ -116,7 +116,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link" id="userSubMenu">
+                                    <a href="{{ url('admin/common/user') }}" class="nav-link" id="userSubMenu">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>User</p>
                                     </a>

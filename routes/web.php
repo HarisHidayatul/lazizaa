@@ -57,8 +57,15 @@ Route::get('common/brand/store', [commonController::class, 'storeBrand']);
 Route::get('common/brand/update/{id}',[commonController::class, 'updateBrand']);
 
 Route::get('common/outlet/show/{idBrand}',[commonController::class,'showOutlet']);
+Route::get('common/outlet/showAll',[commonController::class,'showAllOutlet']);
 Route::get('common/outlet/store',[commonController::class,'storeOutlet']);
 Route::get('common/outlet/update/{id}',[commonController::class,'updateOutlet']);
+
+Route::get('common/role/showAll',[commonController::class,'showAllRole']);
+
+Route::get('common/user/show/{idOutlet}',[commonController::class,'showUser']);
+Route::get('common/user/store',[commonController::class,'storeUser']);
+Route::get('common/user/update/{id}',[commonController::class,'updateUser']);
 
 //Flow untuk FSO Harian
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
@@ -346,6 +353,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('admin/common/outlet', function () {
         return view('adminControl.common.outlet.index');
+    });
+    Route::get('admin/common/user', function () {
+        return view('adminControl.common.user.index');
     });
 
     Route::get('accounting/revisi/sales', function () {
