@@ -113,6 +113,7 @@ class typeSalesController extends Controller
                 array_push($arrayListSales, (object)[
                     'id' => $typeSales[$i]->listSaless[$j]['id'],
                     'sales' => $typeSales[$i]->listSaless[$j]['sales'],
+                    'verif' => $typeSales[$i]->listSaless[$j]['butuhVerifikasi']
                 ]);
             }
             array_push($arrayTypeSales, (object)[
@@ -184,7 +185,8 @@ class typeSalesController extends Controller
         $listSales = listSales::find($id);
         $listSales->update([
             'typeSales' => $request->typeSales,
-            'sales' => $request->sales
+            'sales' => $request->sales,
+            'butuhVerifikasi' => $request->butuhVerifikasi
         ]);
         echo 1;
         // @dd($listSales);

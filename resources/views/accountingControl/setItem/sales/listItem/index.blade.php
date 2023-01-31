@@ -1,4 +1,4 @@
-@extends('adminControl.setItem.sales.listItem.css')
+@extends('accountingControl.setItem.sales.listItem.css')
 
 @section('subSetItemHTML')
     <form>

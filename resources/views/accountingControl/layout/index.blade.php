@@ -9,6 +9,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <div id="topNav"></div>
+            <div id="topNavBar"></div>
         </ul>
 
         <!-- Right navbar links -->
@@ -85,6 +86,47 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item" id="itemTabMenu">
+                        <a href="#" class="nav-link" id="itemSubMenu">
+                            <i class="nav-icon 	fas fa-bread-slice"></i>
+                            <p>
+                                Set Item
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/so/item') }}" class="nav-link" id="soSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>SO Harian</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/sales/item') }}" class="nav-link" id="salesSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Sales Harian</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/pattyCash/item') }}" class="nav-link" id="pattyCashSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Patty Cash</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/waste/item') }}" class="nav-link" id="wasteSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Waste</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/satuan') }}" class="nav-link" id="satuanSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Satuan</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url('accounting/checkExist') }}" class="nav-link" id="checkExistTabMenu">
                             <i class="nav-icon fas fa-pen-square"></i>
@@ -129,6 +171,10 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#" id="linkContent"></a></li>
+                            <li class="breadcrumb-item active" id="subFillContent"></li>
+
+                            
+                            <li class="breadcrumb-item"><a href="#" id="tittleFillContent"></a></li>
                             <li class="breadcrumb-item active" id="subFillContent"></li>
                         </ol>
                     </div><!-- /.col -->

@@ -1,4 +1,4 @@
-@extends('adminControl.setItem.sales.index')
+@extends('accountingControl.setItem.sales.index')
 
 @section('subSetItemJS')
     <script>
@@ -113,7 +113,7 @@
 
                     var elementDropDownItem = document.getElementsByName('dropDownTypeEdit');
 
-                    for (var i = 0; i < dropDownIdEdit.length; i++) {
+                    for(var i =0;i<dropDownIdEdit.length;i++){
                         elementDropDownItem[i].value = dropDownIdEdit[i];
                     }
                 },
@@ -123,7 +123,7 @@
             });
         }
 
-        function editItem(index) {
+        function editItem(index){
             var butuhVerifikasi = '0';
             if(document.getElementsByName('checkBoxVerif')[index].checked){
                 butuhVerifikasi = '1';

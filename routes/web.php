@@ -382,6 +382,56 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/setoran', function () {
         return view('accountingControl.setoranTunai.index');
     });
+    
+    Route::get('accounting/so/item', function () {
+        // return view('accountingControl.setItem.soHarian');
+        return view('accountingControl.setItem.so.listItem.index');
+    });
+    Route::get('accounting/so/setType', function () {
+        return view('accountingControl.setItem.so.setType.index');
+    });
+    Route::get('accounting/so/setOutlet', function () {
+        return view('accountingControl.setItem.so.outletType.index');
+    });
+
+    Route::get('accounting/sales/item', function () {
+        return view('accountingControl.setItem.sales.listItem.index');
+    });
+    Route::get('accounting/sales/setType', function () {
+        return view('accountingControl.setItem.sales.setType.index');
+    });
+    Route::get('accounting/sales/outletType', function () {
+        return view('accountingControl.setItem.sales.outletType.index');
+    });
+    Route::get('accounting/sales/pendingItem', function () {
+        return view('accountingControl.setItem.sales.pendingItem.index');
+    });
+    // Route::get('', function(){
+    //     return view();
+    // });
+    Route::get('accounting/pattyCash/item', function () {
+        return view('accountingControl.setItem.pattyCash.listItem.index');
+    });
+    Route::get('accounting/pattyCash/brandItem', function () {
+        return view('accountingControl.setItem.pattyCash.brandItem.index');
+    });
+    Route::get('accounting/pattyCash/pendingItem', function () {
+        return view('accountingControl.setItem.pattyCash.pendingItem.index');
+    });
+
+    Route::get('accounting/waste/item', function () {
+        return view('accountingControl.setItem.waste.listItem.index');
+    });
+    Route::get('accounting/waste/brandItem', function () {
+        return view('accountingControl.setItem.waste.brandItem.index');
+    });
+    Route::get('accounting/waste/pendingItem', function () {
+        return view('accountingControl.setItem.waste.pendingItem.index');
+    });
+
+    Route::get('accounting/satuan', function () {
+        return view('accountingControl.setItem.satuan.index');
+    });
 
     Route::get('user/soHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.soHarian', [
