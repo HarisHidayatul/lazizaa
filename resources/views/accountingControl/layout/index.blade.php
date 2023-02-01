@@ -145,6 +145,12 @@
                             <p class="text">Setoran Tunai</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('accounting/verifikasi') }}" class="nav-link" id="verifikasiSalesTabMenu">
+                            <i class="nav-icon fa fa-check"></i>
+                            <p class="text">Verifikasi Sales</p>
+                        </a>
+                    </li>
                     <li class="nav-header">USER</li>
                     <li class="nav-item">
                         <a href="{{ url('user/logout') }}" class="nav-link">

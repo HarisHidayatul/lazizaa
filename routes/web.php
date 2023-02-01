@@ -38,15 +38,7 @@ use Illuminate\Support\Facades\Auth;
 //php artisan optimize //for clear cache
 //php artisan route:clear //for clear cache
 //composer dump-autoload //untuk optimize dan auto load folder
-Route::get('/soHarian', function () {
-    return view('soHarian', [
-        'datafso' => fsoHarian::orderBy('Tanggal', 'DESC')->get(),
-        // 'datafso' => fsoHarian::orderBy('Tanggal', 'DESC')->paginate(3,'*',1,2),
-        // 'datafso' => fsoHarian::orderBy('Tanggal', 'ASC')->get(),
-        // 'datafso' => fsoHarian::whereBetween(), https://stackoverflow.com/questions/66206284/get-data-after-start-date-laravel
-        'date'    => date("Y-m-d")
-    ]);
-});
+
 //Flow untuk common fitur
 Route::get('common/satuan/show', [commonController::class, 'showSatuan']);
 Route::get('common/satuan/store', [commonController::class, 'storeSatuan']);
@@ -108,9 +100,6 @@ Route::get('soHarian/user/showAllSesi/{idOutlet}/{date}', [fsoHarianController::
 
 Route::get('fsoh/getId', [fsoHarianController::class, 'showAndCreateID']);
 
-Route::get('soHarian', function () {
-    return view('fsoHarian.typeOutlet');
-});
 
 //Flow untuk Sales Harian
 Route::get('typeSales/show', [typeSalesController::class, 'index']); //get all type sales
@@ -159,9 +148,8 @@ Route::get('salesHarian/edit/cu/rev/data', [salesHarianController::class, 'editC
 Route::get('salesHarian/edit/total/data/{id}', [salesHarianController::class, 'editTotal']);
 Route::get('salesHarian/edit/total/rev/data', [salesHarianController::class, 'editTotalRev']);
 
-Route::get('salesHarian', function () {
-    return view('salesHarian.typeSales');
-});
+Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}',[salesHarianController::class,'showVerifOutlet']);
+Route::get('salesHarian/update/verifikasi/{idSalesFill}',[salesHarianController::class,'updateVerifOutlet']);
 
 //Flow untuk Patty Cash
 Route::get('pattyCash/items/show', [pattyCashController::class, 'showAll']);
@@ -203,10 +191,6 @@ Route::get('show/satuan', [pattyCashController::class, 'showSatuan']);
 
 Route::get('pattyCash/user/showAllSesi/{idOutlet}/{date}', [pattyCashController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
 
-Route::get('pattyCash', function () {
-    return view('pattyCash.typePattyCash');
-});
-
 Route::get('waste/items/show', [wasteController::class, 'showAll']);
 Route::get('waste/items/store', [wasteController::class, 'storeItem']);
 Route::get('waste/items/update/{id}', [wasteController::class, 'updateItem']);
@@ -236,12 +220,10 @@ Route::get('waste/user/showAllData/{id}/{date}/{idSesi}', [wasteController::clas
 
 Route::get('waste/user/showAllSesi/{idOutlet}/{date}', [wasteController::class, 'showAllDataSesi']); //menampilkan data di hari itu sesuai sesi
 
-Route::get('wasteHarian', function () {
-    return view('wasteHarian.typeWaste');
-});
-
 Route::get('setoran/bank/type/show', [setoranController::class, 'showType']);
 Route::get('setoran/bank/show/all', [setoranController::class, 'showAllBank']);
+Route::get('setoran/bank/create',[setoranController::class,'createBank']);
+Route::get('setoran/bank/update/{id}',[setoranController::class,'updateBank']);
 Route::get('setoran/bank/show/{idJenisBank}', [setoranController::class, 'showBank']);
 Route::get('setoran/user/pengirim/createID', [setoranController::class, 'createIDPengirim']);
 Route::get('setoran/penerima/createID', [setoranController::class, 'createIDPenerima']);
@@ -277,10 +259,6 @@ Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class,
 Route::get('reimburse/show/pengirim/all/{idUser}', [reimburseController::class, 'showPengirimAll']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
-
-Route::get('/login', function () {
-    return view('login');
-});
 
 Route::get('checkLogin', [loginController::class, 'loginCheck']);
 Route::get('getAllDate/{idOutlet}', [loginController::class, 'getAllDate']);
@@ -357,6 +335,12 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('admin/common/user', function () {
         return view('adminControl.common.user.index');
     });
+    Route::get('admin/setoran', function(){
+        return view('adminControl.setoran.index');
+    });
+    Route::get('admin/setBank', function(){
+        return view('adminControl.setBank.index');
+    });
 
     Route::get('accounting/revisi/sales', function () {
         return view('accountingControl.revisi.sales.index');
@@ -381,6 +365,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/setoran', function () {
         return view('accountingControl.setoranTunai.index');
+    });
+
+    Route::get('accounting/verifikasi', function () {
+        return view('accountingControl.verifikasiSales.index');
     });
     
     Route::get('accounting/so/item', function () {

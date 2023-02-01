@@ -123,6 +123,18 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/setBank') }}" class="nav-link" id="setBankSubMenu">
+                                <i class="nav-icon fa fa-bank"></i>
+                                <p class="text">Set Bank</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/setoran') }}" class="nav-link" id="setoranSubMenu">
+                                <i class="nav-icon fas fa-cash-register"></i>
+                                <p class="text">Penerima Setoran</p>
+                            </a>
+                        </li>
                         <li class="nav-header">USER</li>
                         <li class="nav-item">
                             <a href="{{ url('user/logout') }}" class="nav-link">

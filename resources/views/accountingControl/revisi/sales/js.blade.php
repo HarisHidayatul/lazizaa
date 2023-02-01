@@ -193,7 +193,7 @@
                         tempData.push(obj.itemSales[i].Item[j].Item[k].cuQty);
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].totalSblm;
+                        dataTable += obj.itemSales[i].Item[j].Item[k].totalSblm.toLocaleString();
                         dataTable += '</td>';
                         dataTable += '<td ';
                         if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {

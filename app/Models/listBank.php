@@ -20,6 +20,8 @@ class listBank extends Model
     }
 
     protected $fillable = [
+        'bank',
+        'imageBank',
         'idJenisBank',
         'created_at',
         'updated_at',

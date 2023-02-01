@@ -33,6 +33,13 @@ class setoranController extends Controller
     {
         // 
     }
+    public function createBank(Request $request){
+        listBank::create([
+            'idJenisBank' => $request->idJenisBank,
+            'bank' => $request->bank,
+            'imageBank' => $request->imageBank
+        ]);
+    }
 
     public function createSetoran(Request $request)
     {
@@ -143,25 +150,44 @@ class setoranController extends Controller
     public function showAllBank()
     {
         $listBank = listBank::all();
+        $jenisBank = jenisBank::all();
         // @dd($listBank);
         $allBank = [];
+        $jenisBankArray = [];
+        for($i=0;$i<$jenisBank->count();$i++){
+            array_push($jenisBankArray, (object)[
+                'id' => $jenisBank[$i]->id,
+                'jenis' => $jenisBank[$i]->jenis
+            ]);
+        }
         for ($i = 0; $i < $listBank->count(); $i++) {
             array_push($allBank, (object)[
                 'id' => $listBank[$i]->id,
                 'bank' => $listBank[$i]->bank,
-                'img' => $listBank[$i]->imageBank
+                'img' => $listBank[$i]->imageBank,
+                'idJenisBank' => $listBank[$i]->idJenisBank,
+                'jenisBank' => $listBank[$i]->jenisBanks->jenis
             ]);
         }
         return response()->json([
-            'listBank' => $allBank
+            'listBank' => $allBank,
+            'jenisBank' => $jenisBankArray
         ]);
     }
 
     public function showPenerima()
     {
         $penerimaList = penerimaList::all();
+        $bankList = listBank::all();
         // @dd($penerimaList);
         $penerimaListArray = [];
+        $bankListArray = [];
+        for ($i = 0; $i < $bankList->count(); $i++) {
+            array_push($bankListArray,(object)[
+                'id' => $bankList[$i]->id,
+                'bank' => $bankList[$i]->bank
+            ]);
+        }
         for ($i = 0; $i < $penerimaList->count(); $i++) {
             array_push($penerimaListArray, (object)[
                 'id' => $penerimaList[$i]->id,
@@ -173,7 +199,8 @@ class setoranController extends Controller
             ]);
         }
         return response()->json([
-            'penerimaListArray' => $penerimaListArray
+            'penerimaListArray' => $penerimaListArray,
+            'bankListArray' => $bankListArray
         ]);
     }
 
@@ -341,7 +368,7 @@ class setoranController extends Controller
             $to = $now->subDays(30)->format('Y-m-d');
             $tanggalAll = $semuaTanggal->whereBetween('Tanggal', array($to, $from));
         } else if ($countData == 'between') {
-            $tanggalAll = $semuaTanggal->whereBetween('Tanggal', array($startDate,$stopDate));
+            $tanggalAll = $semuaTanggal->whereBetween('Tanggal', array($startDate, $stopDate));
         } else if ($countData == 'all') {
             $tanggalAll = $semuaTanggal;
         }
@@ -474,6 +501,14 @@ class setoranController extends Controller
         $setoran->update([
             'idTujuan' => $request->idPenerima,
             'idRevisi' => $request->idRevisi
+        ]);
+    }
+
+    public function updateBank(Request $request, $id){
+        listBank::find($id)->update([
+            'idJenisBank' => $request->idJenisBank,
+            'bank' => $request->bank,
+            'imageBank' => $request->imageBank
         ]);
     }
 

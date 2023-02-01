@@ -172,6 +172,88 @@ class salesHarianController extends Controller
         ]);
     }
 
+    public function showVerifOutlet($idOutlet, $fromDate, $toDate)
+    {
+        $tanggalAll = tanggalAll::with('salesharians.listSaless')->whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
+        // @dd($tanggalAll[0]->salesharians);
+        $salesDate = [];
+        for ($h = 0; $h < $tanggalAll->count(); $h++) {
+            $datasales = $tanggalAll[$h]->salesharians->where('idOutlet', '=', $idOutlet);
+            $revisionDateFound = false;
+            // @dd($datasales[0]->listsaless);
+            $salesOutlet = [];
+            for ($i = 0; $i < $datasales->count(); $i++) {
+                $salesArray = [];
+                $revisionFound = false;
+                $idSesi = $datasales[$i]->idSesi;
+                for ($j = 0; $j < ($datasales[$i]->listSaless->count()); $j++) {
+                    if ($datasales[$i]->listSaless[$j]->butuhVerifikasi > 0) {
+                        $idCuRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiCu;
+                        $idTotalRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiTotal;
+                        $revisionFound = true;
+                        $cuQty = $datasales[$i]->listSaless[$j]->pivot->cu;
+                        $cuSblm = $cuQty;
+                        $totalQty = $datasales[$i]->listSaless[$j]->pivot->total;
+                        $totalSblm = $totalQty;
+
+                        $jumlahDiterima = $datasales[$i]->listSaless[$j]->pivot->totalDiterima;
+                        $persen = (($totalQty-$jumlahDiterima)*100)/$totalQty;
+                        $persen = 100-$persen;
+                        $persen = round($persen);
+
+                        if ($idCuRevisi == '2') {
+                            $cuQty = $datasales[$i]->listSaless[$j]->pivot->cuRevisi;
+                        }
+
+                        if ($idTotalRevisi == '2') {
+                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->totalRevisi;
+                        }
+
+                        array_push($salesArray, (object)[
+                            'idSalesFill' => $datasales[$i]->listSaless[$j]->pivot->id,
+                            // 'idListSales' => $datasales[$i]->listSaless[$j]->id,
+                            'sales' => $datasales[$i]->listSaless[$j]->sales,
+                            'idCuRev' => $idCuRevisi,
+                            'idTotalRev' => $idTotalRevisi,
+
+                            'cuQty' => $cuQty,
+                            'cuSblm' => $cuSblm,
+
+                            'totalQty' => $totalQty,
+                            'totalSblm' => $totalSblm,
+
+                            'jumlahDiterima' => $jumlahDiterima,
+                            'idRevJumlah' => $datasales[$i]->listSaless[$j]->pivot->idRevDiterima,
+                            'persen' => $persen,
+
+                            'idSesi' => $idSesi
+                        ]);
+                    }
+                }
+                if ($revisionFound) {
+                    $outlet = doutlet::find($datasales[$i]['idOutlet']);
+                    array_push($salesOutlet, (object)[
+                        // 'Tanggal' => $datasales[$i]['Tanggal'],
+                        'Outlet' => $outlet['Nama Store'],
+                        'Item' => $salesArray,
+                    ]);
+                    $revisionDateFound = true;
+                }
+            }
+            if ($revisionDateFound) {
+                array_push($salesDate, (object)[
+                    'Tanggal' => $tanggalAll[$h]->Tanggal,
+                    'Item' => $salesOutlet
+                ]);
+            }
+        }
+        // salesHarian;
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'itemSales' => $salesDate
+        ]);
+    }
+
     public function showAllData($id, $date, $idSesi)
     {
         $tanggalAll = tanggalAll::where('Tanggal', '=', $date)->first();
@@ -429,7 +511,7 @@ class salesHarianController extends Controller
         ]);
     }
 
-    public function showDateRevision($fromDate,$toDate)
+    public function showDateRevision($fromDate, $toDate)
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($tanggalAll[0]->salesharians);
@@ -468,13 +550,13 @@ class salesHarianController extends Controller
                             'sales' => $datasales[$i]->listSaless[$j]->sales,
                             'idCuRev' => $idCuRevisi,
                             'idTotalRev' => $idTotalRevisi,
-                            
+
                             'cuQty' => $cuQty,
                             'cuSblm' => $cuSblm,
 
                             'totalQty' => $totalQty,
                             'totalSblm' => $totalSblm,
-                            
+
                             'namaPengisi' => $userPengisi['Nama Lengkap'],
                             'idSesi' => $idSesi
                         ]);
@@ -695,7 +777,7 @@ class salesHarianController extends Controller
         ]);
     }
 
-    public function showDateRevisionDone($fromDate,$toDate)
+    public function showDateRevisionDone($fromDate, $toDate)
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($tanggalAll[0]->salesharians);
@@ -942,6 +1024,12 @@ class salesHarianController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function updateVerifOutlet(Request $request, $idSalesFill){
+        salesFill::find($idSalesFill)->update([
+            'totalDiterima' => $request->totalDiterima
+        ]);
     }
 
     /**

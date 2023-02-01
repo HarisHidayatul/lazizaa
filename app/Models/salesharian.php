@@ -18,7 +18,7 @@ class salesharian extends Model
     }
 
     public function listSaless(){
-        return $this->belongsToMany(listSales::class,'salesFill','idSales','idListSales')->withPivot('cu','cuRevisi','total','totalRevisi','idRevisiCu','idRevisiTotal','id','idPengisi','idPerevisi');
+        return $this->belongsToMany(listSales::class,'salesFill','idSales','idListSales')->withPivot('cu','cuRevisi','total','totalRevisi','idRevisiCu','idRevisiTotal','id','idPengisi','idPerevisi','totalDiterima','idRevDiterima');
     }
 
     public function tanggalAlls(){

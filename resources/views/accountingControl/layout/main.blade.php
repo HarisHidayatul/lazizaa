@@ -34,6 +34,8 @@
 
     <!-- OPTIONAL SCRIPTS -->
     <script src="{{ url('plugins/chart.js/Chart.min.js') }}"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.6.0/autoNumeric.min.js"></script>
 
     @yield('mainStyle')
     @yield('fillStyle')
