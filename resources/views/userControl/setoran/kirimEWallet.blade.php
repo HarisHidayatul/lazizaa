@@ -134,7 +134,7 @@
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 700;
-            font-size: 24px;
+            font-size: 20px;
             line-height: 130%;
             /* color: #E0E0E0; */
             color: #585858;
@@ -158,7 +158,6 @@
         .wrapNominal div {
             flex: 0 0 125px;
             height: 30px;
-            /* width: 100px; */
             background: #FFEAEF;
             border-radius: 8px;
             font-family: 'Montserrat';
@@ -549,7 +548,7 @@
                     <div class="nameTop" id="rekeningDanBankPengirim">.... | <span>.....</span> ....</div>
                 </div>
             </div>
-            
+
             <div class="pilihTanggal">Pilih tanggal</div>
             <div class="d-flex justify-content-between align-items-center wrapSelectTanggal"
                 onclick="calendarLayoutShow();">
@@ -618,7 +617,9 @@
                 <div onclick="setJumlah(2000000)">2.000.000</div>
             </div>
             <div class="d-flex justify-content-center align-items-center wrapUpload">
-                <img src="{{ url('img/icon/uploadCamera.png') }}" alt="" style="height: 30px;">
+                <label for="file-input">
+                    <img src="{{ url('img/icon/uploadCamera.png') }}" alt="" style="height: 30px;">
+                </label>
                 <div>Upload bukti pembayaran</div>
             </div>
             <div class="wrapBottom">
@@ -679,14 +680,14 @@
     var indexPenerima = null;
     var objAllPenerima = null;
 
-    
+
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
     var currentDateMonthYear = currentYear + '-' + (currentMonth + 1) + '-' + dateSelect;
-    
+
     let monthAndYear = document.getElementById("monthAndYear");
     showCalendar(currentMonth, currentYear);
 
@@ -936,7 +937,7 @@
         document.getElementById('dateKirimLbl').innerHTML = stringDay;
         calendarLayoutHide();
     }
-    
+
     function calendarLayoutShow() {
         document.getElementById('calendarLayout').style.visibility = "visible";
     }
@@ -944,7 +945,6 @@
     function calendarLayoutHide() {
         document.getElementById('calendarLayout').style.visibility = "hidden";
     }
-
 </script>
 
 </html>

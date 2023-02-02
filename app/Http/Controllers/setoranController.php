@@ -10,6 +10,7 @@ use App\Models\pengirimList;
 use App\Models\setoran;
 use App\Models\tanggalAll;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class setoranController extends Controller
@@ -33,7 +34,8 @@ class setoranController extends Controller
     {
         // 
     }
-    public function createBank(Request $request){
+    public function createBank(Request $request)
+    {
         listBank::create([
             'idJenisBank' => $request->idJenisBank,
             'bank' => $request->bank,
@@ -154,7 +156,7 @@ class setoranController extends Controller
         // @dd($listBank);
         $allBank = [];
         $jenisBankArray = [];
-        for($i=0;$i<$jenisBank->count();$i++){
+        for ($i = 0; $i < $jenisBank->count(); $i++) {
             array_push($jenisBankArray, (object)[
                 'id' => $jenisBank[$i]->id,
                 'jenis' => $jenisBank[$i]->jenis
@@ -183,7 +185,7 @@ class setoranController extends Controller
         $penerimaListArray = [];
         $bankListArray = [];
         for ($i = 0; $i < $bankList->count(); $i++) {
-            array_push($bankListArray,(object)[
+            array_push($bankListArray, (object)[
                 'id' => $bankList[$i]->id,
                 'bank' => $bankList[$i]->bank
             ]);
@@ -374,29 +376,32 @@ class setoranController extends Controller
         }
         $allData = [];
         $countData = 1;
-        for ($i = 0; $i < $tanggalAll->count(); $i++) {
-            $setoran = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
-            // @dd($setoran);
-            $setoranArray = [];
-            $dataFound = false;
-            for ($j = 0; $j < $setoran->count(); $j++) {
-                // @dd($setoran[$j]->pengirimLists);
-                array_push($setoranArray, (object)[
-                    'id' => $setoran[$j]->id,
-                    'idRev' => $setoran[$j]->idRevisi,
-                    'namaRekening' => $setoran[$j]->pengirimLists->namaRekening,
-                    'time' => $setoran[$j]->updated_at->format('H:i'),
-                    'imgBank' => $setoran[$j]->pengirimLists->listBanks->imageBank,
-                    'qty' => $setoran[$j]->qtySetor,
-                    'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
-                ]);
-                $dataFound = true;
-            }
-            if ($dataFound) {
-                array_push($allData, (object)[
-                    'Tanggal' => $tanggalAll[$i]->Tanggal,
-                    'setoran' => $setoranArray
-                ]);
+        for ($i = 0; $i < $semuaTanggal->count(); $i++) {
+            try {
+                $setoran = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
+                // @dd($setoran);
+                $setoranArray = [];
+                $dataFound = false;
+                for ($j = 0; $j < $setoran->count(); $j++) {
+                    // @dd($setoran[$j]->pengirimLists);
+                    array_push($setoranArray, (object)[
+                        'id' => $setoran[$j]->id,
+                        'idRev' => $setoran[$j]->idRevisi,
+                        'namaRekening' => $setoran[$j]->pengirimLists->namaRekening,
+                        'time' => $setoran[$j]->updated_at->format('H:i'),
+                        'imgBank' => $setoran[$j]->pengirimLists->listBanks->imageBank,
+                        'qty' => $setoran[$j]->qtySetor,
+                        'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
+                    ]);
+                    $dataFound = true;
+                }
+                if ($dataFound) {
+                    array_push($allData, (object)[
+                        'Tanggal' => $tanggalAll[$i]->Tanggal,
+                        'setoran' => $setoranArray
+                    ]);
+                }
+            } catch (Exception $e) {
             }
         }
         // tanggalAll;
@@ -504,7 +509,8 @@ class setoranController extends Controller
         ]);
     }
 
-    public function updateBank(Request $request, $id){
+    public function updateBank(Request $request, $id)
+    {
         listBank::find($id)->update([
             'idJenisBank' => $request->idJenisBank,
             'bank' => $request->bank,

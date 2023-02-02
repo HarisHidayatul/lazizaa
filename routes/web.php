@@ -270,6 +270,11 @@ Route::get('/', function () {
 });
 Route::post('user/login', [loginController::class, 'login']);
 
+Route::get('uploadImage', function(){
+    return view('tesUploadImage');
+});
+Route::post('postImage',[commonController::class,'postImage']);
+
 Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/logout', [loginController::class, 'logout']);
     Route::get('user/dashboard', function () {

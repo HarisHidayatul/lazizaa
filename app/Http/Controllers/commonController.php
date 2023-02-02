@@ -21,6 +21,11 @@ class commonController extends Controller
         //
     }
 
+    public function postImage(Request $request){
+        // ddd($request);
+        return $request->file('image')->store('post-images');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
