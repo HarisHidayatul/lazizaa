@@ -8,6 +8,7 @@ use App\Models\drole;
 use App\Models\dUser;
 use App\Models\satuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class commonController extends Controller
 {
@@ -23,7 +24,13 @@ class commonController extends Controller
 
     public function postImage(Request $request){
         // ddd($request);
-        return $request->file('image')->store('post-images');
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        return $request->file('image')->store('tempImgAll');
+    }
+    public function moveImage($fromPathFile,$toPathFile){
+        Storage::move('post-images\oYTnOi0pgnWBvqVj5nIg0O7n3wscjD3w8l8v83am.png','temp-images\1.png');
     }
 
     /**

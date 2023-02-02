@@ -274,6 +274,7 @@ Route::get('uploadImage', function(){
     return view('tesUploadImage');
 });
 Route::post('postImage',[commonController::class,'postImage']);
+Route::get('moveImage/{fromPathFile}/{toPathFile}',[commonController::class,'moveImage']);
 
 Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/logout', [loginController::class, 'logout']);
