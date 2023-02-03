@@ -32,7 +32,7 @@ class doutlet extends Model
     }
 
     public function outletListSaless(){
-        return $this->belongsToMany(listSales::class,'outletListSales','idOutlet','idListSales');
+        return $this->belongsToMany(listSales::class,'outletlistsales','idOutlet','idListSales');
     }
 
     public function dateSales(){

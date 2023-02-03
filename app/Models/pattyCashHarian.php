@@ -19,7 +19,7 @@ class pattyCashHarian extends Model
     }
 
     public function listItemPattyCashs(){
-        return $this->belongsToMany(listItemPattyCash::class,'pattyCashFill','idPattyCash','idListItem')->withPivot('id','idPerevisi','quantity','quantityRevisi','total','totalRevisi','idPengisi','idRevQuantity','idRevTotal');
+        return $this->belongsToMany(listItemPattyCash::class,'pattycashfill','idPattyCash','idListItem')->withPivot('id','idPerevisi','quantity','quantityRevisi','total','totalRevisi','idPengisi','idRevQuantity','idRevTotal');
     }
     public function tanggalAlls(){
         return $this->belongsTo(tanggalAll::class,'idTanggal','id');

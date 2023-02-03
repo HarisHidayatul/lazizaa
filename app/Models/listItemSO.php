@@ -15,7 +15,7 @@ class listItemSO extends Model
     protected $primaryKey = 'id';
 
     public function fsoharians(){
-        return $this->belongsToMany(fsoHarian::class,'soFill','idItemSo','idSo')->withPivot('quantity');
+        return $this->belongsToMany(fsoHarian::class,'sofill','idItemSo','idSo')->withPivot('quantity');
     }
 
     public function satuans(){

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('listItemPattyCash', function (Blueprint $table) {
+        Schema::create('listitempattycash', function (Blueprint $table) {
             $table->id();
 
             $table->string('Item',25);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('reqItemPattyCash', function (Blueprint $table) {
+        Schema::create('reqitempattycash', function (Blueprint $table) {
             $table->id();
 
             $table->string('Item',25);
@@ -38,10 +38,10 @@ return new class extends Migration
             $table->foreign('idOutlet')->references('id')->on('doutlet');
 
             $table->unsignedBigInteger('idBrand');
-            $table->foreign('idBrand')->references('id')->on('dBrand');
+            $table->foreign('idBrand')->references('id')->on('dbrand');
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+            $table->foreign('idTanggal')->references('id')->on('tanggalall');
 
             $table->unsignedBigInteger('idPengisi');
             $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
@@ -49,42 +49,42 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('brandPattyCash', function (Blueprint $table) {
+        Schema::create('brandpattycash', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idBrand');
-            $table->foreign('idBrand')->references('id')->on('dBrand');
+            $table->foreign('idBrand')->references('id')->on('dbrand');
 
             $table->unsignedBigInteger('idListItem');
-            $table->foreign('idListItem')->references('id')->on('listItemPattyCash');
+            $table->foreign('idListItem')->references('id')->on('listitempattycash');
 
             $table->timestamps();
         });
 
-        Schema::create('pattyCashHarian', function (Blueprint $table) {
+        Schema::create('pattycashharian', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+            $table->foreign('idTanggal')->references('id')->on('tanggalall');
 
             $table->unsignedBigInteger('idSesi');
-            $table->foreign('idSesi')->references('id')->on('listSesi');
+            $table->foreign('idSesi')->references('id')->on('listsesi');
             
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('pattyCashFill', function (Blueprint $table) {
+        Schema::create('pattycashfill', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idPattyCash');
-            $table->foreign('idPattyCash')->references('id')->on('pattyCashHarian');
+            $table->foreign('idPattyCash')->references('id')->on('pattycashharian');
 
             $table->unsignedBigInteger('idListItem');
-            $table->foreign('idListItem')->references('id')->on('listItemPattyCash');
+            $table->foreign('idListItem')->references('id')->on('listitempattycash');
 
             $table->smallInteger('quantity')->unsigned()->nullable(false);
             $table->smallInteger('quantityRevisi')->unsigned()->default('0');
@@ -102,7 +102,7 @@ return new class extends Migration
             $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
 
             $table->unsignedBigInteger('idPerevisi');
-            $table->foreign('idPerevisi')->references('id')->on('dUser');
+            $table->foreign('idPerevisi')->references('id')->on('duser');
             
             $table->timestamps();
             
