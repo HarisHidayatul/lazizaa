@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class soHarianBatas extends Model
 {
     use HasFactory;
-    public $table = 'soHarianBatas';
+    public $table = 'soharianbatas';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
     public function dUsers(){

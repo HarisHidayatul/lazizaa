@@ -11,7 +11,7 @@ class pengirimList extends Model
     use SoftDeletes;
     use HasFactory;
 
-    public $table = 'pengirimList';
+    public $table = 'pengirimlist';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

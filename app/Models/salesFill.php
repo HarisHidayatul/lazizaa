@@ -9,7 +9,7 @@ class salesFill extends Model
 {
     // use SoftDeletes;
     use HasFactory;
-    public $table = 'salesFill';
+    public $table = 'salesfill';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

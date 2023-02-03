@@ -11,7 +11,7 @@ class typeOutlet extends Model
     use SoftDeletes;
     use HasFactory;
 
-    public $table = 'typeOutlet';
+    public $table = 'typeoutlet';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

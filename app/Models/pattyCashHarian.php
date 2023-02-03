@@ -10,7 +10,7 @@ class pattyCashHarian extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'pattyCashHarian';
+    public $table = 'pattycashharian';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
 

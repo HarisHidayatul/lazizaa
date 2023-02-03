@@ -10,7 +10,7 @@ class listItemSO extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'listItemSO';
+    public $table = 'listitemso';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

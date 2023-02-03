@@ -11,7 +11,7 @@ class dBrand extends Model
     use SoftDeletes;
     use HasFactory;
 
-    public $table = 'dBrand';
+    public $table = 'dbrand';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

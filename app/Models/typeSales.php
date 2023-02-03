@@ -10,7 +10,7 @@ class typeSales extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'typeSales';
+    public $table = 'typesales';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

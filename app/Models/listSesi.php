@@ -10,7 +10,7 @@ class listSesi extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'listSesi';
+    public $table = 'listsesi';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

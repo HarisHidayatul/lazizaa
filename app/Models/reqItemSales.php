@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class reqItemSales extends Model
 {
     use HasFactory;
-    public $table = 'reqItemSales';
+    public $table = 'reqitemsales';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

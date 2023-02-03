@@ -11,7 +11,7 @@ class listBank extends Model
     use SoftDeletes;
     use HasFactory;
 
-    public $table = 'listBank';
+    public $table = 'listbank';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

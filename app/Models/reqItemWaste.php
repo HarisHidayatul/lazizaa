@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class reqItemWaste extends Model
 {
     use HasFactory;
-    public $table = 'reqItemWaste';
+    public $table = 'reqitemwaste';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

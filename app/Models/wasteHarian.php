@@ -10,7 +10,7 @@ class wasteHarian extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'wasteHarian';
+    public $table = 'wasteharian';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
 

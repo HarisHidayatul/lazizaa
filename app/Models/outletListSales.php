@@ -9,7 +9,7 @@ class outletListSales extends Model
 {
     use HasFactory;
 
-    public $table = 'outletListSales';
+    public $table = 'outletlistsales';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     
