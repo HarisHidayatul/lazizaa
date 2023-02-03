@@ -44,11 +44,11 @@ class doutlet extends Model
     }
 
     public function datePattyCash(){
-        return $this->belongsToMany(tanggalAll::class,'pattyCashHarian','idOutlet','idTanggal')->withPivot('id');
+        return $this->belongsToMany(tanggalAll::class,'pattycashharian','idOutlet','idTanggal')->withPivot('id');
     }
     
     public function dateWaste(){
-        return $this->belongsToMany(tanggalAll::class,'wasteHarian','idOutlet','idTanggal')->withPivot('id');
+        return $this->belongsToMany(tanggalAll::class,'wasteharian','idOutlet','idTanggal')->withPivot('id');
     }
 
     protected $fillable = [
