@@ -107,14 +107,20 @@ class loginController extends Controller
             //     return redirect('user/dashboard');
             // }
             if ($request->password == $data->Password) {
-                $tanggalAll = tanggalAll::where('Tanggal', '=', date("Y-m-d"))->first();
                 $tanggalID = null;
-                if ($tanggalAll == null) {
+                try{
+                    $tanggalAll = tanggalAll::where('Tanggal', '=', date("Y-m-d"))->first();
+                    if ($tanggalAll == null) {
+                        $tanggalID = tanggalAll::create([
+                            'Tanggal' => date("Y-m-d"),
+                        ])->id;
+                    } else {
+                        $tanggalID = $tanggalAll['id'];
+                    }
+                }catch(Exception $e){
                     $tanggalID = tanggalAll::create([
                         'Tanggal' => date("Y-m-d"),
                     ])->id;
-                } else {
-                    $tanggalID = $tanggalAll['id'];
                 }
                 if ($data['idRole'] == '2') { //untuk role user
                     $dOutlet = $data->doutlets;
