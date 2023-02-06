@@ -14,6 +14,14 @@ return new class extends Migration
     public function up()
     {
         //
+        Schema::create('temp_img_all', function(Blueprint $table){
+            $table->id();
+
+            $table->string('imagePath');
+            
+            $table->timestamps();
+        });
+
         Schema::create('reimburse', function(Blueprint $table){
             $table->id();
 

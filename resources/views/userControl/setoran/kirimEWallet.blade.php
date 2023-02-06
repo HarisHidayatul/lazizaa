@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -170,6 +171,21 @@
             color: #B20731;
             margin-right: 10px;
             margin-bottom: 10px;
+        }
+
+        .wrapImageUpload {
+            height: 50px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #585858;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            margin-right: 10px;
+            margin-left: 10px;
         }
 
         .wrapUpload {
@@ -616,11 +632,24 @@
                 <div onclick="setJumlah(1000000)">1.000.000</div>
                 <div onclick="setJumlah(2000000)">2.000.000</div>
             </div>
-            <div class="d-flex justify-content-center align-items-center wrapUpload">
-                <label for="file-input">
+            <form id="formUploadImage">
+                <label for="image" class="d-flex justify-content-center align-items-center wrapUpload">
                     <img src="{{ url('img/icon/uploadCamera.png') }}" alt="" style="height: 30px;">
+                    <div>Upload bukti pembayaran</div>
                 </label>
-                <div>Upload bukti pembayaran</div>
+                <input type="file" class="form-control" id="image" name="image" style="display: none"
+                    onchange="uploadFileImage();">
+            </form>
+            <div id="wrapImageUpload">
+                <div class="d-flex justify-content-between align-items-center wrapImageUpload">
+                    <div class="d-flex justify-content-start">
+                        <img src="{{ url('img/icon/linkPath.png') }}" alt="" style="height: 20px;">
+                        <div style="margin-left: 15px;">
+                            <a target="_blank" rel="noopener noreferrer" href="#"  id="filePathName"></a>
+                        </div>
+                    </div>
+                    <img src="{{ url('img/icon/trash.png') }}" alt="" style="height: 20px;" onclick="deleteTempImg();">
+                </div>
             </div>
             <div class="wrapBottom">
                 <div class="rekTujuan">Pilih rekening tujuan</div>
@@ -675,6 +704,7 @@
     let dateSelect = today.getDate();
     var indexPage = 0;
     var listBankActive = true;
+    var idTempImgAll = 0;
 
     var rekeningTujuanActive = false;
     var indexPenerima = null;
@@ -700,6 +730,7 @@
         document.getElementById('dateKirimLbl').innerHTML = today.getDate() + '/' + (today.getMonth() + 1) +
             '/' +
             today.getFullYear();
+        showUploadView();
     });
 
     $('#boxInput').click(function() {
@@ -710,6 +741,79 @@
         decimalPlaces: '0'
     })
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    function uploadFileImage() {
+        // console.log('fasfdasdf');
+        var form = $('#formUploadImage')[0];
+
+        // Create an FormData object 
+        var data = new FormData(form);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "{{ url('postImage') }}",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function(data) {
+                console.log(data);
+                showTempImg(data);
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+
+    function showTempImg(id) {
+        idTempImgAll = id;
+        showBuktiTF();
+        $.ajax({
+            type: "GET",
+            url: "{{ url('showImageTemp') }}" + '/' + id,
+            success: function(data) {
+                console.log(data);
+                document.getElementById('filePathName').innerHTML = data.substring(12,20) + '....';
+                document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + data;
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+
+    function deleteTempImg(){
+        $.ajax({
+            type: "GET",
+            url: "{{ url('delImageTemp') }}" + '/' + idTempImgAll,
+            success: function(data) {
+                console.log(data);
+                idTempImgAll = 0;
+                showUploadView();
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+
+    function showUploadView(){
+        document.getElementById('wrapImageUpload').style.display = 'none';
+        document.getElementById('formUploadImage').style.display = 'block';
+    }
+    function showBuktiTF(){
+        document.getElementById('formUploadImage').style.display = 'none';
+        document.getElementById('wrapImageUpload').style.display = 'block';
+    }
+
     function sendDataKirim() {
         $.ajax({
             url: "{{ url('setoran/penerima/sendData') }}",
@@ -717,6 +821,7 @@
             data: {
                 // idBrand: "{{ session('idBrand') }}",
                 tanggal: currentDateMonthYear,
+                idImageTemp: idTempImgAll,
                 idOutlet: "{{ session('idOutlet') }}",
                 idPengirim: "{{ $idPengirim }}",
                 idTujuan: objAllPenerima.penerimaListArray[indexPenerima].id,

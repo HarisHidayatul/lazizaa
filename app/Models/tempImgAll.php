@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class tempItemAll extends Model
+class tempImgAll extends Model
 {
     use HasFactory;
     public $table = 'temp_img_all';
@@ -14,7 +14,6 @@ class tempItemAll extends Model
 
     protected $fillable = [
         'imagePath',
-        'idUser',
         'created_at',
         'updated_at'
     ];

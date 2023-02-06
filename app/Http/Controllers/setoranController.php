@@ -9,9 +9,11 @@ use App\Models\penerimaList;
 use App\Models\pengirimList;
 use App\Models\setoran;
 use App\Models\tanggalAll;
+use App\Models\tempImgAll;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class setoranController extends Controller
 {
@@ -47,6 +49,11 @@ class setoranController extends Controller
     {
         $dateNow = $request->tanggal;
         $tanggalAll = tanggalAll::where('Tanggal', '=', $dateNow)->first();
+        $imagePathTemp = tempImgAll::find($request->idImageTemp)->imagePath;
+        $imagePathNew = 'setoran/';
+        $imagePathNew .= now()->format('Y_m_d_H_i_s_');
+        $imagePathNew .= substr($imagePathTemp,-5);
+
         $tanggalID = null;
         if ($tanggalAll == null) {
             $tanggalID = tanggalAll::create([
@@ -56,12 +63,16 @@ class setoranController extends Controller
             $tanggalID = $tanggalAll['id'];
         }
 
+        Storage::copy($imagePathTemp,$imagePathNew);
+        Storage::delete($imagePathTemp);
+        tempImgAll::find($request->idImageTemp)->delete();
+
         $dataArray = [
             'idOutlet' => $request->idOutlet,
             'idPengirim' => $request->idPengirim,
             'idTujuan' => $request->idTujuan,
             'qtySetor' => $request->qtySetor,
-            'imgTransfer' => 'In Progress',
+            'imgTransfer' => $imagePathNew,
             'idRevisi' => '2',
             'idTanggal' => $tanggalID,
         ];
@@ -467,7 +478,8 @@ class setoranController extends Controller
             'idStatus' => $setoran->idRevisi,
             'date' => $setoran->updated_at->format('Y-m-d'),
             'time' => $setoran->updated_at->format('H:i'),
-            'qty' => $setoran->qtySetor
+            'qty' => $setoran->qtySetor,
+            'imagePathFile' => $setoran->imgTransfer
         ]);
         // @dd($setoran);
     }

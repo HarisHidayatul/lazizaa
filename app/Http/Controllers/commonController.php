@@ -7,6 +7,7 @@ use App\Models\doutlet;
 use App\Models\drole;
 use App\Models\dUser;
 use App\Models\satuan;
+use App\Models\tempImgAll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,12 +23,16 @@ class commonController extends Controller
         //
     }
 
-    public function postImage(Request $request){
+    public function postImageAndGetID(Request $request){
         // ddd($request);
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:1048'
         ]);
-        return $request->file('image')->store('tempImgAll');
+        $pathFile = $request->file('image')->store('tempImgAll');
+        $idSaveTempID = tempImgAll::create([
+            'imagePath' => $pathFile
+        ])->id;
+        return $idSaveTempID;
     }
     public function moveImage($fromPathFile,$toPathFile){
         Storage::move('post-images\oYTnOi0pgnWBvqVj5nIg0O7n3wscjD3w8l8v83am.png','temp-images\1.png');
@@ -96,6 +101,10 @@ class commonController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showImageTemp($idTempImgAll){
+        return tempImgAll::find($idTempImgAll)->imagePath;
     }
 
     public function showUser($idOutlet){
@@ -294,5 +303,11 @@ class commonController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteImageTemp($idTempImgAll){
+        $imagePathTemp = tempImgAll::find($idTempImgAll)->imagePath;
+        Storage::delete($imagePathTemp);
+        return 1;
     }
 }

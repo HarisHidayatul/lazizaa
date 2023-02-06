@@ -57,7 +57,8 @@
             var stopDate = document.getElementById('stopDate').value;
             // var accessHistory = document.getElementById('selDate').value;
             var accessOutlet = document.getElementById('selOutlet').value;
-            var urlAll = "{{ url('setoran/show/data/inPart') }}" + '/' + accessOutlet + '/' + 'between' + '/' + startDate + '/' + stopDate;
+            var urlAll = "{{ url('setoran/show/data/inPart') }}" + '/' + accessOutlet + '/' + 'between' + '/' + startDate +
+                '/' + stopDate;
             $.ajax({
                 url: urlAll,
                 type: 'get',
@@ -115,6 +116,9 @@
                         setoranStatus = 'SUKSES';
                         document.getElementById('doneTransfer').checked = true;
                     }
+                    document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + obj
+                        .imagePathFile;
+                    document.getElementById('filePathName').innerHTML = obj.imagePathFile;
                     document.getElementById('statusSetoran').innerHTML = setoranStatus;
                     document.getElementById('tanggalSetoran').innerHTML = obj.date;
                     document.getElementById('namaPengirim').innerHTML = obj.namaRekeningPengirim;
@@ -159,7 +163,7 @@
                     var listPenerima = '';
                     for (var i = 0; i < obj.penerimaListArray.length; i++) {
                         listPenerima += '<option value="' + obj.penerimaListArray[i].id;
-                        listPenerima += '" data-index="'+i+'" >' + obj.penerimaListArray[i].namaRekening;
+                        listPenerima += '" data-index="' + i + '" >' + obj.penerimaListArray[i].namaRekening;
                         listPenerima += '</option>';
                     }
                     $('#listPenerima').empty().append(listPenerima);
@@ -171,7 +175,7 @@
 
         function refreshListPenerima(index) {
             // var valueSelectList = document.getElementById('listPenerima').getAttribute('data-index');
-            
+
             // console.log(index);
             document.getElementById('bankPenerima').innerHTML = objPenerima.penerimaListArray[index].bank;
             document.getElementById('rekeningPenerima').innerHTML = objPenerima.penerimaListArray[index]

@@ -62,6 +62,10 @@
                         <div class="col-5">Jumlah Setoran</div>
                         <div class="col-7">: <span id="setoranPengirim">0</span></div>
                     </div>
+                    <div class="row">
+                        <div class="col-5">Bukti Transfer</div>
+                        <div class="col-7">: <span><a href="#" target="_blank" rel="noopener noreferrer" id="filePathName"></a></span></div>
+                    </div>
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="doneTransfer" onchange="transferCheck();">

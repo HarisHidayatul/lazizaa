@@ -201,6 +201,8 @@ return new class extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('temp_img_all');
+
         Schema::dropIfExists('so_harian_batas');
         Schema::dropIfExists('outlet_type');
         Schema::dropIfExists('type_item');

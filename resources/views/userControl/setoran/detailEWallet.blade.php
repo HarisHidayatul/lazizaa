@@ -254,7 +254,9 @@
                 <div class="labelPembayaran">Bukti transfer</div>
                 <div class="d-flex justify-content-start align-items-center wrapBukti">
                     <img src="{{ url('img/icon/image.png') }}" alt="" style="height: 20px;">
-                    <div class="detailPembayaran">Img_332323_95682.png</div>
+                    <a class="detailPembayaran" target="_blank" rel="noopener noreferrer" href="#"  id="filePathName" style="margin-left: 5px;">
+                        Img_332323_95682.png
+                    </a>
                 </div>
             </div>
             <div class="penerimaLabel">Penerima</div>
@@ -316,6 +318,8 @@
                     document.getElementById('imageStatusSetoran').src =
                         "{{ url('img/icon/sukses.png') }}";
                 }
+                document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + obj.imagePathFile;
+                document.getElementById('filePathName').innerHTML = obj.imagePathFile;
                 document.getElementById('namaRekeningPengirim').innerHTML = obj.namaRekeningPengirim;
                 document.getElementById('dateAndTime').innerHTML = day.getDate() + ' ' + months[day.getMonth()] + ' - ' + obj.time;
                 document.getElementById('nomorRekeningPengirim').innerHTML = obj.nomorRekeningPengirim.slice(nomorRekeningLength - 4,nomorRekeningLength);
