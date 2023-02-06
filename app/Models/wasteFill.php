@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class wasteFill extends Model
 {
     use HasFactory;
-    public $table = 'wasteFill';
+    public $table = 'waste_fill';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

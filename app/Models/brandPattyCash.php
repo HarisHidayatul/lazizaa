@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class brandPattyCash extends Model
 {
     use HasFactory;
-    public $table = 'brandPattyCash';
+    public $table = 'brand_patty_cash';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

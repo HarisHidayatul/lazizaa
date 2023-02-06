@@ -10,7 +10,7 @@ class salesharian extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'salesharian';
+    public $table = 'sales_harian';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
     public function dOutlets(){
@@ -18,7 +18,7 @@ class salesharian extends Model
     }
 
     public function listSaless(){
-        return $this->belongsToMany(listSales::class,'salesFill','idSales','idListSales')->withPivot('cu','cuRevisi','total','totalRevisi','idRevisiCu','idRevisiTotal','id','idPengisi','idPerevisi','totalDiterima','idRevDiterima');
+        return $this->belongsToMany(listSales::class,salesFill::class,'idSales','idListSales')->withPivot('cu','cuRevisi','total','totalRevisi','idRevisiCu','idRevisiTotal','id','idPengisi','idPerevisi','totalDiterima','idRevDiterima');
     }
 
     public function tanggalAlls(){

@@ -10,7 +10,7 @@ class listItemWaste extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'listItemWaste';
+    public $table = 'list_item_waste';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

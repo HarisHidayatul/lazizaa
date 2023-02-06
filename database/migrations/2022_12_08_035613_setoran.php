@@ -14,18 +14,18 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('jenisBank',function(Blueprint $table){
+        Schema::create('jenis_bank',function(Blueprint $table){
             $table->id();
             $table->string('jenis');
 
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('listBank',function(Blueprint $table){
+        Schema::create('list_bank',function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('idJenisBank');
-            $table->foreign('idJenisBank')->references('id')->on('jenisBank');
+            $table->foreign('idJenisBank')->references('id')->on('jenis_bank');
 
             $table->string('bank');
             $table->string('imageBank');
@@ -33,17 +33,17 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('pengirimList',function(Blueprint $table){
+        Schema::create('pengirim_list',function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('idUser');
-            $table->foreign('idUser')->references('id')->on('dUser');
+            $table->foreign('idUser')->references('id')->on('duser');
             
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
 
             $table->unsignedBigInteger('idBank');
-            $table->foreign('idBank')->references('id')->on('listBank');
+            $table->foreign('idBank')->references('id')->on('list_bank');
             
             $table->string('namaRekening');
             $table->string('nomorRekening');
@@ -52,11 +52,11 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('penerimaList',function(Blueprint $table){
+        Schema::create('penerima_list',function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('idBank');
-            $table->foreign('idBank')->references('id')->on('listBank');
+            $table->foreign('idBank')->references('id')->on('list_bank');
             
             $table->string('namaRekening');
             $table->string('nomorRekening');
@@ -69,13 +69,13 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('idPengirim');
-            $table->foreign('idPengirim')->references('id')->on('pengirimList');
+            $table->foreign('idPengirim')->references('id')->on('pengirim_list');
             
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
             
             $table->unsignedBigInteger('idTujuan');
-            $table->foreign('idTujuan')->references('id')->on('penerimaList');
+            $table->foreign('idTujuan')->references('id')->on('penerima_list');
 
             $table->unsignedBigInteger('idRevisi');
             $table->foreign('idRevisi')->references('id')->on('revisi');
@@ -84,7 +84,7 @@ return new class extends Migration
             $table->string('imgTransfer',50);
             
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
 
             $table->timestamps();
         });

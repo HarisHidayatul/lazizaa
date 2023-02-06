@@ -10,7 +10,7 @@ class listItemPattyCash extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'listItemPattyCash';
+    public $table = 'list_item_patty_cash';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalAll');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
             
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
@@ -29,11 +29,11 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('penerimaReimburse', function(Blueprint $table){
+        Schema::create('penerima_reimburse', function(Blueprint $table){
             $table->id();
             
             $table->unsignedBigInteger('idPengirim');
-            $table->foreign('idPengirim')->references('id')->on('penerimaList');
+            $table->foreign('idPengirim')->references('id')->on('penerima_list');
 
             $table->unsignedBigInteger('idReimburse');
             $table->foreign('idReimburse')->references('id')->on('reimburse');
@@ -42,14 +42,14 @@ return new class extends Migration
             $table->foreign('idRevisi')->references('id')->on('revisi');
 
             $table->unsignedBigInteger('idTujuan');
-            $table->foreign('idTujuan')->references('id')->on('pengirimList');
+            $table->foreign('idTujuan')->references('id')->on('pengirim_list');
 
             $table->string('pesan');
             $table->string('imgTransfer');
             $table->mediumInteger('qty')->unsigned();
 
             $table->unsignedBigInteger('idPengisi');
-            $table->foreign('idPengisi')->references('id')->on('dUser');
+            $table->foreign('idPengisi')->references('id')->on('duser');
 
             $table->timestamps();
             $table->softDeletes();

@@ -10,12 +10,12 @@ class listItemSO extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'listItemSO';
+    public $table = 'list_item_so';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 
     public function fsoharians(){
-        return $this->belongsToMany(fsoHarian::class,'soFill','idItemSo','idSo')->withPivot('quantity');
+        return $this->belongsToMany(fsoHarian::class,soFill::class,'idItemSo','idSo')->withPivot('quantity');
     }
 
     public function satuans(){

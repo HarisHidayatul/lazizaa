@@ -11,7 +11,7 @@ class jenisBank extends Model
     use SoftDeletes;
     use HasFactory;
 
-    public $table = 'jenisBank';
+    public $table = 'jenis_bank';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

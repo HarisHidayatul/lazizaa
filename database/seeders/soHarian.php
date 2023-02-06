@@ -30,7 +30,7 @@ class soHarian extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
-        DB::table('listSesi')->insert(
+        DB::table('list_sesi')->insert(
             array(
                 [
                     'sesi' => 'Sesi 1'
@@ -59,48 +59,36 @@ class soHarian extends Seeder
                 ]
             )    
         );
-        DB::table('dBrand')->insert(
+        DB::table('dbrand')->insert(
             array(
                 [
                     'Nama Brand' => 'Lazizaa',
                     'Image'      => '/img/dashboard/lazizaaLogo.png',
-                    'Keterangan' => $faker->text(35),
+                    'Keterangan' => 'Makan Ayam Rame-Rame',
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ],
-                [
-                    'Nama Brand' => 'Babarafi',
-                    'Image'      => '/img/dashboard/babarafiLogo.png',
-                    'Keterangan' => $faker->text(35),
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ],
-                [
-                    'Nama Brand' => 'Kopi Ambyar',
-                    'Image'      => '/img/dashboard/kopiAmbyarLogo.png',
-                    'Keterangan' => $faker->text(35),
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ]
+                // [
+                //     'Nama Brand' => 'Babarafi',
+                //     'Image'      => '/img/dashboard/babarafiLogo.png',
+                //     'Keterangan' => $faker->text(35),
+                //     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                // ],
+                // [
+                //     'Nama Brand' => 'Kopi Ambyar',
+                //     'Image'      => '/img/dashboard/kopiAmbyarLogo.png',
+                //     'Keterangan' => $faker->text(35),
+                //     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                // ]
             )
         );
-        $outletLazizaa = array(
-            "Lazizaa Kedungturi",
-            "Lazizaa Wadung Asri",
-            "Lazizaa Jambangan",
-            "Lazizaa Sukodono",
-            "Lazizaa Wonoayu",
-            "Lazizaa Nyamplungan",
-            "Lazizaa Krian",
-            "Lazizaa Tulangan",
-            "Lazizaa Trunojoyo",
-            "Lazizaa Suhat"
-        );
-        for ($i = 1; $i <= 10; $i++) {
-            DB::table('doutlet')->insert([
-                'Nama Store' => $outletLazizaa[$i-1],
-                'Alamat Lengkap' => $faker->address(),
-                'idBrand' => $faker->numberBetween(1,3),
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
-        }
+
+        DB::table('doutlet')->insert([
+            'Nama Store' => "Central Office HO",
+            'Alamat Lengkap' => "Dsn. Ketapang, Suko, Kec Sukodono, Sidoarjo",
+            'idBrand' => '1',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+
         DB::table('drole')->insert(
             array(
                 [
@@ -120,19 +108,19 @@ class soHarian extends Seeder
                 ]
             )
         );
-        for ($i = 1; $i <= 50; $i++) {
-            DB::table('duser')->insert(
-                [
-                    'idRole' => $faker->numberBetween(1,2),
-                    'idOutlet' => $faker->numberBetween(1,10),
-                    'Nama Lengkap' => $faker->name(),
-                    'username' => $faker->userName(),
-                    'password' => '1234',
-                    'Email' => $faker->email(),
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ]
-            );
-        }
+
+        DB::table('duser')->insert(
+            [
+                'idRole' => '3',
+                'idOutlet' => '1',
+                'Nama Lengkap' => 'admin',
+                'username' => 'admin',
+                'password' => '1234',
+                'Email' => 'hidayatulloh.haris@gmail.com',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ]
+        );
+
         $itemSO = array(
             'Beras', 'Milo', 'French Fries', 'Tepung Ori', 'Minyak Padat', 'Ayam Reg Kecil',
             'Ayam Reg Besar', 'Ayam Utuh', 'Ayam Fillet', 'Ayam Small', 'Dori Triming',
@@ -148,14 +136,14 @@ class soHarian extends Seeder
             'skm.svg'
         );
         for ($i = 0; $i < 24; $i++) {
-            DB::table('listItemSO')->insert([
+            DB::table('list_item_so')->insert([
                 'Item' => $itemSO[$i],
                 'icon' => $itemIcon[$i],
                 'idSatuan' => '1',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
-        DB::table('jenisBahan')->insert(
+        DB::table('jenis_bahan')->insert(
             array
             (
                 [
@@ -167,7 +155,7 @@ class soHarian extends Seeder
             )
         );
         
-        DB::table('jenisBank')->insert(
+        DB::table('jenis_bank')->insert(
             array
             (
                 [
@@ -178,7 +166,7 @@ class soHarian extends Seeder
                 ]
             )
         );
-        DB::table('listBank')->insert(
+        DB::table('list_bank')->insert(
             array
             (
                 [
