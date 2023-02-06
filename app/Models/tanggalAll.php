@@ -10,7 +10,7 @@ class tanggalAll extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'tanggalall';
+    public $table = 'tanggal_all';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
 

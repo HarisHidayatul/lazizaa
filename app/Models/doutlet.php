@@ -28,27 +28,27 @@ class doutlet extends Model
     }
 
     public function typeOutlets(){
-        return $this->belongsToMany(typeOutlet::class,'outlet_type','idOutlet','idType');
+        return $this->belongsToMany(typeOutlet::class,outlet_type::class,'idOutlet','idType');
     }
 
     public function outletListSaless(){
-        return $this->belongsToMany(listSales::class,'outletlistsales','idOutlet','idListSales');
+        return $this->belongsToMany(listSales::class,outletListSales::class,'idOutlet','idListSales');
     }
 
     public function dateSales(){
-        return $this->belongsToMany(tanggalAll::class,'salesharian','idOutlet','idTanggal')->withPivot('id');
+        return $this->belongsToMany(tanggalAll::class,salesharian::class,'idOutlet','idTanggal')->withPivot('id');
     }
 
     public function datefsoharian(){
-        return $this->belongsToMany(tanggalAll::class,'fsoharian','idOutlet','idTanggal')->withPivot('id');
+        return $this->belongsToMany(tanggalAll::class,fsoHarian::class,'idOutlet','idTanggal')->withPivot('id');
     }
 
     public function datePattyCash(){
-        return $this->belongsToMany(tanggalAll::class,'pattycashharian','idOutlet','idTanggal')->withPivot('id');
+        return $this->belongsToMany(tanggalAll::class,pattyCashHarian::class,'idOutlet','idTanggal')->withPivot('id');
     }
     
     public function dateWaste(){
-        return $this->belongsToMany(tanggalAll::class,'wasteharian','idOutlet','idTanggal')->withPivot('id');
+        return $this->belongsToMany(tanggalAll::class,wasteHarian::class,'idOutlet','idTanggal')->withPivot('id');
     }
 
     protected $fillable = [

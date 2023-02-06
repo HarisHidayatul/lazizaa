@@ -14,18 +14,18 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('typesales', function (Blueprint $table) {
+        Schema::create('type_sales', function (Blueprint $table) {
             $table->id();
             $table->string('type',25)->nullable(false);
 
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('listsales', function (Blueprint $table) {
+        Schema::create('list_sales', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('typeSales');
-            $table->foreign('typeSales')->references('id')->on('typesales');
+            $table->foreign('typeSales')->references('id')->on('type_sales');
 
             $table->string('sales',25)->nullable(false);
             $table->boolean('butuhVerifikasi')->default(false);
@@ -33,30 +33,30 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('salesharian', function (Blueprint $table) {
+        Schema::create('sales_harian', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalall');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
 
             $table->unsignedBigInteger('idSesi');
-            $table->foreign('idSesi')->references('id')->on('listsesi');
+            $table->foreign('idSesi')->references('id')->on('list_sesi');
 
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('salesfill',function(Blueprint $table){
+        Schema::create('sales_fill',function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('idListSales');
-            $table->foreign('idListSales')->references('id')->on('listsales');
+            $table->foreign('idListSales')->references('id')->on('list_sales');
 
             $table->unsignedBigInteger('idSales');
-            $table->foreign('idSales')->references('id')->on('salesharian');
+            $table->foreign('idSales')->references('id')->on('sales_harian');
 
             $table->smallInteger('cu')->unsigned()->nullable(false);
             $table->smallInteger('cuRevisi')->unsigned()->default('0');
@@ -84,11 +84,11 @@ return new class extends Migration
             // $table->softDeletes();
         });
 
-        Schema::create('outletlistsales',function(Blueprint $table){
+        Schema::create('outlet_list_sales',function(Blueprint $table){
             $table->id();
             
             $table->unsignedBigInteger('idListSales');
-            $table->foreign('idListSales')->references('id')->on('listsales');
+            $table->foreign('idListSales')->references('id')->on('list_sales');
             
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
@@ -96,17 +96,17 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('reqitemsales', function(Blueprint $table){
+        Schema::create('req_item_sales', function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
             
             $table->unsignedBigInteger('idSales');
-            $table->foreign('idSales')->references('id')->on('listsales');
+            $table->foreign('idSales')->references('id')->on('list_sales');
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalall');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
 
             $table->unsignedBigInteger('idPengisi');
             $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser

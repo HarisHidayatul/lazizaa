@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('listitempattycash', function (Blueprint $table) {
+        Schema::create('list_item_patty_cash', function (Blueprint $table) {
             $table->id();
 
             $table->string('Item',25);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('reqitempattycash', function (Blueprint $table) {
+        Schema::create('req_item_patty_cash', function (Blueprint $table) {
             $table->id();
 
             $table->string('Item',25);
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->foreign('idBrand')->references('id')->on('dbrand');
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalall');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
 
             $table->unsignedBigInteger('idPengisi');
             $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
@@ -49,42 +49,42 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('brandpattycash', function (Blueprint $table) {
+        Schema::create('brand_patty_cash', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idBrand');
             $table->foreign('idBrand')->references('id')->on('dbrand');
 
             $table->unsignedBigInteger('idListItem');
-            $table->foreign('idListItem')->references('id')->on('listitempattycash');
+            $table->foreign('idListItem')->references('id')->on('list_item_patty_cash');
 
             $table->timestamps();
         });
 
-        Schema::create('pattycashharian', function (Blueprint $table) {
+        Schema::create('patty_cash_harian', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalall');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
 
             $table->unsignedBigInteger('idSesi');
-            $table->foreign('idSesi')->references('id')->on('listsesi');
+            $table->foreign('idSesi')->references('id')->on('list_sesi');
             
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('pattycashfill', function (Blueprint $table) {
+        Schema::create('patty_cash_fill', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idPattyCash');
-            $table->foreign('idPattyCash')->references('id')->on('pattycashharian');
+            $table->foreign('idPattyCash')->references('id')->on('patty_cash_harian');
 
             $table->unsignedBigInteger('idListItem');
-            $table->foreign('idListItem')->references('id')->on('listitempattycash');
+            $table->foreign('idListItem')->references('id')->on('list_item_patty_cash');
 
             $table->smallInteger('quantity')->unsigned()->nullable(false);
             $table->smallInteger('quantityRevisi')->unsigned()->default('0');

@@ -30,7 +30,7 @@ class soHarian extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
-        DB::table('listsesi')->insert(
+        DB::table('list_sesi')->insert(
             array(
                 [
                     'sesi' => 'Sesi 1'
@@ -136,14 +136,14 @@ class soHarian extends Seeder
             'skm.svg'
         );
         for ($i = 0; $i < 24; $i++) {
-            DB::table('listitemso')->insert([
+            DB::table('list_item_so')->insert([
                 'Item' => $itemSO[$i],
                 'icon' => $itemIcon[$i],
                 'idSatuan' => '1',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
-        DB::table('jenisbahan')->insert(
+        DB::table('jenis_bahan')->insert(
             array
             (
                 [
@@ -155,7 +155,7 @@ class soHarian extends Seeder
             )
         );
         
-        DB::table('jenisbank')->insert(
+        DB::table('jenis_bank')->insert(
             array
             (
                 [
@@ -166,7 +166,7 @@ class soHarian extends Seeder
                 ]
             )
         );
-        DB::table('listbank')->insert(
+        DB::table('list_bank')->insert(
             array
             (
                 [

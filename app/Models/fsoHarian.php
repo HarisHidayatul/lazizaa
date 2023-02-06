@@ -10,7 +10,7 @@ class fsoHarian extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'fsoharian';
+    public $table = 'fso_harian';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
     public function dUsers(){
@@ -26,7 +26,7 @@ class fsoHarian extends Model
         return $this->belongsTo(tanggalAll::class,'idTanggal','id');
     }
     public function listItemSOs(){
-        return $this->belongsToMany(listItemSO::class,'sofill','idSo','idItemSo')->withPivot('quantity','idRevisi','quantityRevisi','id','idPerevisi')->orderBy('id');
+        return $this->belongsToMany(listItemSO::class,soFill::class,'idSo','idItemSo')->withPivot('quantity','idRevisi','quantityRevisi','id','idPerevisi')->orderBy('id');
     }
     protected $fillable = [
         'idPengisi',

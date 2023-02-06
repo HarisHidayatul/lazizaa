@@ -10,7 +10,7 @@ class penerimaReimburse extends Model
 {
     use HasFactory;
 
-    public $table = 'penerimareimburse';
+    public $table = 'penerima_reimburse';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     

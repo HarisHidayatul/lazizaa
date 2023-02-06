@@ -10,7 +10,7 @@ class soFill extends Model
 {
     // use SoftDeletes;
     use HasFactory;
-    public $table = 'sofill';
+    public $table = 'so_fill';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     public function fsoHarians(){

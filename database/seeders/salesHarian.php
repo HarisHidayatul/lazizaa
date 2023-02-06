@@ -17,7 +17,7 @@ class salesHarian extends Seeder
     public function run()
     {
         //
-        DB::table('typesales')->insert(
+        DB::table('type_sales')->insert(
             array(
                 [
                     'type' => 'Organik',
@@ -33,7 +33,7 @@ class salesHarian extends Seeder
                 ]
             )    
         );
-        DB::table('listsales')->insert(
+        DB::table('list_sales')->insert(
             array(
                 [
                     'typeSales' => '1',

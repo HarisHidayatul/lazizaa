@@ -11,16 +11,16 @@ class typeOutlet extends Model
     use SoftDeletes;
     use HasFactory;
 
-    public $table = 'typeoutlet';
+    public $table = 'type_outlet';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
 
     public function listItemSOs(){
-        return $this->belongsToMany(listItemSO::class,'type_item','idBahanBaku','idItem');
+        return $this->belongsToMany(listItemSO::class,type_item::class,'idBahanBaku','idItem');
     }
 
     public function doutlets(){
-        return $this->belongsToMany(doutlet::class,'outlet_type','idType','idOutlet');
+        return $this->belongsToMany(doutlet::class,outlet_type::class,'idType','idOutlet');
     }
 
     protected $fillable = [

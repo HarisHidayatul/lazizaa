@@ -23,10 +23,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('tanggalall', function (Blueprint $table) {
+        Schema::create('tanggal_all', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal'); //format yyyy-mm-dd
-
+            $table->date('Tanggal'); //format yyyy-mm-dd
             $table->timestamps();
             $table->softDeletes();
         });
@@ -38,7 +37,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('listsesi', function (Blueprint $table) {
+        Schema::create('list_sesi', function (Blueprint $table) {
             $table->id();
             $table->string('sesi', 10);
             $table->timestamps();
@@ -73,7 +72,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::create('typeoutlet', function (Blueprint $table) {
+        Schema::create('type_outlet', function (Blueprint $table) {
             $table->id();
             $table->string('Nama Type',25);
             $table->timestamps();
@@ -84,7 +83,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idOutlet');
             $table->foreign('idOutlet')->references('id')->on('doutlet');
             $table->unsignedBigInteger('idType');
-            $table->foreign('idType')->references('id')->on('typeoutlet');
+            $table->foreign('idType')->references('id')->on('type_outlet');
             $table->timestamps();
             // $table->softDeletes();
         });
@@ -108,7 +107,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('listitemso', function (Blueprint $table) {
+        Schema::create('list_item_so', function (Blueprint $table) {
             $table->id();
             $table->string('Item',25);
             $table->string('icon',50);
@@ -124,16 +123,16 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('idBahanBaku');
-            $table->foreign('idBahanBaku')->references('id')->on('typeoutlet');
+            $table->foreign('idBahanBaku')->references('id')->on('type_outlet');
 
             $table->unsignedBigInteger('idItem');
-            $table->foreign('idItem')->references('id')->on('listitemso');
+            $table->foreign('idItem')->references('id')->on('list_item_so');
 
             $table->timestamps();
             // $table->softDeletes();
         }); //ini yang benar untuk type itemm, yang atas salah
 
-        Schema::create('fsoharian', function (Blueprint $table) {
+        Schema::create('fso_harian', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idPengisi');
@@ -143,23 +142,23 @@ return new class extends Migration
             $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
 
             $table->unsignedBigInteger('idTanggal');
-            $table->foreign('idTanggal')->references('id')->on('tanggalall');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
 
             $table->unsignedBigInteger('idSesi');
-            $table->foreign('idSesi')->references('id')->on('listsesi');
+            $table->foreign('idSesi')->references('id')->on('list_sesi');
 
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('sofill', function (Blueprint $table) {
+        Schema::create('so_fill', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idSo');
-            $table->foreign('idSo')->references('id')->on('fsoharian');
+            $table->foreign('idSo')->references('id')->on('fso_harian');
 
             $table->unsignedBigInteger('idItemSo');
-            $table->foreign('idItemSo')->references('id')->on('listitemso');
+            $table->foreign('idItemSo')->references('id')->on('list_item_so');
 
             $table->smallInteger('quantity')->unsigned()->nullable(false);
 
@@ -175,11 +174,11 @@ return new class extends Migration
             // $table->softDeletes();
         });
 
-        Schema::create('soharianbatas', function (Blueprint $table) {
+        Schema::create('so_harian_batas', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('idItemSo');
-            $table->foreign('idItemSo')->references('id')->on('listitemso');
+            $table->foreign('idItemSo')->references('id')->on('list_item_so');
 
             $table->unsignedBigInteger('idPengisi');
             $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
@@ -202,51 +201,51 @@ return new class extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('soharianbatas');
+        Schema::dropIfExists('so_harian_batas');
         Schema::dropIfExists('outlet_type');
         Schema::dropIfExists('type_item');
-        Schema::dropIfExists('typeoutlet');
-        Schema::dropIfExists('sofill');
-        Schema::dropIfExists('fsoharian');
-        Schema::dropIfExists('listitemso');
+        Schema::dropIfExists('type_outlet');
+        Schema::dropIfExists('so_fill');
+        Schema::dropIfExists('fso_harian');
+        Schema::dropIfExists('list_item_so');
 
-        Schema::dropIfExists('reqitemsales');
-        Schema::dropIfExists('outletlistsales');
-        Schema::dropIfExists('salesfill');
-        Schema::dropIfExists('listsales');
-        Schema::dropIfExists('typesales');
+        Schema::dropIfExists('req_item_sales');
+        Schema::dropIfExists('outlet_list_sales');
+        Schema::dropIfExists('sales_fill');
+        Schema::dropIfExists('list_sales');
+        Schema::dropIfExists('type_sales');
 
         //
-        Schema::dropIfExists('reqitempattycash');
-        Schema::dropIfExists('pattycashfill');
-        Schema::dropIfExists('brandpattycash');
-        Schema::dropIfExists('pattycashharian');
-        Schema::dropIfExists('listitempattycash');
+        Schema::dropIfExists('req_item_patty_cash');
+        Schema::dropIfExists('patty_cash_fill');
+        Schema::dropIfExists('brand_patty_cash');
+        Schema::dropIfExists('patty_cash_harian');
+        Schema::dropIfExists('list_item_patty_cash');
 
-        Schema::dropIfExists('reqitemwaste');
-        Schema::dropIfExists('wastefill');
-        Schema::dropIfExists('brandwaste');
-        Schema::dropIfExists('wasteharian');
-        Schema::dropIfExists('listitemwaste');
-        Schema::dropIfExists('jenisbahan');
+        Schema::dropIfExists('req_item_waste');
+        Schema::dropIfExists('waste_fill');
+        Schema::dropIfExists('brand_waste');
+        Schema::dropIfExists('waste_harian');
+        Schema::dropIfExists('list_item_waste');
+        Schema::dropIfExists('jenis_bahan');
 
-        Schema::dropIfExists('penerimareimburse');
+        Schema::dropIfExists('penerima_reimburse');
         Schema::dropIfExists('reimburse');
 
         Schema::dropIfExists('setoran');
-        Schema::dropIfExists('pengirimlist');
-        Schema::dropIfExists('penerimalist');
-        Schema::dropIfExists('listbank');
-        Schema::dropIfExists('jenisbank');
+        Schema::dropIfExists('pengirim_list');
+        Schema::dropIfExists('penerima_list');
+        Schema::dropIfExists('list_bank');
+        Schema::dropIfExists('jenis_bank');
 
-        Schema::dropIfExists('salesharian');
+        Schema::dropIfExists('sales_harian');
         Schema::dropIfExists('duser');
         Schema::dropIfExists('drole');
         Schema::dropIfExists('doutlet');
         Schema::dropIfExists('dbrand');
         Schema::dropIfExists('revisi');
         Schema::dropIfExists('satuan');
-        Schema::dropIfExists('tanggalall');
-        Schema::dropIfExists('listsesi');
+        Schema::dropIfExists('tanggal_all');
+        Schema::dropIfExists('list_sesi');
     }
 };
