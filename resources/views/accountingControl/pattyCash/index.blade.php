@@ -26,6 +26,7 @@
                 <tr>
                     <td>Tanggal</td>
                     <td>Item</td>
+                    <td>Sesi</td>
                     <td>Qty</td>
                     <td>Satuan</td>
                     <td>Total</td>

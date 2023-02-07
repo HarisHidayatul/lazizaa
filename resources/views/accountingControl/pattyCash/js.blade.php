@@ -251,6 +251,9 @@
                             historyAll += obj.dataHistory[i].pattyCash[j].item;
                             historyAll += '</td>';
                             historyAll += '<td>';
+                            historyAll += obj.dataHistory[i].pattyCash[j].idSesi;
+                            historyAll += '</td>';
+                            historyAll += '<td>';
                             historyAll += obj.dataHistory[i].pattyCash[j].qty;
                             historyAll += '</td>';
                             historyAll += '<td>';
@@ -287,6 +290,8 @@
                             historyAll += '</td>';
                             historyAll += '<td>';
                             historyAll += 'Reimburse';
+                            historyAll += '</td>';
+                            historyAll += '<td>';
                             historyAll += '</td>';
                             historyAll += '<td>';
                             historyAll += '</td>';

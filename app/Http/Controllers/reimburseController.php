@@ -232,8 +232,9 @@ class reimburseController extends Controller
         } else if ($countData == 'all') {
             $allDate = $semuaTanggal;
         }
+        // @dd($allDate);
         // @dd(is_null($allDate[13]));
-        // @dd($allDate[13]->reimburses);
+        // @dd($allDate[2]->pattyCashHarians->where('idOutlet', '=', $idOutlet));
 
         for ($i = 0; $i < $semuaTanggal->count(); $i++) {
             try {
@@ -244,6 +245,7 @@ class reimburseController extends Controller
                 $reimburse = $reimburseAll->first();
                 for ($j = 0; $j < $reimburseAll->count(); $j++) {
                     $reimburse = $reimburseAll[$j];
+                    // @dd($allDate[$i]);
                     $pergerakanSaldo = $reimburse->saldoTerakhir;
                     $pembelianHarian = $allDate[$i]->pattyCashHarians;
                     $reimburseHarian = $reimburse->penerimaReimburses;
@@ -260,10 +262,12 @@ class reimburseController extends Controller
                         ]);
                         $dataFound = true;
                     }
+                    $reimburseTanggalIni = array_reverse($reimburseTanggalIni,false);
 
                     $pembelianHarian = $pembelianHarian->where('idOutlet', '=', $idOutlet);
                     for ($k = 0; $k < $pembelianHarian->count(); $k++) {
                         $pembelianList = $pembelianHarian[$k]->listItemPattyCashs;
+                        $idSesi = $pembelianHarian[$k]->idSesi;
                         for ($l = 0; $l < $pembelianList->count(); $l++) {
                             $qtyPembelian = $pembelianList[$l]->pivot->quantity;
                             $totalPembelian = $pembelianList[$l]->pivot->total;
@@ -273,6 +277,7 @@ class reimburseController extends Controller
                             $pergerakanSaldo = $pergerakanSaldo - $totalPembelian;
                             array_push($pattyCash, (object)[
                                 'item' => $pembelianList[$l]->Item,
+                                'idSesi' => $idSesi,
                                 'total' => $totalPembelian,
                                 'qty' => $qtyPembelian,
                                 'idRevTotal' => $pembelianList[$l]->pivot->idRevTotal,
@@ -338,6 +343,7 @@ class reimburseController extends Controller
                     'idOutlet' => $idOutlet,
                     'saldoTerakhir' => $pergerakanSaldo
                 ]);
+                break;
             }
             $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             if (count($reimburseAll) == 0) {
@@ -346,6 +352,7 @@ class reimburseController extends Controller
                     'idOutlet' => $idOutlet,
                     'saldoTerakhir' => $pergerakanSaldo
                 ]);
+                break;
             }
             $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             $reimburse = $reimburseAll->first();
