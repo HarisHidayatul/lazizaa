@@ -796,7 +796,7 @@
             var idInput = 'r' + i + 'c1';
             if (document.getElementById(idInput).value != '') {
                 // sumData += parseInt(document.getElementById(idInput).value);
-                sumData += parseInt(valueTotalAll[i].rawValue);
+                sumData += valueTotalAll[i].rawValue;
                 // sumData += valueTotalAll[i].rawValue;
             }
         }
