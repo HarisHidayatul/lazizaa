@@ -272,7 +272,9 @@
                 <div class="labelPembayaran">Bukti transfer</div>
                 <div class="d-flex justify-content-start align-items-center wrapBukti">
                     <img src="{{ url('img/icon/image.png') }}" alt="" style="height: 20px;">
-                    <div class="detailPembayaran">Img_332323_95682.png</div>
+                    <div class="detailPembayaran">
+                        <a target="_blank" rel="noopener noreferrer" href="#" id="filePathName"></a>
+                    </div>
                 </div>
             </div>
             <div class="penerimaLabel">Penerima</div>
@@ -332,12 +334,17 @@
                 document.getElementById('pesan').innerHTML = obj.pesan;
                 document.getElementById('tanggal').innerHTML = day.getDate() + ' ' + months[day.getMonth()];
                 document.getElementById('jumlahTransfer').innerHTML = obj.jumlahTransfer.toLocaleString();
-                if(obj.idRevisi == '2'){
-                    document.getElementById('imageStatusSetoran').src = "{{ url('img/icon/tertunda.png') }}";
-                }else{
+                if (obj.idRevisi == '2') {
+                    document.getElementById('imageStatusSetoran').src =
+                        "{{ url('img/icon/tertunda.png') }}";
+                } else {
                     document.getElementById('imageStatusSetoran').src = "{{ url('img/icon/sukses.png') }}";
                     document.getElementById('namaPengirim').innerHTML = obj.namaPengirim;
                     document.getElementById('rekeningPengirim').innerHTML = obj.rekeningPengirim;
+                    document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + obj
+                        .imageBukti;
+                    document.getElementById('filePathName').innerHTML = obj.imageBukti.substring(20, 35) +
+                        '....';
                 }
             },
             error: function(req, err) {

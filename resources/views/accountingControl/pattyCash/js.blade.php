@@ -4,6 +4,8 @@
     <script>
         var objPenerima = [];
         var indexReimburse = 0;
+        var idTempImgAll = 0;
+
         $(document).ready(function() {
             var today = new Date();
             var month = today.getMonth() + 1;
@@ -22,38 +24,128 @@
 
             document.getElementById('tittleContent').innerHTML = "Patty Cash";
             document.getElementById('linkContent').innerHTML = "Patty Cash";
+
+            showUploadView();
         })
         $(document).ready(function() {
             getAllOutlet();
             getAllPenerima();
         })
 
+        function uploadFileImage() {
+            // console.log('fasfdasdf');
+            var form = $('#formUploadImage')[0];
+
+            // Create an FormData object 
+            var data = new FormData(form);
+            data.append("_token", "{{ csrf_token() }}");
+
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{{ url('postImage') }}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function(data) {
+                    console.log(data);
+                    showTempImg(data);
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+        }
+
+        function showTempImg(id) {
+            idTempImgAll = id;
+            showBuktiTF();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('showImageTemp') }}" + '/' + id,
+                success: function(data) {
+                    console.log(data);
+                    document.getElementById('filePathName').innerHTML = data.substring(12, 20) + '....';
+                    document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + data;
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+        }
+
+        function deleteTempImg() {
+            $.ajax({
+                type: "GET",
+                url: "{{ url('delImageTemp') }}" + '/' + idTempImgAll,
+                success: function(data) {
+                    console.log(data);
+                    idTempImgAll = 0;
+                    showUploadView();
+                },
+                error: function(e) {
+                    console.log(e);
+                    showUploadView();
+                }
+            });
+        }
+
+        function showUploadView() {
+            document.getElementById('wrapImageUpload').style.display = 'none';
+            document.getElementById('formUploadImage').style.display = 'block';
+        }
+
+        function showBuktiTF() {
+            document.getElementById('formUploadImage').style.display = 'none';
+            document.getElementById('wrapImageUpload').style.display = 'block';
+        }
+
         function kirimTransfer() {
             var idRevisi = 2;
             var idPengirim = document.getElementById('listPenerima').value;
             var pesan = document.getElementById('pesanPenerima').value;
-            if (document.getElementById('doneTransfer').checked) {
-                idRevisi = 3;
-            }
             if (idPengirim == 0) {
                 idPengirim = 1;
             }
-            $.ajax({
-                url: "{{ url('reimburse/update/accounting/revisi') }}" + '/' + indexReimburse,
-                type: 'get',
-                data: {
-                    idPengirim: idPengirim,
-                    idRevisi: idRevisi,
-                    pesan: pesan
-                },
-                success: function(response) {
-                    $("#exampleModalCenter").modal('hide');
-                    getListAllFilter();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                }
-            });
+            if (document.getElementById('doneTransfer').checked) {
+                idRevisi = 3;
+                $.ajax({
+                    url: "{{ url('reimburse/update/accounting/revisi') }}" + '/' + indexReimburse,
+                    type: 'get',
+                    data: {
+                        idPengirim: idPengirim,
+                        idRevisi: idRevisi,
+                        pesan: pesan,
+                        idImageTemp: idTempImgAll
+                    },
+                    success: function(response) {
+                        $("#exampleModalCenter").modal('hide');
+                        getListAllFilter();
+                    },
+                    error: function(req, err) {
+                        console.log(err);
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "{{ url('reimburse/update/accounting/revisi') }}" + '/' + indexReimburse,
+                    type: 'get',
+                    data: {
+                        idPengirim: idPengirim,
+                        idRevisi: idRevisi,
+                        pesan: pesan
+                    },
+                    success: function(response) {
+                        $("#exampleModalCenter").modal('hide');
+                        getListAllFilter();
+                    },
+                    error: function(req, err) {
+                        console.log(err);
+                    }
+                });
+            }
         }
 
         function setPengirim(id) {
@@ -132,7 +224,8 @@
             var startDate = document.getElementById('startDate').value;
             var stopDate = document.getElementById('stopDate').value;
             var accessOutlet = document.getElementById('selOutlet').value;
-            var urlAll = "{{ url('reimburse/show/history/outlet') }}" + '/' + accessOutlet + '/' + 'between' + '/' + startDate + '/' + stopDate;
+            var urlAll = "{{ url('reimburse/show/history/outlet') }}" + '/' + accessOutlet + '/' + 'between' + '/' +
+                startDate + '/' + stopDate;
             $.ajax({
                 url: urlAll,
                 type: 'get',
@@ -248,8 +341,12 @@
 
                     if (obj.idRevisi == '3') {
                         document.getElementById('doneTransfer').checked = true;
+                        showBuktiTF();
+                        document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + obj.imageBukti;
+                        document.getElementById('filePathName').innerHTML = obj.imageBukti.substring(20,25) + '....';
                     } else {
                         document.getElementById('doneTransfer').checked = false;
+                        showUploadView();
                     }
 
                     document.getElementById('namaPenerima').innerHTML = obj.namaPenerima;

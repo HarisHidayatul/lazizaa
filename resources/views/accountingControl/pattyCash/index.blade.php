@@ -102,6 +102,32 @@
                         <div class="col-5">Rekening Pengirim</div>
                         <div class="col-7">: <span style="color: darkgrey" id="rekeningPengirim"></span></div>
                     </div>
+                    <div class="row">
+                        <div class="col-5">Bukti Pembayaran</div>
+                        <div class="col-7">: 
+                            <span style="color: darkgrey" id="buktiPengirim">
+                                <form id="formUploadImage">
+                                    <label for="image" class="d-flex justify-content-center align-items-center">
+                                        <img src="{{ url('img/icon/uploadCamera.png') }}" alt="" style="height: 30px;">
+                                        <div>Upload bukti pembayaran</div>
+                                    </label>
+                                    <input type="file" class="form-control" id="image" name="image" style="display: none"
+                                        onchange="uploadFileImage();">
+                                </form>
+                                <div id="wrapImageUpload">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex justify-content-start">
+                                            <img src="{{ url('img/icon/linkPath.png') }}" alt="" style="height: 20px;">
+                                            <div style="margin-left: 15px;">
+                                                <a target="_blank" rel="noopener noreferrer" href="#"  id="filePathName"></a>
+                                            </div>
+                                        </div>
+                                        <img src="{{ url('img/icon/trash.png') }}" alt="" style="height: 20px;" onclick="deleteTempImg();">
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
                     <div class="row">
                         <div class="col-5">Pesan</div>

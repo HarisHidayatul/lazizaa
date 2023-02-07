@@ -6,9 +6,11 @@ use App\Models\penerimaReimburse;
 use App\Models\pengirimList;
 use App\Models\reimburse;
 use App\Models\tanggalAll;
+use App\Models\tempImgAll;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class reimburseController extends Controller
 {
@@ -174,7 +176,8 @@ class reimburseController extends Controller
             'imgBankPenerima' => $imgBankPenerima,
             'bankPenerima' => $bankPenerima,
             'idRevisi' => $idRevisi,
-            'idPengirim' => $penerimaReimburse->penerimaLists->id
+            'idPengirim' => $penerimaReimburse->penerimaLists->id,
+            'imageBukti' => $penerimaReimburse->imgTransfer
         ]);
     }
 
@@ -397,12 +400,31 @@ class reimburseController extends Controller
     }
     public function updateRevisiTerima($id, Request $request)
     {
+        $idRevisi = $request->idRevisi;
         $penerimaReimburse = penerimaReimburse::find($id);
-        $penerimaReimburse->update([
-            'idPengirim' => $request->idPengirim,
-            'idRevisi' => $request->idRevisi,
-            'pesan' => $request->pesan
-        ]);
+        if ($idRevisi != '2') {
+            $imagePathTemp = tempImgAll::find($request->idImageTemp)->imagePath;
+            $imagePathNew = 'penerimaReimburse/';
+            $imagePathNew .= now()->format('Y_m_d_H_i_s_');
+            $imagePathNew .= substr($imagePathTemp, -5);
+
+            Storage::copy($imagePathTemp, $imagePathNew);
+            Storage::delete($imagePathTemp);
+            tempImgAll::find($request->idImageTemp)->delete();
+
+            $penerimaReimburse->update([
+                'idPengirim' => $request->idPengirim,
+                'idRevisi' => $idRevisi,
+                'pesan' => $request->pesan,
+                'imgTransfer' => $imagePathNew
+            ]);
+        }else{
+            $penerimaReimburse->update([
+                'idPengirim' => $request->idPengirim,
+                'idRevisi' => $idRevisi,
+                'pesan' => $request->pesan
+            ]);
+        }
     }
     /**
      * Remove the specified resource from storage.
