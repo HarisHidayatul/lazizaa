@@ -38,6 +38,7 @@
             </tbody>
         </table>
     </div>
+    <button type="button" class="btn btn-secondary float-right" onclick="downloadCSV();">Download CSV</button>
     {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
         Launch demo modal
     </button> --}}
