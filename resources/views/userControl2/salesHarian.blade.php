@@ -813,7 +813,7 @@
             if (document.getElementById(idTotal).value != '') {
                 valueIdTotal = document.getElementById(idTotal).value;
             }
-            document.getElementById(idBottomTotal).innerHTML = parseInt(valueIdTotal).toLocaleString().replace(',', '.');
+            document.getElementById(idBottomTotal).innerHTML = valueIdTotal.toLocaleString().replace(',', '.');
         }
     }
 </script>
