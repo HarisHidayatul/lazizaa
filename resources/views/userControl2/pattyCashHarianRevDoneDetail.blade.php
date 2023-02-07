@@ -724,17 +724,17 @@
                     dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
                     dataFill += '<div class="d-flex justify-content-between totalRow">';
                     dataFill += '<div class="totalText">Total</div>';
-                    dataFill += '<div class="totalVal">Rp. ' + obj.pattyCash[i].total
+                    dataFill += '<div class="totalVal">Rp. ' + parseInt(obj.pattyCash[i].total)
                         .toLocaleString()
                         .replace(',', '.') + '</div></div>';
 
                     dataBottom += '<div class="d-flex justify-content-between listPrice">';
                     dataBottom += '<div class="listBottom">' + obj.pattyCash[i].Item + '</div>';
-                    dataBottom += '<div class="valBottom">' + obj.pattyCash[i].total
+                    dataBottom += '<div class="valBottom">' + parseInt(obj.pattyCash[i].total)
                         .toLocaleString()
                         .replace(',', '.') + '</div>';
                     dataBottom += '</div>';
-                    totalData += obj.pattyCash[i].total;
+                    totalData += parseInt(obj.pattyCash[i].total);
 
 
                     detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
@@ -793,7 +793,7 @@
                 }
                 document.getElementById('dataFill').innerHTML = dataFill;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
-                document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();
+                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalData).toLocaleString();
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
                 // document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
             },

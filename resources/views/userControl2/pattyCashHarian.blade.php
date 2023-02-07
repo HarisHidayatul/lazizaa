@@ -1090,7 +1090,7 @@
                 dataDetail2 += '</div>';
 
                 dataDetail2 += '<div class="valDetail">Rp ';
-                dataDetail2 += objItem.itemPattyCash[i].Item[j].total.toLocaleString();
+                dataDetail2 += parseInt(objItem.itemPattyCash[i].Item[j].total).toLocaleString();
                 dataDetail2 += '</div>';
                 dataDetail2 += '</div></div>';
 

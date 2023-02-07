@@ -267,7 +267,7 @@
                         allHistoryTransaksi += ' WIB</div>';
                         allHistoryTransaksi += '</div></div>';
                         allHistoryTransaksi += '<div class="priceTransaksi">Rp ';
-                        allHistoryTransaksi += obj.setoran[i].setoran[j].qty.toLocaleString().replace(',',
+                        allHistoryTransaksi += parseInt(obj.setoran[i].setoran[j].qty).toLocaleString().replace(',',
                             '.');
                         allHistoryTransaksi += '</div></div>';
                     }

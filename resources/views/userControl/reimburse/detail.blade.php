@@ -333,7 +333,7 @@
                 document.getElementById('imgBankPenerima').src = url + '/' + obj.imgBankPenerima;
                 document.getElementById('pesan').innerHTML = obj.pesan;
                 document.getElementById('tanggal').innerHTML = day.getDate() + ' ' + months[day.getMonth()];
-                document.getElementById('jumlahTransfer').innerHTML = obj.jumlahTransfer.toLocaleString();
+                document.getElementById('jumlahTransfer').innerHTML = parseInt(obj.jumlahTransfer).toLocaleString();
                 if (obj.idRevisi == '2') {
                     document.getElementById('imageStatusSetoran').src =
                         "{{ url('img/icon/tertunda.png') }}";

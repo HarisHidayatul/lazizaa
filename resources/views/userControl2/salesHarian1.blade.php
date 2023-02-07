@@ -419,8 +419,8 @@
                                     dataTable += 'style="background-color:rgb(30, 206, 9);" ';
                                 }
                                 dataTable += '>';
-                                dataTable += obj.itemSales[i].Item[k].totalQty.toLocaleString();
-                                totalDataTable.push(obj.itemSales[i].Item[k].totalQty);
+                                dataTable += parseInt(obj.itemSales[i].Item[k].totalQty).toLocaleString();
+                                totalDataTable.push(parseInt(obj.itemSales[i].Item[k].totalQty));
                                 dataTable += '</td>';
 
                                 dataTable +=

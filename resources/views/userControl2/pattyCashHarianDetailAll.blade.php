@@ -677,7 +677,7 @@
                         // tempHTML += obj[i].dataPattyCash[0][0].pattyCash[j].pattyCash[0].idRevQty;
                         tempHTML += '</span></div>';
                         tempHTML += '<div class="detailRev"><span style="color: #008000;">Rp ';
-                        tempHTML += obj[i].dataPattyCash[0][0].pattyCash[j].total.toLocaleString();
+                        tempHTML += parseInt(obj[i].dataPattyCash[0][0].pattyCash[j].total).toLocaleString();
                         tempHTML += '</span></div></div></div>';
                         // console.log(tempHTML);
                     }

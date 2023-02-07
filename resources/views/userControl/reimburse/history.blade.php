@@ -342,7 +342,7 @@
                 console.log(obj);
                 var totalReimburse = 0;
                 var totalPembelian = 0;
-                var totalPattyCash = obj.saldoPattyCash;
+                var totalPattyCash = parseInt(obj.saldoPattyCash);
 
                 for (var i = 0; i < obj.dataHistory.length; i++) {
                     var day = new Date(obj.dataHistory[i].tanggal);
@@ -372,11 +372,11 @@
                         historyToday += '</div></div></div>';
                         historyToday +=
                             '<div style="margin-right: 10px;"><div class="labelValuePembelian">- Rp ';
-                        historyToday += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].pattyCash[j].total).toLocaleString();
                         historyToday += '</div><div class="labelValuePattyCash">Rp ';
-                        historyToday += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].pattyCash[j].saldo).toLocaleString();
                         historyToday += '</div></div></div>';
-                        totalPembelian += obj.dataHistory[i].pattyCash[j].total;
+                        totalPembelian += parseInt(obj.dataHistory[i].pattyCash[j].total);
                     }
                     for (var j = 0; j < obj.dataHistory[i].reimburse.length; j++) {
                         dataFound = true;
@@ -405,14 +405,14 @@
                         historyToday += '<div style="margin-right: 10px;"><div class="labelValuePembelian ';
                         if (obj.dataHistory[i].reimburse[j].idRev == '3') {
                             historyToday += 'activeValPembelian';
-                            totalReimburse += obj.dataHistory[i].reimburse[j].reimburse;
+                            totalReimburse += parseInt(obj.dataHistory[i].reimburse[j].reimburse);
                         } else {
                             historyToday += 'pendingValPembelian';
                         }
                         historyToday += '">+ Rp ';
-                        historyToday += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].reimburse[j].reimburse).toLocaleString();
                         historyToday += '</div><div class="labelValuePattyCash">Rp ';
-                        historyToday += obj.dataHistory[i].reimburse[j].saldo.toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].reimburse[j].saldo).toLocaleString();
                         historyToday += '</div></div></div>';
                     }
 
@@ -421,11 +421,11 @@
                     }
                 }
                 document.getElementById("historyAll").innerHTML = historyAll;
-                document.getElementById("totalReimburse").innerHTML = "+ Rp " + totalReimburse
+                document.getElementById("totalReimburse").innerHTML = "+ Rp " + parseInt(totalReimburse)
                     .toLocaleString();
-                document.getElementById("totalPembelian").innerHTML = "- Rp " + totalPembelian
+                document.getElementById("totalPembelian").innerHTML = "- Rp " + parseInt(totalPembelian)
                     .toLocaleString();
-                document.getElementById("totalPattyCash").innerHTML = "Rp " + totalPattyCash
+                document.getElementById("totalPattyCash").innerHTML = "Rp " + parseInt(totalPattyCash)
                     .toLocaleString().replaceAll(',','.');
             },
             error: function(req, err) {

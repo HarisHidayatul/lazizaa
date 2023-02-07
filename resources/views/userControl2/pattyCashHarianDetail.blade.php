@@ -723,17 +723,17 @@
                     dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
                     dataFill += '<div class="d-flex justify-content-between totalRow">';
                     dataFill += '<div class="totalText">Total</div>';
-                    dataFill += '<div class="totalVal">Rp. ' + obj.itemPattyCash[0].Item[i].total
-                        .toLocaleString()
+                    dataFill += '<div class="totalVal">Rp. ' + parseInt(obj.itemPattyCash[0].Item[i].total
+                        .toLocaleString())
                         .replace(',', '.') + '</div></div>';
 
                     dataBottom += '<div class="d-flex justify-content-between listPrice">';
                     dataBottom += '<div class="listBottom">' + obj.itemPattyCash[0].Item[i].Item + '</div>';
-                    dataBottom += '<div class="valBottom">' + obj.itemPattyCash[0].Item[i].total
-                        .toLocaleString()
+                    dataBottom += '<div class="valBottom">' + parseInt(obj.itemPattyCash[0].Item[i].total
+                        .toLocaleString())
                         .replace(',', '.') + '</div>';
                     dataBottom += '</div>';
-                    totalData += obj.itemPattyCash[0].Item[i].total;
+                    totalData += parseInt(obj.itemPattyCash[0].Item[i].total);
 
 
                     detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
@@ -792,7 +792,7 @@
                 }
                 document.getElementById('dataFill').innerHTML = dataFill;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
-                document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();
+                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalData).toLocaleString();
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
                 // document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
             },

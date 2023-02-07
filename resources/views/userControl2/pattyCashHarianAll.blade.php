@@ -754,7 +754,7 @@
                             if (obj.itemPattyCash[i].Item[j].Item[k].idTotalRev == 2) {
                                 dataRev +=
                                     '<div class="detailRev">Total &#10132; <span style="color: #008000;">Rp. ';
-                                dataRev += obj.itemPattyCash[i].Item[j].Item[k].total.toLocaleString().replace(',', '.');
+                                dataRev += parseInt(obj.itemPattyCash[i].Item[j].Item[k].total.toLocaleString()).replace(',', '.');
                                 dataRev += '</span></div>';
                             }
                             dataRev += '</div></div>';

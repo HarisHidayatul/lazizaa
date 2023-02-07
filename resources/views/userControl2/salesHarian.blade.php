@@ -800,7 +800,7 @@
                 // sumData += valueTotalAll[i].rawValue;
             }
         }
-        document.getElementById('totalALL').innerHTML = 'Rp. ' + sumData.toLocaleString();
+        document.getElementById('totalALL').innerHTML = 'Rp. ' + parseInt(sumData).toLocaleString();
         // console.log(sumData);
         copyInputToText();
     }
@@ -813,7 +813,7 @@
             if (document.getElementById(idTotal).value != '') {
                 valueIdTotal = document.getElementById(idTotal).value;
             }
-            document.getElementById(idBottomTotal).innerHTML = valueIdTotal.toLocaleString().replace(',', '.');
+            document.getElementById(idBottomTotal).innerHTML = parseInt(valueIdTotal).toLocaleString().replace(',', '.');
         }
     }
 </script>

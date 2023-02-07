@@ -781,7 +781,7 @@
                         .getYear() + 1900);
                 document.getElementById('dateSelected').innerHTML = stringDay;
                 document.getElementById('cuRev').innerHTML = allData.qty;
-                document.getElementById('totalRev').innerHTML = allData.total.toLocaleString().replace(',',
+                document.getElementById('totalRev').innerHTML = parseInt(allData.total).toLocaleString().replace(',',
                     '.');
                 for (var i = 0; i < obj.length; i++) {
                     dataFill += '<div><div class="d-flex justify-content-start typeSales">';
@@ -806,18 +806,18 @@
                         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
                         dataFill += '<div class="d-flex justify-content-between totalRow">';
                         dataFill += '<div class="totalText">Total</div>';
-                        dataFill += '<div class="totalVal">Rp. ' + obj[i].pattyCash[j].total
+                        dataFill += '<div class="totalVal">Rp. ' + parseInt(obj[i].pattyCash[j].total)
                             .toLocaleString()
                             .replace(',', '.') + '</div></div>';
 
                         dataBottom += '<div class="d-flex justify-content-between listPrice">';
                         dataBottom += '<div class="listBottom">' + obj[i].pattyCash[j].Item +
                             '</div>';
-                        dataBottom += '<div class="valBottom">' + obj[i].pattyCash[j].total
+                        dataBottom += '<div class="valBottom">' + parseInt(obj[i].pattyCash[j].total)
                             .toLocaleString()
                             .replace(',', '.') + '</div>';
                         dataBottom += '</div>';
-                        totalData += obj[i].pattyCash[j].total;
+                        totalData += parseInt(obj[i].pattyCash[j].total);
 
                         detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
                         detailPengisi += '<div class="col-3 detailName">' + obj[i].pattyCash[j].namaPengisi[
@@ -878,7 +878,7 @@
                 document.getElementById('dataBottom').innerHTML = dataBottom;
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
-                document.getElementById('totalAll').innerHTML = 'Rp. ' + totalData.toLocaleString();
+                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalData).toLocaleString();
             },
             error: function(req, err) {
                 console.log(err);

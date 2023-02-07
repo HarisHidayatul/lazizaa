@@ -727,15 +727,15 @@
                         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
                         dataFill += '<div class="d-flex justify-content-between totalRow">';
                         dataFill += '<div class="totalText">Total</div>';
-                        dataFill += '<div class="totalVal">Rp. ' + obj[i].sales[j].totalQty.toLocaleString()
+                        dataFill += '<div class="totalVal">Rp. ' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
                             .replace(',', '.') + '</div></div>';
 
                         dataBottom += '<div class="d-flex justify-content-between listPrice">';
                         dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
-                        dataBottom += '<div class="valBottom">' + obj[i].sales[j].totalQty.toLocaleString()
+                        dataBottom += '<div class="valBottom">' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
                             .replace(',', '.') + '</div>';
                         dataBottom += '</div>';
-                        totalData += obj[i].sales[j].totalQty;
+                        totalData += parseInt(obj[i].sales[j].totalQty);
 
                         detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
                         detailPengisi += '<div class="col-3 detailName">' + obj[i].sales[j].namaPengisi[0] +

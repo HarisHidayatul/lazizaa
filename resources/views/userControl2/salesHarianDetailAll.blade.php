@@ -667,7 +667,7 @@
                         tempHTML += obj[i].dataSales[0][j].cuQty;
                         tempHTML += '</span></div>';
                         tempHTML += '<div class="detailRev">Total &#10132; <span style="color: #FFA500;">Rp. ';
-                        tempHTML += obj[i].dataSales[0][j].totalQty.toLocaleString();
+                        tempHTML += parseInt(obj[i].dataSales[0][j].totalQty).toLocaleString();
                         tempHTML += '</span></div></div></div>';
                         // console.log(tempHTML);
                     }

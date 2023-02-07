@@ -919,7 +919,7 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
-                document.getElementById("totalPattyCash").innerHTML = obj.saldoPattyCash.toLocaleString().replaceAll(',','. ');
+                document.getElementById("totalPattyCash").innerHTML = parseInt(obj.saldoPattyCash).toLocaleString().replaceAll(',','. ');
             },
             error: function(req, err) {
                 console.log(err);

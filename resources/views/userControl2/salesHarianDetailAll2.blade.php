@@ -576,17 +576,17 @@
                             detailSesi +=
                                 '</div><div style="width: 100%; border: 1px solid #E0E0E0;"></div>';
                             detailSesi += '<div class="d-flex justify-content-between"><div>Total</div>';
-                            detailSesi += '<div>Rp ' + obj[i].sales[j][2][k].totalQty.toLocaleString() +
+                            detailSesi += '<div>Rp ' + parseInt(obj[i].sales[j][2][k].totalQty).toLocaleString() +
                                 '</div></div></div>';
 
                             totalPerSesi += '<div class="d-flex justify-content-between totalPerSesi">';
                             totalPerSesi += '<div>Sesi ' + obj[i].sales[j][2][k].sesi + '</div>';
-                            totalPerSesi += '<div>Rp. ' + obj[i].sales[j][2][k].totalQty.toLocaleString() +
+                            totalPerSesi += '<div>Rp. ' + parseInt(obj[i].sales[j][2][k].totalQty).toLocaleString() +
                                 '</div></div>';
-                            totalValPerSesi += obj[i].sales[j][2][k].totalQty;
-                            cuValPerSesi += obj[i].sales[j][2][k].cuQty;
+                            totalValPerSesi += parseInt(obj[i].sales[j][2][k].totalQty);
+                            cuValPerSesi += parseInt(obj[i].sales[j][2][k].cuQty);
 
-                            totalAll +=  obj[i].sales[j][2][k].totalQty;
+                            totalAll +=  parseInt(obj[i].sales[j][2][k].totalQty);
                         }
 
                         totalPerSesi +=
