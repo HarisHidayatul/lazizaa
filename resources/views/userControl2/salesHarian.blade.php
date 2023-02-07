@@ -645,7 +645,7 @@
                 for (var j = 0; j < dataIdItem.length; j++) {
                     if (dataIdItemEdit[i] == dataIdItem[j]) {
                         var idRow = 'r' + j;
-                        var valTotalInput = parseInt(valueTotalAll[j].rawValue);
+                        var valTotalInput = valueTotalAll[j].rawValue;
                         var valCuInput = document.getElementById(idRow + 'c0').value;
                         if (valTotalInput != dataTotalEdit[i]) {
                             $.ajax({
