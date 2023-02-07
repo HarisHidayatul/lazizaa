@@ -311,7 +311,7 @@
                 var nomorRekeningLength = obj.nomorRekeningPengirim.length;
                 var qty = obj.qty.toLocaleString();
                 console.log(obj);
-                document.getElementById('qtySetoran').innerHTML = qty.replace(",",".");
+                document.getElementById('qtySetoran').innerHTML = qty;
                 if (obj.idStatus == '2') {
                     document.getElementById('imageStatusSetoran').src =
                         "{{ url('img/icon/pending.png') }}";
