@@ -924,7 +924,7 @@
                         dataHistoryHTML += obj.setoran[i].setoran[j].time;
                         dataHistoryHTML += ' WIB</div></div></div>';
                         dataHistoryHTML += '<div class="priceTransaksi">Rp ';
-                        dataHistoryHTML += obj.setoran[i].setoran[j].qty.toLocaleString();
+                        dataHistoryHTML += parseInt(obj.setoran[i].setoran[j].qty).toLocaleString();
                         dataHistoryHTML += '</div></div>';
                     }
                 }

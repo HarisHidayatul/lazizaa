@@ -310,7 +310,7 @@
                 var day = new Date(obj.date);
                 var nomorRekeningLength = obj.nomorRekeningPengirim.length;
                 console.log(obj);
-                document.getElementById('qtySetoran').innerHTML = obj.qty.toLocaleString();
+                document.getElementById('qtySetoran').innerHTML = parseInt(obj.qty).toLocaleString();
                 if (obj.idStatus == '2') {
                     document.getElementById('imageStatusSetoran').src =
                         "{{ url('img/icon/pending.png') }}";

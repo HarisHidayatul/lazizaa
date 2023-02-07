@@ -309,7 +309,7 @@
                 var obj = JSON.parse(JSON.stringify(response));
                 var day = new Date(obj.date);
                 var nomorRekeningLength = obj.nomorRekeningPengirim.length;
-                var qty = obj.qty.toLocaleString();
+                var qty = parseInt(obj.qty).toLocaleString();
                 console.log(obj);
                 document.getElementById('qtySetoran').innerHTML = qty;
                 if (obj.idStatus == '2') {
