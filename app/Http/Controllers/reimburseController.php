@@ -444,4 +444,10 @@ class reimburseController extends Controller
         //
 
     }
+    public function deleteRevisiTerima($id){
+        $penerimaReimburse = penerimaReimburse::find($id);
+        $imagePath = $penerimaReimburse->imgTransfer;
+        $penerimaReimburse->delete();
+        Storage::delete($imagePath);
+    }
 }

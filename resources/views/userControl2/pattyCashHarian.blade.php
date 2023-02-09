@@ -918,6 +918,7 @@
                 sesiElement[i].classList.remove("sesiActive");
             }
         }
+        sendOrEdit=true;
         // getAllData();
     }
     function listBySesi(index) {

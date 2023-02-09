@@ -866,7 +866,7 @@
                         style="border-left: none;" id="searchNama" onkeyup="searchNama()">
                 </div>
                 <div class="d-flex align-items-center"
-                    style="background: white; position: fixed; right: 0; left: 0; bottom: 150px; height: 60px;">
+                    style="position: fixed; right: 0; left: 0; bottom: 150px; height: 60px;">
                     <img src="{{ url('img/icon/addReimburse.png') }}" alt=""
                         style="height: 45px; position: absolute; right: 15px;" onclick="showInputRekening();">
                 </div>

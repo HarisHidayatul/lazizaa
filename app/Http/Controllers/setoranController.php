@@ -540,4 +540,11 @@ class setoranController extends Controller
     {
         //
     }
+    public function delete($id){
+        $setoran = setoran::find($id);
+        $pathImage = $setoran->imgTransfer;
+        $setoran->delete();
+        // @dd($setoran);
+        Storage::delete($pathImage);
+    }
 }

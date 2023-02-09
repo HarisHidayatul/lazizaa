@@ -238,6 +238,7 @@ Route::get('setoran/show/pengirim/inPart/{idUser}', [setoranController::class, '
 Route::get('setoran/show/pengirim/all/{idUser}', [setoranController::class, 'showPengirimAll']);
 Route::get('setoran/show/detail/{idSetoran}', [setoranController::class, 'showSetoranDetail']);
 Route::get('setoran/update/accounting/revisi/{id}', [setoranController::class, 'update']);
+Route::get('setoran/delete/accounting/revisi/{id}',[setoranController::class,'delete']);
 
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
 Route::get('setoran/show/data/inPart/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart']);
@@ -252,6 +253,7 @@ Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}/{startDate}/{st
 Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
 Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
 Route::get('reimburse/update/accounting/revisi/{id}', [reimburseController::class, 'updateRevisiTerima']);
+Route::get('reimburse/delete/accounting/revisi/{id}', [reimburseController::class,'deleteRevisiTerima']);
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
 
 Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class, 'storeReimburseIdTujuan']);

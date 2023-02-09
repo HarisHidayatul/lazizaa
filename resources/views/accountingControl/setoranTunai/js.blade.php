@@ -52,6 +52,20 @@
             });
         }
 
+        function deleteTransfer(){
+            $.ajax({
+                url: "{{ url('setoran/delete/accounting/revisi') }}" + '/' + indexSetoran,
+                type: 'get',
+                success: function(response) {
+                    $("#deleteModalCenter").modal('hide');
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            });
+        }
+
         function getListAllFilter() {
             var startDate = document.getElementById('startDate').value;
             var stopDate = document.getElementById('stopDate').value;
@@ -205,6 +219,17 @@
                     console.log(err);
                 }
             })
+        }
+
+        function backDeleteClick() {
+            $('#exampleModalCenter').modal('show');
+            $('#deleteModalCenter').modal('hide');
+        }
+
+        function deleteTabClick() {
+            $('#exampleModalCenter').modal('hide');
+            $('#deleteModalCenter').modal('show');
+
         }
     </script>
 @endsection

@@ -32,6 +32,31 @@
             getAllPenerima();
         })
 
+        function backDeleteClick() {
+            $('#exampleModalCenter').modal('show');
+            $('#deleteModalCenter').modal('hide');
+        }
+
+        function deleteTabClick() {
+            $('#exampleModalCenter').modal('hide');
+            $('#deleteModalCenter').modal('show');
+
+        }
+
+        function deleteTransfer() {
+            $.ajax({
+                url: "{{ url('reimburse/delete/accounting/revisi') }}" + '/' + indexReimburse,
+                type: 'get',
+                success: function(response) {
+                    $("#deleteModalCenter").modal('hide');
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            });
+        }
+
         function uploadFileImage() {
             // console.log('fasfdasdf');
             var form = $('#formUploadImage')[0];

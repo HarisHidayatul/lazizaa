@@ -869,6 +869,7 @@
                 sesiElement[i].classList.remove("sesiActive");
             }
         }
+        sendOrEdit = true;
         // getAllData();
     }
 
