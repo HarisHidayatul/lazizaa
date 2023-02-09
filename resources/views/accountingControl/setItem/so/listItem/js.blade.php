@@ -81,7 +81,7 @@
                     for (var i = 0; i < obj.itemSO.length; i++) {
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        
+
                         dataTable += '<input type="text" class="form-control" value="';
                         dataTable += obj.itemSO[i].item;
                         dataTable += '" name="inputEdit">';
@@ -103,6 +103,15 @@
                         dataTable += '<img src="' + "{{ url('img/soImage') }}" + '/' + obj.itemSO[i].icon +
                             '" alt="">';
                         dataTable += '</td>';
+
+                        dataTable += '<td class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxVerif" type="checkbox" ';
+                        if (obj.itemSO[i].mingguanItem != '0') {
+                            dataTable += ' checked';
+                        }
+                        dataTable += '>';
+                        dataTable += '</td>';
+
                         dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' + i +
                             ');">Edit</button>';
@@ -127,18 +136,25 @@
             });
         }
 
-        function editItem(index){
+        function editItem(index) {
             var dropdownEdit = document.getElementsByName('dropDownEdit')[index].value;
             var itemEdit = document.getElementsByName('inputEdit')[index].value;
             var iconEdit = document.getElementsByName('locationEdit')[index].value;
-            var idItem = listItemSoArray[index]
+            var idItem = listItemSoArray[index];
+            var checkBoxVerif = document.getElementsByName('checkBoxVerif')[index].checked;
+            var munculMingguan = '0';
+            if(checkBoxVerif){
+                munculMingguan = '1';
+            }
+
             $.ajax({
                 url: "{{ url('itemSO/update') }}" + '/' + idItem,
                 type: 'get',
                 data: {
                     item: itemEdit,
                     idSatuan: dropdownEdit,
-                    icon: iconEdit
+                    icon: iconEdit,
+                    munculMingguan: munculMingguan
                 },
                 success: function(response) {
                     getListAllItem();
@@ -149,7 +165,7 @@
             })
         }
 
-        function resetInput(){
+        function resetInput() {
             document.getElementById('locationItem').innerHTML = '';
             document.getElementById('tambahNamaItem').innerHTML = '';
         }

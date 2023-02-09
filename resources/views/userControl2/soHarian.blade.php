@@ -620,7 +620,23 @@
             var isSuccess = false;
             var indexIteration = i % elementInput.length;
             if (elementInput[indexIteration].value == '') {
-                continue;
+                // continue;
+                $.ajax({
+                    url: "{{ url('soHarian/store/data') }}",
+                    type: 'get',
+                    data: {
+                        idSo: idSo2,
+                        idItemSo: dataId[indexIteration],
+                        quantity: 0
+                    },
+                    success: function(response) {
+                        // break;
+                        isSuccess = true;
+                    },
+                    error: function(req, err) {
+                        console.log(err);
+                    }
+                });
             } else {
                 $.ajax({
                     url: "{{ url('soHarian/store/data') }}",
@@ -670,6 +686,9 @@
         dataId.length = 0;
         $.ajax({
             url: "{{ url('listType/soHarian/show/item/outlet/') }}" + '/' + id,
+            data: {
+                tanggal: "{{ $dateSelect }}"
+            },
             type: 'get',
             success: function(response) {
                 var order_data = '';

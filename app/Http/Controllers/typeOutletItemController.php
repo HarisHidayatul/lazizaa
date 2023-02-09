@@ -143,10 +143,18 @@ class typeOutletItemController extends Controller
             'OutletData' => $dataArray
         ]);
     }
-    public function showItemByOutlet($id)
+    public function showItemByOutlet($id, Request $request)
     {
-
+        $tanggal = $request->tanggal;
+        // @dd($tanggal);
+        $midDate = 15;
+        $endDate = date("t", strtotime($tanggal));
+        // @dd($endDate);
+        $dateNow = date_format(date_create($tanggal),"d");
+        // @dd($dateNow);
+        // @dd(($dateNow == $midDate)or($dateNow==$endDate));
         $data = doutlet::find($id)->typeOutlets;
+        $listItemSo = listItemSO::all();
         $countItem = 0;
         // @dd($data[0]['id']);
         $dataArray = [];
@@ -178,6 +186,30 @@ class typeOutletItemController extends Controller
                 'type' => $data[$i]['Nama Type']
             ]);
         }
+        if (($dateNow == $midDate) or ($dateNow == $endDate)) {
+            for ($i = 0; $i < $listItemSo->count(); $i++) {
+                if ($listItemSo[$i]['munculMingguan'] > 0) {
+                    $newItemSo = $listItemSo[$i];
+                    $findSame = false;
+                    for ($k = 0; $k < count($dataId); $k++) {
+                        if ($dataId[$k] == $newItemSo['id']) {
+                            $findSame = true;
+                            break;
+                        }
+                    }
+                    if (!$findSame) {
+                        $countItem += 1;
+                        array_push($dataArray, (object)[
+                            'id' => $newItemSo['id'],
+                            'Item' => $newItemSo['Item'],
+                            'satuan' => $newItemSo->satuans['Satuan'],
+                            'icon' => $newItemSo['icon']
+                        ]);
+                        array_push($dataId, $newItemSo['id']);
+                    }
+                }
+            }
+        }
         return response()->json([
             'countItem' => $countItem,
             'DataItem' => $dataArray,
@@ -195,7 +227,8 @@ class typeOutletItemController extends Controller
         //
     }
 
-    public function updateType($id,Request $request){
+    public function updateType($id, Request $request)
+    {
         $typeOutlet = typeOutlet::find($id);
         $typeOutlet->update([
             'Nama Type' => $request->NamaType

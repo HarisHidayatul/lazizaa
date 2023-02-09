@@ -26,6 +26,7 @@ class listItemSO extends Model
         'Item',
         'idSatuan',
         'icon',
+        'munculMingguan',
         'created_at',
         'updated_at',
         'deleted_at'

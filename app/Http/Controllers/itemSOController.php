@@ -49,7 +49,8 @@ class itemSOController extends Controller
                 'id' => $itemso[$i]['id'],
                 'item' => $itemso[$i]['Item'],
                 'idSatuan' => $itemso[$i]['idSatuan'],
-                'icon' => $itemso[$i]['icon']
+                'icon' => $itemso[$i]['icon'],
+                'mingguanItem' => $itemso[$i]['munculMingguan']
             ]);
         }
         return response()->json([
@@ -122,7 +123,8 @@ class itemSOController extends Controller
         $listItemSO->update([
             'Item' => $request->item,
             'idSatuan' => $request->idSatuan,
-            'icon' => $request->icon
+            'icon' => $request->icon,
+            'munculMingguan' => $request->munculMingguan
         ]);
         echo 1;
         // @dd($listItemSO);
