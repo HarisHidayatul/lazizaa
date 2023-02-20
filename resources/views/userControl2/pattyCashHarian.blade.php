@@ -347,6 +347,20 @@
             /* Greyscale/30 */
             color: #BEBEBE;
         }
+        .itemShow input{
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            /* identical to box height, or 20px */
+            /* Greyscale/30 */
+            color: #BEBEBE;
+        }
+        .inputSearch:focus{
+            border: none;
+            outline: none;
+        }
 
         .itemLabel {
             font-family: 'Montserrat';
@@ -470,6 +484,7 @@
 
             cursor: pointer;
         }
+
         .menuDetail {
             font-family: 'Montserrat';
             font-style: normal;
@@ -700,7 +715,7 @@
 
             color: #FFFFFF;
         }
-        
+
         .wrapTransaksi {
             margin-top: 40px;
             display: flex;
@@ -776,7 +791,9 @@
             {{-- <input type="text"> --}}
             <div class="itemShow" onclick="itemShowClick();">
                 <div class="d-flex justify-content-between">
-                    <div id="itemShow" style="margin-left: -2px">Pilih item</div>
+                    <input type="text" class="inputSearch" placeholder="Pilih item" style="border: none;"
+                        id="searchItem" onkeyup="searchItem()">
+                    {{-- <div id="itemShow" style="margin-left: -2px">Pilih item</div> --}}
                     <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
                             style="height: 12px"></div>
                 </div>
@@ -886,6 +903,7 @@
     var selectedSesi = 1;
 
     var objItem = '';
+    var objAllItemInput = '';
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
@@ -903,6 +921,7 @@
         } else {
             dropdownItem = true;
             document.getElementById('selectItem').style.visibility = "visible";
+            $('#searchItem').focus();
         }
     }
 
@@ -918,9 +937,10 @@
                 sesiElement[i].classList.remove("sesiActive");
             }
         }
-        sendOrEdit=true;
+        sendOrEdit = true;
         // getAllData();
     }
+
     function listBySesi(index) {
         // console.log(.length);
         var element = document.getElementsByName("sortTransaksi");
@@ -985,7 +1005,8 @@
 
     function selectIndex(index) {
         // console.log(selectedIndex[index]);
-        document.getElementById('itemShow').innerHTML = selectedIndex[index];
+        // document.getElementById('itemShow').innerHTML = selectedIndex[index];
+        document.getElementById('searchItem').value = selectIndex[index];
         itemShowClick();
     }
 
@@ -1000,22 +1021,36 @@
                 // console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                objAllItemInput = obj;
                 objItemBrand.length = 0;
-                var dataDropdown = '';
-                for (var i = 0; i < obj?.dataItem.length; i++) {
-                    dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
-                    dataDropdown += i;
-                    dataDropdown += ')">';
-                    dataDropdown += obj.dataItem[i].Item;
-                    dataDropdown += '</div>';
-                    objItemBrand.push(obj.dataItem[i]);
+                for (var i = 0; i < objAllItemInput?.dataItem.length; i++) {
+                    objItemBrand.push(objAllItemInput.dataItem[i]);
                 }
-                document.getElementById('itemAll').innerHTML = dataDropdown;
+                refreshItem('');
             },
             error: function(req, err) {
                 console.log(err);
             }
         })
+    }
+
+    function searchItem() {
+        refreshItem(document.getElementById('searchItem').value);
+    }
+
+    function refreshItem(searchItem) {
+        var searchByItem = searchItem.toUpperCase();
+        var dataDropdown = '';
+        for (var i = 0; i < objAllItemInput?.dataItem.length; i++) {
+            if (objAllItemInput.dataItem[i].Item.toUpperCase().indexOf(searchByItem) > -1) {
+                dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
+                dataDropdown += i;
+                dataDropdown += ')">';
+                dataDropdown += objAllItemInput.dataItem[i].Item;
+                dataDropdown += '</div>';
+            }
+        }
+        document.getElementById('itemAll').innerHTML = dataDropdown;
     }
 
     function setDropDown(selectIndex) {
@@ -1029,7 +1064,8 @@
         console.log(objItemBrand[selectIndex]);
         document.getElementById('jumlahInput').value = '';
         totalInput.set('0');
-        document.getElementById('itemShow').innerHTML = itemSelect;
+        // document.getElementById('itemShow').innerHTML = itemSelect;
+        document.getElementById('searchItem').value = itemSelect;
         document.getElementById('satuan').innerHTML = objItemBrand[selectIndex]?.Satuan;
     }
 
@@ -1095,7 +1131,7 @@
                 dataDetail2 += '</div>';
                 dataDetail2 += '</div></div>';
 
-                if ((indexSesi == objItem.itemPattyCash[i].Item[j].idSesi)||(indexSesi == 0)) {
+                if ((indexSesi == objItem.itemPattyCash[i].Item[j].idSesi) || (indexSesi == 0)) {
                     dataDetail += dataDetail2;
                     objItemEdit.push(objItem.itemPattyCash[i].Item[j]);
                     indexLoop++;
@@ -1109,7 +1145,8 @@
         console.log(objItemEdit[selectIndex]);
         sendOrEdit = false;
         indexEdit = selectIndex;
-        document.getElementById('itemShow').innerHTML = objItemEdit[selectIndex]?.Item;
+        // document.getElementById('itemShow').innerHTML = objItemEdit[selectIndex]?.Item;
+        document.getElementById('searchItem').value = objItemEdit[selectIndex]?.Item;
         document.getElementById('jumlahInput').value = objItemEdit[selectIndex]?.qty;
         totalInput.set(objItemEdit[selectIndex]?.total);
         document.getElementById('satuan').innerHTML = objItemEdit[selectIndex]?.Satuan;

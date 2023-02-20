@@ -346,6 +346,21 @@
             color: #BEBEBE;
         }
 
+        .itemShow input{
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            /* identical to box height, or 20px */
+            /* Greyscale/30 */
+            color: #BEBEBE;
+        }
+        .inputSearch:focus{
+            border: none;
+            outline: none;
+        }
+
         .itemLabel {
             font-family: 'Montserrat';
             font-style: normal;
@@ -737,7 +752,9 @@
             {{-- <input type="text"> --}}
             <div class="itemShow" onclick="itemShowClick();">
                 <div class="d-flex justify-content-between">
-                    <div id="itemShow" style="margin-left: -2px">Pilih item</div>
+                    <input type="text" class="inputSearch" placeholder="Pilih item" style="border: none;"
+                        id="searchItem" onkeyup="searchItem()">
+                    {{-- <div id="itemShow" style="margin-left: -2px">Pilih item</div> --}}
                     <div style="margin-right: 10px"><img src="{{ url('img/icon/selectArrow.png') }}" alt=""
                             style="height: 12px"></div>
                 </div>
@@ -756,7 +773,8 @@
             <div style="content: ''; height: 50px"></div>
             <div class="row">
                 <div class="col-6 requestItem" onclick="goToRequestItem();">Requset Item?</div>
-                <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button></div>
+                <div class="col-6"><button type="button" class="btn" onclick="sendAddData()">Simpan</button>
+                </div>
             </div>
             <div style="content: ''; height: 25px"></div>
             <h3 id="dateSelected2" style="margin-top: 18px">Selasa, 1 November</h3>
@@ -896,6 +914,7 @@
         } else {
             dropdownItem = true;
             document.getElementById('selectItem').style.visibility = "visible";
+            $('#searchItem').focus();
         }
     }
 
@@ -950,7 +969,8 @@
                         '<input class="radioCustom form-check-input" type="radio" name="selJenisBrand" ';
                     radioButton += 'onclick="radioSelBrand(' +
                         i +
-                        ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + i + '"/>';
+                        ',' + "''" + ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + i +
+                        '"/>';
                     radioButton += '<label for="' + obj.listWaste[i].jenisBahan +
                         '" class="radioCustom-label form-check-label">' + obj.listWaste[i]
                         .jenisBahan +
@@ -961,7 +981,7 @@
                     selectJenisBrand = 0;
                 }
                 document.getElementById("radioButtonUser").innerHTML = radioButton;
-                radioSelBrand(selectJenisBrand);
+                radioSelBrand(selectJenisBrand, '');
             },
             error: function(req, err) {
                 console.log(err);
@@ -969,7 +989,14 @@
         })
     }
 
-    function radioSelBrand(selectIndex) {
+    function searchItem() {
+        radioSelBrand(selectJenisBrand, document.getElementById('searchItem').value);
+        dropdownItem = true;
+        document.getElementById('selectItem').style.visibility = "visible";
+    }
+
+    function radioSelBrand(selectIndex, searchItem) {
+        var searchByItem = searchItem.toUpperCase();
         //Off kan drop down dulu
         dropdownItem = false;
         document.getElementById('selectItem').style.visibility = "hidden";
@@ -983,14 +1010,19 @@
         // var item = '';
         var dataDropdown = '';
         for (var i = 0; i < objSelect?.length; i++) {
-            dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
-            dataDropdown += i;
-            dataDropdown += ')">';
-            dataDropdown += objSelect[i].Item;
-            dataDropdown += '</div>';
+            if (objSelect[i].Item.toUpperCase().indexOf(searchByItem) > -1) {
+                dataDropdown += '<div class="itemSelect" onclick="setDropDown(';
+                dataDropdown += i;
+                dataDropdown += ')">';
+                dataDropdown += objSelect[i].Item;
+                dataDropdown += '</div>';
+            }
         }
         document.getElementById('itemAll').innerHTML = dataDropdown;
-        setDropDown(0);
+        if (searchItem.length == 0) {
+            document.getElementById('searchItem').value = '';
+        }
+        // setDropDown(0);
     }
 
     function setDropDown(selectIndex) {
@@ -1003,7 +1035,8 @@
         var itemSelect = objItemBrand[selectJenisBrand][selectIndex]?.Item;
         console.log(objItemBrand[selectJenisBrand][selectIndex]);
         document.getElementById('jumlahInput').value = '';
-        document.getElementById('itemShow').innerHTML = itemSelect;
+        // document.getElementById('itemShow').innerHTML = itemSelect;
+        document.getElementById('searchItem').value = itemSelect;
         document.getElementById('satuan').innerHTML = objItemBrand[selectJenisBrand][selectIndex]?.Satuan;
     }
 
@@ -1070,7 +1103,7 @@
                 dataDetail2 += '</div>';
                 dataDetail2 += '</div></div>';
 
-                if ((indexSesi == objItem.itemWaste[i].Item[j].idSesi)||(indexSesi == 0)) {
+                if ((indexSesi == objItem.itemWaste[i].Item[j].idSesi) || (indexSesi == 0)) {
                     dataDetail += dataDetail2;
                     objItemEdit.push(objItem.itemWaste[i].Item[j]);
                     indexLoop++;
@@ -1084,7 +1117,8 @@
         // console.log(objItemEdit[selectIndex]);
         sendOrEdit = false;
         indexEdit = selectIndex;
-        document.getElementById('itemShow').innerHTML = objItemEdit[selectIndex]?.Item;
+        // document.getElementById('itemShow').innerHTML = objItemEdit[selectIndex]?.Item;
+        document.getElementById('searchItem').value = objItemEdit[selectIndex]?.Item;
         document.getElementById('jumlahInput').value = objItemEdit[selectIndex]?.qty;
         document.getElementById('satuan').innerHTML = objItemEdit[selectIndex]?.Satuan;
     }
@@ -1103,7 +1137,7 @@
                 success: function(response) {
                     // console.log(response);
                     refreshData();
-                    radioSelBrand(selectJenisBrand);
+                    radioSelBrand(selectJenisBrand, '');
                 },
                 error: function(req, err) {
                     console.log(err);
