@@ -206,6 +206,9 @@
         $.ajax({
             url: "{{ url('listType/soHarian/show/item/outlet/') }}" + '/' + id,
             type: 'get',
+            data: {
+                tanggal: "{{ $dateSelect }}"
+            },
             success: function(response) {
                 var inputDataSO = '';
                 var tempDataSO = '';
