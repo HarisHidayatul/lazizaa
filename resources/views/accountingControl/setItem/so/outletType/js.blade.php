@@ -74,6 +74,9 @@
         function showItemOutlet(id) {
             $.ajax({
                 url: "{{ url('listType/soHarian/show/item/outlet/') }}" + '/' + id,
+                data: {
+                    tanggal: "2023-02-15",
+                },
                 type: 'get',
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
@@ -102,6 +105,27 @@
                         dataTable += '<td>';
                         dataTable += obj.DataItem[i].icon;
                         dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<div class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxHarian" type="checkbox" disabled';
+                        if (obj.DataItem[i].munculHarian != '0') {
+                            dataTable += ' checked';
+                        }
+                        dataTable += '>';
+                        dataTable += '</div>';
+                        dataTable += '</td>';
+                        
+                        dataTable += '<td>';
+                        dataTable += '<div class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxHarian" type="checkbox" disabled';
+                        if (obj.DataItem[i].munculMingguan != '0') {
+                            dataTable += ' checked';
+                        }
+                        dataTable += '>';
+                        dataTable += '</div>';
+                        dataTable += '</td>';
+
                         dataTable += '<td>';
                         dataTable += '<img src="' + "{{ url('img/soImage') }}" + '/' + obj.DataItem[i].icon +
                             '" alt="">';

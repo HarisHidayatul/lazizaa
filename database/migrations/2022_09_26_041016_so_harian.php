@@ -115,7 +115,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
             
-            $table->boolean('butuhVerifikasi')->default(false);
+            $table->boolean('munculMingguan')->default(false);
+            $table->boolean('munculHarian')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

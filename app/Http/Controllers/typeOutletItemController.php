@@ -150,7 +150,7 @@ class typeOutletItemController extends Controller
         $midDate = 15;
         $endDate = date("t", strtotime($tanggal));
         // @dd($endDate);
-        $dateNow = date_format(date_create($tanggal),"d");
+        $dateNow = date_format(date_create($tanggal), "d");
         // @dd($dateNow);
         // @dd(($dateNow == $midDate)or($dateNow==$endDate));
         $data = doutlet::find($id)->typeOutlets;
@@ -171,14 +171,36 @@ class typeOutletItemController extends Controller
                     }
                 }
                 if (!$findSame) {
-                    $countItem += 1;
-                    array_push($dataArray, (object)[
-                        'id' => $data2[$j]['id'],
-                        'Item' => $data2[$j]['Item'],
-                        'satuan' => $data2[$j]->satuans['Satuan'],
-                        'icon' => $data2[$j]['icon']
-                    ]);
-                    array_push($dataId, $data2[$j]['id']);
+                    if ($data2[$j]['munculHarian'] > 0) {
+                        $countItem += 1;
+                        array_push($dataArray, (object)[
+                            'id' => $data2[$j]['id'],
+                            'Item' => $data2[$j]['Item'],
+                            'satuan' => $data2[$j]->satuans['Satuan'],
+                            'icon' => $data2[$j]['icon'],
+                            'munculHarian' => $data2[$j]['munculHarian'],
+                            'munculMingguan' => $data2[$j]['munculMingguan']
+                        ]);
+                        array_push($dataId, $data2[$j]['id']);
+                        $findSame = true;
+                    }
+                }
+                if (!$findSame) {
+                    if ($data2[$j]['munculMingguan'] > 0) {
+                        if (($dateNow == $midDate) or ($dateNow == $endDate)) {
+                            $countItem += 1;
+                            array_push($dataArray, (object)[
+                                'id' => $data2[$j]['id'],
+                                'Item' => $data2[$j]['Item'],
+                                'satuan' => $data2[$j]->satuans['Satuan'],
+                                'icon' => $data2[$j]['icon'],
+                                'munculHarian' => $data2[$j]['munculHarian'],
+                                'munculMingguan' => $data2[$j]['munculMingguan']
+                            ]);
+                            array_push($dataId, $data2[$j]['id']);
+                            $findSame = true;
+                        }
+                    }
                 }
             }
             array_push($tipeArray, (object)[
@@ -186,30 +208,30 @@ class typeOutletItemController extends Controller
                 'type' => $data[$i]['Nama Type']
             ]);
         }
-        if (($dateNow == $midDate) or ($dateNow == $endDate)) {
-            for ($i = 0; $i < $listItemSo->count(); $i++) {
-                if ($listItemSo[$i]['munculMingguan'] > 0) {
-                    $newItemSo = $listItemSo[$i];
-                    $findSame = false;
-                    for ($k = 0; $k < count($dataId); $k++) {
-                        if ($dataId[$k] == $newItemSo['id']) {
-                            $findSame = true;
-                            break;
-                        }
-                    }
-                    if (!$findSame) {
-                        $countItem += 1;
-                        array_push($dataArray, (object)[
-                            'id' => $newItemSo['id'],
-                            'Item' => $newItemSo['Item'],
-                            'satuan' => $newItemSo->satuans['Satuan'],
-                            'icon' => $newItemSo['icon']
-                        ]);
-                        array_push($dataId, $newItemSo['id']);
-                    }
-                }
-            }
-        }
+        // if (($dateNow == $midDate) or ($dateNow == $endDate)) {
+        //     for ($i = 0; $i < $listItemSo->count(); $i++) {
+        //         if ($listItemSo[$i]['munculMingguan'] > 0) {
+        //             $newItemSo = $listItemSo[$i];
+        //             $findSame = false;
+        //             for ($k = 0; $k < count($dataId); $k++) {
+        //                 if ($dataId[$k] == $newItemSo['id']) {
+        //                     $findSame = true;
+        //                     break;
+        //                 }
+        //             }
+        //             if (!$findSame) {
+        //                 $countItem += 1;
+        //                 array_push($dataArray, (object)[
+        //                     'id' => $newItemSo['id'],
+        //                     'Item' => $newItemSo['Item'],
+        //                     'satuan' => $newItemSo->satuans['Satuan'],
+        //                     'icon' => $newItemSo['icon']
+        //                 ]);
+        //                 array_push($dataId, $newItemSo['id']);
+        //             }
+        //         }
+        //     }
+        // }
         return response()->json([
             'countItem' => $countItem,
             'DataItem' => $dataArray,

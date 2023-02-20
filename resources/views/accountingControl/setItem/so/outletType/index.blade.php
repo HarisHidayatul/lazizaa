@@ -29,6 +29,8 @@
                 <th>Nama Item</th>
                 <th>Satuan</th>
                 <th>Path Icon</th>
+                <th>Harian</th>
+                <th>Mingguan</th>
                 <th>Image</th>
             </tr>
         </thead>

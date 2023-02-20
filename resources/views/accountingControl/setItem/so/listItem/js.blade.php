@@ -103,13 +103,25 @@
                         dataTable += '<img src="' + "{{ url('img/soImage') }}" + '/' + obj.itemSO[i].icon +
                             '" alt="">';
                         dataTable += '</td>';
+                        
+                        dataTable += '<td>';
+                        dataTable += '<div class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxHarian" type="checkbox" ';
+                        if (obj.itemSO[i].harianItem != '0') {
+                            dataTable += ' checked';
+                        }
+                        dataTable += '>';
+                        dataTable += '</div>';
+                        dataTable += '</td>';
 
-                        dataTable += '<td class="d-flex justify-content-center">';
-                        dataTable += '<input class="form-check-input" name="checkBoxVerif" type="checkbox" ';
+                        dataTable += '<td>';
+                        dataTable += '<div class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxMingguan" type="checkbox" ';
                         if (obj.itemSO[i].mingguanItem != '0') {
                             dataTable += ' checked';
                         }
                         dataTable += '>';
+                        dataTable += '</div>';
                         dataTable += '</td>';
 
                         dataTable += '<td>';
@@ -141,10 +153,15 @@
             var itemEdit = document.getElementsByName('inputEdit')[index].value;
             var iconEdit = document.getElementsByName('locationEdit')[index].value;
             var idItem = listItemSoArray[index];
-            var checkBoxVerif = document.getElementsByName('checkBoxVerif')[index].checked;
+            var checkBoxMingguan = document.getElementsByName('checkBoxMingguan')[index].checked;
+            var checkBoxHarian = document.getElementsByName('checkBoxHarian')[index].checked;
             var munculMingguan = '0';
-            if(checkBoxVerif){
+            var munculHarian = '0';
+            if(checkBoxMingguan){
                 munculMingguan = '1';
+            }
+            if(checkBoxHarian){
+                munculHarian = '1';
             }
 
             $.ajax({
@@ -154,7 +171,8 @@
                     item: itemEdit,
                     idSatuan: dropdownEdit,
                     icon: iconEdit,
-                    munculMingguan: munculMingguan
+                    munculMingguan: munculMingguan,
+                    munculHarian: munculHarian
                 },
                 success: function(response) {
                     getListAllItem();

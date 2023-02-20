@@ -50,7 +50,8 @@ class itemSOController extends Controller
                 'item' => $itemso[$i]['Item'],
                 'idSatuan' => $itemso[$i]['idSatuan'],
                 'icon' => $itemso[$i]['icon'],
-                'mingguanItem' => $itemso[$i]['munculMingguan']
+                'mingguanItem' => $itemso[$i]['munculMingguan'],
+                'harianItem' => $itemso[$i]['munculHarian']
             ]);
         }
         return response()->json([
@@ -124,7 +125,8 @@ class itemSOController extends Controller
             'Item' => $request->item,
             'idSatuan' => $request->idSatuan,
             'icon' => $request->icon,
-            'munculMingguan' => $request->munculMingguan
+            'munculMingguan' => $request->munculMingguan,
+            'munculHarian' => $request->munculHarian
         ]);
         echo 1;
         // @dd($listItemSO);

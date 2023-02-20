@@ -25,6 +25,7 @@
                 <th>Satuan</th>
                 <th>Path Icon</th>
                 <th>Image</th>
+                <th>Harian</th>
                 <th>Mingguan</th>
                 <th>Submit</th>
             </tr>
