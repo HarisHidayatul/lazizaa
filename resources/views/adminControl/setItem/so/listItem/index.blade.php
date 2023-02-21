@@ -25,10 +25,13 @@
                 <th>Satuan</th>
                 <th>Path Icon</th>
                 <th>Image</th>
+                <th>Harian</th>
+                <th>Mingguan</th>
                 <th>Submit</th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+    <button type="button" class="btn btn-secondary" onClick="editAllItem();" style="float: right;">Edit All</button>
 @endsection

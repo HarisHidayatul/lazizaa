@@ -103,7 +103,7 @@
                         dataTable += '<img src="' + "{{ url('img/soImage') }}" + '/' + obj.itemSO[i].icon +
                             '" alt="">';
                         dataTable += '</td>';
-                        
+
                         dataTable += '<td>';
                         dataTable += '<div class="d-flex justify-content-center">';
                         dataTable += '<input class="form-check-input" name="checkBoxHarian" type="checkbox" ';
@@ -157,10 +157,10 @@
             var checkBoxHarian = document.getElementsByName('checkBoxHarian')[index].checked;
             var munculMingguan = '0';
             var munculHarian = '0';
-            if(checkBoxMingguan){
+            if (checkBoxMingguan) {
                 munculMingguan = '1';
             }
-            if(checkBoxHarian){
+            if (checkBoxHarian) {
                 munculHarian = '1';
             }
 
@@ -186,6 +186,49 @@
         function resetInput() {
             document.getElementById('locationItem').innerHTML = '';
             document.getElementById('tambahNamaItem').innerHTML = '';
+        }
+
+        function editAllItem() {
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < listItemSoArray.length; j++) {
+                    var dropdownEdit = document.getElementsByName('dropDownEdit')[j].value;
+                    var itemEdit = document.getElementsByName('inputEdit')[j].value;
+                    var iconEdit = document.getElementsByName('locationEdit')[j].value;
+                    var idItem = listItemSoArray[j];
+                    var checkBoxMingguan = document.getElementsByName('checkBoxMingguan')[j].checked;
+                    var checkBoxHarian = document.getElementsByName('checkBoxHarian')[j].checked;
+                    var munculMingguan = '0';
+                    var munculHarian = '0';
+                    if (checkBoxMingguan) {
+                        munculMingguan = '1';
+                    }
+                    if (checkBoxHarian) {
+                        munculHarian = '1';
+                    }
+
+                    $.ajax({
+                        url: "{{ url('itemSO/update') }}" + '/' + idItem,
+                        type: 'get',
+                        data: {
+                            item: itemEdit,
+                            idSatuan: dropdownEdit,
+                            icon: iconEdit,
+                            munculMingguan: munculMingguan,
+                            munculHarian: munculHarian
+                        },
+                        success: function(response) {
+                            // getListAllItem();
+                        },
+                        error: function(req, err) {
+                            console.log(err);
+                        }
+                    })
+                }
+            }
+            setTimeout(function(){
+                window.location.reload();
+            }, 5000)
+            // window.location.reload();
         }
     </script>
 @endsection

@@ -81,7 +81,7 @@
                     for (var i = 0; i < obj.itemSO.length; i++) {
                         dataTable += '<tr>';
                         dataTable += '<td>';
-                        
+
                         dataTable += '<input type="text" class="form-control" value="';
                         dataTable += obj.itemSO[i].item;
                         dataTable += '" name="inputEdit">';
@@ -103,6 +103,27 @@
                         dataTable += '<img src="' + "{{ url('img/soImage') }}" + '/' + obj.itemSO[i].icon +
                             '" alt="">';
                         dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<div class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxHarian" type="checkbox" ';
+                        if (obj.itemSO[i].harianItem != '0') {
+                            dataTable += ' checked';
+                        }
+                        dataTable += '>';
+                        dataTable += '</div>';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<div class="d-flex justify-content-center">';
+                        dataTable += '<input class="form-check-input" name="checkBoxMingguan" type="checkbox" ';
+                        if (obj.itemSO[i].mingguanItem != '0') {
+                            dataTable += ' checked';
+                        }
+                        dataTable += '>';
+                        dataTable += '</div>';
+                        dataTable += '</td>';
+
                         dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' + i +
                             ');">Edit</button>';
@@ -127,18 +148,31 @@
             });
         }
 
-        function editItem(index){
+        function editItem(index) {
             var dropdownEdit = document.getElementsByName('dropDownEdit')[index].value;
             var itemEdit = document.getElementsByName('inputEdit')[index].value;
             var iconEdit = document.getElementsByName('locationEdit')[index].value;
-            var idItem = listItemSoArray[index]
+            var idItem = listItemSoArray[index];
+            var checkBoxMingguan = document.getElementsByName('checkBoxMingguan')[index].checked;
+            var checkBoxHarian = document.getElementsByName('checkBoxHarian')[index].checked;
+            var munculMingguan = '0';
+            var munculHarian = '0';
+            if (checkBoxMingguan) {
+                munculMingguan = '1';
+            }
+            if (checkBoxHarian) {
+                munculHarian = '1';
+            }
+
             $.ajax({
                 url: "{{ url('itemSO/update') }}" + '/' + idItem,
                 type: 'get',
                 data: {
                     item: itemEdit,
                     idSatuan: dropdownEdit,
-                    icon: iconEdit
+                    icon: iconEdit,
+                    munculMingguan: munculMingguan,
+                    munculHarian: munculHarian
                 },
                 success: function(response) {
                     getListAllItem();
@@ -149,9 +183,52 @@
             })
         }
 
-        function resetInput(){
+        function resetInput() {
             document.getElementById('locationItem').innerHTML = '';
             document.getElementById('tambahNamaItem').innerHTML = '';
+        }
+
+        function editAllItem() {
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < listItemSoArray.length; j++) {
+                    var dropdownEdit = document.getElementsByName('dropDownEdit')[j].value;
+                    var itemEdit = document.getElementsByName('inputEdit')[j].value;
+                    var iconEdit = document.getElementsByName('locationEdit')[j].value;
+                    var idItem = listItemSoArray[j];
+                    var checkBoxMingguan = document.getElementsByName('checkBoxMingguan')[j].checked;
+                    var checkBoxHarian = document.getElementsByName('checkBoxHarian')[j].checked;
+                    var munculMingguan = '0';
+                    var munculHarian = '0';
+                    if (checkBoxMingguan) {
+                        munculMingguan = '1';
+                    }
+                    if (checkBoxHarian) {
+                        munculHarian = '1';
+                    }
+
+                    $.ajax({
+                        url: "{{ url('itemSO/update') }}" + '/' + idItem,
+                        type: 'get',
+                        data: {
+                            item: itemEdit,
+                            idSatuan: dropdownEdit,
+                            icon: iconEdit,
+                            munculMingguan: munculMingguan,
+                            munculHarian: munculHarian
+                        },
+                        success: function(response) {
+                            // getListAllItem();
+                        },
+                        error: function(req, err) {
+                            console.log(err);
+                        }
+                    })
+                }
+            }
+            setTimeout(function() {
+                window.location.reload();
+            }, 5000)
+            // window.location.reload();
         }
     </script>
 @endsection

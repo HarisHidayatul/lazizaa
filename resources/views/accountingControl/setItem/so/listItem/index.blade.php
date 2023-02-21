@@ -33,4 +33,5 @@
         <tbody>
         </tbody>
     </table>
+    <button type="button" class="btn btn-secondary" onClick="editAllItem();" style="float: right;">Edit All</button>
 @endsection
