@@ -210,86 +210,80 @@ class reimburseController extends Controller
     {
         $now = Carbon::now();
         $pergerakanSaldo = 0;
-        // $allDate = [];
         $allHistory = [];
-        // $saldoPattyCash = 0;
-        $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans'])->get();
-        $allDate = $semuaTanggal;
-        // @dd($allDate);
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans'])->get();
 
         if ($countData == 'today') {
-            $allDate = $semuaTanggal->where('Tanggal', '=', $now->format('Y-m-d'));
+            $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
         } else if ($countData == '7day') {
             $from = $now->format('Y-m-d');
             $to = $now->subDays(7)->format('Y-m-d');
-            $allDate = $semuaTanggal->whereBetween('Tanggal', array($to, $from));
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($to, $from));
         } else if ($countData == '30day') {
             $from = $now->format('Y-m-d');
             $to = $now->subDays(30)->format('Y-m-d');
-            $allDate = $semuaTanggal->whereBetween('Tanggal', array($to, $from));
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($to, $from));
         } else if ($countData == 'between') {
-            $allDate = $semuaTanggal->whereBetween('Tanggal', array($startDate, $stopDate));
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($startDate, $stopDate));
         } else if ($countData == 'all') {
-            $allDate = $semuaTanggal;
+            $allDate = $tanggalAll;
         }
-        // @dd($allDate);
-        // @dd(is_null($allDate[13]));
-        // @dd($allDate[2]->pattyCashHarians->where('idOutlet', '=', $idOutlet));
 
-        for ($i = 0; $i < $semuaTanggal->count(); $i++) {
+        for ($i = 0; $i < $tanggalAll->count(); $i++) {
+            
+            $reimburseTanggalIni = [];
+            $pattyCash = [];
+            $dataFound = false;
+
             try {
-                $reimburseTanggalIni = [];
-                $pattyCash = [];
-                $dataFound = false;
                 $reimburseAll = $allDate[$i]->reimburses->where('idOutlet', '=', $idOutlet);
-                $reimburse = $reimburseAll->first();
-                for ($j = 0; $j < $reimburseAll->count(); $j++) {
-                    $reimburse = $reimburseAll[$j];
-                    // @dd($allDate[$i]);
-                    $pergerakanSaldo = $reimburse->saldoTerakhir;
-                    $pembelianHarian = $allDate[$i]->pattyCashHarians;
-                    $reimburseHarian = $reimburse->penerimaReimburses;
 
-                    for ($k = 0; $k < $reimburseHarian->count(); $k++) {
-                        if ($reimburseHarian[$k]->idRevisi == '3') {
-                            $pergerakanSaldo = $pergerakanSaldo + $reimburseHarian[$k]->qty;
+                $reimburse = $reimburseAll->first();
+                $pergerakanSaldo = $reimburse->saldoTerakhir;
+
+                $pembelianHarian = $allDate[$i]->pattyCashHarians;
+                $reimburseHarian = $reimburse->penerimaReimburses;
+                // @dd($reimburseHarian);
+                for ($k = 0; $k < $reimburseHarian->count(); $k++) {
+                    if ($reimburseHarian[$k]->idRevisi == '3') {
+                        $pergerakanSaldo = $pergerakanSaldo + $reimburseHarian[$k]->qty;
+                    }
+                    array_push($reimburseTanggalIni, (object)[
+                        'id' => $reimburseHarian[$k]->id,
+                        'reimburse' => $reimburseHarian[$k]->qty,
+                        'saldo' => $pergerakanSaldo,
+                        'idRev' => $reimburseHarian[$k]->idRevisi
+                    ]);
+                    $dataFound = true;
+                }
+                $reimburseTanggalIni = array_reverse($reimburseTanggalIni,false);
+
+                $pembelianHarian = $pembelianHarian->where('idOutlet', '=', $idOutlet);
+                for ($k = 0; $k < $pembelianHarian->count(); $k++) {
+                    $pembelianList = $pembelianHarian[$k]->listItemPattyCashs;
+                    $idSesi = $pembelianHarian[$k]->idSesi;
+                    for ($l = 0; $l < $pembelianList->count(); $l++) {
+                        $qtyPembelian = $pembelianList[$l]->pivot->quantity;
+                        $totalPembelian = $pembelianList[$l]->pivot->total;
+                        if ($pembelianList[$l]->pivot->idRevTotal == 2) {
+                            $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
                         }
-                        array_push($reimburseTanggalIni, (object)[
-                            'id' => $reimburseHarian[$k]->id,
-                            'reimburse' => $reimburseHarian[$k]->qty,
-                            'saldo' => $pergerakanSaldo,
-                            'idRev' => $reimburseHarian[$k]->idRevisi
+                        $pergerakanSaldo = $pergerakanSaldo - $totalPembelian;
+                        array_push($pattyCash, (object)[
+                            'item' => $pembelianList[$l]->Item,
+                            'idSesi' => $idSesi,
+                            'total' => $totalPembelian,
+                            'qty' => $qtyPembelian,
+                            'idRevTotal' => $pembelianList[$l]->pivot->idRevTotal,
+                            'idRevQty' => $pembelianList[$l]->pivot->idRevQuantity,
+                            'satuan' => $pembelianList[$l]->satuans->Satuan,
+                            'saldo' => $pergerakanSaldo
                         ]);
                         $dataFound = true;
                     }
-                    $reimburseTanggalIni = array_reverse($reimburseTanggalIni,false);
-
-                    $pembelianHarian = $pembelianHarian->where('idOutlet', '=', $idOutlet);
-                    for ($k = 0; $k < $pembelianHarian->count(); $k++) {
-                        $pembelianList = $pembelianHarian[$k]->listItemPattyCashs;
-                        $idSesi = $pembelianHarian[$k]->idSesi;
-                        for ($l = 0; $l < $pembelianList->count(); $l++) {
-                            $qtyPembelian = $pembelianList[$l]->pivot->quantity;
-                            $totalPembelian = $pembelianList[$l]->pivot->total;
-                            if ($pembelianList[$l]->pivot->idRevTotal == 2) {
-                                $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
-                            }
-                            $pergerakanSaldo = $pergerakanSaldo - $totalPembelian;
-                            array_push($pattyCash, (object)[
-                                'item' => $pembelianList[$l]->Item,
-                                'idSesi' => $idSesi,
-                                'total' => $totalPembelian,
-                                'qty' => $qtyPembelian,
-                                'idRevTotal' => $pembelianList[$l]->pivot->idRevTotal,
-                                'idRevQty' => $pembelianList[$l]->pivot->idRevQuantity,
-                                'satuan' => $pembelianList[$l]->satuans->Satuan,
-                                'saldo' => $pergerakanSaldo
-                            ]);
-                            $dataFound = true;
-                        }
-                    }
-                    $pattyCash = array_reverse($pattyCash, false);
                 }
+                $pattyCash = array_reverse($pattyCash, false);
+
                 if ($dataFound) {
                     array_push($allHistory, (object)[
                         'tanggal' => $allDate[$i]->Tanggal,
@@ -300,7 +294,7 @@ class reimburseController extends Controller
             } catch (Exception $e) {
             }
         }
-        // reimburse;
+        $allHistory = array_reverse($allHistory, false);
         return response()->json([
             'dataHistory' => $allHistory,
             'saldoPattyCash' => $pergerakanSaldo
@@ -425,7 +419,7 @@ class reimburseController extends Controller
                 'pesan' => $request->pesan,
                 'imgTransfer' => $imagePathNew
             ]);
-        }else{
+        } else {
             $penerimaReimburse->update([
                 'idPengirim' => $request->idPengirim,
                 'idRevisi' => $idRevisi,
@@ -444,7 +438,8 @@ class reimburseController extends Controller
         //
 
     }
-    public function deleteRevisiTerima($id){
+    public function deleteRevisiTerima($id)
+    {
         $penerimaReimburse = penerimaReimburse::find($id);
         $imagePath = $penerimaReimburse->imgTransfer;
         $penerimaReimburse->delete();
