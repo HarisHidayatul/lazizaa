@@ -355,10 +355,10 @@ class reimburseController extends Controller
                 $pergerakanSaldo = $reimburse->saldoTerakhir;
                 $awalSaldo = false;
             } else {
-                print_r($pergerakanSaldo);
-                print_r('a');
-                print_r($reimburse->saldoTerakhir);
-                print_r('b');
+                // print_r($pergerakanSaldo);
+                // print_r('a');
+                // print_r($reimburse->saldoTerakhir);
+                // print_r('b');
                 if ($pergerakanSaldo != $reimburse->saldoTerakhir) {
                     $reimburse->update([
                         'saldoTerakhir' => $pergerakanSaldo
