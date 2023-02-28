@@ -355,6 +355,10 @@ class reimburseController extends Controller
                 $pergerakanSaldo = $reimburse->saldoTerakhir;
                 $awalSaldo = false;
             } else {
+                print_r($pergerakanSaldo);
+                print_r('a');
+                print_r($reimburse->saldoTerakhir);
+                print_r('b');
                 if ($pergerakanSaldo != $reimburse->saldoTerakhir) {
                     $reimburse->update([
                         'saldoTerakhir' => $pergerakanSaldo
@@ -372,7 +376,7 @@ class reimburseController extends Controller
 
             $pembelianHarian = $tanggalAll[$i]->pattyCashHarians;
             $reimburseHarian = $reimburse->penerimaReimburses;
-            // @dd($reimburseHarian);
+            // @dd($tanggalAll[12]->pattyCashHarians);
             for ($k = 0; $k < $reimburseHarian->count(); $k++) {
                 if ($reimburseHarian[$k]->idRevisi == '3') {
                     $pergerakanSaldo = $pergerakanSaldo + $reimburseHarian[$k]->qty;
@@ -382,7 +386,7 @@ class reimburseController extends Controller
                 }
             }
             $pembelianHarian = $pembelianHarian->where('idOutlet', '=', $idOutlet);
-            for ($k = 0; $k < $pembelianHarian->count(); $k++) {
+            for ($k = 0; $k < $tanggalAll[$i]->pattyCashHarians->count(); $k++) {
                 try{
                     //must be repair of this !!!
                     $pembelianList = $pembelianHarian[$k]->listItemPattyCashs;
