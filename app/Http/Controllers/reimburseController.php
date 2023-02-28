@@ -383,18 +383,23 @@ class reimburseController extends Controller
             }
             $pembelianHarian = $pembelianHarian->where('idOutlet', '=', $idOutlet);
             for ($k = 0; $k < $pembelianHarian->count(); $k++) {
-                $pembelianList = $pembelianHarian[$k]->listItemPattyCashs;
-                for ($l = 0; $l < $pembelianList->count(); $l++) {
-                    $qtyPembelian = $pembelianList[$l]->pivot->quantity;
-                    $totalPembelian = $pembelianList[$l]->pivot->total;
-                    if ($pembelianList[$l]->pivot->idRevTotal == 2) {
-                        $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
+                try{
+                    //must be repair of this !!!
+                    $pembelianList = $pembelianHarian[$k]->listItemPattyCashs;
+                    for ($l = 0; $l < $pembelianList->count(); $l++) {
+                        $qtyPembelian = $pembelianList[$l]->pivot->quantity;
+                        $totalPembelian = $pembelianList[$l]->pivot->total;
+                        if ($pembelianList[$l]->pivot->idRevTotal == 2) {
+                            $totalPembelian = $pembelianList[$l]->pivot->totalRevisi;
+                        }
+                        $pergerakanSaldo = $pergerakanSaldo - $totalPembelian;
+    
+                        echo "pembelian : ";
+                        echo $totalPembelian;
+                        echo "<br>\n";
                     }
-                    $pergerakanSaldo = $pergerakanSaldo - $totalPembelian;
+                }catch(Exception $e){
 
-                    echo "pembelian : ";
-                    echo $totalPembelian;
-                    echo "<br>\n";
                 }
             }
         }
