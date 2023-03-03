@@ -26,6 +26,7 @@ class listItemSO extends Model
         'Item',
         'idSatuan',
         'icon',
+        'id_bee_cloud_item',
         'munculMingguan',
         'munculHarian',
         'created_at',

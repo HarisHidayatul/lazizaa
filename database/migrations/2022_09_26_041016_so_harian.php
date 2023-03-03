@@ -109,7 +109,7 @@ return new class extends Migration
 
         Schema::create('list_item_so', function (Blueprint $table) {
             $table->id();
-            $table->string('Item',25);
+            $table->string('Item',50);
             $table->string('icon',50);
 
             $table->unsignedBigInteger('idSatuan');
@@ -117,6 +117,8 @@ return new class extends Migration
             
             $table->boolean('munculMingguan')->default(false);
             $table->boolean('munculHarian')->default(false);
+
+            $table->integer('id_bee_cloud_item')->unsigned()->default('0');
 
             $table->timestamps();
             $table->softDeletes();
@@ -212,13 +214,12 @@ return new class extends Migration
         Schema::dropIfExists('type_outlet');
         Schema::dropIfExists('so_fill');
         Schema::dropIfExists('fso_harian');
-        Schema::dropIfExists('list_item_so');
 
         Schema::dropIfExists('req_item_sales');
         Schema::dropIfExists('outlet_list_sales');
         Schema::dropIfExists('sales_fill');
-        Schema::dropIfExists('list_sales');
-        Schema::dropIfExists('type_sales');
+        Schema::dropIfExists('detail_transaksi_bee_cloud');
+        Schema::dropIfExists('transaksi_bee_cloud');
 
         //
         Schema::dropIfExists('req_item_patty_cash');
@@ -226,6 +227,7 @@ return new class extends Migration
         Schema::dropIfExists('brand_patty_cash');
         Schema::dropIfExists('patty_cash_harian');
         Schema::dropIfExists('list_item_patty_cash');
+        Schema::dropIfExists('kategori_patty_cash');
 
         Schema::dropIfExists('req_item_waste');
         Schema::dropIfExists('waste_fill');
@@ -243,7 +245,13 @@ return new class extends Migration
         Schema::dropIfExists('list_bank');
         Schema::dropIfExists('jenis_bank');
 
+        Schema::dropIfExists('list_sales');
+        Schema::dropIfExists('type_sales');
+
+        Schema::dropIfExists('list_item_so');
+
         Schema::dropIfExists('sales_harian');
+        
         Schema::dropIfExists('duser');
         Schema::dropIfExists('drole');
         Schema::dropIfExists('doutlet');

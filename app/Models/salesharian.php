@@ -29,6 +29,7 @@ class salesharian extends Model
         'idOutlet',
         'idTanggal',
         'idSesi',
+        'totalManual',
         'created_at',
         'updated_at',
         'deleted_at'

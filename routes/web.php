@@ -23,6 +23,7 @@ use Database\Seeders\soHarian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\apiBeeCloudController;
 
 
 /*
@@ -650,3 +651,5 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl.reimburse.verifikasiWait');
     });
 });
+
+Route::get('refreshItemSO',[apiBeeCloudController::class,'refreshAPISoHarian']);

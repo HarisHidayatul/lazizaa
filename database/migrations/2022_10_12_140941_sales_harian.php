@@ -30,6 +30,8 @@ return new class extends Migration
             $table->string('sales',25)->nullable(false);
             $table->boolean('butuhVerifikasi')->default(false);
 
+            $table->integer('id_channel_bee_cloud')->unsigned();
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -45,6 +47,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idSesi');
             $table->foreign('idSesi')->references('id')->on('list_sesi');
 
+            $table->mediumInteger('totalManual')->unsigned()->default('0');
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -58,18 +62,13 @@ return new class extends Migration
             $table->unsignedBigInteger('idSales');
             $table->foreign('idSales')->references('id')->on('sales_harian');
 
-            $table->smallInteger('cu')->unsigned()->nullable(false);
-            $table->smallInteger('cuRevisi')->unsigned()->default('0');
-
             $table->mediumInteger('total')->unsigned()->nullable(false);
             $table->mediumInteger('totalRevisi')->unsigned()->default('0');
 
             $table->mediumInteger('totalDiterima')->unsigned()->default('0');
+
             $table->unsignedBigInteger('idRevDiterima')->default('1');
             $table->foreign('idRevDiterima')->references('id')->on('revisi');
-
-            $table->unsignedBigInteger('idRevisiCu')->default('1');
-            $table->foreign('idRevisiCu')->references('id')->on('revisi');
 
             $table->unsignedBigInteger('idRevisiTotal')->default('1');
             $table->foreign('idRevisiTotal')->references('id')->on('revisi');
@@ -82,6 +81,40 @@ return new class extends Migration
 
             $table->timestamps();
             // $table->softDeletes();
+        });
+
+        Schema::create('transaksi_bee_cloud',function(Blueprint $table){
+            $table->id();
+
+            $table->unsignedBigInteger('id_sales');
+            $table->foreign('id_sales')->references('id')->on('sales_harian');
+
+            $table->integer('id_transaksi_bee_cloud')->unsigned();
+            $table->timestamp('trxdate_bee_cloud');
+
+            $table->integer('total')->unsigned();
+
+            $table->string('jenis_pembayaran',25);
+
+            $table->unsignedBigInteger('id_list_sales');
+            $table->foreign('id_list_sales')->references('id')->on('list_sales');
+
+            $table->boolean('sinkronisasi')->default('0');
+
+            $table->timestamps();
+        });
+
+        Schema::create('detail_transaksi_bee_cloud', function(Blueprint $table){
+            $table->id();
+
+            $table->unsignedBigInteger('id_transaksi_bee_cloud');
+            $table->foreign('id_transaksi_bee_cloud')->references('id')->on('transaksi_bee_cloud');
+
+            $table->unsignedBigInteger('id_list_item_so');
+            $table->foreign('id_list_item_so')->references('id')->on('list_item_so');
+
+            $table->mediumInteger('qty');
+            $table->integer('total')->unsigned();
         });
 
         Schema::create('outlet_list_sales',function(Blueprint $table){

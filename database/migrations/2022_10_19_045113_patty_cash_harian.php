@@ -14,6 +14,14 @@ return new class extends Migration
     public function up()
     {
         //
+        Schema::create('kategori_patty_cash', function (Blueprint $table){
+            $table->id();
+
+            $table->string('namaKategori',25);
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
         Schema::create('list_item_patty_cash', function (Blueprint $table) {
             $table->id();
 
@@ -21,6 +29,9 @@ return new class extends Migration
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
+
+            $table->unsignedBigInteger('idKategori');
+            $table->foreign('idKategori')->references('id')->on('kategori_patty_cash');
 
             $table->timestamps();
             $table->softDeletes();
