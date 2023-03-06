@@ -40,6 +40,10 @@ return new class extends Migration
         Schema::create('list_sesi', function (Blueprint $table) {
             $table->id();
             $table->string('sesi', 10);
+
+            $table->time('startTime');
+            $table->time('stopTime');
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -68,6 +72,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('idBrand');
             $table->foreign('idBrand')->references('id')->on('dbrand');
+
+            $table->unsignedBigInteger('branch_id_bee_cloud')->default('0');
 
             $table->timestamps();
             $table->softDeletes();

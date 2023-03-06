@@ -652,4 +652,6 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
 });
 
+//Route dibawah adalah route untuk bee cloud api dan hanya diolah di API Bee Cloud Controller
 Route::get('refreshItemSO',[apiBeeCloudController::class,'refreshAPISoHarian']);
+Route::get('refreshTransaksi',[apiBeeCloudController::class,'refreshTransaksi']);

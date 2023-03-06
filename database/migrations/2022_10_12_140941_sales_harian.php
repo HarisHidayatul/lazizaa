@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('sales',25)->nullable(false);
             $table->boolean('butuhVerifikasi')->default(false);
 
-            $table->integer('id_channel_bee_cloud')->unsigned();
+            $table->integer('id_channel_bee_cloud')->unsigned()->default('0');
 
             $table->timestamps();
             $table->softDeletes();
@@ -89,12 +89,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_sales');
             $table->foreign('id_sales')->references('id')->on('sales_harian');
 
-            $table->integer('id_transaksi_bee_cloud')->unsigned();
+            $table->unsignedBigInteger('id_transaksi_bee_cloud');
             $table->timestamp('trxdate_bee_cloud');
 
-            $table->integer('total')->unsigned();
+            $table->string('trxno_bee_cloud',25);
 
-            $table->string('jenis_pembayaran',25);
+            $table->integer('total')->unsigned();
 
             $table->unsignedBigInteger('id_list_sales');
             $table->foreign('id_list_sales')->references('id')->on('list_sales');

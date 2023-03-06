@@ -55,6 +55,7 @@ class doutlet extends Model
         'Nama Store',
         'Alamat Lengkap',
         'idBrand',
+        'branch_id_bee_cloud',
         'created_at',
         'updated_at',
         'deleted_at'

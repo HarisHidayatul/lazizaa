@@ -16,6 +16,8 @@ class listSesi extends Model
 
     protected $fillable = [
         'sesi',
+        'startTime',
+        'stopTime',
         'created_at',
         'updated_at',
         'deleted_at'

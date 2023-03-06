@@ -21,6 +21,7 @@ class listSales extends Model
         'typeSales',
         'sales',
         'butuhVerifikasi',
+        'id_channel_bee_cloud',
         'created_at',
         'updated_at',
         'deleted_at'
