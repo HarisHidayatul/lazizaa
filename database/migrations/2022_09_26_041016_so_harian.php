@@ -257,6 +257,7 @@ return new class extends Migration
         Schema::dropIfExists('list_item_so');
 
         Schema::dropIfExists('sales_harian');
+        Schema::dropIfExists('sales_harian_transaksi_bee_cloud');
         
         Schema::dropIfExists('duser');
         Schema::dropIfExists('drole');

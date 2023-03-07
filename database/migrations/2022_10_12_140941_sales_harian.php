@@ -83,11 +83,25 @@ return new class extends Migration
             // $table->softDeletes();
         });
 
+        Schema::create('sales_harian_transaksi_bee_cloud',function(Blueprint $table){
+            $table->id();
+
+            
+            $table->unsignedBigInteger('idOutlet');
+            $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
+
+            $table->unsignedBigInteger('idTanggal');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('transaksi_bee_cloud',function(Blueprint $table){
             $table->id();
 
             $table->unsignedBigInteger('id_sales');
-            $table->foreign('id_sales')->references('id')->on('sales_harian');
+            $table->foreign('id_sales')->references('id')->on('sales_harian_transaksi_bee_cloud');
 
             $table->unsignedBigInteger('id_transaksi_bee_cloud');
             $table->timestamp('trxdate_bee_cloud');

@@ -257,6 +257,7 @@
 
         .rowSales {
             margin-top: 25px;
+            width: 100%;
         }
 
         .inputCU {
@@ -265,8 +266,7 @@
         }
 
         .inputTotal {
-            width: 50vw;
-            max-width: 280px;
+            width: 100%;
         }
 
         .totalRp::before {
@@ -421,12 +421,15 @@
                 <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
                 <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
             </div>
+            <div style="content: ''; height: 30px"></div>
+            <input class="inputTotal" placeholder="Total Reading Casheer" id="totalReadingCasheer"
+                onchange="sumValueInput()">
             <div id="fillDataSales"></div>
             <div style="margin-top: 45px;">
                 <div id="bottomFill"></div>
                 <div style="content: ''; border: 1px solid #B20731; margin-bottom: 15px;"></div>
                 <div class="d-flex justify-content-between">
-                    <h7>Total Sales</h7>
+                    <h7>Cash</h7>
                     <h7 id="totalALL">Rp. 0</h7>
                 </div>
             </div>
@@ -466,14 +469,12 @@
     var dataIdItem = [];
 
     var dataIdItemEdit = [];
-    var dataCuEdit = [];
     var dataTotalEdit = [];
     var dataSalesEdit = [];
 
     var nameIdType = [];
     var nameIdItem = [];
 
-    var cuDataTable = [];
     var totalDataTable = [];
 
     var valueTotalAll = [];
@@ -484,6 +485,11 @@
     var selectedSesi = 1;
 
     var dateSelected = "{{ $dateSelect }}";
+
+    var totalReadingCasheer = new AutoNumeric('#totalReadingCasheer', {
+        decimalPlaces: '0'
+    });
+
 
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
@@ -544,18 +550,17 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                totalReadingCasheer.set(obj.totalManual);
                 for (var i = 0; i < obj.itemSales[0]?.Item.length; i++) {
                     for (var j = 0; j < dataIdItem.length; j++) {
                         if (obj.itemSales[0].Item[i].idListSales == dataIdItem[j]) {
                             var idRow = 'r' + j;
 
                             dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
-                            dataCuEdit.push(obj.itemSales[0].Item[i].cuQty);
                             dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
                             dataSalesEdit.push(obj.itemSales[0].Item[i].idSalesFill);
 
                             valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
-                            document.getElementById(idRow + 'c0').value = obj.itemSales[0].Item[i].cuQty;
                             // document.getElementById(idRow + 'c1').value = obj.itemSales[0].Item[i].totalQty;
                         }
                         // console.log("Tessss");
@@ -573,49 +578,46 @@
 
     function clearAllData() {
         dataIdItemEdit.length = 0;
-        dataCuEdit.length = 0;
         dataTotalEdit.length = 0;
         dataSalesEdit.length = 0;
 
         for (var i = 0; i < valueTotalAll.length; i++) {
             var idRow = 'r' + i;
             valueTotalAll[i].set('');
-            document.getElementById(idRow + 'c0').value = '';
         }
     }
 
     function submitSalesHarian() {
-        $.ajax({
-            url: "{{ url('salesHarian/data/getId') }}",
-            type: 'get',
-            data: {
-                // tanggal: document.getElementById('dateAdd').value,
-                tanggal: dateSelected,
-                idOutlet: "{{ session('idOutlet') }}",
-                idSesi: selectedSesi
-            },
-            success: function(response) {
-                // console.log(response);
-                idSales = response;
-                sendDataToServer(idSales)
-            },
-            error: function(req, err) {
-                console.log(err);
-                // return 0
-            }
-        });
+        if (totalReadingCasheer.rawValue != 0) {
+            $.ajax({
+                url: "{{ url('salesHarian/data/getId') }}",
+                type: 'get',
+                data: {
+                    // tanggal: document.getElementById('dateAdd').value,
+                    tanggal: dateSelected,
+                    idOutlet: "{{ session('idOutlet') }}",
+                    idSesi: selectedSesi,
+                    totalManual: parseInt(totalReadingCasheer.rawValue)
+                },
+                success: function(response) {
+                    // console.log(response);
+                    idSales = response;
+                    sendDataToServer(idSales)
+                },
+                error: function(req, err) {
+                    console.log(err);
+                    // return 0
+                }
+            });
+        }
     }
 
     function sendDataToServer(idSaless) {
         for (var j = 0; j < 5; j++) { //ulangin kirim sebanyak lima kali
             for (var i = 0; i < dataIdItem.length; i++) {
-                var elementIDSendRow0 = document.getElementById('r' + i + 'c0').value;
                 // var elementIDSendRow1 = document.getElementById('r' + i + 'c1').value;
                 var elementIDSendRow1 = parseInt(valueTotalAll[i].rawValue);
                 var idListSales = dataIdItem[i];
-                if (elementIDSendRow0 == '') {
-                    continue;
-                }
                 if (elementIDSendRow1 == '') {
                     continue;
                 }
@@ -626,7 +628,6 @@
                     data: {
                         idSales: idSaless,
                         idListSales: idListSales,
-                        cu: elementIDSendRow0,
                         total: elementIDSendRow1,
                         idPengisi: "{{ session('idPengisi') }}"
                     },
@@ -646,7 +647,6 @@
                     if (dataIdItemEdit[i] == dataIdItem[j]) {
                         var idRow = 'r' + j;
                         var valTotalInput = valueTotalAll[j].rawValue;
-                        var valCuInput = document.getElementById(idRow + 'c0').value;
                         if (valTotalInput != dataTotalEdit[i]) {
                             $.ajax({
                                 url: "{{ url('salesHarian/edit/total/data/') }}" + "/" + dataSalesEdit[i],
@@ -664,29 +664,10 @@
                                 }
                             });
                         }
-                        if (valCuInput != dataCuEdit[i]) {
-                            $.ajax({
-                                url: "{{ url('salesHarian/edit/cu/data/') }}" + "/" + dataSalesEdit[i],
-                                type: 'get',
-                                data: {
-                                    cuRevisi: valCuInput,
-                                    idPengisi: "{{ session('idPengisi') }}"
-                                },
-                                success: function(response) {
-                                    // console.log(response);
-                                },
-                                error: function(req, err) {
-                                    console.log(err);
-                                    // return 0
-                                }
-                            });
-                        }
                         // dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
-                        // dataCuEdit.push(obj.itemSales[0].Item[i].cuQty);
                         // dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
 
                         // valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
-                        // document.getElementById(idRow + 'c0').value = obj.itemSales[0].Item[i].cuQty;
                     }
                     // console.log("Tessss");
                 }
@@ -753,11 +734,9 @@
                             if (dataIdType[i] == obj.listSales[j].typeSales) {
                                 dataIdItem.push(obj.listSales[j].id);
                                 nameIdItem.push(obj.listSales[j].sales);
-                                inputFill += '<div class="row rowSales"><div class="col-5">';
+                                inputFill += '<div class="rowSales"><div>';
                                 inputFill += '<h5>' + obj.listSales[j].sales + '</h5>';
-                                inputFill += '<input type="number" id="r' + row +
-                                    'c0" class="inputCU" placeholder="CU">';
-                                inputFill += '</div><div class="col-7"><h5>Total</h5>';
+                                inputFill += '</div><div>';
                                 inputFill += '<input class="inputTotal" id="r' + row +
                                     'c1" placeholder="0" onchange="sumValueInput()">';
                                 inputFill += '</div></div>';
@@ -791,6 +770,8 @@
     }
 
     function sumValueInput() {
+        var totalSum = 0;
+        totalSum = parseInt(totalReadingCasheer.rawValue);
         var sumData = 0;
         for (var i = 0; i < dataIdItem.length; i++) {
             var idInput = 'r' + i + 'c1';
@@ -800,7 +781,8 @@
                 // sumData += valueTotalAll[i].rawValue;
             }
         }
-        document.getElementById('totalALL').innerHTML = 'Rp. ' + parseInt(sumData).toLocaleString();
+        totalSum = totalSum - sumData;
+        document.getElementById('totalALL').innerHTML = 'Rp. ' + parseInt(totalSum).toLocaleString();
         // console.log(sumData);
         copyInputToText();
     }

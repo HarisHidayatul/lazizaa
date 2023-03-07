@@ -6,7 +6,7 @@ use App\Models\doutlet;
 use App\Models\listItemSO;
 use App\Models\listSales;
 use App\Models\listSesi;
-use App\Models\salesharian;
+use App\Models\sales_harian_transaksi_bee_cloud;
 use App\Models\satuan;
 use App\Models\tanggalAll;
 use App\Models\transaksi_bee_cloud;
@@ -130,7 +130,7 @@ class apiBeeCloudController extends Controller
                 }
             }
             if (!$dataFoundTransaksiId) {
-                $id_sales_harian = $this->getIDSalesHarian($item->branch_id, $item->trxdate);
+                $id_sales_harian = $this->getIDsales_harian_transaksi_bee_cloud($item->branch_id, $item->trxdate);
                 $id_transaksi_bee_cloud = $item->id;
                 $trxdate_bee_cloud = $item->trxdate;
                 $total = $item->total;
@@ -254,11 +254,10 @@ class apiBeeCloudController extends Controller
         print_r(json_encode($this->itemSOAll));
     }
 
-    private function getIDSalesHarian($branch_id_bee_cloud, $trxdate_bee_cloud)
+    private function getIDsales_harian_transaksi_bee_cloud($branch_id_bee_cloud, $trxdate_bee_cloud)
     {
-        //fungsi untuk mengembalikan nilai id sales harian
+        //fungsi untuk mengembalikan nilai id sales harian transaksi bee cloud
         $timestamp = strtotime($trxdate_bee_cloud);
-        $time = date('H:i:s', $timestamp);
         $date = date('Y-m-d', $timestamp);
 
         $dataFoundOutlet = false;
@@ -275,17 +274,6 @@ class apiBeeCloudController extends Controller
             if ($this->outletAll[$i][0] == $branch_id_bee_cloud) {
                 $dataFoundOutlet = true;
                 $indexIfFoundOutlet = $i;
-                break;
-            }
-        }
-        for ($i = 0; $i < count($this->sesiAll); $i++) {
-            //Perulangan untuk menemukan ada di sesi berapa
-            $compareTime = strtotime($time);
-            $startTime = strtotime($this->sesiAll[$i][0]);
-            $stopTime = strtotime($this->sesiAll[$i][1]);
-            if ($compareTime >= $startTime && $compareTime <= $stopTime) {
-                $dataFoundSesi = true;
-                $indexIfFoundSesi = $i;
                 break;
             }
         }
@@ -321,15 +309,14 @@ class apiBeeCloudController extends Controller
         }
 
         //Mulai mencari id sales harian
-        $dataDate = salesharian::where('idTanggal', '=', $this->tanggalAll[$indexIfFoundTanggal][1])->get();
+        $dataDate = sales_harian_transaksi_bee_cloud::where('idTanggal', '=', $this->tanggalAll[$indexIfFoundTanggal][1])->get();
         $dataa = null;
         if ($dataDate->count() == 0) {
             $dataArray = [
                 'idTanggal' => $this->tanggalAll[$indexIfFoundTanggal][1],
                 'idOutlet' => $this->outletAll[$indexIfFoundOutlet][1],
-                'idSesi' => $this->sesiAll[$indexIfFoundSesi][2]
             ];
-            $dataa = salesharian::create($dataArray)->id;
+            $dataa = sales_harian_transaksi_bee_cloud::create($dataArray)->id;
         } else {
             $dataOutlet = $dataDate->where('idOutlet', '=', $this->outletAll[$indexIfFoundOutlet][1]);
             // @dd($dataOutlet->count());
@@ -337,21 +324,10 @@ class apiBeeCloudController extends Controller
                 $dataArray = [
                     'idTanggal' => $this->tanggalAll[$indexIfFoundTanggal][1],
                     'idOutlet' => $this->outletAll[$indexIfFoundOutlet][1],
-                    'idSesi' => $this->sesiAll[$indexIfFoundSesi][2]
                 ];
-                $dataa = salesharian::create($dataArray)->id;
+                $dataa = sales_harian_transaksi_bee_cloud::create($dataArray)->id;
             } else {
-                $dataSesi = $dataOutlet->where('idSesi', '=', $this->sesiAll[$indexIfFoundSesi][2])->first();
-                if ($dataSesi == null) {
-                    $dataArray = [
-                        'idTanggal' => $this->tanggalAll[$indexIfFoundTanggal][1],
-                        'idOutlet' => $this->outletAll[$indexIfFoundOutlet][1],
-                        'idSesi' => $this->sesiAll[$indexIfFoundSesi][2]
-                    ];
-                    $dataa = salesharian::create($dataArray)->id;
-                } else {
-                    $dataa = $dataSesi->id;
-                }
+                $dataa = $dataOutlet->first()->id;
             }
         }
         return $dataa;

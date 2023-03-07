@@ -6,19 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class salesharian extends Model
+class sales_harian_transaksi_bee_cloud extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'sales_harian';
+    public $table = 'sales_harian_transaksi_bee_cloud';
     protected $primaryKey = 'id';
     public $guarded = ['id'];
     public function dOutlets(){
         return $this->hasMany(doutlet::class,'id');
-    }
-
-    public function listSaless(){
-        return $this->belongsToMany(listSales::class,salesFill::class,'idSales','idListSales')->withPivot('total','totalRevisi','idRevisiTotal','id','idPengisi','idPerevisi','totalDiterima','idRevDiterima');
     }
 
     public function tanggalAlls(){
@@ -28,8 +24,6 @@ class salesharian extends Model
     protected $fillable = [
         'idOutlet',
         'idTanggal',
-        'idSesi',
-        'totalManual',
         'created_at',
         'updated_at',
         'deleted_at'

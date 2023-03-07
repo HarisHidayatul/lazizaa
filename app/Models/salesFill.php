@@ -20,13 +20,10 @@ class salesFill extends Model
     protected $fillable = [
         'idListSales',
         'idSales',
-        'cu',
-        'cuRevisi',
         'total',
         'totalRevisi',
         'totalDiterima',
         'idRevDiterima',
-        'idRevisiCu',
         'idRevisiTotal',
         'idPengisi',
         'idPerevisi',

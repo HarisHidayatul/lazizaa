@@ -64,8 +64,8 @@
                 document.getElementById('setTable').innerHTML =
                     '<table class="table table-striped" id="mainTableSales">' +
                     '<thead><tr><th scope="col"><input type="checkbox" onClick="checkAll()"></th><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Sesi</th><th scope="col">Item Sales</th><th scope="col">' +
-                    'CU Sebelum</th><th scope="col">CU Revisi</th><th scope="col">Total Sebelum</th><th scope="col">Total Revisi</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Sesi</th><th scope="col">Item Sales</th>' +
+                    '<th scope="col">Total Sebelum</th><th scope="col">Total Revisi</th><th scope="col">Pengisi</th>' +
                     '</tr></thead><tbody></tbody></table>';
                 showAllRevisionSales();
                 document.getElementById('revisiAllButton').style.visibility = "visible";
@@ -73,8 +73,8 @@
                 document.getElementById('setTable').innerHTML =
                     '<table class="table table-striped" id="mainTableSalesDone">' +
                     '<thead><tr><th scope="col">Tanggal</th><th scope="col">' +
-                    'Outlet</th><th scope="col">Sesi</th><th scope="col">Item Sales</th><th scope="col">' +
-                    'CU</th><th scope="col">Total</th><th scope="col">Pengisi</th>' +
+                    'Outlet</th><th scope="col">Sesi</th><th scope="col">Item Sales</th>' +
+                    '<th scope="col">Total</th><th scope="col">Pengisi</th>' +
                     '<th scope="col">Perevisi</th></tr></thead><tbody></tbody></table>';
                 showAllRevisionDoneSales();
                 document.getElementById('revisiAllButton').style.visibility = "hidden";
@@ -179,20 +179,6 @@
                         dataTable += obj.itemSales[i].Item[j].Item[k].sales;
                         dataTable += '</td>';
                         dataTable += '<td>';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuSblm;
-                        dataTable += '</td>';
-                        dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
-                            dataTable += 'style="color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
-                            dataTable += 'style="color:rgb(30, 206, 9);" ';
-                        }
-                        dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].idCuRev);
-                        tempData.push(obj.itemSales[i].Item[j].Item[k].cuQty);
-                        dataTable += '</td>';
-                        dataTable += '<td>';
                         dataTable += obj.itemSales[i].Item[j].Item[k].totalSblm.toLocaleString();
                         dataTable += '</td>';
                         dataTable += '<td ';
@@ -259,15 +245,6 @@
                         dataTable += '</td>';
                         dataTable += '<td>';
                         dataTable += obj.itemSales[i].Item[j].Item[k].sales;
-                        dataTable += '</td>';
-                        dataTable += '<td ';
-                        if (obj.itemSales[i].Item[j].Item[k].idCuRev == '2') {
-                            dataTable += 'style="color:tomato;" ';
-                        } else if (obj.itemSales[i].Item[j].Item[k].idCuRev == '3') {
-                            dataTable += 'style="color:rgb(30, 206, 9);" ';
-                        }
-                        dataTable += ' >';
-                        dataTable += obj.itemSales[i].Item[j].Item[k].cuQty;
                         dataTable += '</td>';
                         dataTable += '<td ';
                         if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {

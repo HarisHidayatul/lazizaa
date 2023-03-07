@@ -622,7 +622,7 @@
                 <div id="dataBottom"></div>
                 <div class="d-flex justify-content-between borderTotal"></div>
                 <div class="d-flex justify-content-between totalSales">
-                    <div class="totalBottom">Total Sales</div>
+                    <div class="totalBottom">Cash</div>
                     <div class="totalBottomVal" id="totalAll">Rp 0</div>
                 </div>
             </div>
@@ -637,6 +637,7 @@
             </div>
         </div>
     </div>
+    <div style="height: 100vw;"></div>
     <div class="d-flex justify-content-center footer">
         <div>
             <div class="d-flex justify-content-center">
@@ -694,6 +695,8 @@
                 console.log(obj);
                 var dataFill = '';
                 var dataBottom = '';
+                var dataBottom1 = '';
+                var dataBottom2 = '';
                 var detailPengisi = '';
                 var totalData = 0;
                 var indexRow = 0;
@@ -701,11 +704,21 @@
                 var namaPengisi2 = '';
                 var namaPengisi3 = '';
                 var namaPengisi4 = '';
+                var totalCash = 0;
                 for (var i = 0; i < obj.length; i++) {
                     dataFill += '<div><div class="d-flex justify-content-start typeSales">';
                     dataFill += obj[i].type;
                     dataFill += '</div>';
-                    for (var j = 0; j < obj[i].sales.length; j++) {
+                    if('totalManual' in obj[i]){
+                        totalCash = obj[i].totalManual;
+                        // console.log(totalCash);
+                        dataBottom1 += '<div class="d-flex justify-content-between listPrice">';
+                        dataBottom1 += '<div class="listBottom">' + 'Total Reading Casheer' + '</div>';
+                        dataBottom1 += '<div class="valBottom">' + parseInt(obj[i].totalManual).toLocaleString()
+                            .replace(',', '.') + '</div>';
+                        dataBottom1 += '</div>';
+                    }
+                    for (var j = 0; j < obj[i].sales?.length; j++) {
                         dataFill += '<div class="d-flex justify-content-start">';
                         dataFill += '<div class="itemSales">' + obj[i].sales[j].sales + '</div>';
                         if ((obj[i].sales[j].idCuRev == 2) || (obj[i].sales[j].idTotalRev == 2)) {
@@ -718,19 +731,19 @@
                             dataFill += '';
                         }
                         dataFill += '</div><div class="d-flex justify-content-between cuRow">';
-                        dataFill += '<div class="cuText">CU</div>';
-                        dataFill += '<div class="cuVal">' + obj[i].sales[j].cuQty + '</div></div>';
+                        dataFill += '<div class="cuText"></div>';
+                        dataFill += '<div class="cuVal">' + '' + '</div></div>';
                         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
                         dataFill += '<div class="d-flex justify-content-between totalRow">';
                         dataFill += '<div class="totalText">Total</div>';
                         dataFill += '<div class="totalVal">Rp. ' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
                             .replace(',', '.') + '</div></div>';
 
-                        dataBottom += '<div class="d-flex justify-content-between listPrice">';
-                        dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
-                        dataBottom += '<div class="valBottom">' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
+                        dataBottom2 += '<div class="d-flex justify-content-between listPrice">';
+                        dataBottom2 += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
+                        dataBottom2 += '<div class="valBottom">' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
                             .replace(',', '.') + '</div>';
-                        dataBottom += '</div>';
+                        dataBottom2 += '</div>';
                         totalData += parseInt(obj[i].sales[j].totalQty);
 
                         detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
@@ -788,8 +801,8 @@
                     document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
                 }
                 document.getElementById('dataFill').innerHTML = dataFill;
-                document.getElementById('dataBottom').innerHTML = dataBottom;
-                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalData).toLocaleString();
+                document.getElementById('dataBottom').innerHTML = dataBottom1 + dataBottom2;
+                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalCash - totalData).toLocaleString();
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
             },
             error: function(req, err) {

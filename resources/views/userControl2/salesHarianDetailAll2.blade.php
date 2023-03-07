@@ -488,7 +488,7 @@
             </div> --}}
         </div>
     </div>
-    <div style="height: 150px;"></div>
+    <div style="height: 100vw;"></div>
     <div class="wrapEdit">
         <div onclick="buttonEditClick();">Edit</div>
     </div>
@@ -534,15 +534,23 @@
                 "{{ $dateSelect }}",
             type: 'get',
             success: function(response) {
-                var obj = JSON.parse(JSON.stringify(response));
-                console.log(obj);
+                var obj1 = JSON.parse(JSON.stringify(response));
+                console.log(obj1);
+                var obj = obj1.dataSales;
                 var allDataHTML = '';
                 var totalHTML = '';
                 var indexButton = 0;
                 var totalAll = 0;
+                var totalReadingCasheer =0;
 
                 totalHTML += '<div style="margin-top: 25px;">';
-                
+
+                for (var i = 0; i < obj1.dataTotal.length; i++) {
+                    totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                    totalHTML += '<div>' + 'Total Casheer Sesi ' + obj1.dataTotal[i].sesi + '</div>';
+                    totalHTML += '<div>Rp. ' + obj1.dataTotal[i].total.toLocaleString() + '</div></div>';
+                    totalReadingCasheer += obj1.dataTotal[i].total;
+                }
                 for (var i = 0; i < obj.length; i++) {
                     allDataHTML += '<div class="typeSales">';
                     allDataHTML += obj[i].type;
@@ -552,7 +560,6 @@
                         var detailSesi = '';
                         var totalPerSesi = '';
                         var totalValPerSesi = 0;
-                        var cuValPerSesi = 0;
                         detailSesi += '<div class="boxDetailSesi" name="detailSesi">';
                         totalPerSesi += '<div style="margin-top: 15px;">';
                         for (var k = 0; k < obj[i].sales[j][2].length; k++) {
@@ -571,22 +578,23 @@
                                     '" alt="" style="height: 15px; margin-top:10px;">';
                             }
                             detailSesi += '</div><div class="d-flex justify-content-between">';
-                            detailSesi += '<div><span>CU</span></div>';
-                            detailSesi += '<div>' + obj[i].sales[j][2][k].cuQty + '</div>';
+                            detailSesi += '<div><span></span></div>';
+                            detailSesi += '<div>' + '' + '</div>';
                             detailSesi +=
                                 '</div><div style="width: 100%; border: 1px solid #E0E0E0;"></div>';
                             detailSesi += '<div class="d-flex justify-content-between"><div>Total</div>';
-                            detailSesi += '<div>Rp ' + parseInt(obj[i].sales[j][2][k].totalQty).toLocaleString() +
+                            detailSesi += '<div>Rp ' + parseInt(obj[i].sales[j][2][k].totalQty)
+                                .toLocaleString() +
                                 '</div></div></div>';
 
                             totalPerSesi += '<div class="d-flex justify-content-between totalPerSesi">';
                             totalPerSesi += '<div>Sesi ' + obj[i].sales[j][2][k].sesi + '</div>';
-                            totalPerSesi += '<div>Rp. ' + parseInt(obj[i].sales[j][2][k].totalQty).toLocaleString() +
+                            totalPerSesi += '<div>Rp. ' + parseInt(obj[i].sales[j][2][k].totalQty)
+                                .toLocaleString() +
                                 '</div></div>';
                             totalValPerSesi += parseInt(obj[i].sales[j][2][k].totalQty);
-                            cuValPerSesi += parseInt(obj[i].sales[j][2][k].cuQty);
 
-                            totalAll +=  parseInt(obj[i].sales[j][2][k].totalQty);
+                            totalAll += parseInt(obj[i].sales[j][2][k].totalQty);
                         }
 
                         totalPerSesi +=
@@ -606,9 +614,8 @@
                             '" alt="" style="height: 35px;">';
                         allDataHTML += '<div style="margin-left: 10px;">';
                         allDataHTML += '<div class="itemSales">' + obj[i].sales[j][1] + '</div>';
-                        allDataHTML += '<div class="detailSales">CU <span>';
-                        allDataHTML += cuValPerSesi;
-                        allDataHTML += '</span> Total <span>Rp ';
+                        allDataHTML += '<div class="detailSales">';
+                        allDataHTML += 'Total <span>Rp ';
                         allDataHTML += totalValPerSesi.toLocaleString();
                         allDataHTML += '</span></div></div></div>';
                         allDataHTML += '<img src="' + "{{ url('img/icon/arrowDown.png') }}" +
@@ -623,9 +630,10 @@
                         totalHTML += '<div>Rp. ' + totalValPerSesi.toLocaleString() + '</div></div>';
                     }
                 }
-                totalHTML += '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
-                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Sales</div>';
-                totalHTML += '<div>Rp. ' + totalAll.toLocaleString() + '</div></div></div>';
+                totalHTML +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Cash</div>';
+                totalHTML += '<div>Rp. ' + (totalReadingCasheer-totalAll).toLocaleString() + '</div></div></div>';
 
                 allDataHTML += totalHTML;
 
@@ -651,9 +659,11 @@
             elementDetail[i].style.display = 'none';
         }
     }
+
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
+
     function buttonEditClick() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + "{{ $dateSelect }}";
     }
