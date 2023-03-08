@@ -2,7 +2,8 @@
 
 @section('fillBody')
 <div class="d-flex justify-content-between">
-    <select name="" id="selOutlet"></select>
+    <select name="" id="selOutlet">
+    </select>
     <div class="d-flex justify-content-right">
         <div>Start Date : </div>
         <input type="date" id="startDate">
@@ -18,9 +19,10 @@
             <tr>
                 <td>Tanggal</td>
                 <td>Outlet</td>
-                <td>Item</td>
-                <td>Jumlah</td>
+                <td>Item Sales</td>
+                <td>Jumlah (+/-)</td>
                 <td>Jumlah Diterima</td>
+                <td>Fee</td>
                 <td>%</td>
                 <td>Submit</td>
             </tr>
@@ -28,5 +30,6 @@
         <tbody>
         </tbody>
     </table>
+    <button type="button" class="btn btn-secondary float-right" onclick="downloadCSV();">Download CSV</button>
 </div>
 @endsection

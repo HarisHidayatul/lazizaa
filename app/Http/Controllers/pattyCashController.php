@@ -27,6 +27,34 @@ class pattyCashController extends Controller
         //
     }
 
+    public function initAllDataPattyCash()
+    {
+        $filePath = public_path('initFile/initPattyCash.csv'); // path to the CSV file
+        $csvData = [];
+        $rowNum = 0;
+
+        if (($handle = fopen($filePath, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                $rowNum++;
+                if ($rowNum == 1) {
+                    continue; // Skip the first row
+                }
+                $csvData[] = $data;
+            }
+            fclose($handle);
+        }
+
+        for ($i = 0; $i < count($csvData); $i++) {
+            
+        }
+        @dd($csvData);
+
+        // Output each line of CSV data
+        // foreach ($csvData as $row) {
+        //     echo implode(" + ", $row) . "<br>";
+        // }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -387,8 +415,8 @@ class pattyCashController extends Controller
         // @dd($listPattyCash[0]->satuans);
         $satuan = satuan::all();
         $satuanArray = [];
-        for($i =0;$i<$satuan->count();$i++){
-            array_push($satuanArray,(object)[
+        for ($i = 0; $i < $satuan->count(); $i++) {
+            array_push($satuanArray, (object)[
                 'id' => $satuan[$i]->id,
                 'satuan' => $satuan[$i]->Satuan
             ]);

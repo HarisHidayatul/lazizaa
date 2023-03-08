@@ -150,6 +150,7 @@ Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}',[salesHa
 Route::get('salesHarian/update/verifikasi/{idSalesFill}',[salesHarianController::class,'updateVerifOutlet']);
 
 //Flow untuk Patty Cash
+Route::get('pattyCash/initData',[pattyCashController::class, 'initAllDataPattyCash']);
 Route::get('pattyCash/items/show', [pattyCashController::class, 'showAll']);
 Route::get('pattyCash/items/show/revisi', [pattyCashController::class, 'showAllRevisi']);
 Route::get('pattyCash/items/revisi/outlet/{id}', [pattyCashController::class, 'showRevisiOutlet']); //Menampilkan revisi per outlet
