@@ -2,7 +2,7 @@
 
 @section('subSetItemJS')
     <script>
-        $("#showJenisAdd").select2(); //css untuk dropdown
+        // $("#showJenisAdd").select2(); //css untuk dropdown
 
         idItemPattyCash = [];
         $(document).ready(function() {

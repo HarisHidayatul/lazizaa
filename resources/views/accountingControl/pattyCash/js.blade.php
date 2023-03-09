@@ -5,6 +5,7 @@
         var objPenerima = [];
         var indexReimburse = 0;
         var idTempImgAll = 0;
+        var dataExportToCSV = [];
 
         $(document).ready(function() {
             var today = new Date();
@@ -192,9 +193,8 @@
         function refreshListPenerima(index) {
             // console.log('ASDAS');
             // var valueSelectList = document.getElementById('listPenerima').value;
-            document.getElementById('bankPengirim').innerHTML = objPenerima.penerimaListArray[index].bank;
-            document.getElementById('rekeningPengirim').innerHTML = objPenerima.penerimaListArray[index]
-                .nomorRekening;
+            document.getElementById('bankPengirim').innerHTML = objPenerima.penerimaListArray[index]?.bank;
+            document.getElementById('rekeningPengirim').innerHTML = objPenerima.penerimaListArray[index]?.nomorRekening;
         }
 
         function getAllPenerima() {
@@ -229,6 +229,7 @@
                     var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
                     console.log(obj);
+                    listAllOutlet += '<option value=0>Semua</option>';
                     for (var i = 0; i < obj.Outlet.length; i++) {
                         listAllOutlet += '<option value=';
                         listAllOutlet += obj.Outlet[i].id;
@@ -255,93 +256,172 @@
                 url: urlAll,
                 type: 'get',
                 success: function(response) {
-                    var obj = JSON.parse(JSON.stringify(response));
+                    var objAllData = JSON.parse(JSON.stringify(response));
                     var historyAll = "";
                     var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
-                    console.log(obj);
+                    console.log(objAllData);
+                    dataExportToCSV.length = 0;
 
-                    for (var i = 0; i < obj.dataHistory.length; i++) {
-                        var tanggalActive = false;
-                        for (var j = 0; j < obj.dataHistory[i].pattyCash.length; j++) {
-                            var statusRevisi = 'Tidak Ada';
-                            historyAll += '<tr>';
-                            historyAll += '<td>';
-                            if (!tanggalActive) {
-                                tanggalActive = true;
-                                historyAll += obj.dataHistory[i].tanggal;
+                    for (var loopData = 0; loopData < objAllData.allData.length; loopData++) {
+                        var obj = objAllData.allData[loopData];
+
+                        for (var i = 0; i < obj.dataHistory.length; i++) {
+                            for (var j = 0; j < obj.dataHistory[i].pattyCash.length; j++) {
+                                var statusRevisi = 'Tidak Ada';
+                                var hargaSatuan = obj.dataHistory[i].pattyCash[j].total;
+                                var tempDataExport = [];
+
+                                hargaSatuan = hargaSatuan / obj.dataHistory[i].pattyCash[j].qty;
+                                hargaSatuan = Math.round(hargaSatuan);
+
+                                historyAll += '<tr>';
+
+                                historyAll += '<td>';
+                                const dateStr = obj.dataHistory[i].tanggal;
+
+                                // Split the string into year, month, and day components
+                                const [year, month, day] = dateStr.split('-');
+
+                                historyAll += `${day}/${month}/${year}`;
+                                historyAll += '</td>';
+                                tempDataExport.push(`${day}/${month}/${year}`);
+
+                                historyAll += '<td>';
+                                historyAll += obj.outlet;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.outlet);
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].kategoriItem;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].kategoriItem);
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].jenisItem;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].jenisItem);
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].item;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].item);
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].qty;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].qty);
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].satuan;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].satuan);
+
+                                historyAll += '<td>';
+                                historyAll += hargaSatuan.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(hargaSatuan.toLocaleString());
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].total.toLocaleString());
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].saldo.toLocaleString());
+
+                                historyAll += '<td ';
+                                if (obj.dataHistory[i].pattyCash[j].idRevTotal == '2') {
+                                    historyAll += 'style="color: red;"';
+                                    statusRevisi = 'Revisi';
+                                } else if (obj.dataHistory[i].pattyCash[j].idRevTotal == '3') {
+                                    historyAll += 'style="color: green;"';
+                                    statusRevisi = 'Sudah Revisi';
+                                }
+                                historyAll += '>';
+                                historyAll += statusRevisi;
+                                historyAll += '</td>';
+                                tempDataExport.push(statusRevisi);
+
+                                historyAll += '</tr>';
+                                dataExportToCSV.push(tempDataExport);
                             }
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].pattyCash[j].item;
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].pattyCash[j].idSesi;
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].pattyCash[j].qty;
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].pattyCash[j].satuan;
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].pattyCash[j].total.toLocaleString()
-                                .replaceAll(',', '.');
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString()
-                                .replaceAll(',', '.');
-                            historyAll += '</td>';
-                            historyAll += '<td ';
-                            if (obj.dataHistory[i].pattyCash[j].idRevTotal == '2') {
-                                historyAll += 'style="color: red;"';
-                                statusRevisi = 'Revisi';
-                            } else if (obj.dataHistory[i].pattyCash[j].idRevTotal == '3') {
-                                historyAll += 'style="color: green;"';
-                                statusRevisi = 'Sudah Revisi';
+
+                            for (var j = 0; j < obj.dataHistory[i].reimburse.length; j++) {
+                                var statusRevisi = '';
+                                var tempDataExport = [];
+
+                                historyAll += '<tr style="cursor: pointer;" onClick="clickReimburse(';
+                                historyAll += obj.dataHistory[i].reimburse[j].id;
+                                historyAll += ')">';
+                                historyAll += '<td>';
+                                const dateStr = obj.dataHistory[i].tanggal;
+
+                                // Split the string into year, month, and day components
+                                const [year, month, day] = dateStr.split('-');
+
+                                historyAll += `${day}/${month}/${year}`;
+                                historyAll += '</td>';
+                                tempDataExport.push(`${day}/${month}/${year}`);
+
+                                historyAll += '<td>';
+                                historyAll += obj.outlet;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.outlet);
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += 'Reimburse';
+                                historyAll += '</td>';
+                                tempDataExport.push('Reimburse');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].reimburse[j].reimburse.toLocaleString());
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].reimburse[j].saldo.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].reimburse[j].saldo.toLocaleString());
+
+                                historyAll += '<td ';
+                                if (obj.dataHistory[i].reimburse[j].idRev == '2') {
+                                    historyAll += 'style="color: red;"';
+                                    statusRevisi = 'PENDING';
+                                } else if (obj.dataHistory[i].reimburse[j].idRev == '3') {
+                                    historyAll += 'style="color: green;"';
+                                    statusRevisi = "SUKSES";
+                                }
+                                historyAll += '>';
+                                historyAll += statusRevisi;
+                                historyAll += '</td>';
+                                tempDataExport.push(statusRevisi);
+
+                                historyAll += '</tr>';
+                                dataExportToCSV.push(tempDataExport);
                             }
-                            historyAll += '>';
-                            historyAll += statusRevisi;
-                            historyAll += '</td>';
-                            historyAll += '</tr>';
-                        }
-                        for (var j = 0; j < obj.dataHistory[i].reimburse.length; j++) {
-                            var statusRevisi = '';
-                            historyAll += '<tr style="cursor: pointer;" onClick="clickReimburse(';
-                            historyAll += obj.dataHistory[i].reimburse[j].id;
-                            historyAll += ')">';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].tanggal;
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += 'Reimburse';
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString().replaceAll(
-                                ',', '.');
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.dataHistory[i].reimburse[j].saldo.toLocaleString().replaceAll(',',
-                                '.');
-                            historyAll += '</td>';
-                            historyAll += '<td ';
-                            if (obj.dataHistory[i].reimburse[j].idRev == '2') {
-                                historyAll += 'style="color: red;"';
-                                statusRevisi = 'PENDING';
-                            } else if (obj.dataHistory[i].reimburse[j].idRev == '3') {
-                                historyAll += 'style="color: green;"';
-                                statusRevisi = "SUKSES";
-                            }
-                            historyAll += '>';
-                            historyAll += statusRevisi;
-                            historyAll += '</td>';
-                            historyAll += '</tr>';
                         }
                     }
                     $('#statusInputTabel>tbody').empty().append(historyAll);
@@ -401,42 +481,78 @@
             $('#exampleModalCenter').modal('toggle');
         }
 
-        const toCsv = function(table) {
-            // Query all rows
-            const rows = table.querySelectorAll('tr');
-
-            return [].slice
-                .call(rows)
-                .map(function(row) {
-                    // Query all cells
-                    const cells = row.querySelectorAll('th,td');
-                    return [].slice
-                        .call(cells)
-                        .map(function(cell) {
-                            return cell.textContent;
-                        })
-                        .join(',');
-                })
-                .join('\n');
-        };
-        const download = function(text, fileName) {
-            const link = document.createElement('a');
-            link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(text)}`);
-            link.setAttribute('download', fileName);
-
-            link.style.display = 'none';
-            document.body.appendChild(link);
-
-            link.click();
-
-            document.body.removeChild(link);
-        };
 
         function downloadCSV() {
-            const csv = toCsv(document.getElementById('statusInputTabel'));
+            var arrayAllData = [];
+            var namaFile = 'Data Patty Cash Outlet ';
+            const selectElement = document.getElementById('selOutlet');
+            const selectedOptionText = selectElement.options[selectElement.selectedIndex].text;
 
-            // Download it
-            download(csv, 'pattyCash.csv');
+            namaFile += selectedOptionText;
+            namaFile += ' ';
+            namaFile += document.getElementById('startDate').value;
+            namaFile += ' Sampai ';
+            namaFile += document.getElementById('stopDate').value;
+            arrayAllData.push([
+                'Tanggal',
+                'Outlet',
+                'Kategori Akun',
+                'Jenis Item',
+                'Item Kas',
+                'Qty',
+                'Satuan',
+                'Harga Satuan',
+                'Harga Total',
+                'Saldo',
+                'Status',
+            ]);
+            for(var i =0;i<dataExportToCSV.length;i++){
+                arrayAllData.push(dataExportToCSV[i]);
+            }
+            exportToCsv(namaFile, arrayAllData);
+        }
+
+        function exportToCsv(filename, rows) {
+            var processRow = function(row) {
+                var finalVal = '';
+                for (var j = 0; j < row.length; j++) {
+                    var innerValue = row[j] === null ? '' : row[j].toString();
+                    if (row[j] instanceof Date) {
+                        innerValue = row[j].toLocaleString();
+                    };
+                    var result = innerValue.replace(/"/g, '""');
+                    if (result.search(/("|,|\n)/g) >= 0)
+                        result = '"' + result + '"';
+                    if (j > 0)
+                        finalVal += ',';
+                    finalVal += result;
+                }
+                return finalVal + '\n';
+            };
+
+            var csvFile = '';
+            for (var i = 0; i < rows.length; i++) {
+                csvFile += processRow(rows[i]);
+            }
+
+            var blob = new Blob([csvFile], {
+                type: 'text/csv;charset=utf-8;'
+            });
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                var link = document.createElement("a");
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
         }
     </script>
 @endsection

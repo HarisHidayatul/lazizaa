@@ -1,4 +1,4 @@
-@extends('accountingControl.setItem.pattyCash.jenisItem.js')
+@extends('accountingControl.setItem.pattyCash.kategoriItem.js')
 
 @section('subSetItemCSS')
     <style>

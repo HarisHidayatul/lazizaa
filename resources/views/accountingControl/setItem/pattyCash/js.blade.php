@@ -6,8 +6,8 @@
         $(document).ready(function() {
             var topNavBar = [
                 ["List Item", "{{ url('accounting/pattyCash/item') }}"],
-                ["Jenis Item", "{{ url('accounting/pattyCash/brandItem') }}"],
-                ["Kategori Item", "{{ url('accounting/pattyCash/brandItem') }}"],
+                ["Jenis Item", "{{ url('accounting/pattyCash/jenisItem') }}"],
+                ["Kategori Item", "{{ url('accounting/pattyCash/kategoriItem') }}"],
                 ["Brand Item", "{{ url('accounting/pattyCash/brandItem') }}"],
                 ["Pending Item","{{ url('accounting/pattyCash/pendingItem') }}"]
             ];

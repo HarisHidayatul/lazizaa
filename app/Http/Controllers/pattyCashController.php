@@ -265,6 +265,20 @@ class pattyCashController extends Controller
         ];
         listItemPattyCash::create($dataArray);
     }
+    public function storeJenis(Request $request){
+        $dataArray = [
+            'namaJenis' => $request->namaJenis,
+            'idKategori' => $request->idKategori
+        ];
+        jenis_patty_cash::create($dataArray);
+    }
+    public function storeKategori(Request $request){
+        $dataArray = [
+            'namaKategori' => $request->namaKategori
+        ];
+        kategori_patty_cash::create($dataArray);
+    }
+
     public function storeBrandItem(Request $request)
     {
         $this->storeBrandItem2($request->idBrand, $request->idListItem);
@@ -723,7 +737,7 @@ class pattyCashController extends Controller
     public function showSatuan()
     {
         $dataa = satuan::all();
-        $dataJenis = jenis_patty_cash::all();
+        $dataJenis = jenis_patty_cash::with('kategori_patty_cashs')->get();
         $dataKategori = kategori_patty_cash::all();
         // @dd($dataa);
         $array = [];
@@ -738,7 +752,9 @@ class pattyCashController extends Controller
         for($i=0;$i<$dataJenis->count();$i++){
             array_push($arrayJenis,(object)[
                 'id' => $dataJenis[$i]->id,
-                'namaJenis' => $dataJenis[$i]->namaJenis
+                'namaJenis' => $dataJenis[$i]->namaJenis,
+                'idKategori' => $dataJenis[$i]->kategori_patty_cashs->id,
+                'kategori' => $dataJenis[$i]->kategori_patty_cashs->namaKategori
             ]);
         }
         for($i = 0;$i<$dataKategori->count();$i++){
@@ -1182,6 +1198,20 @@ class pattyCashController extends Controller
             'Item' => $request->Item,
             'idSatuan' => $request->idSatuan,
             'idJenisItem' => $request->idJenis
+        ]);
+    }
+
+    public function updateJenis(Request $request, $id){
+        $jenis_patty_cash = jenis_patty_cash::find($id);
+        $jenis_patty_cash->update([
+            'namaJenis' => $request->namaJenis,
+            'idKategori' => $request->idKategori
+        ]);
+    }
+    public function updateKategori(Request $request, $id){
+        $kategori_patty_cash = kategori_patty_cash::find($id);
+        $kategori_patty_cash->update([
+            'namaKategori' => $request->namaKategori
         ]);
     }
 

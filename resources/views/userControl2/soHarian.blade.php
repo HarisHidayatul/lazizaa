@@ -448,6 +448,7 @@
         }
         // getAllData();
         getDataFillSo();
+        getDataFillSoKemarin();
     }
 
     $(document).ready(function() {
@@ -547,16 +548,14 @@
     }
 
     function getDataFillSoKemarin() {
-        const date = new Date("{{ $dateSelect }}");
-        const result = subtractDays(1, date);
         $.ajax({
             url: '{{ url('soHarian/user/showDetailLastSesi') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
-                formatDate(result),
+            "{{ $dateSelect }}" + '/' + selectedSesi,
             type: 'get',
             success: function(response) {
                 var elementInput = document.getElementsByName("addname");
                 var obj = JSON.parse(JSON.stringify(response));
-                // console.log(obj);
+                console.log(obj);
                 // stokKemarinVal
                 for (var i = 0; i < obj.itemfso.length; i++) {
                     if (searchIndexSoItem(obj.itemfso[i].idItem)[0] == true) {

@@ -147,13 +147,13 @@ class fsoHarianController extends Controller
     public function showOnDate($id, $date, $idSesi)
     {
         $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians
-        ->where('idOutlet', '=', $id)
-        ->where('idSesi','=',$idSesi)
-        ->first();
+            ->where('idOutlet', '=', $id)
+            ->where('idSesi', '=', $idSesi)
+            ->first();
         // @dd($dataDate);
         $itemArray = [];
         $pengisi = '';
-        if($dataDate != null){
+        if ($dataDate != null) {
             $pengisi = $dataDate->dUsers['Nama Lengkap'];
             for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
                 $idSoRevisi = $dataDate->listItemSOs[$j]->pivot->idRevisi;
@@ -189,44 +189,132 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function showOnDateLastSesi($id, $date)
+    public function showOnDateLastSesi($id, $date, $idSesi)
     {
-        //mengambil data dari sesi terakhir di hari
-        $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians
-        ->where('idOutlet', '=', $id)
-        // ->where('idSesi','=',$idSesi)
-        ->first();
-        // @dd($dataDate);
-        $itemArray = [];
-        for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
-            $idSoRevisi = $dataDate->listItemSOs[$j]->pivot->idRevisi;
-            if ($idSoRevisi == '2') {
-                //Jika statusnya revisi
-                array_push($itemArray, (object)[
-                    'idItem' => $dataDate->listItemSOs[$j]->id,
-                    'item'   => $dataDate->listItemSOs[$j]->Item,
-                    'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
-                    'icon' => $dataDate->listItemSOs[$j]->icon,
-                    'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
-                    'qty'    => $dataDate->listItemSOs[$j]->pivot->quantityRevisi,
-                    'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
-                ]);
-            } else {
-                //Jika statusnya tidak direvisi maupun sudah direvisi
-                array_push($itemArray, (object)[
-                    'idItem' => $dataDate->listItemSOs[$j]->id,
-                    'item'   => $dataDate->listItemSOs[$j]->Item,
-                    'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
-                    'icon' => $dataDate->listItemSOs[$j]->icon,
-                    'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
-                    'qty'    => $dataDate->listItemSOs[$j]->pivot->quantity,
-                    'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
-                ]);
+        $dataDate = null;
+        $dataDateTengahAkhirBulan = null;
+
+        $tengahBulan = false;
+        $akhirBulan = false;
+
+        if (date('d', strtotime($date)) == 15) {
+            $tengahBulan = true;
+        }
+        if (date("Y-m-d", strtotime($date)) == date("Y-m-t", strtotime($date))) {
+            $akhirBulan = true;
+        }
+        // @dd($akhirBulan);
+
+        if ($tengahBulan) {
+            if ($idSesi == 1) {
+                try{
+                    $tanggalSebelum = date("Y-m-t", strtotime(date("Y-m-d", strtotime($date)) . " -1 month"));
+                    $dataDateTengahAkhirBulan = tanggalAll::where('Tanggal', '=', $tanggalSebelum)->first()->fsoHarians
+                        ->where('idOutlet', '=', $id)->sortByDesc('idSesi')->first();
+                }catch(Exception $e){
+                    $dataDateTengahAkhirBulan = null;
+                }
             }
         }
+        if ($akhirBulan) {
+            if ($idSesi == 1) {
+                try{
+                    $tanggalSebelum = date('Y-m-15', strtotime($date));
+                    $dataDateTengahAkhirBulan = tanggalAll::where('Tanggal', '=', $tanggalSebelum)->first()->fsoHarians
+                        ->where('idOutlet', '=', $id)->sortByDesc('idSesi')->first();
+                }catch(Exception $e){
+                    $dataDateTengahAkhirBulan = null;
+                }
+            }
+        }
+        // @dd($dataDateTengahAkhirBulan);
+
+
+        //mengambil data dari hari kemarin jika $idSesi = 1 dan ambil di sesi terakhir mengisi
+        if ($idSesi == 1) {
+            $dateYesterday = date('Y-m-d', strtotime($date . ' -1 day'));
+            try{
+                $dataDate = tanggalAll::where('Tanggal', '=', $dateYesterday)->first()->fsoHarians
+                    ->where('idOutlet', '=', $id)->sortByDesc('idSesi')->first();
+            }catch(Exception $e){
+                
+            }
+            // @dd($dataDate);
+        } else {
+            //Mengambil data dari sesi sebelumnya jika data merupakan hari ini
+            try{
+                $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians
+                    ->where('idOutlet', '=', $id)->where('idSesi', '=', ($idSesi - 1))->first();
+            }catch(Exception $e){
+                
+            }
+            // @dd($dataDate);
+        }
+
+        $itemArray = [];
+        if ($dataDate != null) {
+            for ($j = 0; $j < ($dataDate->listItemSOs->count()); $j++) {
+                $idSoRevisi = $dataDate->listItemSOs[$j]->pivot->idRevisi;
+                if ($idSoRevisi == '2') {
+                    //Jika statusnya revisi
+                    array_push($itemArray, (object)[
+                        'idItem' => $dataDate->listItemSOs[$j]->id,
+                        'item'   => $dataDate->listItemSOs[$j]->Item,
+                        'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
+                        'icon' => $dataDate->listItemSOs[$j]->icon,
+                        'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
+                        'qty'    => $dataDate->listItemSOs[$j]->pivot->quantityRevisi,
+                        'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
+                    ]);
+                } else {
+                    //Jika statusnya tidak direvisi maupun sudah direvisi
+                    array_push($itemArray, (object)[
+                        'idItem' => $dataDate->listItemSOs[$j]->id,
+                        'item'   => $dataDate->listItemSOs[$j]->Item,
+                        'satuan' => $dataDate->listItemSOs[$j]->satuans->Satuan,
+                        'icon' => $dataDate->listItemSOs[$j]->icon,
+                        'idRev' => $dataDate->listItemSOs[$j]->pivot->idRevisi,
+                        'qty'    => $dataDate->listItemSOs[$j]->pivot->quantity,
+                        'idSoFill' => $dataDate->listItemSOs[$j]->pivot->id
+                    ]);
+                }
+            }
+        }
+
+        if ($dataDateTengahAkhirBulan != null) {
+            for ($j = 0; $j < ($dataDateTengahAkhirBulan->listItemSOs->count()); $j++) {
+                $idSoRevisi = $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->idRevisi;
+                if (($dataDateTengahAkhirBulan->listItemSOs[$j]->munculMingguan > 0) && ($dataDateTengahAkhirBulan->listItemSOs[$j]->munculHarian == 0)) {
+                    if ($idSoRevisi == '2') {
+                        //Jika statusnya revisi
+                        array_push($itemArray, (object)[
+                            'idItem' => $dataDateTengahAkhirBulan->listItemSOs[$j]->id,
+                            'item'   => $dataDateTengahAkhirBulan->listItemSOs[$j]->Item,
+                            'satuan' => $dataDateTengahAkhirBulan->listItemSOs[$j]->satuans->Satuan,
+                            'icon' => $dataDateTengahAkhirBulan->listItemSOs[$j]->icon,
+                            'idRev' => $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->idRevisi,
+                            'qty'    => $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->quantityRevisi,
+                            'idSoFill' => $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->id
+                        ]);
+                    } else {
+                        //Jika statusnya tidak direvisi maupun sudah direvisi
+                        array_push($itemArray, (object)[
+                            'idItem' => $dataDateTengahAkhirBulan->listItemSOs[$j]->id,
+                            'item'   => $dataDateTengahAkhirBulan->listItemSOs[$j]->Item,
+                            'satuan' => $dataDateTengahAkhirBulan->listItemSOs[$j]->satuans->Satuan,
+                            'icon' => $dataDateTengahAkhirBulan->listItemSOs[$j]->icon,
+                            'idRev' => $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->idRevisi,
+                            'qty'    => $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->quantity,
+                            'idSoFill' => $dataDateTengahAkhirBulan->listItemSOs[$j]->pivot->id
+                        ]);
+                    }
+                }
+            }
+        }
+
         return response()->json([
             // 'countItem' => $datafso->count(),
-            'pengisi' => $dataDate->dUsers['Nama Lengkap'],
+            // 'pengisi' => $dataDate->dUsers['Nama Lengkap'],
             'itemfso' => $itemArray
         ]);
     }
@@ -351,7 +439,7 @@ class fsoHarianController extends Controller
         echo $dataa;
     }
 
-    public function showDateRevision($fromDate,$toDate)
+    public function showDateRevision($fromDate, $toDate)
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         $soDate = [];
@@ -406,7 +494,7 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function showDateRevisionDone($fromDate,$toDate)
+    public function showDateRevisionDone($fromDate, $toDate)
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         $soDate = [];
@@ -488,13 +576,13 @@ class fsoHarianController extends Controller
             if ($fsoharian != null) {
                 $listItemSO = $fsoharian->listItemSOs;
                 // @dd($listItemSO[0]->pivot);
-                for ($i = 0; $i < $listItemSO->count(); $i++){
-                    $limSoHarian = $soHarianBatas->where('idItemSo','=',$listItemSO[$i]->id)->first()->quantity;
+                for ($i = 0; $i < $listItemSO->count(); $i++) {
+                    $limSoHarian = $soHarianBatas->where('idItemSo', '=', $listItemSO[$i]->id)->first()->quantity;
                     $valSoHarian = $listItemSO[$i]->pivot->quantity;
-                    if($listItemSO[$i]->pivot->idRevisi == '2'){
+                    if ($listItemSO[$i]->pivot->idRevisi == '2') {
                         $valSoHarian = $listItemSO[$i]->pivot->quantityRevisi;
                     }
-                    if($valSoHarian < $limSoHarian){
+                    if ($valSoHarian < $limSoHarian) {
                         array_push($dataLimitSo, (object)[
                             'quantity' => $valSoHarian,
                             'item' => $listItemSO[$i]->Item,
