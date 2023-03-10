@@ -92,6 +92,7 @@ Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRe
 
 Route::get('soHarian/show/revision/all/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevisionDone']);
+Route::get('soHarian/show/history',[fsoHarianController::class, 'showHistory']);
 
 Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
 Route::get('soHarian/setting/soBatas/show/{idOutlet}', [fsoHarianController::class, 'showBatas']);
@@ -388,6 +389,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/verifikasi', function () {
         return view('accountingControl.verifikasiSales.index');
+    });
+
+    Route::get('accounting/stockOpname', function(){
+        return view('accountingControl.stockOpname.index');
     });
     
     Route::get('accounting/so/item', function () {

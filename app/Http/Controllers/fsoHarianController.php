@@ -207,22 +207,22 @@ class fsoHarianController extends Controller
 
         if ($tengahBulan) {
             if ($idSesi == 1) {
-                try{
+                try {
                     $tanggalSebelum = date("Y-m-t", strtotime(date("Y-m-d", strtotime($date)) . " -1 month"));
                     $dataDateTengahAkhirBulan = tanggalAll::where('Tanggal', '=', $tanggalSebelum)->first()->fsoHarians
                         ->where('idOutlet', '=', $id)->sortByDesc('idSesi')->first();
-                }catch(Exception $e){
+                } catch (Exception $e) {
                     $dataDateTengahAkhirBulan = null;
                 }
             }
         }
         if ($akhirBulan) {
             if ($idSesi == 1) {
-                try{
+                try {
                     $tanggalSebelum = date('Y-m-15', strtotime($date));
                     $dataDateTengahAkhirBulan = tanggalAll::where('Tanggal', '=', $tanggalSebelum)->first()->fsoHarians
                         ->where('idOutlet', '=', $id)->sortByDesc('idSesi')->first();
-                }catch(Exception $e){
+                } catch (Exception $e) {
                     $dataDateTengahAkhirBulan = null;
                 }
             }
@@ -233,20 +233,18 @@ class fsoHarianController extends Controller
         //mengambil data dari hari kemarin jika $idSesi = 1 dan ambil di sesi terakhir mengisi
         if ($idSesi == 1) {
             $dateYesterday = date('Y-m-d', strtotime($date . ' -1 day'));
-            try{
+            try {
                 $dataDate = tanggalAll::where('Tanggal', '=', $dateYesterday)->first()->fsoHarians
                     ->where('idOutlet', '=', $id)->sortByDesc('idSesi')->first();
-            }catch(Exception $e){
-                
+            } catch (Exception $e) {
             }
             // @dd($dataDate);
         } else {
             //Mengambil data dari sesi sebelumnya jika data merupakan hari ini
-            try{
+            try {
                 $dataDate = tanggalAll::where('Tanggal', '=', $date)->first()->fsoHarians
                     ->where('idOutlet', '=', $id)->where('idSesi', '=', ($idSesi - 1))->first();
-            }catch(Exception $e){
-                
+            } catch (Exception $e) {
             }
             // @dd($dataDate);
         }
@@ -595,6 +593,130 @@ class fsoHarianController extends Controller
         }
         return response()->json([
             'dataLimitSo' => $dataLimitSo
+        ]);
+    }
+
+    public function showHistory(Request $request)
+    {
+        $idOutlet = $request->idOutlet;
+        $countData = $request->countData;
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $accessRole = $request->accessRole;
+
+        $now = Carbon::now();
+        $outletArray = [];
+        $allData = [];
+
+        $dataItemSo = [];
+        $allItemSo = listItemSO::all();
+        foreach($allItemSo as $eachItemSO){
+            array_push($dataItemSo,(object)[
+                'id' => $eachItemSO->id,
+                'Item' => $eachItemSO->Item,
+                'Satuan' => $eachItemSO->satuans->Satuan
+            ]);
+        }
+
+        if ($idOutlet == 0) {
+            $tempOutlet = doutlet::all();
+            for ($i = 0; $i < $tempOutlet->count(); $i++) {
+                array_push($outletArray, $tempOutlet[$i]->id);
+            }
+        } else {
+            array_push($outletArray, $idOutlet);
+        }
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['fsoharians.listItemSOs.satuans'])->get();
+
+        if ($countData == 'today') {
+            $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
+        } else if ($countData == '7day') {
+            $from = $now->format('Y-m-d');
+            $to = $now->subDays(7)->format('Y-m-d');
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == '30day') {
+            $from = $now->format('Y-m-d');
+            $to = $now->subDays(30)->format('Y-m-d');
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == 'between') {
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($startDate, $stopDate));
+        } else if ($countData == 'all') {
+            $allDate = $tanggalAll;
+        }
+
+        // @dd($allDate[2]->fsoharians);
+
+        for ($indexOutletLoop = 0; $indexOutletLoop < count($outletArray); $indexOutletLoop++) {
+            $dataFound = false;
+
+            $allHistory = [];
+            $namaOutlet = doutlet::find($outletArray[$indexOutletLoop])['Nama Store'];
+            foreach ($allDate as $loopTanggal) {
+                $allDataSesi = [];
+                $soHarianAll = $loopTanggal->fsoharians->where('idOutlet', '=', $outletArray[$indexOutletLoop]);
+
+                $tengahBulan = false;
+                $akhirBulan = false;
+
+                if (date('d', strtotime($loopTanggal->Tanggal)) == 15) {
+                    $tengahBulan = true;
+                }
+                if (date("Y-m-d", strtotime($loopTanggal->Tanggal)) == date("Y-m-t", strtotime($loopTanggal->Tanggal))) {
+                    $akhirBulan = true;
+                }
+
+                if ($accessRole == 'accounting') {
+                    if(!$tengahBulan){
+                        if(!$akhirBulan){
+                            continue;
+                        }
+                    }
+                }
+
+                $loopSesi = 0;
+                foreach ($soHarianAll as $soHarian) {
+                    $dataSoHarian = [];
+                    if($loopSesi > 0){
+                        continue;
+                    }
+                    foreach ($soHarian->listItemSOs as $itemSo) {
+                        $quantity = $itemSo->pivot->quantity;
+                        if ($itemSo->pivot->idRevisi == 2) {
+                            $quantity = $itemSo->pivot->quantityRevisi;
+                        }
+                        array_push($dataSoHarian, (object)[
+                            'idItem' => $itemSo->id,
+                            'Item' => $itemSo->Item,
+                            'Satuan' => $itemSo->satuans->Satuan,
+                            'quantity' => $quantity,
+                            'idRevisi' => $itemSo->pivot->idRevisi
+                        ]);
+                        $dataFound = true;
+                    }
+                    array_push($allDataSesi, (object)[
+                        'idSesi' => $soHarian->idSesi,
+                        'dataSo' => $dataSoHarian
+                    ]);
+                    $loopSesi++;
+                }
+                array_push($allHistory, (object)[
+                    'Tanggal' => $loopTanggal->Tanggal,
+                    'dataSo' => $allDataSesi
+                ]);
+            }
+            // $allHistory = array_reverse($allHistory, false);
+
+            if($dataFound){
+                array_push($allData, (object)[
+                    'dataHistory' => $allHistory,
+                    'outlet' => $namaOutlet
+                ]);
+            }
+        }
+        // @dd($allData);
+        return response()->json([
+            'allData' => $allData,
+            'dataItemSO'=> $dataItemSo
         ]);
     }
 
