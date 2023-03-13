@@ -25,12 +25,15 @@
             <thead>
                 <tr>
                     <td>Tanggal</td>
-                    <td>Item</td>
-                    <td>Sesi</td>
+                    <td>Outlet</td>
+                    <td>Kategori Akun</td>
+                    <td>Jenis Item</td>
+                    <td>Item Kas</td>
                     <td>Qty</td>
                     <td>Satuan</td>
-                    <td>Total</td>
-                    <td>Saldo Patty Cash</td>
+                    <td>Harga Satuan</td>
+                    <td>Harga Total</td>
+                    <td>Saldo</td>
                     <td>Status</td>
                 </tr>
             </thead>

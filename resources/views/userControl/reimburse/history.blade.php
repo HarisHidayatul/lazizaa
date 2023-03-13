@@ -340,6 +340,7 @@
                 var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                 var imgPending = "{{ url('img/icon/pending.png') }}";
                 console.log(obj);
+                obj = obj.allData[0];
                 var totalReimburse = 0;
                 var totalPembelian = 0;
                 var totalPattyCash = parseInt(obj.saldoPattyCash);

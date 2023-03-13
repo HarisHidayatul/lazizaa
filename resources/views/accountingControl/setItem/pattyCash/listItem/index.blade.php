@@ -10,6 +10,10 @@
             <select class="form-control" id="showSatuanAdd">
             </select>
         </div>
+        <div class="form-group col-sm-2">
+            <select class="form-control" id="showJenisAdd">
+            </select>
+        </div>
         <div class="form-group">
             <button type="button" onclick="sendAddItem();" class="btn btn-secondary">Submit</button>
         </div>
@@ -21,6 +25,8 @@
             <th>ID</th>
             <th>Nama Item</th>
             <th>Satuan</th>
+            <th>Jenis Item</th>
+            <th>Kategori Item</th>
             <th>Edit</th>
         </tr>
     </thead>

@@ -10,6 +10,8 @@ use App\Models\listItemPattyCash;
 use App\Models\pattyCashFill;
 use App\Models\pattyCashHarian;
 use App\Models\reqItemPattyCash;
+use App\Models\kategori_patty_cash;
+use App\Models\jenis_patty_cash;
 use App\Models\satuan;
 use App\Models\tanggalAll;
 use Exception;
@@ -29,9 +31,22 @@ class pattyCashController extends Controller
 
     public function initAllDataPattyCash()
     {
+        //Fungsi ini merupakan fungsi untuk inisialisasi awal data patty cash, data ini berada didalam file csv pada folder public
         $filePath = public_path('initFile/initPattyCash.csv'); // path to the CSV file
         $csvData = [];
         $rowNum = 0;
+
+        //Kategori patty cash array ini memiliki [namaKategori,id]
+        $kategoriPattyCashArray = [];
+
+        //Jenis patty cash array ini memiliki [namaJenis,id]
+        $jenisPattyCashArray = [];
+
+        //Satuan ini memiliki [Satuan,id]
+        $satuanArray = [];
+
+        //List item patty cash ini memilki [item,id]
+        $itemPattyCashArray = [];
 
         if (($handle = fopen($filePath, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -44,15 +59,164 @@ class pattyCashController extends Controller
             fclose($handle);
         }
 
-        for ($i = 0; $i < count($csvData); $i++) {
-            
+        //Dapatkan data kategori patty cash
+        $kategori_patty_cash_all = kategori_patty_cash::all();
+        for ($i = 0; $i < $kategori_patty_cash_all->count(); $i++) {
+            $tempData = [$kategori_patty_cash_all[$i]->namaKategori, $kategori_patty_cash_all[$i]->id];
+            array_push($kategoriPattyCashArray, $tempData);
         }
-        @dd($csvData);
 
-        // Output each line of CSV data
-        // foreach ($csvData as $row) {
-        //     echo implode(" + ", $row) . "<br>";
-        // }
+        //Dapatkan data jenis patty cash
+        $jenis_patty_cash_all = jenis_patty_cash::all();
+        for ($i = 0; $i < $jenis_patty_cash_all->count(); $i++) {
+            $tempData = [$jenis_patty_cash_all[$i]->namaJenis, $jenis_patty_cash_all[$i]->id];
+            array_push($jenisPattyCashArray, $tempData);
+        }
+
+        //Dapatkan data satuan
+        $satuan_all = satuan::all();
+        for ($i = 0; $i < $satuan_all->count(); $i++) {
+            $tempData = [$satuan_all[$i]->Satuan, $satuan_all[$i]->id];
+            array_push($satuanArray, $tempData);
+        }
+
+        //Dapatkan data patty cash
+        $list_item_patty_cash_all = listItemPattyCash::all();
+        for ($i = 0; $i < $list_item_patty_cash_all->count(); $i++) {
+            $tempData = [$list_item_patty_cash_all[$i]->Item, $list_item_patty_cash_all[$i]->id];
+            array_push($itemPattyCashArray, $tempData);
+        }
+
+        for ($i = 0; $i < count($csvData); $i++) {
+            //Mulai perulangan untuk masing masing baris pada sebuah array
+
+            $foundKategori = false;
+            $indexIfFoundKategori = 0;
+
+            $foundJenis = false;
+            $indexIfFoundJenis = 0;
+
+            $foundSatuan = false;
+            $indexIfFoundSatuan = 0;
+
+            $foundItem = false;
+            $indexIfFoundItem = 0;
+
+            //Mulai cari id kategori
+            for ($j = 0; $j < count($kategoriPattyCashArray); $j++) {
+                if ($kategoriPattyCashArray[$j][0] == $csvData[$i][3]) {
+                    $foundKategori = true;
+                    $indexIfFoundKategori = $j;
+                    break;
+                }
+            }
+            if (!$foundKategori) {
+                $kategori_patty_cash_insert = new kategori_patty_cash();
+                $kategori_patty_cash_insert->namaKategori = $csvData[$i][3];
+                $kategori_patty_cash_insert->save();
+
+                $tempData = [$csvData[$i][3], $kategori_patty_cash_insert->id];
+                array_push($kategoriPattyCashArray, $tempData);
+                for ($j = 0; $j < count($kategoriPattyCashArray); $j++) {
+                    //Mulai cari id kategori
+                    if ($kategoriPattyCashArray[$j][0] == $csvData[$i][3]) {
+                        $foundKategori = true;
+                        $indexIfFoundKategori = $j;
+                        break;
+                    }
+                }
+            }
+            //End cari id kategori
+
+            //Mulai cari jenis
+            for ($j = 0; $j < count($jenisPattyCashArray); $j++) {
+                if ($jenisPattyCashArray[$j][0] == $csvData[$i][2]) {
+                    $foundJenis = true;
+                    $indexIfFoundJenis = $j;
+                    break;
+                }
+            }
+            if (!$foundJenis) {
+                $jenis_patty_cash_insert = new jenis_patty_cash();
+                $jenis_patty_cash_insert->namaJenis = $csvData[$i][2];
+                $jenis_patty_cash_insert->idKategori = $kategoriPattyCashArray[$indexIfFoundKategori][1];
+                $jenis_patty_cash_insert->save();
+
+                $tempData = [$csvData[$i][2], $jenis_patty_cash_insert->id];
+                array_push($jenisPattyCashArray, $tempData);
+                for ($j = 0; $j < count($jenisPattyCashArray); $j++) {
+                    //Mulai cari id kategori
+                    if ($jenisPattyCashArray[$j][0] == $csvData[$i][2]) {
+                        $foundJenis = true;
+                        $indexIfFoundJenis = $j;
+                        break;
+                    }
+                }
+            }
+            //End cari jenis
+
+            //Mulai cari satuan
+            for ($j = 0; $j < count($satuanArray); $j++) {
+                if (strtoupper($satuanArray[$j][0]) == strtoupper($csvData[$i][1])) {
+                    $foundSatuan = true;
+                    $indexIfFoundSatuan = $j;
+                    break;
+                }
+            }
+            if (!$foundSatuan) {
+                $satuan_insert = new satuan();
+                $satuan_insert->Satuan = $csvData[$i][1];
+                $satuan_insert->save();
+
+                $tempData = [$csvData[$i][1], $satuan_insert->id];
+                array_push($satuanArray, $tempData);
+                for ($j = 0; $j < count($satuanArray); $j++) {
+                    //Mulai cari id kategori
+                    if (strtoupper($satuanArray[$j][0]) == strtoupper($csvData[$i][1])) {
+                        $foundSatuan = true;
+                        $indexIfFoundSatuan = $j;
+                        break;
+                    }
+                }
+            }
+            //End cari satuan
+
+            //Mulai cari item
+            for ($j = 0; $j < count($itemPattyCashArray); $j++) {
+                if (strtoupper($itemPattyCashArray[$j][0]) == strtoupper($csvData[$i][0])) {
+                    $foundItem = true;
+                    $indexIfFoundItem = $j;
+                    break;
+                }
+            }
+            if (!$foundItem) {
+                $item_insert = new listItemPattyCash();
+                $item_insert->Item = $csvData[$i][0];
+                $item_insert->idSatuan = $satuanArray[$indexIfFoundSatuan][1];
+                $item_insert->idJenisItem = $jenisPattyCashArray[$indexIfFoundJenis][1];
+                $item_insert->save();
+
+                $tempData = [$csvData[$i][0], $item_insert->id];
+                array_push($itemPattyCashArray, $tempData);
+                for ($j = 0; $j < count($itemPattyCashArray); $j++) {
+                    //Mulai cari id kategori
+                    if (strtoupper($itemPattyCashArray[$j][0]) == strtoupper($csvData[$i][0])) {
+                        $foundItem = true;
+                        $indexIfFoundItem = $j;
+                        break;
+                    }
+                }
+            }
+            //End cari item
+        }
+
+        $brandAll = dbrand::all();
+        for ($i = 0; $i < $brandAll->count(); $i++) {
+            for ($j = 0; $j < count($itemPattyCashArray); $j++) {
+                $this->storeBrandItem2($brandAll[$i]->id, $itemPattyCashArray[$j][1]);
+            }
+        }
+        print_r(json_encode($itemPattyCashArray));
     }
 
     /**
@@ -96,18 +260,37 @@ class pattyCashController extends Controller
         //
         $dataArray = [
             'Item' => $request->item,
-            'idSatuan' => $request->idSatuan
+            'idSatuan' => $request->idSatuan,
+            'idJenisItem' => $request->idJenis
         ];
         listItemPattyCash::create($dataArray);
     }
+    public function storeJenis(Request $request){
+        $dataArray = [
+            'namaJenis' => $request->namaJenis,
+            'idKategori' => $request->idKategori
+        ];
+        jenis_patty_cash::create($dataArray);
+    }
+    public function storeKategori(Request $request){
+        $dataArray = [
+            'namaKategori' => $request->namaKategori
+        ];
+        kategori_patty_cash::create($dataArray);
+    }
+
     public function storeBrandItem(Request $request)
     {
-        $checkData = brandPattyCash::where('idBrand', '=', $request->idBrand)->where('idListItem', '=', $request->idListItem)->get();
+        $this->storeBrandItem2($request->idBrand, $request->idListItem);
+    }
+    public function storeBrandItem2($idBrand, $idListItem)
+    {
+        $checkData = brandPattyCash::where('idBrand', '=', $idBrand)->where('idListItem', '=', $idListItem)->get();
         // @dd($checkData);
         if ($checkData->count() == '0') {
             $dataArray = [
-                'idBrand' => $request->idBrand,
-                'idListItem' => $request->idListItem
+                'idBrand' => $idBrand,
+                'idListItem' => $idListItem
             ];
             brandPattyCash::create($dataArray);
         }
@@ -462,28 +645,40 @@ class pattyCashController extends Controller
     public function showAll()
     {
         //tampilkan seluruh listpattyCash
-        $listPattyCash = listItemPattyCash::all();
+        $listPattyCash = listItemPattyCash::with('jenis_patty_cashs.kategori_patty_cashs', 'satuans')->get();
         $arraylistPattyCash = [];
         $satuan = satuan::all();
+        $jenis = jenis_patty_cash::all();
         $arraySatuan = [];
+        $arrayJenis = [];
         for ($i = 0; $i < $satuan->count(); $i++) {
             array_push($arraySatuan, (object)[
                 'id' => $satuan[$i]->id,
                 'satuan' => $satuan[$i]->Satuan
             ]);
         }
+        for ($i = 0; $i < $jenis->count(); $i++) {
+            array_push($arrayJenis,(object)[
+                'id' => $jenis[$i]->id,
+                'namaJenis' => $jenis[$i]->namaJenis
+            ]);
+        }
         for ($i = 0; $i < $listPattyCash->count(); $i++) {
             array_push($arraylistPattyCash, (object)[
-                'id' => $listPattyCash[$i]['id'],
-                'Item' => $listPattyCash[$i]['Item'],
+                'id' => $listPattyCash[$i]->id,
+                'Item' => $listPattyCash[$i]->Item,
                 'Satuan' => $listPattyCash[$i]->satuans['Satuan'],
-                'idSatuan' => $listPattyCash[$i]->idSatuan
+                'idSatuan' => $listPattyCash[$i]->idSatuan,
+                'jenis' => $listPattyCash[$i]->jenis_patty_cashs->namaJenis,
+                'idJenis' => $listPattyCash[$i]->jenis_patty_cashs->id,
+                'kategori' => $listPattyCash[$i]->jenis_patty_cashs->kategori_patty_cashs->namaKategori
             ]);
         }
         return response()->json([
             'countItem' => $listPattyCash->count(),
             'listPattyCash' => $arraylistPattyCash,
-            'satuan' => $arraySatuan
+            'satuan' => $arraySatuan,
+            'jenis' => $arrayJenis
         ]);
     }
 
@@ -542,17 +737,37 @@ class pattyCashController extends Controller
     public function showSatuan()
     {
         $dataa = satuan::all();
+        $dataJenis = jenis_patty_cash::with('kategori_patty_cashs')->get();
+        $dataKategori = kategori_patty_cash::all();
         // @dd($dataa);
         $array = [];
+        $arrayJenis = [];
+        $arrayKategori = [];
         for ($i = 0; $i < $dataa->count(); $i++) {
             array_push($array, (object)[
                 'id' => $dataa[$i]['id'],
                 'Satuan' => $dataa[$i]['Satuan']
             ]);
         }
+        for($i=0;$i<$dataJenis->count();$i++){
+            array_push($arrayJenis,(object)[
+                'id' => $dataJenis[$i]->id,
+                'namaJenis' => $dataJenis[$i]->namaJenis,
+                'idKategori' => $dataJenis[$i]->kategori_patty_cashs->id,
+                'kategori' => $dataJenis[$i]->kategori_patty_cashs->namaKategori
+            ]);
+        }
+        for($i = 0;$i<$dataKategori->count();$i++){
+            array_push($arrayKategori,(object)[
+                'id' => $dataKategori[$i]->id,
+                'namaKategori' => $dataKategori[$i]->namaKategori
+            ]);
+        }
         return response()->json([
             'countItem' => $dataa->count(),
-            'dataItem' => $array
+            'dataItem' => $array,
+            'dataJenis' => $arrayJenis,
+            'dataKategori' => $arrayKategori
         ]);
     }
 
@@ -981,7 +1196,22 @@ class pattyCashController extends Controller
         $listPattyCash = listItemPattyCash::find($id);
         $listPattyCash->update([
             'Item' => $request->Item,
-            'idSatuan' => $request->idSatuan
+            'idSatuan' => $request->idSatuan,
+            'idJenisItem' => $request->idJenis
+        ]);
+    }
+
+    public function updateJenis(Request $request, $id){
+        $jenis_patty_cash = jenis_patty_cash::find($id);
+        $jenis_patty_cash->update([
+            'namaJenis' => $request->namaJenis,
+            'idKategori' => $request->idKategori
+        ]);
+    }
+    public function updateKategori(Request $request, $id){
+        $kategori_patty_cash = kategori_patty_cash::find($id);
+        $kategori_patty_cash->update([
+            'namaKategori' => $request->namaKategori
         ]);
     }
 

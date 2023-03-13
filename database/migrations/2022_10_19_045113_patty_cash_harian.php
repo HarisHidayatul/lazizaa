@@ -17,7 +17,17 @@ return new class extends Migration
         Schema::create('kategori_patty_cash', function (Blueprint $table){
             $table->id();
 
-            $table->string('namaKategori',25);
+            $table->string('namaKategori');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        Schema::create('jenis_patty_cash',function(Blueprint $table){
+            $table->id();
+            $table->string('namaJenis');
+
+            $table->unsignedBigInteger('idKategori');
+            $table->foreign('idKategori')->references('id')->on('kategori_patty_cash');
 
             $table->timestamps();
             $table->softDeletes();
@@ -25,13 +35,13 @@ return new class extends Migration
         Schema::create('list_item_patty_cash', function (Blueprint $table) {
             $table->id();
 
-            $table->string('Item',25);
+            $table->string('Item');
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
 
-            $table->unsignedBigInteger('idKategori');
-            $table->foreign('idKategori')->references('id')->on('kategori_patty_cash');
+            $table->unsignedBigInteger('idJenisItem');
+            $table->foreign('idJenisItem')->references('id')->on('jenis_patty_cash');
 
             $table->timestamps();
             $table->softDeletes();

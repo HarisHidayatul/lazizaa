@@ -81,7 +81,7 @@ Route::get('show/outlet', [typeOutletItemController::class, 'indexOutlet']);
 
 Route::get('soHarian/user/showTable/{id}', [fsoHarianController::class, 'show']); //show id untuk outlet
 Route::get('soHarian/user/showDetail/{id}/{date}/{idSesi}', [fsoHarianController::class, 'showOnDate']); //show id untuk outlet, berdasarkan tanggal
-Route::get('soHarian/user/showDetailLastSesi/{id}/{date}', [fsoHarianController::class, 'showOnDateLastSesi']);
+Route::get('soHarian/user/showDetailLastSesi/{id}/{date}/{idSesi}', [fsoHarianController::class, 'showOnDateLastSesi']); //menampilkan data so kemarin
 
 Route::get('soHarian/date/getId', [fsoHarianController::class, 'showAndCreateID']);
 Route::get('soHarian/store/data', [soFillController::class, 'store']);
@@ -92,6 +92,7 @@ Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRe
 
 Route::get('soHarian/show/revision/all/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevisionDone']);
+Route::get('soHarian/show/history',[fsoHarianController::class, 'showHistory']);
 
 Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
 Route::get('soHarian/setting/soBatas/show/{idOutlet}', [fsoHarianController::class, 'showBatas']);
@@ -163,8 +164,15 @@ Route::get('pattyCash/show/revision/all/{fromDate}/{toDate}', [pattyCashControll
 Route::get('pattyCash/show/revision/done/{fromDate}/{toDate}', [pattyCashController::class, 'showDateRevisionDone']);
 
 Route::get('pattyCash/outlet/show', [pattyCashController::class, 'showAllOutlet']);
+
 Route::get('pattyCash/items/store', [pattyCashController::class, 'storeItem']);
+Route::get('pattyCash/jenisItem/store',[pattyCashController::class,'storeJenis']);
+Route::get('pattyCash/kategoriItem/store',[pattyCashController::class,'storeKategori']);
+
 Route::get('pattyCash/update/item/{id}', [pattyCashController::class, 'updateItem']);
+Route::get('pattyCash/update/jenis/{id}', [pattyCashController::class, 'updateJenis']);
+Route::get('pattyCash/update/kategori/{id}', [pattyCashController::class, 'updateKategori']);
+
 Route::get('pattyCash/items/store/revision', [pattyCashController::class, 'storeItemRevision']);
 Route::get('pattyCash/items/store/revision/request', [pattyCashController::class, 'storeRevisionCheck']);
 Route::get('pattyCash/brands/store/item', [pattyCashController::class, 'storeBrandItem']);
@@ -250,7 +258,10 @@ Route::get('setoran', function () {
 
 Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}/{startDate}/{stopDate}', [reimburseController::class, 'showHistory']);
 Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
+
 Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
+Route::get('reimburse/update/history/allOutlet',[reimburseController::class,'updateAllHistoryOutlet']); //Merefresh semua history outlet
+
 Route::get('reimburse/update/accounting/revisi/{id}', [reimburseController::class, 'updateRevisiTerima']);
 Route::get('reimburse/delete/accounting/revisi/{id}', [reimburseController::class,'deleteRevisiTerima']);
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
@@ -379,6 +390,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/verifikasi', function () {
         return view('accountingControl.verifikasiSales.index');
     });
+
+    Route::get('accounting/stockOpname', function(){
+        return view('accountingControl.stockOpname.index');
+    });
     
     Route::get('accounting/so/item', function () {
         // return view('accountingControl.setItem.soHarian');
@@ -409,6 +424,12 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/pattyCash/item', function () {
         return view('accountingControl.setItem.pattyCash.listItem.index');
     });
+    Route::get('accounting/pattyCash/jenisItem',function(){
+        return view('accountingControl.setItem.pattyCash.jenisItem.index');
+    });
+    Route::get('accounting/pattyCash/kategoriItem',function(){
+        return view('accountingControl.setItem.pattyCash.kategoriItem.index');
+    });
     Route::get('accounting/pattyCash/brandItem', function () {
         return view('accountingControl.setItem.pattyCash.brandItem.index');
     });
@@ -424,6 +445,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
     Route::get('accounting/waste/pendingItem', function () {
         return view('accountingControl.setItem.waste.pendingItem.index');
+    });
+
+    Route::get('accounting/waste', function(){
+        return view('accountingControl.waste.index');
     });
 
     Route::get('accounting/satuan', function () {

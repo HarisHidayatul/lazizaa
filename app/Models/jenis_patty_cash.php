@@ -6,26 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class listItemPattyCash extends Model
+class jenis_patty_cash extends Model
 {
     use SoftDeletes;
     use HasFactory;
-    public $table = 'list_item_patty_cash';
+    public $table = 'jenis_patty_cash';
     public $guarded = ['id'];
     protected $primaryKey = 'id';
-
-    public function satuans(){
-        return $this->belongsTo(satuan::class,'idSatuan','id');
-    }
-
-    public function jenis_patty_cashs(){
-        return $this->belongsTo(jenis_patty_cash::class,'idJenisItem','id');
-    }
     
+    public function kategori_patty_cashs(){
+        return $this->belongsTo(kategori_patty_cash::class,'idKategori','id');
+    }
+
     protected $fillable = [
-        'Item',
-        'idSatuan',
-        'idJenisItem',
+        'namaJenis',
+        'idKategori',
         'created_at',
         'updated_at',
         'deleted_at'

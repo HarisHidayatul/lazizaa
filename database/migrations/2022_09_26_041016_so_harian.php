@@ -236,6 +236,7 @@ return new class extends Migration
         Schema::dropIfExists('brand_patty_cash');
         Schema::dropIfExists('patty_cash_harian');
         Schema::dropIfExists('list_item_patty_cash');
+        Schema::dropIfExists('jenis_patty_cash');
         Schema::dropIfExists('kategori_patty_cash');
 
         Schema::dropIfExists('req_item_waste');
