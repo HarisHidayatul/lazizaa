@@ -157,6 +157,12 @@
                             <p class="text">Stock Opname</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('accounting/waste') }}" class="nav-link" id="wasteReportTabMenu">
+                            <i class="nav-icon fas fa-trash-alt"></i>
+                            <p class="text">Waste</p>
+                        </a>
+                    </li>
                     <li class="nav-header">USER</li>
                     <li class="nav-item">
                         <a href="{{ url('user/logout') }}" class="nav-link">

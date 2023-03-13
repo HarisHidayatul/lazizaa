@@ -447,6 +447,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('accountingControl.setItem.waste.pendingItem.index');
     });
 
+    Route::get('accounting/waste', function(){
+        return view('accountingControl.waste.index');
+    });
+
     Route::get('accounting/satuan', function () {
         return view('accountingControl.setItem.satuan.index');
     });
