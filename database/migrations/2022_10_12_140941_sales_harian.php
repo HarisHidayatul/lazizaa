@@ -160,6 +160,41 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        
+        Schema::create('sales_harian_reimburse', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('idOutlet');
+            $table->foreign('idOutlet')->references('id')->on('doutlet'); //membuat relasi ke tabel dOutlet
+
+            $table->unsignedBigInteger('idTanggal');
+            $table->foreign('idTanggal')->references('id')->on('tanggal_all');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        
+        Schema::create('sales_reimburse',function(Blueprint $table){
+            $table->id();
+
+            $table->unsignedBigInteger('idSalesHarianReimburse');
+            $table->foreign('idSalesHarianReimburse')->references('id')->on('sales_harian_reimburse');
+
+            $table->mediumInteger('total')->unsigned()->nullable(false);
+            $table->mediumInteger('totalRevisi')->unsigned()->default('0');
+
+            $table->unsignedBigInteger('idRevisiTotal')->default('1');
+            $table->foreign('idRevisiTotal')->references('id')->on('revisi');
+
+            $table->unsignedBigInteger('idPengisi');
+            $table->foreign('idPengisi')->references('id')->on('duser'); //membuat relasi ke tabel dUser
+
+            $table->unsignedBigInteger('idPerevisi');
+            $table->foreign('idPerevisi')->references('id')->on('duser');
+
+            $table->timestamps();
+        });
     }
 
     /**

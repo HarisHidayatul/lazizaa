@@ -221,6 +221,9 @@ return new class extends Migration
         Schema::dropIfExists('so_fill');
         Schema::dropIfExists('fso_harian');
 
+        Schema::dropIfExists('sales_harian_reimburse');
+        Schema::dropIfExists('sales_reimburse');
+
         Schema::dropIfExists('req_item_sales');
         Schema::dropIfExists('outlet_list_sales');
         Schema::dropIfExists('sales_fill');
