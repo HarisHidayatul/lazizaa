@@ -8,6 +8,8 @@ use App\Models\reimburse;
 use App\Models\tanggalAll;
 use App\Models\tempImgAll;
 use App\Models\doutlet;
+use App\Models\sales_harian_reimburse;
+use App\Models\sales_reimburse;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -44,6 +46,64 @@ class reimburseController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function storeDataReimburseSales(Request $request)
+    {
+        $idOutlet = $request->idOutlet;
+        $tanggal = $request->tanggal;
+        $total = $request->total;
+        $idPengisi = $request->idPengisi;
+
+        $tanggalAll = new tanggalAll();
+        $salesHarianReimburse = new sales_harian_reimburse();
+        $salesReimburse = new sales_reimburse();
+
+        $tanggalAllFind = tanggalAll::where('Tanggal', '=', $tanggal)->get();
+        if ($tanggalAllFind->count() == 0) {
+            $tanggalAll->Tanggal = $tanggal;
+            $tanggalAll->save();
+        } else {
+            $tanggalAll = $tanggalAllFind->first();
+        }
+
+
+        //cari sales harian reimburse
+        $salesHarianFind = sales_harian_reimburse::where('idOutlet', '=', $idOutlet)->get();
+        if ($salesHarianFind->count() == 0) {
+            $salesHarianReimburse->idOutlet = $idOutlet;
+            $salesHarianReimburse->idTanggal = $tanggalAll->id;
+            $salesHarianReimburse->save();
+        } else {
+            $salesHarianFind = $salesHarianFind->where('idTanggal', '=', $tanggalAll->id);
+            if ($salesHarianFind->count() == 0) {
+                $salesHarianReimburse->idOutlet = $idOutlet;
+                $salesHarianReimburse->idTanggal = $tanggalAll->id;
+                $salesHarianReimburse->save();
+            } else {
+                $salesHarianReimburse = $salesHarianFind->first();
+            }
+        }
+
+        $salesReimburseFind = $salesHarianReimburse->sales_reimburses;
+        if ($salesReimburseFind == null) {
+            $salesReimburse->idSalesHarianReimburse = $salesHarianReimburse->id;
+            $salesReimburse->total = $total;
+            $salesReimburse->idPengisi = $idPengisi;
+            $salesReimburse->idPerevisi = $idPengisi;
+            $salesReimburse->save();
+        } else {
+            $salesReimburse = $salesReimburseFind;
+            $salesReimburse->totalRevisi = $total;
+            $salesReimburse->idPerevisi = $idPengisi;
+            $salesReimburse->idRevisiTotal = '2';
+            $salesReimburse->save();
+        }
+        // @dd($salesReimburse);
+        return response()->json([
+            'idSalesHarianReimburse' => $salesReimburse->idSalesHarianReimburse,
+            'idSalesReimburse' => $salesReimburse->id
+        ]);
     }
 
     public function storeDataReimburse(Request $request)
@@ -135,6 +195,25 @@ class reimburseController extends Controller
         //
     }
 
+    public function showDetailSales($idDetail)
+    {
+        $sales_reimburse = sales_reimburse::find($idDetail);
+        $sales_harian_reimburse = $sales_reimburse->salesHarianReimburses;
+        $tanggal = $sales_harian_reimburse->tanggalAlls->Tanggal;
+        $total = $sales_reimburse->total;
+        $namaPengisi = $sales_reimburse->dUsers['Nama Lengkap'];
+        if ($sales_reimburse->idRevisiTotal == '2') {
+            $total = $sales_reimburse->totalRevisi;
+        }
+        // @dd($tanggal);
+        return response()->json([
+            'tanggal' => $tanggal,
+            'idRevisiTotal' => $sales_reimburse->idRevisiTotal,
+            'total' => $total,
+            'namaPengisi' => $namaPengisi
+        ]);
+    }
+
     public function showDetail($idDetail)
     {
         $penerimaReimburse = penerimaReimburse::find($idDetail);
@@ -213,15 +292,15 @@ class reimburseController extends Controller
         $outletArray = [];
         $allData = [];
 
-        if($idOutlet == 0){
+        if ($idOutlet == 0) {
             $tempOutlet = doutlet::all();
-            for($i=0;$i<$tempOutlet->count();$i++){
-                array_push($outletArray,$tempOutlet[$i]->id);
+            for ($i = 0; $i < $tempOutlet->count(); $i++) {
+                array_push($outletArray, $tempOutlet[$i]->id);
             }
-        }else{
-            array_push($outletArray,$idOutlet);
+        } else {
+            array_push($outletArray, $idOutlet);
         }
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans','pattyCashHarians.listItemPattyCashs.jenis_patty_cashs.kategori_patty_cashs'])->get();
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans', 'pattyCashHarians.listItemPattyCashs.jenis_patty_cashs.kategori_patty_cashs'])->get();
 
         if ($countData == 'today') {
             $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
@@ -239,7 +318,7 @@ class reimburseController extends Controller
             $allDate = $tanggalAll;
         }
 
-        for($indexOutletLoop = 0; $indexOutletLoop < count($outletArray);$indexOutletLoop++){
+        for ($indexOutletLoop = 0; $indexOutletLoop < count($outletArray); $indexOutletLoop++) {
             $pergerakanSaldo = 0;
             $allHistory = [];
             $namaOutlet = doutlet::find($outletArray[$indexOutletLoop])['Nama Store'];
@@ -247,15 +326,16 @@ class reimburseController extends Controller
             for ($i = 0; $i < $tanggalAll->count(); $i++) {
 
                 $reimburseTanggalIni = [];
+                $reimburseSales = [];
                 $pattyCash = [];
                 $dataFound = false;
-    
+
                 try {
                     $reimburseAll = $allDate[$i]->reimburses->where('idOutlet', '=', $outletArray[$indexOutletLoop]);
-    
+
                     $reimburse = $reimburseAll->first();
                     $pergerakanSaldo = $reimburse->saldoTerakhir;
-    
+
                     $pembelianHarian = $allDate[$i]->pattyCashHarians;
                     $reimburseHarian = $reimburse->penerimaReimburses;
                     // @dd($reimburseHarian);
@@ -272,7 +352,7 @@ class reimburseController extends Controller
                         $dataFound = true;
                     }
                     $reimburseTanggalIni = array_reverse($reimburseTanggalIni, false);
-    
+
                     $pembelianHarian = $pembelianHarian->where('idOutlet', '=', $outletArray[$indexOutletLoop]);
                     for ($k = 0; $k < $allDate[$i]->pattyCashHarians->count(); $k++) {
                         try {
@@ -288,7 +368,7 @@ class reimburseController extends Controller
                                 array_push($pattyCash, (object)[
                                     'item' => $pembelianList[$l]->Item,
                                     'jenisItem' => $pembelianList[$l]->jenis_patty_cashs->namaJenis,
-                                    'kategoriItem'=>$pembelianList[$l]->jenis_patty_cashs->kategori_patty_cashs->namaKategori,
+                                    'kategoriItem' => $pembelianList[$l]->jenis_patty_cashs->kategori_patty_cashs->namaKategori,
                                     'idSesi' => $idSesi,
                                     'total' => $totalPembelian,
                                     'qty' => $qtyPembelian,
@@ -303,12 +383,30 @@ class reimburseController extends Controller
                         }
                     }
                     $pattyCash = array_reverse($pattyCash, false);
-    
+
+
+                    $salesReimburse = $tanggalAll[$i]->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first()->sales_reimburses;
+                    if ($salesReimburse != null) {
+                        $totalSalesReimburse = $salesReimburse->total;
+                        if ($salesReimburse->idRevisiTotal == '2') {
+                            $totalSalesReimburse = $salesReimburse->totalRevisi;
+                        }
+                        $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
+                        array_push($reimburseSales,(object)[
+                            'id' => $salesReimburse->id,
+                            'idRevisiTotal' => $salesReimburse->idRevisiTotal,
+                            'total' => $totalSalesReimburse,
+                            'saldo' => $pergerakanSaldo
+                        ]);
+                        $dataFound = true;
+                    }
+
                     if ($dataFound) {
                         array_push($allHistory, (object)[
                             'tanggal' => $allDate[$i]->Tanggal,
                             'pattyCash' => $pattyCash,
-                            'reimburse' => $reimburseTanggalIni
+                            'reimburse' => $reimburseTanggalIni,
+                            'reimburseSales' => $reimburseSales
                         ]);
                     }
                 } catch (Exception $e) {
@@ -316,7 +414,7 @@ class reimburseController extends Controller
             }
             $allHistory = array_reverse($allHistory, false);
 
-            array_push($allData,(object)[
+            array_push($allData, (object)[
                 'dataHistory' => $allHistory,
                 'saldoPattyCash' => $pergerakanSaldo,
                 'outlet' => $namaOutlet
@@ -351,10 +449,20 @@ class reimburseController extends Controller
         //
     }
 
-    public function updateAllHistoryOutlet(){
+    public function updateSalesReimburse($idDetail, Request $request)
+    {
+        $sales_reimburse = sales_reimburse::find($idDetail);
+        $sales_reimburse->totalRevisi = $request->total;
+        $sales_reimburse->idRevisiTotal = '2';
+        $sales_reimburse->idPerevisi = $request->idPengisi;
+        $sales_reimburse->save();
+    }
+
+    public function updateAllHistoryOutlet()
+    {
         $outletAll = doutlet::all();
-        for($i=0;$i<3;$i++){
-            for($j=0;$j<$outletAll->count();$j++){
+        for ($i = 0; $i < 3; $i++) {
+            for ($j = 0; $j < $outletAll->count(); $j++) {
                 echo $outletAll[$j]['Nama Store'];
                 echo '<br>';
                 $this->updateAllHistory($outletAll[$j]->id);
@@ -367,7 +475,7 @@ class reimburseController extends Controller
     {
         $pergerakanSaldo = 0;
         $awalSaldo = true;
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with('reimburses.penerimaReimburses', 'pattyCashHarians.listItemPattyCashs')->get();
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with('reimburses.penerimaReimburses', 'pattyCashHarians.listItemPattyCashs', 'salesHarianReimburses.sales_reimburses')->get();
         for ($i = 0; $i < $tanggalAll->count(); $i++) {
             $reimburseAll = $tanggalAll[$i]->reimburses;
             if (count($reimburseAll) == 0) {
@@ -443,6 +551,20 @@ class reimburseController extends Controller
                     }
                 } catch (Exception $e) {
                 }
+            }
+
+            $salesReimburse = $tanggalAll[$i]->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first()->sales_reimburses;
+            if ($salesReimburse != null) {
+                $totalSalesReimburse = $salesReimburse->total;
+                if ($salesReimburse->idRevisiTotal == '2') {
+                    $totalSalesReimburse = $salesReimburse->totalRevisi;
+                }
+
+                $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
+
+                echo "sales reimburse : ";
+                echo $totalSalesReimburse;
+                echo "<br>\n";
             }
         }
     }

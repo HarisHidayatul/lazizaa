@@ -16,6 +16,10 @@ class sales_reimburse extends Model
         return $this->belongsTo(sales_harian_reimburse::class,'idSalesHarianReimburse','id');
     }
 
+    public function dUsers(){
+        return $this->belongsTo(dUser::class,'idPengisi','id');
+    }
+
     protected $fillable = [
         'idSalesHarianReimburse',
         'total',

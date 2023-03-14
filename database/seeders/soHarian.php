@@ -23,13 +23,13 @@ class soHarian extends Seeder
     {
 
         // $faker = Faker::create();
-        // $satuan = array("gr","kg","pcs","scht");
-        // for($i=0;$i<count($satuan);$i++){
-        //     DB::table('satuan')->insert([
-        //         'Satuan' => $satuan[$i],
-        //         'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-        //     ]);
-        // }
+        $satuan = array("gr","kg","pcs","scht");
+        for($i=0;$i<count($satuan);$i++){
+            DB::table('satuan')->insert([
+                'Satuan' => $satuan[$i],
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+        }
         DB::table('list_sesi')->insert(
             array(
                 [
@@ -409,28 +409,28 @@ class soHarian extends Seeder
             ]
         );
 
-        // $itemSO = array(
-        //     'Beras', 'Milo', 'French Fries', 'Tepung Ori', 'Minyak Padat', 'Ayam Reg Kecil',
-        //     'Ayam Reg Besar', 'Ayam Utuh', 'Ayam Fillet', 'Ayam Small', 'Dori Triming',
-        //     'Chili Sachet', 'Tomat Sachet', 'Sambal Bawang','Sambal Korek','Sambal Bajak',
-        //     'Saus BBQ', 'Saus BP', 'Lunch Box', 'Rame Box', 'Box Geprek','Bubuk Candy', 'Bubble Gum',
-        //     'SKM'
-        // );
-        // $itemIcon = array(
-        //     'beras.svg','milo.svg','frenchfries.svg','tepungOri.svg','minyakpadat.svg','ayamRegKecil.svg',
-        //     'ayamRegBesar.svg', 'ayamUtuh.svg', 'ayamFillet.svg','ayamSmall.svg','doriTriming.svg',
-        //     'chiliSachet.svg','tomat.svg', 'sambalBawang.svg','sambalKorek.svg','sambalBajak.svg',
-        //     'sausBBQ.svg','sausBP.svg','lunchBox.svg','rameBox.svg','boxGeprek.svg','bubukCandy.svg','bubbleGum.svg',
-        //     'skm.svg'
-        // );
-        // for ($i = 0; $i < 24; $i++) {
-        //     DB::table('list_item_so')->insert([
-        //         'Item' => $itemSO[$i],
-        //         'icon' => $itemIcon[$i],
-        //         'idSatuan' => '1',
-        //         'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-        //     ]);
-        // }
+        $itemSO = array(
+            'Beras', 'Milo', 'French Fries', 'Tepung Ori', 'Minyak Padat', 'Ayam Reg Kecil',
+            'Ayam Reg Besar', 'Ayam Utuh', 'Ayam Fillet', 'Ayam Small', 'Dori Triming',
+            'Chili Sachet', 'Tomat Sachet', 'Sambal Bawang','Sambal Korek','Sambal Bajak',
+            'Saus BBQ', 'Saus BP', 'Lunch Box', 'Rame Box', 'Box Geprek','Bubuk Candy', 'Bubble Gum',
+            'SKM'
+        );
+        $itemIcon = array(
+            'beras.svg','milo.svg','frenchfries.svg','tepungOri.svg','minyakpadat.svg','ayamRegKecil.svg',
+            'ayamRegBesar.svg', 'ayamUtuh.svg', 'ayamFillet.svg','ayamSmall.svg','doriTriming.svg',
+            'chiliSachet.svg','tomat.svg', 'sambalBawang.svg','sambalKorek.svg','sambalBajak.svg',
+            'sausBBQ.svg','sausBP.svg','lunchBox.svg','rameBox.svg','boxGeprek.svg','bubukCandy.svg','bubbleGum.svg',
+            'skm.svg'
+        );
+        for ($i = 0; $i < 24; $i++) {
+            DB::table('list_item_so')->insert([
+                'Item' => $itemSO[$i],
+                'icon' => $itemIcon[$i],
+                'idSatuan' => '1',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+        }
         DB::table('jenis_bahan')->insert(
             array
             (

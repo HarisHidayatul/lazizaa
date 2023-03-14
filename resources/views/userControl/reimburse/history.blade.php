@@ -417,6 +417,45 @@
                         historyToday += '</div></div></div>';
                     }
 
+                    for(var j =0; j < obj.dataHistory[i].reimburseSales.length; j++){
+                        dataFound = true;
+                        historyToday +=
+                            '<div class="d-flex justify-content-between wrapPattyCash" onClick="goToDetailReimburseSales(' +
+                            obj.dataHistory[i].reimburseSales[j].id +
+                            ')">';
+                        historyToday += '<div class="d-flex justify-content-start">';
+                        historyToday +=
+                            '<div class="wrapPembelianImg d-flex justify-content-center align-items-center">';
+                        historyToday += '<img src="' + imgLaporanPembelian +
+                            '" alt="" style="height: 22px;">';
+                        historyToday += '</div><div style="margin-left: 15px;">';
+                        historyToday +=
+                            '<div class="d-flex justify-content-start"><div class="labelItemTransaksi">';
+                        historyToday += "Reimburse Sales";
+                        historyToday += '</div>';
+                        if (obj.dataHistory[i].reimburseSales[j].idRevisiTotal == '2') {
+                            historyToday += '<img class="statusItemTransaksi" src="' + imgPending +
+                                '" alt="">'
+                        }
+                        historyToday += '</div><div class="labelQtyTransaksi">';
+                        // historyToday += obj.dataHistory[i].pattyCash[j].qty + " ";
+                        // historyToday += obj.dataHistory[i].pattyCash[j].satuan;
+                        historyToday += '</div></div></div>';
+                        historyToday += '<div style="margin-right: 10px;"><div class="labelValuePembelian ';
+                        if (obj.dataHistory[i].reimburseSales[j].idRevisiTotal == '3') {
+                            historyToday += 'activeValPembelian';
+                        } else {
+                            historyToday += 'pendingValPembelian';
+                        }
+                        historyToday += '">+ Rp ';
+                        historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].total).toLocaleString();
+                        historyToday += '</div><div class="labelValuePattyCash">Rp ';
+                        historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].saldo).toLocaleString();
+                        historyToday += '</div></div></div>';
+
+                        totalReimburse += parseInt(obj.dataHistory[i].reimburseSales[j].total);
+                    }
+
                     if(dataFound){
                         historyAll += historyToday;
                     }
@@ -441,6 +480,10 @@
 
     function goToDetailPattyCash(index) {
         window.location.href = "{{ url('user/detail/all/pattyCashHarian') }}" + "/" + index;
+    }
+
+    function goToDetailReimburseSales(index){
+        window.location.href = "{{ url('user/reimburse/sales/detail') }}" + "/" + index;
     }
 </script>
 

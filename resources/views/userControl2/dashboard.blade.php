@@ -399,13 +399,13 @@
         }
 
         .pattyCashCard {
-            background-image: url("{{ url('img/pembayaran/card.png') }}");
+            background-image: url("{{ url('img/pembayaran/card2.png') }}");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
             /* optional, center the image */
-            width: 310px;
-            height: 190px;
+            width: 327px;
+            height: 269px;
         }
 
         .wasteCard {
@@ -437,7 +437,7 @@
             font-size: 16px;
             line-height: 140%;
             color: #FFFFFF;
-            margin-top: 28px;
+            margin-top: 50px;
             margin-left: 20px;
         }
 
@@ -456,11 +456,10 @@
             justify-content: center;
             text-align: center;
             display: flex;
-            width: 146px;
-            height: 40px;
+            width: 130px;
+            height: 35px;
             background: #FFFFFF;
-            border-radius: 12px;
-            margin-top: 38px;
+            border-radius: 10px;
             margin-left: 20px;
             padding-top: 8px;
         }
@@ -476,7 +475,7 @@
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 140%;
             align-items: center;
 
@@ -627,10 +626,13 @@
                 <div class="labelPattyCash">Saldo Patty Cash</div>
                 <div class="valuePattyCash">Rp <span id="totalPattyCash">0</span></div>
             </div>
-            <div onclick="goToReimburseForm();">
+            <div style="height: 88px;"></div>
+            <div style="display: flex">
+                <div class="addPattyCash" style="background: #1DAB87;">
+                    <div onclick="goToReimburseForm();" style=" color: white;">Reimburse</div>
+                </div>
                 <div class="addPattyCash">
-                    <img src="{{ url('img/icon/plus.png') }}" alt="">
-                    <div onclick="goToReimburseForm();">Reimburse</div>
+                    <div onclick="goToSalesReimburseForm();">sales</div>
                 </div>
             </div>
         </div>
@@ -965,6 +967,10 @@
 
     function goToReimburseForm() {
         window.location.href = "{{ url('user/reimburse/kirim') }}";
+    }
+
+    function goToSalesReimburseForm (){
+        window.location.href = "{{ url('user/reimburse/sales/kirim') }}";
     }
 
     function requestShow() {

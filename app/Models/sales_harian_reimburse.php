@@ -22,6 +22,10 @@ class sales_harian_reimburse extends Model
         return $this->belongsTo(tanggalAll::class,'idTanggal','id');
     }
 
+    public function sales_reimburses(){
+        return $this->hasOne( sales_reimburse::class,'idSalesHarianReimburse','id');
+    }
+
     protected $fillable = [
         'idOutlet',
         'idTanggal',

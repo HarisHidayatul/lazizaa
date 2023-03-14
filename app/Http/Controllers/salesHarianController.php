@@ -357,7 +357,10 @@ class salesHarianController extends Controller
         $allsales = null;
         $allDataArray = [];
         $allTotalManual = [];
+        $setoranArray = [];
+        $salesReimburseArray = [];
         if ($tanggalAll != null) {
+            //hitung rincian untuk cash
             $allsales = salesharian::orderBy('idSesi', 'ASC')->where('idOutlet', '=', $idOutlet)->where('idTanggal', '=', $tanggalAll['id'])->get();
             $allTypeSales = typeSales::all();
             // @dd($allTypeSales);
@@ -415,9 +418,34 @@ class salesHarianController extends Controller
                 }
             }
         }
+
+        if($tanggalAll != null){
+            //hitung untuk mengkalkulasi setoran dan reimburse sales
+            $setoran = $tanggalAll->setorans;
+            $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet','=',$idOutlet)->first()->sales_reimburses;
+            // @dd($salesReimburse);
+            $totalReimburse = $salesReimburse->total;
+            if($salesReimburse->idRevisiTotal == '2'){
+                $totalReimburse = $salesReimburse->totalRevisi;
+            }
+            array_push($salesReimburseArray,(object)[
+                'idRevisi' => $salesReimburse->idRevisiTotal,
+                'total' => $totalReimburse
+            ]);
+            // @dd($salesHarianReimburse);
+            for($i=0;$i < $setoran->count();$i++){
+                array_push($setoranArray,(object)[
+                    'idRevisi' => $setoran[$i]->idRevisi,
+                    'qtySetor' => $setoran[$i]->qtySetor
+                ]);
+            }
+            // @dd($setoranArray);
+        }
         return response()->json([
             'dataSales' => $allDataArray,
-            'dataTotal' => $allTotalManual
+            'dataTotal' => $allTotalManual,
+            'dataSetor' => $setoranArray,
+            'dataReimburseSales' => $salesReimburseArray
         ]);
     }
 

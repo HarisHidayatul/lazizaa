@@ -18,6 +18,10 @@ class tanggalAll extends Model
         return $this->hasMany(salesharian::class,'idTanggal','id');
     }
 
+    public function salesHarianReimburses(){
+        return $this->hasMany(sales_harian_reimburse::class,'idTanggal','id');
+    }
+
     public function fsoharians(){
         return $this->hasMany(fsoHarian::class,'idTanggal','id')->orderBy('idSesi','DESC');
     }

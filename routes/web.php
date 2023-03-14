@@ -258,6 +258,8 @@ Route::get('setoran', function () {
 
 Route::get('reimburse/show/history/outlet/{idOutlet}/{countData}/{startDate}/{stopDate}', [reimburseController::class, 'showHistory']);
 Route::get('reimburse/show/detail/{idDetail}', [reimburseController::class, 'showDetail']);
+Route::get('reimburse/sales/show/detail/{idDetail}', [reimburseController::class, 'showDetailSales']);
+Route::get('reimburse/sales/edit/detail/{idDetail}', [reimburseController::class, 'updateSalesReimburse']);
 
 Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
 Route::get('reimburse/update/history/allOutlet',[reimburseController::class,'updateAllHistoryOutlet']); //Merefresh semua history outlet
@@ -265,6 +267,7 @@ Route::get('reimburse/update/history/allOutlet',[reimburseController::class,'upd
 Route::get('reimburse/update/accounting/revisi/{id}', [reimburseController::class, 'updateRevisiTerima']);
 Route::get('reimburse/delete/accounting/revisi/{id}', [reimburseController::class,'deleteRevisiTerima']);
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
+Route::get('reimburse/sales/store/data',[reimburseController::class,'storeDataReimburseSales']);
 
 Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class, 'storeReimburseIdTujuan']);
 
@@ -666,8 +669,18 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         ]);
     });
 
+    Route::get('user/reimburse/sales/detail/{idDetail}', function ($idDetail){
+        return view('userControl.reimburse.detailSales',[
+            'idDetail' => $idDetail
+        ]);
+    });
+
     Route::get('user/reimburse/kirim', function () {
         return view('userControl.reimburse.kirim');
+    });
+
+    Route::get('user/reimburse/sales/kirim',function(){
+        return view('userControl.reimburse.reimburseSales');
     });
 
     Route::get('user/reimburse/wait', function () {
