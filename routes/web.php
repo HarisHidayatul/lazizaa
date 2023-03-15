@@ -61,6 +61,8 @@ Route::get('common/user/store',[commonController::class,'storeUser']);
 Route::get('common/user/update/{id}',[commonController::class,'updateUser']);
 
 //Flow untuk FSO Harian
+Route::get('itemSO/initData',[itemSOController::class, 'initAllDataSO']);
+
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
 Route::get('itemSO/showAll', [itemSOController::class, 'showAllItem']);
 
