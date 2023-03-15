@@ -16,7 +16,7 @@
     <title>Document</title>
     <style>
         /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap'); */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Montserrat:wght@400;500;700&display=swap');
 
         .header {
             height: 50px;
@@ -111,7 +111,7 @@
         }
 
         .jumlahLabel {
-            font-family: 'Roboto';
+            font-family: 'Montserrat';
             font-style: normal;
             font-weight: 500;
             font-size: 12px;
@@ -120,7 +120,7 @@
         }
 
         .satuanLabel {
-            font-family: 'Roboto';
+            font-family: 'Montserrat';
             font-style: normal;
             font-weight: 500;
             font-size: 16px;
@@ -131,10 +131,10 @@
         }
 
         .inputJumlah {
-            font-family: 'Roboto';
+            font-family: 'Montserrat';
             font-style: normal;
             font-weight: 700;
-            font-size: 24px;
+            font-size: 20px;
             line-height: 130%;
             /* color: #E0E0E0; */
             color: #585858;

@@ -152,6 +152,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ url('accounting/laporanSales') }}" class="nav-link" id="laporanSalesTabMenu">
+                            <i class="nav-icon fas fa-dollar-sign"></i>
+                            <p class="text">Laporan Sales</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('accounting/stockOpname') }}" class="nav-link" id="stockOpnameTabMenu">
                             <i class="nav-icon fas fa-box-open"></i>
                             <p class="text">Stock Opname</p>

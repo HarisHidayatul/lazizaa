@@ -432,6 +432,80 @@
                                 historyAll += '</tr>';
                                 dataExportToCSV.push(tempDataExport);
                             }
+
+                            for (var j = 0; j < obj.dataHistory[i].reimburseSales.length; j++) {
+                                var statusRevisi = '';
+                                var tempDataExport = [];
+
+                                historyAll += '<tr';
+                                // historyAll += obj.dataHistory[i].reimburse[j].id;
+                                historyAll += '>';
+                                historyAll += '<td>';
+                                const dateStr = obj.dataHistory[i].tanggal;
+
+                                // Split the string into year, month, and day components
+                                const [year, month, day] = dateStr.split('-');
+
+                                historyAll += `${day}/${month}/${year}`;
+                                historyAll += '</td>';
+                                tempDataExport.push(`${day}/${month}/${year}`);
+
+                                historyAll += '<td>';
+                                historyAll += obj.outlet;
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.outlet);
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += 'Reimburse Sales';
+                                historyAll += '</td>';
+                                tempDataExport.push('Reimburse Sales');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].reimburseSales[j].total.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].reimburseSales[j].total.toLocaleString());
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].reimburseSales[j].saldo.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].reimburseSales[j].saldo.toLocaleString());
+
+                                historyAll += '<td ';
+                                if (obj.dataHistory[i].reimburseSales[j].idRevisiTotal == '2') {
+                                    historyAll += 'style="color: red;"';
+                                    statusRevisi = 'REVISI';
+                                } else if (obj.dataHistory[i].reimburseSales[j].idRevisiTotal == '3') {
+                                    historyAll += 'style="color: green;"';
+                                    statusRevisi = "SUKSES";
+                                }
+                                historyAll += '>';
+                                historyAll += statusRevisi;
+                                historyAll += '</td>';
+                                tempDataExport.push(statusRevisi);
+
+                                historyAll += '</tr>';
+                                dataExportToCSV.push(tempDataExport);
+                            }
                         }
                     }
                     $('#statusInputTabel>tbody').empty().append(historyAll);

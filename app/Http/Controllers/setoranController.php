@@ -52,7 +52,7 @@ class setoranController extends Controller
         $imagePathTemp = tempImgAll::find($request->idImageTemp)->imagePath;
         $imagePathNew = 'setoran/';
         $imagePathNew .= now()->format('Y_m_d_H_i_s_');
-        $imagePathNew .= substr($imagePathTemp,-5);
+        $imagePathNew .= substr($imagePathTemp, -5);
 
         $tanggalID = null;
         if ($tanggalAll == null) {
@@ -63,7 +63,7 @@ class setoranController extends Controller
             $tanggalID = $tanggalAll['id'];
         }
 
-        Storage::copy($imagePathTemp,$imagePathNew);
+        Storage::copy($imagePathTemp, $imagePathNew);
         Storage::delete($imagePathTemp);
         tempImgAll::find($request->idImageTemp)->delete();
 
@@ -387,35 +387,30 @@ class setoranController extends Controller
         }
         $allData = [];
         $countData = 1;
-        for ($i = 0; $i < $semuaTanggal->count(); $i++) {
-            try {
-                $setoran = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
-                // @dd($setoran);
-                $setoranArray = [];
-                $dataFound = false;
-                for ($j = 0; $j < $setoran->count(); $j++) {
-                    // @dd($setoran[$j]->pengirimLists);
-                    array_push($setoranArray, (object)[
-                        'id' => $setoran[$j]->id,
-                        'idRev' => $setoran[$j]->idRevisi,
-                        'namaRekening' => $setoran[$j]->pengirimLists->namaRekening,
-                        'time' => $setoran[$j]->updated_at->format('H:i'),
-                        'imgBank' => $setoran[$j]->pengirimLists->listBanks->imageBank,
-                        'qty' => $setoran[$j]->qtySetor,
-                        'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
-                    ]);
-                    $dataFound = true;
-                }
-                if ($dataFound) {
-                    array_push($allData, (object)[
-                        'Tanggal' => $tanggalAll[$i]->Tanggal,
-                        'setoran' => $setoranArray
-                    ]);
-                }
-            } catch (Exception $e) {
+        foreach ($tanggalAll as $loopTanggal) {
+            $setoran = $loopTanggal->setorans->where('idOutlet', '=', $idOutlet);
+            // @dd($setoran);
+            $setoranArray = [];
+            $dataFound = false;
+            foreach($setoran as $setoranLoop){
+                array_push($setoranArray, (object)[
+                    'id' => $setoranLoop->id,
+                    'idRev' => $setoranLoop->idRevisi,
+                    'namaRekening' => $setoranLoop->pengirimLists->namaRekening,
+                    'time' => $setoranLoop->updated_at->format('H:i'),
+                    'imgBank' => $setoranLoop->pengirimLists->listBanks->imageBank,
+                    'qty' => $setoranLoop->qtySetor,
+                    'idJenis' => $setoranLoop->pengirimLists->listBanks->idJenisBank
+                ]);
+                $dataFound = true;
+            }
+            if ($dataFound) {
+                array_push($allData, (object)[
+                    'Tanggal' => $loopTanggal->Tanggal,
+                    'setoran' => $setoranArray
+                ]);
             }
         }
-        // tanggalAll;
         return response()->json([
             'setoran' => $allData
         ]);
@@ -540,7 +535,8 @@ class setoranController extends Controller
     {
         //
     }
-    public function delete($id){
+    public function delete($id)
+    {
         $setoran = setoran::find($id);
         $pathImage = $setoran->imgTransfer;
         $setoran->delete();

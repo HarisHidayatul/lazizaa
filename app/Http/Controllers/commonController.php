@@ -26,7 +26,7 @@ class commonController extends Controller
     public function postImageAndGetID(Request $request){
         // ddd($request);
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:1048'
+            'image' => 'required|file|mimes:jpeg,png,jpg,pdf|max:1048'
         ]);
         $pathFile = $request->file('image')->store('tempImgAll');
         $idSaveTempID = tempImgAll::create([

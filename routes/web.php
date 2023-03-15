@@ -150,6 +150,8 @@ Route::get('salesHarian/edit/total/rev/data', [salesHarianController::class, 'ed
 Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}',[salesHarianController::class,'showVerifOutlet']);
 Route::get('salesHarian/update/verifikasi/{idSalesFill}',[salesHarianController::class,'updateVerifOutlet']);
 
+Route::get('salesHarian/show/laporanSales/{idOutlet}/{countData}/{startDate}/{stopDate}',[salesHarianController::class,'showReimburseSales']);
+
 //Flow untuk Patty Cash
 Route::get('pattyCash/initData',[pattyCashController::class, 'initAllDataPattyCash']);
 Route::get('pattyCash/items/show', [pattyCashController::class, 'showAll']);
@@ -392,6 +394,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/verifikasi', function () {
         return view('accountingControl.verifikasiSales.index');
+    });
+
+    Route::get('accounting/laporanSales',function(){
+        return view('accountingControl.laporanSales.index');
     });
 
     Route::get('accounting/stockOpname', function(){
