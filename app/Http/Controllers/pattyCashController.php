@@ -206,6 +206,12 @@ class pattyCashController extends Controller
                         break;
                     }
                 }
+            }else{
+                $item_insert = listItemPattyCash::find($itemPattyCashArray[$indexIfFoundItem][1]);
+                $item_insert->Item = $csvData[$i][0];
+                $item_insert->idSatuan = $satuanArray[$indexIfFoundSatuan][1];
+                $item_insert->idJenisItem = $jenisPattyCashArray[$indexIfFoundJenis][1];
+                $item_insert->save();
             }
             //End cari item
         }
