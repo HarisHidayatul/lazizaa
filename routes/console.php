@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\apiBeeCloudController;
+use App\Http\Controllers\reimburseController;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -22,4 +23,9 @@ Artisan::command('inspire', function () {
 Artisan::command('refreshTransaksi',function(){
     $api_bee_cloud_controller = new apiBeeCloudController();
     $api_bee_cloud_controller->refreshTransaksi();
+});
+
+Artisan::command('updatePattyCash',function(){
+    $reimburseController = new reimburseController();
+    $reimburseController->updateAllHistoryOutlet();
 });
