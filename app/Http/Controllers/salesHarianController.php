@@ -526,22 +526,25 @@ class salesHarianController extends Controller
         if ($tanggalAll != null) {
             //hitung untuk mengkalkulasi setoran dan reimburse sales
             $setoran = $tanggalAll->setorans;
-            $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first()->sales_reimburses;
-            // @dd($salesReimburse);
-            $totalReimburse = $salesReimburse->total;
-            if ($salesReimburse->idRevisiTotal == '2') {
-                $totalReimburse = $salesReimburse->totalRevisi;
-            }
-            array_push($salesReimburseArray, (object)[
-                'idRevisi' => $salesReimburse->idRevisiTotal,
-                'total' => $totalReimburse
-            ]);
-            // @dd($salesHarianReimburse);
-            for ($i = 0; $i < $setoran->count(); $i++) {
-                array_push($setoranArray, (object)[
-                    'idRevisi' => $setoran[$i]->idRevisi,
-                    'qtySetor' => $setoran[$i]->qtySetor
+            $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first();
+            if($salesReimburse != null){
+                $salesReimburse = $salesReimburse->sales_reimburses;
+                // @dd($salesReimburse);
+                $totalReimburse = $salesReimburse->total;
+                if ($salesReimburse->idRevisiTotal == '2') {
+                    $totalReimburse = $salesReimburse->totalRevisi;
+                }
+                array_push($salesReimburseArray, (object)[
+                    'idRevisi' => $salesReimburse->idRevisiTotal,
+                    'total' => $totalReimburse
                 ]);
+                // @dd($salesHarianReimburse);
+                for ($i = 0; $i < $setoran->count(); $i++) {
+                    array_push($setoranArray, (object)[
+                        'idRevisi' => $setoran[$i]->idRevisi,
+                        'qtySetor' => $setoran[$i]->qtySetor
+                    ]);
+                }
             }
             // @dd($setoranArray);
         }

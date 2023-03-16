@@ -229,6 +229,51 @@
             color: #585858;
             text-align: justify;
         }
+
+        .editText {
+            margin-top: 20px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            /* or 22px */
+
+            text-align: center;
+            text-decoration-line: underline;
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 10px;
+            height: 40px;
+            background: #B20731;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        .textDelete {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            /* or 28px */
+
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -247,6 +292,7 @@
                 <img src="{{ url('img/icon/detailTransfer.png') }}" alt="" style="width: 86px; height: 86px;">
             </div>
             <div class="detailNominal">Rp <span id="jumlahTransfer">0</span></div>
+            <div id="deleteText" class="editText" onclick="deleteClick();">Delete</div>
             <div class="d-flex justify-content-between" style="margin-top: 35px;">
                 <div class="statusLabel">Status</div>
                 <img id="imageStatusSetoran" src="" alt="" style="width: 77px; height: 25px;">
@@ -310,6 +356,23 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style=" margin-top: 40vw">
+            <div class="modal-content" style="height: 350px;border-radius: 24px 24px 24px 24px;">
+                <div class="modal-body">
+                    <div style="height: 35px;"></div>
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ url('img/icon/iconModal.png') }}" alt="" style="height: 70px">
+                    </div>
+                    <p class="textDelete">Apakah ingin menghapus item ini?</p>
+                    {{-- <div style="height: 30px"></div> --}}
+                    <button>Hapus</button>
+                    <button style="background: #FFEAEF; color: #B20731;">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
@@ -319,6 +382,15 @@
     $(document).ready(function() {
         getDetail();
     });
+
+
+    function deleteClick() {
+        $('#exampleModalCenter').modal('show');
+    }
+
+    function closeDelete() {
+        $('#exampleModalCenter').modal('hide');
+    }
 
     function getDetail() {
         $.ajax({
@@ -334,11 +406,13 @@
                 document.getElementById('imgBankPenerima').src = url + '/' + obj.imgBankPenerima;
                 document.getElementById('pesan').innerHTML = obj.pesan;
                 document.getElementById('tanggal').innerHTML = day.getDate() + ' ' + months[day.getMonth()];
-                document.getElementById('jumlahTransfer').innerHTML = parseInt(obj.jumlahTransfer).toLocaleString();
+                document.getElementById('jumlahTransfer').innerHTML = parseInt(obj.jumlahTransfer)
+                    .toLocaleString();
                 if (obj.idRevisi == '2') {
                     document.getElementById('imageStatusSetoran').src =
-                        "{{ url('img/icon/tertunda.png') }}";
+                        "{{ url('img/icon/pending.png') }}";
                 } else {
+                    document.getElementById('deleteText').style.visibility = "hidden";
                     document.getElementById('imageStatusSetoran').src = "{{ url('img/icon/sukses.png') }}";
                     document.getElementById('namaPengirim').innerHTML = obj.namaPengirim;
                     document.getElementById('rekeningPengirim').innerHTML = obj.rekeningPengirim;
