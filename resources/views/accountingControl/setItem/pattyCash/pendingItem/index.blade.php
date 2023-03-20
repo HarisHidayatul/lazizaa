@@ -6,6 +6,7 @@
         <tr>
             <th>Nama Item</th>
             <th>Satuan</th>
+            <th>Jenis Item</th>
             <th>Outlet</th>
             <th>Brand</th>
             <th>Accept</th>

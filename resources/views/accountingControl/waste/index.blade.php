@@ -13,6 +13,15 @@
 </div>
 <table class="table table-striped" id="statusInputTabel">
     <thead>
+        <tr>
+            <td>Tanggal</td>
+            <td>Outlet</td>
+            <td>Item Waste</td>
+            <td>Harga Satuan</td>
+            <td>Qty</td>
+            <td>Satuan</td>
+            <td>Pengisi</td>
+        </tr>
     </thead>
     <tbody>
     </tbody>

@@ -54,6 +54,10 @@
                         const outlet = obj.dataSales[i].Outlet;
                         for (var j = 0; j < obj.dataSales[i].data.length; j++) {
                             var saldo = 0;
+                            var saldoSetoran = 0;
+
+                            var pendingStatus = false;
+
                             const dateStr = obj.dataSales[i].data[j].tanggal;
 
                             // Split the string into year, month, and day components
@@ -79,7 +83,8 @@
                                 dataTable += '</td>';
                                 dataTable += '<td>';
                                 dataTable += obj.dataSales[i].data[j].dataSales[k].totalManual.toLocaleString();
-                                tempDataExport.push(obj.dataSales[i].data[j].dataSales[k].totalManual.toLocaleString());
+                                tempDataExport.push(obj.dataSales[i].data[j].dataSales[k].totalManual
+                                    .toLocaleString());
                                 dataTable += '</td>';
                                 dataTable += '<td>';
                                 tempDataExport.push('');
@@ -131,7 +136,8 @@
                                     dataTable += obj.dataSales[i].data[j].dataSales[k].data[l].totalDiterima
                                         .toLocaleString();
                                     dataTable += '</td>';
-                                    tempDataExport.push(obj.dataSales[i].data[j].dataSales[k].data[l].totalDiterima
+                                    tempDataExport.push(obj.dataSales[i].data[j].dataSales[k].data[l]
+                                        .totalDiterima
                                         .toLocaleString());
                                     dataTable += '<td>';
                                     dataTable += selisih.toLocaleString();
@@ -145,7 +151,7 @@
                                     if (obj.dataSales[i].data[j].dataSales[k].data[l].idRevisiTotal == '2') {
                                         dataTable += 'REVISI';
                                         tempDataExport.push('REVISI');
-                                    }else{
+                                    } else {
                                         tempDataExport.push('');
                                     }
                                     dataTable += '</td>';
@@ -176,7 +182,8 @@
                                 dataTable += '<td>';
                                 dataTable += obj.dataSales[i].data[j].dataReimburse[k].total.toLocaleString();
                                 dataTable += '</td>';
-                                tempDataExport.push(obj.dataSales[i].data[j].dataReimburse[k].total.toLocaleString());
+                                tempDataExport.push(obj.dataSales[i].data[j].dataReimburse[k].total
+                                    .toLocaleString());
                                 dataTable += '<td>';
                                 dataTable += '</td>';
                                 tempDataExport.push('');
@@ -191,7 +198,7 @@
                                 if (obj.dataSales[i].data[j].dataReimburse[k].idRevisiTotal == '2') {
                                     dataTable += 'REVISI';
                                     tempDataExport.push('REVISI');
-                                }else{
+                                } else {
                                     tempDataExport.push('');
                                 }
                                 dataTable += '</td>';
@@ -200,58 +207,63 @@
                             }
 
                             for (var k = 0; k < obj.dataSales[i].data[j].dataSetor.length; k++) {
-                                var tempDataExport = [];
-                                saldo -= obj.dataSales[i].data[j].dataSetor[k].total;
-                                dataTable += '<tr>';
-                                dataTable += '<td>';
-                                dataTable += tanggalString;
-                                dataTable += '</td>';
-                                tempDataExport.push(tanggalString);
-
-                                dataTable += '<td>';
-                                dataTable += outlet;
-                                dataTable += '</td>';
-                                tempDataExport.push(outlet);
-
-                                dataTable += '<td>';
-                                dataTable += 'Setoran Tunai/Sales';
-                                dataTable += '</td>';
-                                tempDataExport.push('Setoran Tunai/Sales');
-
-                                dataTable += '<td>';
-                                dataTable += '</td>';
-                                tempDataExport.push('');
-
-                                dataTable += '<td>';
-                                dataTable += obj.dataSales[i].data[j].dataSetor[k].total.toLocaleString();
-                                dataTable += '</td>';
-                                tempDataExport.push(obj.dataSales[i].data[j].dataSetor[k].total.toLocaleString());
-
-                                dataTable += '<td>';
-                                dataTable += '</td>';
-                                tempDataExport.push('');
-
-                                dataTable += '<td>';
-                                dataTable += '</td>';
-                                tempDataExport.push('');
-
-                                dataTable += '<td>';
-                                dataTable += saldo.toLocaleString();
-                                dataTable += '</td>';
-                                tempDataExport.push(saldo.toLocaleString());
-
-                                dataTable += '<td>';
+                                saldoSetoran += obj.dataSales[i].data[j].dataSetor[k].total;
                                 if (obj.dataSales[i].data[j].dataSetor[k].idReivisiTotal == '2') {
-                                    dataTable += 'PENDING';
-                                    tempDataExport.push('PENDING');
-                                }else{
-                                    tempDataExport.push('');
+                                    pendingStatus = true;
                                 }
-                                dataTable += '</td>';
-
-                                dataTable += '</tr>';
-                                dataExportToCSV.push(tempDataExport);
                             }
+                            var tempDataExport = [];
+                            dataTable += '<tr>';
+                            dataTable += '<td>';
+                            dataTable += tanggalString;
+                            dataTable += '</td>';
+                            tempDataExport.push(tanggalString);
+
+                            dataTable += '<td>';
+                            dataTable += outlet;
+                            dataTable += '</td>';
+                            tempDataExport.push(outlet);
+
+                            dataTable += '<td>';
+                            dataTable += 'Setoran Tunai/Sales';
+                            dataTable += '</td>';
+                            tempDataExport.push('Setoran Tunai/Sales');
+
+                            dataTable += '<td>';
+                            dataTable += '</td>';
+                            tempDataExport.push('');
+
+                            dataTable += '<td>';
+                            dataTable += saldo.toLocaleString();
+                            dataTable += '</td>';
+                            tempDataExport.push(saldo.toLocaleString());
+
+                            dataTable += '<td>';
+                            dataTable += saldoSetoran.toLocaleString();
+                            dataTable += '</td>';
+                            tempDataExport.push(saldoSetoran.toLocaleString());
+
+                            dataTable += '<td>';
+                            dataTable += (saldo-saldoSetoran).toLocaleString();
+                            dataTable += '</td>';
+                            tempDataExport.push((saldo-saldoSetoran).toLocaleString());
+
+                            dataTable += '<td>';
+                            dataTable += '0';
+                            dataTable += '</td>';
+                            tempDataExport.push('0');
+
+                            dataTable += '<td>';
+                            if (pendingStatus) {
+                                dataTable += 'PENDING';
+                                tempDataExport.push('PENDING');
+                            } else {
+                                tempDataExport.push('');
+                            }
+                            dataTable += '</td>';
+
+                            dataTable += '</tr>';
+                            dataExportToCSV.push(tempDataExport);
                         }
                     }
                     $('#statusInputTabel>tbody').empty().append(dataTable);
@@ -310,7 +322,7 @@
                 'Saldo',
                 'Status',
             ]);
-            for(var i =0;i<dataExportToCSV.length;i++){
+            for (var i = 0; i < dataExportToCSV.length; i++) {
                 arrayAllData.push(dataExportToCSV[i]);
             }
             exportToCsv(namaFile, arrayAllData);

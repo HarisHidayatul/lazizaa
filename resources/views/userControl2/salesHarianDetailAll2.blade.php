@@ -537,17 +537,19 @@
                 var obj1 = JSON.parse(JSON.stringify(response));
                 console.log(obj1);
                 var obj = obj1.dataSales;
+                var objReimburseSales = obj1.dataReimburseSales;
                 var allDataHTML = '';
                 var totalHTML = '';
                 var indexButton = 0;
                 var totalAll = 0;
-                var totalReadingCasheer =0;
+                var totalReimburseSales =0;
+                var totalReadingCasheer = 0;
 
                 totalHTML += '<div style="margin-top: 25px;">';
 
                 for (var i = 0; i < obj1.dataTotal.length; i++) {
                     totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
-                    totalHTML += '<div>' + 'Total Casheer Sesi ' + obj1.dataTotal[i].sesi + '</div>';
+                    totalHTML += '<div>' + 'Total Sales Sesi ' + obj1.dataTotal[i].sesi + '</div>';
                     totalHTML += '<div>Rp. ' + obj1.dataTotal[i].total.toLocaleString() + '</div></div>';
                     totalReadingCasheer += obj1.dataTotal[i].total;
                 }
@@ -627,13 +629,20 @@
 
                         totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
                         totalHTML += '<div>' + obj[i].sales[j][1] + '</div>';
-                        totalHTML += '<div>Rp. ' + totalValPerSesi.toLocaleString() + '</div></div>';
+                        totalHTML += '<div>- Rp. ' + totalValPerSesi.toLocaleString() + '</div></div>';
                     }
+                }
+                for (var i = 0; i < objReimburseSales.length; i++) {
+                    totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                    totalHTML += '<div>' + 'Reimburse Sales' + '</div>';
+                    totalHTML += '<div>+ Rp. ' + objReimburseSales[i].total.toLocaleString() + '</div></div>';
+                    totalReimburseSales += objReimburseSales[i].total;
                 }
                 totalHTML +=
                     '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
                 totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Cash</div>';
-                totalHTML += '<div>Rp. ' + (totalReadingCasheer-totalAll).toLocaleString() + '</div></div></div>';
+                totalHTML += '<div>Rp. ' + (totalReadingCasheer - totalAll + totalReimburseSales).toLocaleString() +
+                    '</div></div></div>';
 
                 allDataHTML += totalHTML;
 

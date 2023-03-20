@@ -367,7 +367,7 @@
                     </div>
                     <p class="textDelete">Apakah ingin menghapus item ini?</p>
                     {{-- <div style="height: 30px"></div> --}}
-                    <button>Hapus</button>
+                    <button onclick="deleteReimburse();">Hapus</button>
                     <button style="background: #FFEAEF; color: #B20731;">Batal</button>
                 </div>
             </div>
@@ -426,6 +426,19 @@
                 console.log(err);
             }
         })
+    }
+
+    function deleteReimburse() {
+        $.ajax({
+            url: "{{ url('reimburse/delete/accounting/revisi') }}" + '/' + "{{ $idDetail }}",
+            type: 'get',
+            success: function(response) {
+                goBack();
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
     }
 
     function goBack() {

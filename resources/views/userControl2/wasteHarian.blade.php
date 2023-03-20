@@ -346,7 +346,7 @@
             color: #BEBEBE;
         }
 
-        .itemShow input{
+        .itemShow input {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
@@ -356,7 +356,8 @@
             /* Greyscale/30 */
             color: #BEBEBE;
         }
-        .inputSearch:focus{
+
+        .inputSearch:focus {
             border: none;
             outline: none;
         }
@@ -841,7 +842,7 @@
     var idSo = 0;
     var dateSelected = "{{ $dateSelect }}";
     var dropdownItem = true;
-    var selectJenisBrand = null;
+    // var  = null;
     var selectItemIndex = null;
 
     var sendOrEdit = true; // true for send and edit for false
@@ -963,25 +964,16 @@
                 // console.log(response);
                 var obj = JSON.parse(JSON.stringify(response));
                 var radioButton = '';
+                console.log(obj);
+                objItemBrand.length = 0;
                 for (var i = 0; i < obj.listWaste.length; i++) {
-                    radioButton += '<div class="form-check form-check-inline">';
-                    radioButton +=
-                        '<input class="radioCustom form-check-input" type="radio" name="selJenisBrand" ';
-                    radioButton += 'onclick="radioSelBrand(' +
-                        i +
-                        ',' + "''" + ')" value="' + obj.listWaste[i].jenisBahan + '" id="radioBrand' + i +
-                        '"/>';
-                    radioButton += '<label for="' + obj.listWaste[i].jenisBahan +
-                        '" class="radioCustom-label form-check-label">' + obj.listWaste[i]
-                        .jenisBahan +
-                        '</label>' +
-                        ' </div>';
-                    idJenisBrand.push(obj.listWaste[i].idJenis);
-                    objItemBrand.push(obj.listWaste[i].waste);
-                    selectJenisBrand = 0;
+                    for (var j = 0; j < obj.listWaste[i].waste.length; j++) {
+                        objItemBrand.push(obj.listWaste[i].waste[j]);
+                    }
                 }
+                console.log(objItemBrand);
                 document.getElementById("radioButtonUser").innerHTML = radioButton;
-                radioSelBrand(selectJenisBrand, '');
+                radioSelBrand('');
             },
             error: function(req, err) {
                 console.log(err);
@@ -990,22 +982,18 @@
     }
 
     function searchItem() {
-        radioSelBrand(selectJenisBrand, document.getElementById('searchItem').value);
+        radioSelBrand(document.getElementById('searchItem').value);
         dropdownItem = true;
         document.getElementById('selectItem').style.visibility = "visible";
     }
 
-    function radioSelBrand(selectIndex, searchItem) {
+    function radioSelBrand(searchItem) {
         var searchByItem = searchItem.toUpperCase();
         //Off kan drop down dulu
         dropdownItem = false;
         document.getElementById('selectItem').style.visibility = "hidden";
 
-        if (document.getElementById("radioBrand" + selectIndex) != null) {
-            document.getElementById("radioBrand" + selectIndex).checked = true;
-        }
-        selectJenisBrand = selectIndex;
-        var objSelect = objItemBrand[selectIndex];
+        var objSelect = objItemBrand;
         // console.log(objSelect);
         // var item = '';
         var dataDropdown = '';
@@ -1032,12 +1020,12 @@
         document.getElementById('selectItem').style.visibility = "hidden";
         selectItemIndex = selectIndex;
 
-        var itemSelect = objItemBrand[selectJenisBrand][selectIndex]?.Item;
-        console.log(objItemBrand[selectJenisBrand][selectIndex]);
+        var itemSelect = objItemBrand[selectIndex]?.Item;
+        console.log(objItemBrand[selectIndex]);
         document.getElementById('jumlahInput').value = '';
         // document.getElementById('itemShow').innerHTML = itemSelect;
         document.getElementById('searchItem').value = itemSelect;
-        document.getElementById('satuan').innerHTML = objItemBrand[selectJenisBrand][selectIndex]?.Satuan;
+        document.getElementById('satuan').innerHTML = objItemBrand[selectIndex]?.Satuan;
     }
 
     function refreshData() {
@@ -1137,7 +1125,7 @@
                 success: function(response) {
                     // console.log(response);
                     refreshData();
-                    radioSelBrand(selectJenisBrand, '');
+                    radioSelBrand('');
                 },
                 error: function(req, err) {
                     console.log(err);
@@ -1183,7 +1171,7 @@
             type: 'get',
             data: {
                 idWaste: idWastes,
-                idListItem: objItemBrand[selectJenisBrand][selectItemIndex]?.id,
+                idListItem: objItemBrand[selectItemIndex]?.id,
                 quantity: document.getElementById('jumlahInput').value,
                 idPengisi: "{{ session('idPengisi') }}"
             },

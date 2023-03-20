@@ -399,13 +399,13 @@
         }
 
         .pattyCashCard {
-            background-image: url("{{ url('img/pembayaran/card2.png') }}");
+            background-image: url("{{ url('img/pembayaran/card3.png') }}");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
             /* optional, center the image */
             width: 327px;
-            height: 269px;
+            height: 300px;
         }
 
         .wasteCard {
@@ -462,6 +462,7 @@
             border-radius: 10px;
             margin-left: 20px;
             padding-top: 8px;
+            cursor: pointer;
         }
 
         .addPattyCash img {
@@ -626,13 +627,15 @@
                 <div class="labelPattyCash">Saldo Patty Cash</div>
                 <div class="valuePattyCash">Rp <span id="totalPattyCash">0</span></div>
             </div>
-            <div style="height: 88px;"></div>
+            <div style="height: 35px;"></div>
+            <div class="labelPattyCash">Reimburse</div>
+            <div style="height: 10px;"></div>
             <div style="display: flex">
                 <div class="addPattyCash" style="background: #1DAB87;">
-                    <div onclick="goToReimburseForm();" style=" color: white;">Reimburse</div>
+                    <div onclick="goToReimburseForm();" style=" color: white;">HO</div>
                 </div>
                 <div class="addPattyCash">
-                    <div onclick="goToSalesReimburseForm();">sales</div>
+                    <div onclick="goToSalesReimburseForm();">Sales Tunai</div>
                 </div>
             </div>
         </div>

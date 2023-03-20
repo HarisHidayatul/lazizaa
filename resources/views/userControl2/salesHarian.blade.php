@@ -422,7 +422,8 @@
                 <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
             </div>
             <div style="content: ''; height: 30px"></div>
-            <input class="inputTotal" placeholder="Total Reading Casheer" id="totalReadingCasheer"
+            <h5>Total Sales</h5>
+            <input class="inputTotal" placeholder="Total Reading Sales" id="totalReadingCasheer"
                 onchange="sumValueInput()">
             <div id="fillDataSales"></div>
             <div style="margin-top: 45px;">
@@ -729,7 +730,7 @@
                     }
                     if (dataFound) {
                         inputFill += '<div>';
-                        inputFill += '<h2 class="typeSales">' + nameIdType[i] + '</h2>';
+                        // inputFill += '<h2 class="typeSales">' + nameIdType[i] + '</h2>';
                         for (var j = 0; j < obj.listSales.length; j++) {
                             if (dataIdType[i] == obj.listSales[j].typeSales) {
                                 dataIdItem.push(obj.listSales[j].id);

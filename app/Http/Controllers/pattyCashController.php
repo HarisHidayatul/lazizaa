@@ -329,7 +329,7 @@ class pattyCashController extends Controller
     {
         $status = $request->status;
         $idRev = $request->idRev;
-
+        $idJenisItem = $request->idJenisItem;
         $listPattyCash = reqItemPattyCash::find($idRev);
         $brand = $listPattyCash->dbrands['id'];
 
@@ -337,7 +337,8 @@ class pattyCashController extends Controller
             //status 1 untuk accept
             $dataArray = [
                 'Item' => $request->item,
-                'idSatuan' => $request->idSatuan
+                'idSatuan' => $request->idSatuan,
+                'idJenisItem' => $idJenisItem
             ];
             $id = listItemPattyCash::create($dataArray)->id;
             brandPattyCash::create([

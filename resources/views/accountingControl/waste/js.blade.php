@@ -28,8 +28,8 @@
 
             document.getElementById('wasteReportTabMenu').classList.add("active");
 
-            document.getElementById('tittleContent').innerHTML = "Stock Opname";
-            document.getElementById('linkContent').innerHTML = "Stock Opname";
+            document.getElementById('tittleContent').innerHTML = "Waste";
+            document.getElementById('linkContent').innerHTML = "Waste";
 
             getAllOutlet();
         })
