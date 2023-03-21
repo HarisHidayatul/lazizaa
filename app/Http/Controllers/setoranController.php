@@ -422,25 +422,21 @@ class setoranController extends Controller
         $allData = [];
         // $countData = 1;
         for ($i = 0; $i < $tanggalAll->count(); $i++) {
-            $setoran = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
+            $setorans = $tanggalAll[$i]->setorans->where('idOutlet', '=', $idOutlet);
             // @dd($setoran);
             $setoranArray = [];
             $dataFound = false;
-            for ($j = 0; $j < $setoran->count(); $j++) {
+            foreach($setorans as $setoran ){
                 array_push($setoranArray, (object)[
-                    'id' => $setoran[$j]->id,
-                    'idRev' => $setoran[$j]->idRevisi,
-                    'namaRekening' => $setoran[$j]->pengirimLists->namaRekening,
-                    'time' => $setoran[$j]->updated_at->format('H:i'),
-                    'imgBank' => $setoran[$j]->pengirimLists->listBanks->imageBank,
-                    'qty' => $setoran[$j]->qtySetor,
-                    'idJenis' => $setoran[$j]->pengirimLists->listBanks->idJenisBank
+                    'id' => $setoran->id,
+                    'idRev' => $setoran->idRevisi,
+                    'namaRekening' => $setoran->pengirimLists->namaRekening,
+                    'time' => $setoran->updated_at->format('H:i'),
+                    'imgBank' => $setoran->pengirimLists->listBanks->imageBank,
+                    'qty' => $setoran->qtySetor,
+                    'idJenis' => $setoran->pengirimLists->listBanks->idJenisBank
                 ]);
                 $dataFound = true;
-                // $countData++;
-                // if ($countData > 5) {
-                //     break;
-                // }
             }
             if ($dataFound) {
                 array_push($allData, (object)[

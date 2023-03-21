@@ -206,50 +206,50 @@ class salesHarianController extends Controller
                 $dataPerSesi = [];
                 $dataReimburse = [];
                 $dataSetoran = [];
-                $salesHarian = $dataTanggal->salesharians->where('idOutlet','=',$outletArray[$i]);
-                $salesHarianReimburse = $dataTanggal->salesHarianReimburses->where('idOutlet','=',$outletArray[$i])->first();
-                $setoranHarians = $dataTanggal->setorans->where('idOutlet','=',$outletArray[$i]);
+                $salesHarian = $dataTanggal->salesharians->where('idOutlet', '=', $outletArray[$i]);
+                $salesHarianReimburse = $dataTanggal->salesHarianReimburses->where('idOutlet', '=', $outletArray[$i])->first();
+                $setoranHarians = $dataTanggal->setorans->where('idOutlet', '=', $outletArray[$i]);
                 // foreach()
-                foreach($setoranHarians as $setoranHarian){
-                    array_push($dataSetoran,(object)[
+                foreach ($setoranHarians as $setoranHarian) {
+                    array_push($dataSetoran, (object)[
                         'total' => $setoranHarian->qtySetor,
                         'idReivisiTotal' => $setoranHarian->idRevisi
                     ]);
                 }
-                if($salesHarianReimburse != null){
+                if ($salesHarianReimburse != null) {
                     $totalTemp = $salesHarianReimburse->sales_reimburses->total;
                     $idRevisiTotal = $salesHarianReimburse->sales_reimburses->idRevisiTotal;
-                    if($idRevisiTotal == '2'){
+                    if ($idRevisiTotal == '2') {
                         $totalTemp = $salesHarianReimburse->sales_reimburses->totalRevisi;
                     }
-                    array_push($dataReimburse,(object)[
+                    array_push($dataReimburse, (object)[
                         'total' => $totalTemp,
                         'idRevisiTotal' => $idRevisiTotal
                     ]);
                 }
-                foreach($salesHarian as $salesHarianSesi){
+                foreach ($salesHarian as $salesHarianSesi) {
                     $salesLists = $salesHarianSesi->listSaless;
                     $dataPerSalesArray = [];
-                    foreach($salesLists as $salesList){
+                    foreach ($salesLists as $salesList) {
                         $totalTemp = $salesList->pivot->total;
                         $idTotalRevisi = $salesList->pivot->idRevisiTotal;
-                        if($idTotalRevisi == '2'){
+                        if ($idTotalRevisi == '2') {
                             $totalTemp = $salesList->pivot->totalRevisi;
                         }
-                        array_push($dataPerSalesArray,(object)[
+                        array_push($dataPerSalesArray, (object)[
                             'sales' => $salesList->sales,
                             'totalDiterima' => $salesList->pivot->totalDiterima,
                             'total' => $totalTemp,
                             'idRevisiTotal' => $idTotalRevisi
                         ]);
                     }
-                    array_push($dataPerSesi,(object)[
+                    array_push($dataPerSesi, (object)[
                         'sesi' => $salesHarianSesi->idSesi,
                         'data' => $dataPerSalesArray,
                         'totalManual' => $salesHarianSesi->totalManual
                     ]);
                 }
-                array_push($dataPerTanggalArray,(object)[
+                array_push($dataPerTanggalArray, (object)[
                     'tanggal' => $dataTanggal->Tanggal,
                     'dataSales' => $dataPerSesi,
                     'dataReimburse' => $dataReimburse,
@@ -258,7 +258,7 @@ class salesHarianController extends Controller
             }
             $dataPerTanggalArray = array_reverse($dataPerTanggalArray, false);
             $outletNama = doutlet::find($outletArray[$i])['Nama Store'];
-            array_push($dataOutletArray,(object)[
+            array_push($dataOutletArray, (object)[
                 'idOutlet' => $outletArray[$i],
                 'Outlet' => $outletNama,
                 'data' => $dataPerTanggalArray
@@ -463,9 +463,24 @@ class salesHarianController extends Controller
             $allTypeSales = typeSales::all();
             // @dd($allTypeSales);
             for ($i = 0; $i < $allsales->count(); $i++) {
+                $listSaless = $allsales[$i]->listSaless;
+                $arrayListSales = [];
+                for ($j = 0; $j < $listSaless->count(); $j++) {
+                    $total = $listSaless[$j]->pivot->total;
+                    $idRevisiTotal = $listSaless[$j]->pivot->idRevisiTotal;
+                    if($idRevisiTotal == '2'){
+                        $total = $listSaless[$j]->pivot->totalRevisi;
+                    }
+                    array_push($arrayListSales,(object)[
+                        'sales' => $listSaless[$j]->sales,
+                        'total' => $total,
+                        'idRevisiTotal' => $idRevisiTotal
+                    ]);                
+                }
                 array_push($allTotalManual, (object)[
                     'sesi' => $allsales[$i]->idSesi,
-                    'total' => $allsales[$i]->totalManual
+                    'total' => $allsales[$i]->totalManual,
+                    'sales' => $arrayListSales
                 ]);
             }
             for ($i = 0; $i < $allTypeSales->count(); $i++) {
@@ -521,7 +536,7 @@ class salesHarianController extends Controller
             //hitung untuk mengkalkulasi setoran dan reimburse sales
             $setoran = $tanggalAll->setorans;
             $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first();
-            if($salesReimburse != null){
+            if ($salesReimburse != null) {
                 $salesReimburse = $salesReimburse->sales_reimburses;
                 // @dd($salesReimburse);
                 $totalReimburse = $salesReimburse->total;

@@ -256,6 +256,39 @@
             color: #FFFFFF;
 
         }
+
+        button {
+            width: 100%;
+            margin-top: 10px;
+            height: 40px;
+            background: #B20731;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        p {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 15px;
+            width: 300px;
+            /* line-height: 15px; */
+            text-align: center;
+
+            color: #898A8D;
+        }
+
+        p span {
+            font-weight: 700;
+            color: #50555C;
+        }
     </style>
 </head>
 
@@ -281,6 +314,9 @@
             </div>
             <div class="dateTop" id="dateTop">XXXXX XX XXXXXXX</div>
             <div id="allDataHTML"></div>
+            <div style="content: ''; height: 50px;"></div>
+            <div id="dataBottomHtml"></div>
+            {{-- 
             <div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(0);">
                 <div class="d-flex justify-content-start align-items-center">
                     <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
@@ -309,8 +345,7 @@
                     <div class="d-flex justify-content-between totalPerSesi">
                         <div class="d-flex justify-content-start" style="margin-left: 15px">
                             <div>Go Food</div>
-                            <img src="{{ url('img/icon/tertunda.png') }}" alt=""
-                                style="height: 15px; ">
+                            <img src="{{ url('img/icon/tertunda.png') }}" alt="" style="height: 15px; ">
                         </div>
                         <div>Rp. 546.064</div>
                     </div>
@@ -378,11 +413,11 @@
                     <div class="d-flex justify-content-start">
                         <div>Total Cash</div>
                         <img src="{{ url('img/icon/infoIcon.png') }}" alt=""
-                            style="height: 15px; margin-top: 7px; margin-left: 5px;">
+                            style="height: 15px; margin-top: 7px; margin-left: 5px;" onclick="infoClick();">
                     </div>
                     <div>Rp. 1,638,192</div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div style="height: 100vw;"></div>
@@ -409,6 +444,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="height: 400px;border-radius: 25px 25px 25px 25px;">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ url('img/icon/infoIcon.png') }}" alt="" style="margin-top: 10px;">
+                    </div>
+                    <div class="d-flex justify-content-center" style="margin-top: 15px;">
+                        <div>
+                            <p><span>Total Cash</span> merupakan nominal yang wajib disetorkan kepada Head Office pada
+                                tanggal
+                                tersebut</p>
+                            <p><span>20 Maret 2023 <br> <span style="font-size: 22px">Rp. 1,638,192</span></span></p>
+                        </div>
+                    </div>
+                    <button>Lanjutkan Setoran</button>
+                    <button style="background: #FFEAEF; color: #B20731;" onclick="closeInfo();">Nanti Dulu</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
@@ -423,6 +480,7 @@
         document.getElementById('dateTop').innerHTML = stringDay;
         resetDetailSesi();
         getAllDataSesi();
+        infoClick();
     });
 
     function getAllDataSesi() {
@@ -433,6 +491,143 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
+                var dataHTML = '';
+                var dataBottom = '';
+                var totalSales = 0;
+                var totalNonTunai = 0;
+                var totalReimburse = 0;
+                var url = "{{ url('') }}";
+                for (var i = 0; i < obj.dataTotal.length; i++) {
+                    var tempHTMLNonTunai = '';
+                    var tempTotalNonTunai = 0;
+                    for (var j = 0; j < obj.dataTotal[i].sales.length; j++) {
+                        tempHTMLNonTunai += '<div class="d-flex justify-content-between totalPerSesi">';
+                        tempHTMLNonTunai +=
+                            '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                        tempHTMLNonTunai += '<div>' + obj.dataTotal[i].sales[j].sales + '</div>';
+                        if (obj.dataTotal[i].sales[j].idRevisiTotal == '2') {
+                            tempHTMLNonTunai += '<img src="' + url + '/img/icon/tertunda.png' +
+                                '" alt="" style="height: 15px; ">';
+                        }
+                        tempHTMLNonTunai += '</div>';
+                        tempHTMLNonTunai += '<div>Rp. ' + obj.dataTotal[i].sales[j].total.toLocaleString() +
+                            '</div>';
+                        tempHTMLNonTunai += '</div>';
+                        tempTotalNonTunai += obj.dataTotal[i].sales[j].total;
+                    }
+                    dataHTML +=
+                        '<div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(';
+                    dataHTML += i;
+                    dataHTML += ');">';
+                    dataHTML += '<div class="d-flex justify-content-start align-items-center">';
+                    dataHTML += '<img src="' + url +
+                        '/img/dashboard/laporanSales.png" alt="" style="height: 35px;">';
+                    dataHTML += '<div style="margin-left: 10px;">';
+                    dataHTML += '<div class="itemSales">Sesi ' + obj.dataTotal[i].sesi + '</div>';
+                    dataHTML += '<div class="detailSales">Total Cash <span>Rp ' + (obj.dataTotal[i].total -
+                        tempTotalNonTunai).toLocaleString() + '</span></div>';
+                    dataHTML += '</div></div>';
+                    dataHTML += '<img src="' + url +
+                        '/img/icon/arrowDown.png" alt="" style="height: 8px;">';
+                    dataHTML += '</div>';
+
+                    dataHTML += '<div class="boxDetailSesi" name="detailSesi">';
+                    dataHTML += '<div style="margin-top: 15px;">';
+                    dataHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                    dataHTML += '<div class="d-flex justify-content-start">';
+                    dataHTML += '<div>Sales (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
+                    dataHTML += '</div>';
+                    dataHTML += '<div>Rp. ' + obj.dataTotal[i].total.toLocaleString() + '</div>';
+                    dataHTML += '</div>';
+
+                    dataHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                    dataHTML += '<div class="d-flex justify-content-start">';
+                    dataHTML += '<div>Sales Non Tunai (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
+                    dataHTML += '</div>';
+                    dataHTML += '<div>Rp. ' + tempTotalNonTunai.toLocaleString() + '</div>';
+                    dataHTML += '</div>';
+
+                    dataHTML +=
+                        '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                    dataHTML += tempHTMLNonTunai;
+
+                    dataHTML +=
+                        '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                    dataHTML += '<div class="d-flex justify-content-between totalAll">';
+                    dataHTML += '<div>Total Cash (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
+                    dataHTML += '<div>Rp. ' + (obj.dataTotal[i].total - tempTotalNonTunai)
+                        .toLocaleString() + '</div>';
+                    dataHTML += '</div></div></div>'
+
+                    totalSales += obj.dataTotal[i].total;
+                    totalNonTunai += tempTotalNonTunai;
+                }
+
+                dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Total Sales</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div>Rp. ' + totalSales.toLocaleString() + '</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Total Sales Non Tunai</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div>Rp. ' + totalNonTunai.toLocaleString() + '</div>';
+                dataBottom += '</div>';
+
+                dataBottom +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+
+                for (var i = 0; i < obj.dataSales.length; i++) {
+                    for (var j = 0; j < obj.dataSales[i].sales.length; j++) {
+                        var totalTempSales = 0;
+                        for (var k = 0; k < obj.dataSales[i].sales[j][2].length;k++) {
+                            totalTempSales += obj.dataSales[i].sales[j][2][k].totalQty;
+                        }
+                        dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                        dataBottom +=
+                        '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                        dataBottom += '<div>' + obj.dataSales[i].sales[j][1] + '</div>';
+                        dataBottom += '</div>';
+                        dataBottom += '<div>Rp. ' + totalTempSales.toLocaleString() + '</div>';
+                        dataBottom += '</div>';
+                    }
+                }
+
+                dataBottom +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+
+                for (var i = 0; i < obj.dataReimburseSales.length; i++) {
+                    totalReimburse += obj.dataReimburseSales[i].total;
+                }
+
+                dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                dataBottom += '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                dataBottom += '<div>Reimburse Sales</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div>Rp. ' + totalReimburse.toLocaleString() + '</div>';
+                dataBottom += '</div>';
+
+                dataBottom +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+
+                dataBottom += '<div class="d-flex justify-content-between totalAll">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Total Cash</div>';
+                dataBottom += '<img src="' + url + 'img/icon/infoIcon.png" alt="" ';
+                dataBottom +=
+                    ' style="height: 15px; margin-top: 7px; margin-left: 5px;" onclick="infoClick();">';
+                dataBottom += '</div>';
+
+                dataBottom += '<div>Rp. ' + (totalSales - totalNonTunai - totalReimburse).toLocaleString() +
+                    '</div></div>'
+
+                document.getElementById('allDataHTML').innerHTML = dataHTML;
+
+                document.getElementById('dataBottomHtml').innerHTML = dataBottom;
+
+                resetDetailSesi();
             },
             error: function(req, err) {}
         });
@@ -460,6 +655,14 @@
 
     function buttonEditClick() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + "{{ $dateSelect }}";
+    }
+
+    function infoClick() {
+        $('#exampleModalCenter').modal('show');
+    }
+
+    function closeInfo() {
+        $('#exampleModalCenter').modal('hide');
     }
 </script>
 
