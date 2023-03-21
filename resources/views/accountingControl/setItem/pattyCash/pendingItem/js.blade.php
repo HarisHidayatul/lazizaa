@@ -39,14 +39,18 @@
             var idReqPattyCash = listPattyCashEdit[index];
             var item = document.getElementsByName('itemEdit')[index].value;
             var idSatuan = document.getElementsByName('dropDownEdit')[index].value;
-            processAcceptDel('1', idReqPattyCash, item, idSatuan);
+            var idJenisItem = document.getElementsByName('dropDownJenisEdit')[index].value;
+            console.log(idJenisItem);
+            processAcceptDel('1', idReqPattyCash, item, idSatuan,idJenisItem);
         }
 
         function deleteItem(index) {
             var idReqPattyCash = listPattyCashEdit[index];
             var item = document.getElementsByName('itemEdit')[index].value;
             var idSatuan = document.getElementsByName('dropDownEdit')[index].value;
-            processAcceptDel('2', idReqPattyCash, item, idSatuan);
+            var idJenisItem = document.getElementsByName('dropDownJenisEdit')[index].value;
+            console.log(idJenisItem);
+            processAcceptDel('2', idReqPattyCash, item, idSatuan, idJenisItem);
         }
         $(document).on("click", "[id^=b]", function(event, ui) {
             //function for delete (when clicked)
@@ -55,15 +59,14 @@
             processAcceptDel('2', idClickDelete);
         });
 
-        function processAcceptDel(status, idRev, item, idSatuan) {
-            var idJenisItem = idJenisItem;
+        function processAcceptDel(status, idRev, item, idSatuan, idJenisItem) {
             $.ajax({
                 url: "{{ url('pattyCash/items/store/revision/request') }}",
                 type: 'get',
                 data: {
+                    idJenisItem: idJenisItem,
                     status: status,
                     idRev: idRev,
-                    idJenisItem: idJenisItem,
                     item: item,
                     idSatuan: idSatuan
                 },

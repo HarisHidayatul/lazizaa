@@ -387,7 +387,7 @@
                         <div class="d-flex justify-content-center wrapSesi">
                             <div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>
                             <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
-                            <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
+                            {{-- <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div> --}}
                         </div>
                         {{-- <h3 style="margin-top: 20px">Laporan SO</h3> --}}
                         <div id="groupAddItem"></div>
@@ -550,7 +550,7 @@
     function getDataFillSoKemarin() {
         $.ajax({
             url: '{{ url('soHarian/user/showDetailLastSesi') }}' + '/' + "{{ session('idOutlet') }}" + '/' +
-            "{{ $dateSelect }}" + '/' + selectedSesi,
+                "{{ $dateSelect }}" + '/' + selectedSesi,
             type: 'get',
             success: function(response) {
                 var elementInput = document.getElementsByName("addname");
@@ -574,28 +574,32 @@
 
     function searchAllEdit() {
         dataAllEdit.length = 0;
+        var allElementEdit = [];
         var elementInput = document.getElementsByName("addname");
         for (var i = 0; i < tempDataEdit.length; i++) {
             var getValueElement = elementInput[tempDataEdit[i][0]].value;
             if (getValueElement != tempDataEdit[i][2]) {
                 // console.log(getValueElement);
-                $.ajax({
-                    url: '{{ url('soHarian/edit/data/') }}' + '/' + tempDataEdit[i][1],
-                    type: 'get',
-                    data: {
-                        quantityRevisi: getValueElement
-                    },
-                    success: function(response) {},
-                    error: function(req, err) {
-                        console.log(err);
-                        // return 0
-                    }
-                });
+                allElementEdit.push([tempDataEdit[i][1], getValueElement]);
             }
         }
+        $.ajax({
+            url: '{{ url('soHarian/edit/data/') }}',
+            type: 'get',
+            contentType: "application/json",
+            data: {
+                dataEdit: allElementEdit
+            },
+            success: function(response) {
+                sendAddData();
+            },
+            error: function(req, err) {
+                console.log(err);
+                // return 0
+            }
+        });
         // goToDashboard();
         // window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected;
-        sendAddData();
     }
 
     function searchIndexSoItem(idItem) {
@@ -615,48 +619,56 @@
         var elementInput = document.getElementsByName("addname");
         // console.log(elementInput[0].value);
         // console.log(elementInput.length);
-        for (var i = 0; i < (elementInput.length * 5); i++) {
+        var allElementSend = []; //memiliki nilai [idItem, value]
+        for (var i = 0; i < dataId.length; i++) {
+            //Jika data merupakan data edit, maka skip
+            var foundEdit = false;
+            for (var j = 0; j < tempDataEdit.length; j++) {
+                if (dataId[i] == dataId[tempDataEdit[j][0]]) {
+                    foundEdit = true;
+                    break;
+                }
+            }
+            if (foundEdit) {
+                continue;
+            }
             var isSuccess = false;
-            var indexIteration = i % elementInput.length;
-            if (elementInput[indexIteration].value == '') {
+            if (elementInput[i].value == '') {
                 // continue;
-                $.ajax({
-                    url: "{{ url('soHarian/store/data') }}",
-                    type: 'get',
-                    data: {
-                        idSo: idSo2,
-                        idItemSo: dataId[indexIteration],
-                        quantity: 0
-                    },
-                    success: function(response) {
-                        // break;
-                        isSuccess = true;
-                    },
-                    error: function(req, err) {
-                        console.log(err);
-                    }
-                });
+                allElementSend.push(
+                    [
+                        dataId[i],
+                        0
+                    ]
+                );
             } else {
-                $.ajax({
-                    url: "{{ url('soHarian/store/data') }}",
-                    type: 'get',
-                    data: {
-                        idSo: idSo2,
-                        idItemSo: dataId[indexIteration],
-                        quantity: elementInput[indexIteration].value
-                    },
-                    success: function(response) {
-                        // break;
-                        isSuccess = true;
-                    },
-                    error: function(req, err) {
-                        console.log(err);
-                    }
-                });
+                allElementSend.push(
+                    [
+                        dataId[i],
+                        elementInput[i].value
+                    ]
+                );
             }
         }
+        $.ajax({
+            url: "{{ url('soHarian/store/data') }}",
+            type: 'get',
+            contentType: "application/json",
+            data: {
+                idSo: idSo2,
+                dataSend: allElementSend
+            },
+            success: function(response) {
+                // break;
+                isSuccess = true;
+                window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected + '/' +
+                    selectedSesi;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
         // goToDashboard();
-        window.location.href = "{{ url('user/detail/soHarian') }}" + '/' + dateSelected + '/' + selectedSesi;
     }
 
     function sendAddData() {

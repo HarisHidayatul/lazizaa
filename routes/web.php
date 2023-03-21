@@ -87,7 +87,7 @@ Route::get('soHarian/user/showDetailLastSesi/{id}/{date}/{idSesi}', [fsoHarianCo
 
 Route::get('soHarian/date/getId', [fsoHarianController::class, 'showAndCreateID']);
 Route::get('soHarian/store/data', [soFillController::class, 'store']);
-Route::get('soHarian/edit/data/{id}', [fsoHarianController::class, 'editSoFill']);
+Route::get('soHarian/edit/data', [fsoHarianController::class, 'editSoFill']);
 Route::get('soHarian/edit/userFill/{id}', [fsoHarianController::class, 'editFsoHarian']);
 Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRev']);
 // Route::get('soHarian/show/data/all', [fsoHarianController::class, 'showAllDataSo']);
@@ -223,6 +223,8 @@ Route::get('waste/show/revision/done/{fromDate}/{toDate}', [wasteController::cla
 Route::get('waste/show/revision/outlet/{id}', [wasteController::class, 'showRevisionOutlet']); //menampilkan revisi outlet berdasarkan id
 Route::get('waste/show/revision/done/outlet/{id}', [wasteController::class, 'showRevisionDoneOutlet']);
 Route::get('waste/show/wasteFill/{id}', [wasteController::class, 'showOnWasteFill']); //menampilkan data seperti showAllData
+
+Route::get('waste/show/history',[wasteController::class, 'showHistory']);
 
 Route::get('waste/items/show/req/all/{id}', [wasteController::class, 'showReqOutlet']);
 
@@ -503,6 +505,12 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('user/detail/all/salesHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.salesHarianDetailAll2', [
+            'dateSelect' => $dateSelect
+        ]);
+    });
+
+    Route::get('user/detail2/all/salesHarian/{dateSelect}',function($dateSelect){
+        return view('userControl2.salesHarianDetailAll', [
             'dateSelect' => $dateSelect
         ]);
     });

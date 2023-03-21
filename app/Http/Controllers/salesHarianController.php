@@ -397,21 +397,15 @@ class salesHarianController extends Controller
         // @dd($tanggalAll);
         $allDataArray = [];
         $tempDataArray = [];
-        $dataFound = false;
         $idSesi = 0;
         if ($tanggalAll != null) {
-            $allsales = salesharian::orderBy('idSesi', 'DESC')->where('idOutlet', '=', $idOutlet)->where('idTanggal', '=', $tanggalAll['id'])->get();
+            $allsales = salesharian::orderBy('idSesi', 'ASC')->where('idOutlet', '=', $idOutlet)->where('idTanggal', '=', $tanggalAll['id'])->get();
             // @dd($allsales);
             $tempIdSesi = null;
             for ($i = 0; $i < $allsales->count(); $i++) {
                 $datasales = $allsales[$i];
                 $idSesi = $datasales->idSesi;
-                // if ($i == 0) {
-                //     $tempIdSesi = $idSesi;
-                // }
                 $dataOnSesi = [];
-
-                // @dd($allsales[1]->listSaless);
 
                 for ($j = 0; $j < $datasales->listSaless->count(); $j++) {
                     $idTotalRevisi = $datasales->listSaless[$j]->pivot->idRevisiTotal;

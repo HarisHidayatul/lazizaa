@@ -635,12 +635,12 @@
                 for (var i = 0; i < objReimburseSales.length; i++) {
                     totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
                     totalHTML += '<div>' + 'Reimburse Sales' + '</div>';
-                    totalHTML += '<div>+ Rp. ' + objReimburseSales[i].total.toLocaleString() + '</div></div>';
-                    totalReimburseSales += objReimburseSales[i].total;
+                    totalHTML += '<div>- Rp. ' + objReimburseSales[i].total.toLocaleString() + '</div></div>';
+                    totalReimburseSales -= objReimburseSales[i].total;
                 }
                 totalHTML +=
                     '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
-                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Cash</div>';
+                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Disetorkan</div>';
                 totalHTML += '<div>Rp. ' + (totalReadingCasheer - totalAll + totalReimburseSales).toLocaleString() +
                     '</div></div></div>';
 

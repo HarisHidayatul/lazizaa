@@ -12,7 +12,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>Dashboard User</title>
+
+    <title>Document</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
@@ -36,352 +38,6 @@
             margin-left: -14px;
         }
 
-        h4 {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 12px;
-            line-height: 15px;
-
-            /* Greyscale/50 */
-
-            color: #7A7A7A;
-        }
-
-        .laporanMenu {
-            margin-top: 4px;
-        }
-
-        .imageProfile {
-            border-radius: 32px;
-            height: 32px;
-            width: 32px;
-        }
-
-        .modal.right .modal-dialog {
-            position: fixed;
-            left: 0;
-            margin: auto;
-            width: 175px;
-            height: 100%;
-            -webkit-transform: translate3d(0%, 0, 0);
-            -ms-transform: translate3d(0%, 0, 0);
-            -o-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0);
-        }
-
-        .modal.right .modal-content {
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .modal.left .modal-body {
-            padding: 15px 15px 80px;
-        }
-
-        .modal.left.fade .modal-dialog {
-            right: -320px;
-            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-            transition: opacity 0.3s linear, right 0.3s ease-out;
-        }
-
-        .modal.left.fade.show .modal-dialog {
-            left: 0;
-        }
-
-        /* ----- MODAL STYLE ----- */
-        .modal-content {
-            border-radius: 0;
-            border: none;
-        }
-
-        .modal-header {
-            border-bottom-color: #eeeeee;
-            background-color: #fafafa;
-        }
-
-        .imageClose {
-            width: 15px;
-            height: 15px;
-            right: 20px;
-            position: absolute;
-        }
-
-        .imageLogo {
-            /* width: 85px; */
-            height: 30px;
-            margin-top: 25%;
-            position: absolute;
-        }
-
-        .imageLogOut {
-            /* width: 85px; */
-            height: 20px;
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-        }
-
-        .containerr {
-            /* margin-top: 75px; */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mainTable {
-            text-align: center;
-            vertical-align: middle;
-            /* Semibold/base */
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 0.9rem;
-            line-height: 4.5vh;
-
-            border-spacing: 100px 0;
-        }
-
-        .beforeAfterDate {
-            color: #E0E0E0;
-        }
-
-        h3 {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 120%;
-            /* identical to box height, or 24px */
-
-            /* display: flex; */
-            align-items: center;
-            text-align: center;
-            margin-top: 1px;
-        }
-
-        h1 {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 24px;
-            color: #B20731;
-            display: flex;
-            position: absolute;
-            left: 10%;
-            margin-top: -4vh;
-        }
-
-        h2 {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 140%;
-            /* or 22px */
-
-
-            /* Main color/Red/50 */
-
-            color: #B20731;
-        }
-
-        h5 {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 15px;
-            line-height: 140%;
-            /* or 20px */
-
-            display: flex;
-            align-items: center;
-            text-align: center;
-
-        }
-
-        .previousNext {
-            border: none;
-            background: none;
-        }
-
-        .rowHeight {
-            content: "";
-            height: 60px;
-        }
-
-        .container2 {
-            content: "";
-            height: 20px;
-        }
-
-        .bottom {
-            margin-top: 65px;
-            height: 1000px;
-            background: #FCFBFB;
-            box-shadow: 0px -0.82px 1.65px rgba(0, 14, 51, 0.1);
-            border-radius: 16px;
-        }
-
-        .soIcon {
-            height: 30px;
-            margin-left: 10px;
-        }
-
-        .layoutBottom {
-            height: 55px;
-            background: #FFFFFF;
-            /* Greyscale/20 */
-            border: 1px solid #E0E0E0;
-            border-radius: 10px;
-            padding-top: 10px;
-            /* padding-left: 10px; */
-            margin-top: 12px;
-            cursor: pointer;
-        }
-
-        .bottom-container {
-            margin-left: 15px;
-            margin-right: 15px;
-        }
-
-        .soStatus {
-            height: 20px;
-            margin-right: 10px
-        }
-
-        .textOutlet {
-            /* Semibold/Large */
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 140%;
-            /* identical to box height, or 28px */
-
-
-            /* Main color/Red/50 */
-            color: #B20731;
-            margin-right: 22vw;
-        }
-
-        .menuSidebar {
-            margin-top: 120px;
-            width: 150px;
-            justify-content: center;
-            flex-direction: row;
-        }
-
-        .menuActive::before {
-            /* Main color/Red/50 */
-            content: '';
-            position: absolute;
-            margin-top: -7px;
-            left: 7px;
-            background: #B20731;
-            border-radius: 8px;
-            width: 160px;
-            height: 36px;
-            text-align: center;
-        }
-
-        .menuActive {
-            /* Semibold/base */
-
-            /* font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 140%; */
-            /* or 22px */
-
-
-            /* Greyscale/10 */
-
-            color: #FFFFFF;
-             !important
-        }
-
-        .menuNotActive {
-            /* Regular/base */
-
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 140%;
-            cursor: pointer;
-            /* display: block; */
-        }
-
-        .rowRequest {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 140%;
-            margin-left: 15px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        .activeRequest {
-            font-weight: 600;
-            color: #B20731;
-        }
-
-        .arrowChange {
-            transform: rotate(90deg);
-            margin-top: -10px;
-            margin-left: -3px;
-        }
-
-        .revHeader {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 24px;
-            line-height: 120%;
-            margin-top: 80px;
-        }
-
-        .boxTop {
-            background: #B20731;
-            border-radius: 6px;
-            height: 38px;
-            margin-top: 15px;
-        }
-
-        .subBoxTop {
-            /* width: 150px; */
-            width: 100vw;
-            margin-left: 5px;
-            margin-right: 5px;
-            text-align: center;
-            padding-top: 5px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            /* background: #FFFFFF; */
-            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
-            border-radius: 6px;
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 140%;
-            color: #FFFFFF;
-        }
-
-        .subActive {
-            background: white;
-            color: #B20731;
-             !important
-        }
-
         .container1 {
             width: 80vw;
             max-width: 400px;
@@ -399,45 +55,151 @@
             margin-bottom: 10px;
         }
 
-        .boxDetail {
-            cursor: pointer;
-            border: 1px solid #E0E0E0;
-            height: 48px;
-            border-radius: 8px;
-            padding-top: 5px;
-            padding-left: 5px;
-            padding-right: 10px;
-            margin-bottom: 10px;
+        .revHeader {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 120%;
+            margin-top: 80px;
         }
 
-        .detailTitle {
+        h4 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+
+            /* Greyscale/50 */
+
+            color: #7A7A7A;
+        }
+
+        h2 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            /* or 22px */
+
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+        }
+
+        .typeSales {
+            /* Semibold/Large */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            margin-top: 20px;
+        }
+
+        .itemSales {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 700;
             font-size: 14px;
             line-height: 140%;
+            margin-bottom: 5px;
         }
 
-        .detailSubTitle {
+        .detailSales {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
             font-size: 10px;
             line-height: 12px;
+            display: flex;
+            align-items: center;
             color: #9C9C9C;
         }
 
-        .detailRev {
+        .detailSales span {
+            color: #FFA500;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .wrapSales {
+            border: 1px solid #9C9C9C;
+            border-radius: 8px;
+            padding: 10px 10px;
+            margin-top: 20px;
+        }
+
+        .boxDetailSesi {
+            background: #FCFBFB;
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.1), 0px 2.22016px 11.1008px -1.11008px rgba(50, 50, 71, 0.08);
+            padding: 15px 5px;
+            border-radius: 8px;
+        }
+
+        .detailSesi {
             font-family: 'Montserrat';
             font-style: normal;
             font-weight: 600;
-            font-size: 11px;
-            line-height: 12px;
-            color: #BEBEBE;
-            text-align: end;
-            margin-top: 1px;
-            text-align: end;
-            margin-top: 1px;
+            font-size: 14px;
+            line-height: 250%;
+        }
+
+        .detailSesi span {
+            font-weight: 400;
+        }
+
+        .totalPerSesi {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            color: #B20731;
+            margin-top: 7.5px;
+        }
+
+        .totalAll {
+            margin-top: 8px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 140%;
+            /* identical to box height, or 28px */
+
+
+            /* Main color/Red/50 */
+
+            color: #B20731;
+        }
+
+        .wrapEdit {
+            position: fixed;
+            right: 30px;
+            bottom: 100px;
+        }
+
+        .wrapEdit div {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            width: 106px;
+            height: 44px;
+            background: #B20731;
+            border: 1px solid white;
+            color: #FFFFFF;
+            border-radius: 6px;
+            text-align: center;
+            align-content: center;
+            align-items: center;
+            padding-top: 10px;
+            cursor: pointer;
         }
 
         .footer {
@@ -494,35 +256,6 @@
             color: #FFFFFF;
 
         }
-
-        .wrapEdit {
-            position: fixed;
-            right: 30px;
-            bottom: 100px;
-        }
-
-        .wrapEdit div {
-            font-family: 'Montserrat';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 140%;
-            width: 106px;
-            height: 44px;
-            background: #B20731;
-            border: 1px solid white;
-            color: #FFFFFF;
-            border-radius: 6px;
-            text-align: center;
-            align-content: center;
-            align-items: center;
-            padding-top: 10px;
-            cursor: pointer;
-        }
-
-        .iconStatus {
-            height: 18px;
-        }
     </style>
 </head>
 
@@ -547,48 +280,115 @@
                 <h2 style="margin-left: 5px;">{{ session('Outlet') }}</h2>
             </div>
             <div class="dateTop" id="dateTop">XXXXX XX XXXXXXX</div>
-            {{-- <div class="dateTop">Sesi 3</div>
-            <div class="d-flex justify-content-between boxDetail">
-                <div class="d-flex justify-content-start">
-                    <div><img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
-                    </div>
-                    <div style="margin-left: 10px; margin-top:3px;">
-                        <div class="d-flex justify-content-start detailTitle">
-                            <div>Takeaway</div>
-                            <img src="{{ url('img/icon/sukses.png') }}" alt="" style="height: 18px">
-                        </div>
-                        <div class="detailSubTitle">Siti</div>
+            <div id="allDataHTML"></div>
+            <div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(0);">
+                <div class="d-flex justify-content-start align-items-center">
+                    <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
+                    <div style="margin-left: 10px;">
+                        <div class="itemSales">Sesi 1</div>
+                        <div class="detailSales">Total Cash <span>Rp 20.222</span></div>
                     </div>
                 </div>
-                <div>
-                    <div style="content: '';height: 6px;"></div>
-                    <div class="detailRev">CU &#10132; <span style="color: #FFA500;">10</span></div>
-                    <div class="detailRev">Total &#10132; <span style="color: #FFA500;">Rp. 20.222</span></div>
+                <img src="{{ url('img/icon/arrowDown.png') }}" alt="" style="height: 8px;">
+            </div>
+            <div class="boxDetailSesi" name="detailSesi">
+                <div style="margin-top: 15px;">
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start">
+                            <div>Sales (Sesi 1)</div>
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start">
+                            <div>Sales Non Tunai (Sesi 1)</div>
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start" style="margin-left: 15px">
+                            <div>Go Food</div>
+                            <img src="{{ url('img/icon/tertunda.png') }}" alt=""
+                                style="height: 15px; ">
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start" style="margin-left: 15px">
+                            <div>Grab Food</div>
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start" style="margin-left: 15px">
+                            <div>Shopee Food</div>
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                    <div class="d-flex justify-content-between totalAll">
+                        <div>Total Cash (Sesi 1)</div>
+                        <div>Rp. 1,638,192</div>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between boxDetail">
-                <div class="d-flex justify-content-start">
-                    <div><img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
+            <div class="dateTop" style="margin-top: 35px;">Summary</div>
+            <div style="margin-top: 15px;">
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start">
+                        <div>Total Sales</div>
                     </div>
-                    <div style="margin-left: 10px; margin-top:3px;">
-                        <div class="detailTitle">Takeaway</div>
-                        <div class="detailSubTitle">Siti</div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start">
+                        <div>Total Sales Non Tunai</div>
                     </div>
+                    <div>Rp. 546.064</div>
                 </div>
-                <div>
-                    <div style="content: '';height: 6px;"></div>
-                    <div class="detailRev">CU &#10132; <span style="color: #FFA500;">10</span></div>
-                    <div class="detailRev">Total &#10132; <span style="color: #FFA500;">Rp. 20.222</span></div>
+                <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Go Food</div>
+                    </div>
+                    <div>Rp. 546.064</div>
                 </div>
-            </div> --}}
-            <div id="dataHTML"></div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Grab Food</div>
+                    </div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Shopee Food</div>
+                    </div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Reimburse Sales</div>
+                    </div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                <div class="d-flex justify-content-between totalAll">
+                    <div class="d-flex justify-content-start">
+                        <div>Total Cash</div>
+                        <img src="{{ url('img/icon/infoIcon.png') }}" alt=""
+                            style="height: 15px; margin-top: 7px; margin-left: 5px;">
+                    </div>
+                    <div>Rp. 1,638,192</div>
+                </div>
+            </div>
         </div>
     </div>
-    <div style="height: 50px;"></div>
+    <div style="height: 100vw;"></div>
     <div class="wrapEdit">
         <div onclick="buttonEditClick();">Edit</div>
     </div>
-    <div style="height: 100vw;"></div>
     <div class="d-flex justify-content-center footer">
         <div>
             <div class="d-flex justify-content-center">
@@ -607,7 +407,6 @@
             <div style="height: 20px;"></div>
             <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
             </div>
-            <div style="height: 50px;"></div>
         </div>
     </div>
 </body>
@@ -618,79 +417,49 @@
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
     $(document).ready(function() {
-        console.log("{{ $dateSelect }}");
+        // console.log("{{ $dateSelect }}");
         var day = new Date("{{ $dateSelect }}");
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateTop').innerHTML = stringDay;
-        
-        getAllData();
+        resetDetailSesi();
+        getAllDataSesi();
     });
 
-    function buttonEditClick(){
-        window.location.href = "{{ url('user/salesHarian') }}" + '/' + "{{ $dateSelect }}";
-    }
-
-    function getAllData() {
+    function getAllDataSesi() {
         $.ajax({
-            url: "{{ url('salesHarian/user/showAllSesi') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
+            url: "{{ url('salesHarian/user/showAllSesi2') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
                 "{{ $dateSelect }}",
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
-                var imgURL = "{{ url('img/dashboard/laporanSales.png') }}";
-                var dataHTML = '';
-                for (var i = 0; i < obj.length; i++) {
-                    var tempHTML = '';
-                    var dataFound = false;
-                    for (var j = 0; j < obj[i].dataSales[0].length; j++) {
-                        dataFound = true;
-                        tempHTML += '<div class="d-flex justify-content-between boxDetail" onclick="goToDetailSesi('+obj[i].idSesi+');">';
-                        tempHTML += '<div class="d-flex justify-content-start">';
-                        tempHTML += '<div><img src="' + imgURL + '" alt="" style="height: 35px;"></div>';
-                        tempHTML += '<div style="margin-left: 10px; margin-top:3px;">';
-                        tempHTML += '<div class="d-flex justify-content-start detailTitle"><div>' + obj[i].dataSales[0][j].sales + '</div>';
-
-                        if ((obj[i].dataSales[0][j].idCuRev == 2) || (obj[i].dataSales[0][j].idTotalRev == 2)) {
-                            var urlImage = "{{ url('img/icon/tertunda.png') }}";
-                            tempHTML += '<img src="' + urlImage + '" style="height: 18px" alt="icon status">';
-                        } else if ((obj[i].dataSales[0][j].idCuRev == 3) || (obj[i].dataSales[0][j].idTotalRev == 3)) {
-                            var urlImage = "{{ url('img/icon/direvisi.png') }}";
-                            tempHTML += '<img src="' + urlImage + '" style="height: 18px" alt="icon status">';
-                        } else {
-                            tempHTML += '';
-                        }
-
-                        tempHTML += '</div>';
-                        tempHTML += '<div class="detailSubTitle">' + obj[i].dataSales[0][j].namaPengisi + '</div></div></div><div>';
-                        tempHTML += '<div style="content: '+"''"+';height: 6px;"></div>';
-                        tempHTML += '<div class="detailRev">CU &#10132; <span style="color: #FFA500;">';
-                        tempHTML += obj[i].dataSales[0][j].cuQty;
-                        tempHTML += '</span></div>';
-                        tempHTML += '<div class="detailRev">Total &#10132; <span style="color: #FFA500;">Rp. ';
-                        tempHTML += parseInt(obj[i].dataSales[0][j].totalQty).toLocaleString();
-                        tempHTML += '</span></div></div></div>';
-                        // console.log(tempHTML);
-                    }
-                    if(dataFound){
-                        dataHTML += '<div class="dateTop">Sesi ' + obj[i].idSesi + '</div>';
-                        dataHTML += tempHTML;
-                    }
-                }
-                document.getElementById('dataHTML').innerHTML = dataHTML;
             },
-            error: function(req, err) {
-                console.log(err);
-            }
+            error: function(req, err) {}
         });
+    }
+
+    function clickOnSesi(index) {
+        var elementDetail = document.getElementsByName('detailSesi');
+        if (elementDetail[index].style.display == 'none') {
+            elementDetail[index].style.display = 'block';
+        } else {
+            elementDetail[index].style.display = 'none';
+        }
+    }
+
+    function resetDetailSesi() {
+        var elementDetail = document.getElementsByName('detailSesi');
+        for (var i = 0; i < elementDetail.length; i++) {
+            elementDetail[i].style.display = 'none';
+        }
     }
 
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
-    function goToDetailSesi(index){
-        window.location.href = "{{ url('user/detail/salesHarian') }}" + '/' + "{{ $dateSelect }}" + '/' + index;
+    function buttonEditClick() {
+        window.location.href = "{{ url('user/salesHarian') }}" + '/' + "{{ $dateSelect }}";
     }
 </script>
 

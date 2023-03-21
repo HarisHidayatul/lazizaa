@@ -740,12 +740,20 @@ class fsoHarianController extends Controller
         ]);
     }
 
-    public function editSoFill($id, Request $request)
+    public function editSoFill(Request $request)
     {
-        soFill::find($id)->update([
-            'quantityRevisi' => $request->quantityRevisi,
-            'idRevisi'      => '2'
-        ]);
+        // $request->dataEdit memiliki struktur data [idSoFill,Edit]
+        // @dd($request->dataEdit);
+        $arrayEdit = $request->dataEdit;
+        if($arrayEdit != null){
+            for($i =0;$i<count($arrayEdit);$i++){
+                soFill::find($arrayEdit[$i][0])->update([
+                    'quantityRevisi' => $arrayEdit[$i][1],
+                    'idRevisi'      => '2'
+                ]);
+            }
+        }
+        echo 'berhasil';
     }
     public function editFsoHarian($id, Request $request)
     {
