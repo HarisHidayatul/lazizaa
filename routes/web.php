@@ -224,7 +224,7 @@ Route::get('waste/show/revision/outlet/{id}', [wasteController::class, 'showRevi
 Route::get('waste/show/revision/done/outlet/{id}', [wasteController::class, 'showRevisionDoneOutlet']);
 Route::get('waste/show/wasteFill/{id}', [wasteController::class, 'showOnWasteFill']); //menampilkan data seperti showAllData
 
-Route::get('waste/show/history',[wasteController::class, 'showHistory']);
+Route::get('waste/show/history/outlet/{idOutlet}/{countData}/{startDate}/{stopDate}',[wasteController::class, 'showHistory']);
 
 Route::get('waste/items/show/req/all/{id}', [wasteController::class, 'showReqOutlet']);
 

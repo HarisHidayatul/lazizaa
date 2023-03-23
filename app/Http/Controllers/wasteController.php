@@ -13,6 +13,7 @@ use App\Models\satuan;
 use App\Models\tanggalAll;
 use App\Models\wasteFill;
 use App\Models\wasteHarian;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -849,8 +850,68 @@ class wasteController extends Controller
         ]);
     }
 
-    public function showHistory(Request $request){
-        
+    public function showHistory($idOutlet, $countData, $startDate, $stopDate)
+    {
+        $now = Carbon::now();
+        $outletArray = [];
+        $allData = [];
+
+        if ($idOutlet == 0) {
+            $tempOutlet = doutlet::all();
+            for ($i = 0; $i < $tempOutlet->count(); $i++) {
+                array_push($outletArray, $tempOutlet[$i]->id);
+            }
+        } else {
+            array_push($outletArray, $idOutlet);
+        }
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['wasteHarians.listItemWastes'])->get();
+
+        if ($countData == 'today') {
+            $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
+        } else if ($countData == '7day') {
+            $from = $now->format('Y-m-d');
+            $to = $now->subDays(7)->format('Y-m-d');
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == '30day') {
+            $from = $now->format('Y-m-d');
+            $to = $now->subDays(30)->format('Y-m-d');
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($to, $from));
+        } else if ($countData == 'between') {
+            $allDate = $tanggalAll->whereBetween('Tanggal', array($startDate, $stopDate));
+        } else if ($countData == 'all') {
+            $allDate = $tanggalAll;
+        }
+
+        foreach ($outletArray as $outletLoop) {
+            foreach ($allDate as $tanggalLoop) {
+                $wasteHarians = $tanggalLoop->wasteHarians;
+                // @dd($wasteHarians->count());
+                if ($wasteHarians->count() > 0) {
+                    $wasteHarians = $wasteHarians->where('idOutlet', '=', $outletLoop);
+                    foreach($wasteHarians as $wasteHarian){
+                        $listWastes = $wasteHarian->listItemWastes;
+                        $listWasteArray = [];
+                        foreach($listWastes as $listWaste){
+                            $quantity = $listWaste->pivot->quantity;
+                            $idRevQuantity = $listWaste->pivot->idRevQuantity;
+                            if($idRevQuantity){
+                                $quantity = $listWaste->pivot->quantityRevisi;
+                            }
+                            array_push($listWasteArray,(object)[
+                                'item' => $listWaste->Item,
+                                'satuan' => $listWaste->satuans->Satuan,
+                                'quantity' => $quantity,
+                                ''
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'allData' => $allData
+        ]);
     }
 
     /**

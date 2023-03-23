@@ -566,8 +566,8 @@
                         .toLocaleString() + '</div>';
                     dataHTML += '</div></div></div>'
 
-                    totalSales += obj.dataTotal[i].total;
-                    totalNonTunai += tempTotalNonTunai;
+                    totalSales += parseInt(obj.dataTotal[i].total);
+                    totalNonTunai += parseInt(tempTotalNonTunai);
                 }
 
                 dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';

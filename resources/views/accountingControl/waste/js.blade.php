@@ -34,6 +34,23 @@
             getAllOutlet();
         })
 
+        function getAllData (){
+            // waste/show/history/outlet
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            var selOutlet = document.getElementById('selOutlet').value;
+            $.ajax({
+                url: "{{ url('waste/show/history/outlet') }}" + '/' + selOutlet + '/between' + '/' + startDate + '/' + stopDate,
+                type: 'get',
+                success: function(response) {
+                    var obj = JSON.parse(JSON.stringify(response));
+                    console.log(obj);
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
         function getAllOutlet() {
             $.ajax({
                 url: "{{ url('pattyCash/outlet/show') }}",
@@ -44,7 +61,7 @@
                     var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
                     console.log(obj);
-                    // listAllOutlet += '<option value=0>Semua</option>'
+                    listAllOutlet += '<option value=0>Semua</option>';
                     for (var i = 0; i < obj.Outlet.length; i++) {
                         listAllOutlet += '<option value=';
                         listAllOutlet += obj.Outlet[i].id;
