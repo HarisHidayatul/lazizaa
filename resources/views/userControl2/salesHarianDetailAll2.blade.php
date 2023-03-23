@@ -517,10 +517,10 @@
                                 '" alt="" style="height: 15px; ">';
                         }
                         tempHTMLNonTunai += '</div>';
-                        tempHTMLNonTunai += '<div>Rp. ' + obj.dataTotal[i].sales[j].total.toLocaleString() +
+                        tempHTMLNonTunai += '<div>Rp. ' + parseInt(obj.dataTotal[i].sales[j].total).toLocaleString() +
                             '</div>';
                         tempHTMLNonTunai += '</div>';
-                        tempTotalNonTunai += obj.dataTotal[i].sales[j].total;
+                        tempTotalNonTunai += parseInt(obj.dataTotal[i].sales[j].total);
                     }
                     dataHTML +=
                         '<div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(';
@@ -531,7 +531,7 @@
                         '/img/dashboard/laporanSales.png" alt="" style="height: 35px;">';
                     dataHTML += '<div style="margin-left: 10px;">';
                     dataHTML += '<div class="itemSales">Sesi ' + obj.dataTotal[i].sesi + '</div>';
-                    dataHTML += '<div class="detailSales">Total Cash <span>Rp ' + (obj.dataTotal[i].total -
+                    dataHTML += '<div class="detailSales">Total Cash <span>Rp ' + (parseInt(obj.dataTotal[i].total) -
                         tempTotalNonTunai).toLocaleString() + '</span></div>';
                     dataHTML += '</div></div>';
                     dataHTML += '<img src="' + url +
@@ -544,7 +544,7 @@
                     dataHTML += '<div class="d-flex justify-content-start">';
                     dataHTML += '<div>Sales (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
                     dataHTML += '</div>';
-                    dataHTML += '<div>Rp. ' + obj.dataTotal[i].total.toLocaleString() + '</div>';
+                    dataHTML += '<div>Rp. ' + parseInt(obj.dataTotal[i].total).toLocaleString() + '</div>';
                     dataHTML += '</div>';
 
                     dataHTML += '<div class="d-flex justify-content-between totalPerSesi">';
@@ -562,7 +562,7 @@
                         '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
                     dataHTML += '<div class="d-flex justify-content-between totalAll">';
                     dataHTML += '<div>Total Cash (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
-                    dataHTML += '<div>Rp. ' + (obj.dataTotal[i].total - tempTotalNonTunai)
+                    dataHTML += '<div>Rp. ' + (parseInt(obj.dataTotal[i].total) - tempTotalNonTunai)
                         .toLocaleString() + '</div>';
                     dataHTML += '</div></div></div>'
 
@@ -590,7 +590,7 @@
                     for (var j = 0; j < obj.dataSales[i].sales.length; j++) {
                         var totalTempSales = 0;
                         for (var k = 0; k < obj.dataSales[i].sales[j][2].length; k++) {
-                            totalTempSales += obj.dataSales[i].sales[j][2][k].totalQty;
+                            totalTempSales += parseInt(obj.dataSales[i].sales[j][2][k].totalQty);
                         }
                         dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
                         dataBottom +=

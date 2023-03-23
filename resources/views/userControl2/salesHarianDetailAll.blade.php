@@ -551,7 +551,7 @@
                     totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
                     totalHTML += '<div>' + 'Total Sales Sesi ' + obj1.dataTotal[i].sesi + '</div>';
                     totalHTML += '<div>Rp. ' + obj1.dataTotal[i].total.toLocaleString() + '</div></div>';
-                    totalReadingCasheer += obj1.dataTotal[i].total;
+                    totalReadingCasheer += parseInt(obj1.dataTotal[i].total);
                 }
                 for (var i = 0; i < obj.length; i++) {
                     allDataHTML += '<div class="typeSales">';
