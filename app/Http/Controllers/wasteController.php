@@ -849,6 +849,10 @@ class wasteController extends Controller
         ]);
     }
 
+    public function showHistory(Request $request){
+        
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

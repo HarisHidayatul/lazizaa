@@ -428,6 +428,10 @@
             <h2 class="typeSales">Sales Non Tunai</h2>
             <div id="fillDataSales"></div>
             <div style="margin-top: 45px;">
+                <div class="d-flex justify-content-between">
+                    <h6>Total Sales</h6>
+                    <h6 class="totalRp" id="totalSalesDisplay">0</h6>
+                </div>
                 <div id="bottomFill"></div>
                 <div style="content: ''; border: 1px solid #B20731; margin-bottom: 15px;"></div>
                 <div class="d-flex justify-content-between">
@@ -746,7 +750,7 @@
                                 bottomFill += '<div class="d-flex justify-content-between">';
                                 bottomFill += '<h6>' + obj.listSales[j].sales + '</h6>';
 
-                                bottomFill += '<h6 class="totalRp" id="t' + row + '">0</h6>';
+                                bottomFill += '<h6 class="totalRp">-<span id="t' + row + '">0</span></h6>';
                                 bottomFill += '</div>';
 
                                 row++;
@@ -785,6 +789,7 @@
         }
         totalSum = totalSum - sumData;
         document.getElementById('totalALL').innerHTML = 'Rp. ' + parseInt(totalSum).toLocaleString();
+        document.getElementById('totalSalesDisplay').innerHTML = parseInt(totalReadingCasheer.rawValue).toLocaleString();
         // console.log(sumData);
         copyInputToText();
     }

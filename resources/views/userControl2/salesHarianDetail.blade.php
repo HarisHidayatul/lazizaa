@@ -707,13 +707,13 @@
                 var totalCash = 0;
                 for (var i = 0; i < obj.length; i++) {
                     dataFill += '<div><div class="d-flex justify-content-start typeSales">';
-                    dataFill += obj[i].type;
+                    // dataFill += obj[i].type;
                     dataFill += '</div>';
                     if('totalManual' in obj[i]){
                         totalCash = obj[i].totalManual;
                         // console.log(totalCash);
                         dataBottom1 += '<div class="d-flex justify-content-between listPrice">';
-                        dataBottom1 += '<div class="listBottom">' + 'Total Reading Casheer' + '</div>';
+                        dataBottom1 += '<div class="listBottom">' + 'Total Sales' + '</div>';
                         dataBottom1 += '<div class="valBottom">' + parseInt(obj[i].totalManual).toLocaleString()
                             .replace(',', '.') + '</div>';
                         dataBottom1 += '</div>';
@@ -741,7 +741,7 @@
 
                         dataBottom2 += '<div class="d-flex justify-content-between listPrice">';
                         dataBottom2 += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
-                        dataBottom2 += '<div class="valBottom">' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
+                        dataBottom2 += '<div class="valBottom">-' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
                             .replace(',', '.') + '</div>';
                         dataBottom2 += '</div>';
                         totalData += parseInt(obj[i].sales[j].totalQty);

@@ -159,7 +159,7 @@
             font-size: 12px;
             line-height: 15px;
             color: #B20731;
-            margin-bottom: 5px;
+            margin-top: 7.5px;
         }
 
         .totalAll {
@@ -256,6 +256,39 @@
             color: #FFFFFF;
 
         }
+
+        button {
+            width: 100%;
+            margin-top: 10px;
+            height: 40px;
+            background: #B20731;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        p {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 15px;
+            width: 300px;
+            /* line-height: 15px; */
+            text-align: center;
+
+            color: #898A8D;
+        }
+
+        p span {
+            font-weight: 700;
+            color: #50555C;
+        }
     </style>
 </head>
 
@@ -281,208 +314,107 @@
             </div>
             <div class="dateTop" id="dateTop">XXXXX XX XXXXXXX</div>
             <div id="allDataHTML"></div>
-            {{-- <div class="typeSales">Organik</div>
+            <div style="content: ''; height: 50px;"></div>
+            <div id="dataBottomHtml"></div>
+            {{-- 
             <div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(0);">
                 <div class="d-flex justify-content-start align-items-center">
                     <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
                     <div style="margin-left: 10px;">
-                        <div class="itemSales">Dine in</div>
-                        <div class="detailSales">Siti &#10140; CU <span>10</span> Total <span>Rp 20.222</span></div>
+                        <div class="itemSales">Sesi 1</div>
+                        <div class="detailSales">Total Cash <span>Rp 20.222</span></div>
                     </div>
                 </div>
                 <img src="{{ url('img/icon/arrowDown.png') }}" alt="" style="height: 8px;">
             </div>
             <div class="boxDetailSesi" name="detailSesi">
-                <div class="detailSesi">
-                    <div class="d-flex justify-content-start">
-                        <div>Sesi 1</div>
-                        <img src="{{ url('img/icon/tertunda.png') }}" alt=""
-                            style="height: 15px; margin-top:10px;">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div><span>CU</span></div>
-                        <div>46</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #E0E0E0;"></div>
-                    <div class="d-flex justify-content-between">
-                        <div>Total</div>
-                        <div>Rp 546.064</div>
-                    </div>
-                </div>
-                <div class="detailSesi">
-                    <div class="d-flex justify-content-start">
-                        <div>Sesi 2</div>
-                        <img src="{{ url('img/icon/tertunda.png') }}" alt=""
-                            style="height: 15px; margin-top:10px;">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div><span>CU</span></div>
-                        <div>46</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #E0E0E0;"></div>
-                    <div class="d-flex justify-content-between">
-                        <div>Total</div>
-                        <div>Rp 546.064</div>
-                    </div>
-                </div>
                 <div style="margin-top: 15px;">
                     <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 1</div>
+                        <div class="d-flex justify-content-start">
+                            <div>Sales (Sesi 1)</div>
+                        </div>
                         <div>Rp. 546.064</div>
                     </div>
                     <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 2</div>
+                        <div class="d-flex justify-content-start">
+                            <div>Sales Non Tunai (Sesi 1)</div>
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start" style="margin-left: 15px">
+                            <div>Go Food</div>
+                            <img src="{{ url('img/icon/tertunda.png') }}" alt="" style="height: 15px; ">
+                        </div>
                         <div>Rp. 546.064</div>
                     </div>
                     <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 3</div>
+                        <div class="d-flex justify-content-start" style="margin-left: 15px">
+                            <div>Grab Food</div>
+                        </div>
+                        <div>Rp. 546.064</div>
+                    </div>
+                    <div class="d-flex justify-content-between totalPerSesi">
+                        <div class="d-flex justify-content-start" style="margin-left: 15px">
+                            <div>Shopee Food</div>
+                        </div>
                         <div>Rp. 546.064</div>
                     </div>
                     <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
                     <div class="d-flex justify-content-between totalAll">
-                        <div>Sub Total</div>
+                        <div>Total Cash (Sesi 1)</div>
                         <div>Rp. 1,638,192</div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(1);">
-                <div class="d-flex justify-content-start align-items-center">
-                    <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
-                    <div style="margin-left: 10px;">
-                        <div class="itemSales">Cooking class</div>
-                        <div class="detailSales">Siti &#10140; CU <span>10</span> Total <span>Rp 20.222</span></div>
-                    </div>
-                </div>
-                <img src="{{ url('img/icon/arrowDown.png') }}" alt="" style="height: 8px;">
-            </div>
-            <div class="boxDetailSesi" name="detailSesi">
-                <div class="detailSesi">
-                    <div class="d-flex justify-content-start">
-                        <div>Sesi 1</div>
-                        <img src="{{ url('img/icon/tertunda.png') }}" alt=""
-                            style="height: 15px; margin-top:10px;">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div><span>CU</span></div>
-                        <div>46</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #E0E0E0;"></div>
-                    <div class="d-flex justify-content-between">
-                        <div>Total</div>
-                        <div>Rp 546.064</div>
-                    </div>
-                </div>
-                <div class="detailSesi">
-                    <div>Sesi 2</div>
-                    <div class="d-flex justify-content-between">
-                        <div><span>CU</span></div>
-                        <div>46</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #E0E0E0;"></div>
-                    <div class="d-flex justify-content-between">
-                        <div>Total</div>
-                        <div>Rp 546.064</div>
-                    </div>
-                </div>
-                <div style="margin-top: 15px;">
-                    <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 1</div>
-                        <div>Rp. 546.064</div>
-                    </div>
-                    <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 2</div>
-                        <div>Rp. 546.064</div>
-                    </div>
-                    <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 3</div>
-                        <div>Rp. 546.064</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
-                    <div class="d-flex justify-content-between totalAll">
-                        <div>Sub Total</div>
-                        <div>Rp. 1,638,192</div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(2);">
-                <div class="d-flex justify-content-start align-items-center">
-                    <img src="{{ url('img/dashboard/laporanSales.png') }}" alt="" style="height: 35px;">
-                    <div style="margin-left: 10px;">
-                        <div class="itemSales">Grabfood</div>
-                        <div class="detailSales">Siti &#10140; CU <span>10</span> Total <span>Rp 20.222</span></div>
-                    </div>
-                </div>
-                <img src="{{ url('img/icon/arrowDown.png') }}" alt="" style="height: 8px;">
-            </div>
-            <div class="boxDetailSesi" name="detailSesi">
-                <div class="detailSesi">
-                    <div class="d-flex justify-content-start">
-                        <div>Sesi 1</div>
-                        <img src="{{ url('img/icon/tertunda.png') }}" alt=""
-                            style="height: 15px; margin-top:10px;">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div><span>CU</span></div>
-                        <div>46</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #E0E0E0;"></div>
-                    <div class="d-flex justify-content-between">
-                        <div>Total</div>
-                        <div>Rp 546.064</div>
-                    </div>
-                </div>
-                <div class="detailSesi">
-                    <div class="d-flex justify-content-start">
-                        <div>Sesi 2</div>
-                        <img src="{{ url('img/icon/tertunda.png') }}" alt=""
-                            style="height: 15px; margin-top:10px;">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div><span>CU</span></div>
-                        <div>46</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #E0E0E0;"></div>
-                    <div class="d-flex justify-content-between">
-                        <div>Total</div>
-                        <div>Rp 546.064</div>
-                    </div>
-                </div>
-                <div style="margin-top: 15px;">
-                    <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 1</div>
-                        <div>Rp. 546.064</div>
-                    </div>
-                    <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 2</div>
-                        <div>Rp. 546.064</div>
-                    </div>
-                    <div class="d-flex justify-content-between totalPerSesi">
-                        <div>Sesi 3</div>
-                        <div>Rp. 546.064</div>
-                    </div>
-                    <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
-                    <div class="d-flex justify-content-between totalAll">
-                        <div>Sub Total</div>
-                        <div>Rp. 1,638,192</div>
-                    </div>
-                </div>
-            </div>
+            <div class="dateTop" style="margin-top: 35px;">Summary</div>
             <div style="margin-top: 15px;">
                 <div class="d-flex justify-content-between totalPerSesi">
-                    <div>Organik</div>
+                    <div class="d-flex justify-content-start">
+                        <div>Total Sales</div>
+                    </div>
                     <div>Rp. 546.064</div>
                 </div>
                 <div class="d-flex justify-content-between totalPerSesi">
-                    <div>E Commerce</div>
+                    <div class="d-flex justify-content-start">
+                        <div>Total Sales Non Tunai</div>
+                    </div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Go Food</div>
+                    </div>
                     <div>Rp. 546.064</div>
                 </div>
                 <div class="d-flex justify-content-between totalPerSesi">
-                    <div>Event</div>
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Grab Food</div>
+                    </div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Shopee Food</div>
+                    </div>
+                    <div>Rp. 546.064</div>
+                </div>
+                <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
+                <div class="d-flex justify-content-between totalPerSesi">
+                    <div class="d-flex justify-content-start" style="margin-left: 15px">
+                        <div>Reimburse Sales</div>
+                    </div>
                     <div>Rp. 546.064</div>
                 </div>
                 <div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>
                 <div class="d-flex justify-content-between totalAll">
-                    <div>Total Sales</div>
+                    <div class="d-flex justify-content-start">
+                        <div>Total Cash</div>
+                        <img src="{{ url('img/icon/infoIcon.png') }}" alt=""
+                            style="height: 15px; margin-top: 7px; margin-left: 5px;" onclick="infoClick();">
+                    </div>
                     <div>Rp. 1,638,192</div>
                 </div>
             </div> --}}
@@ -512,6 +444,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="height: 400px;border-radius: 25px 25px 25px 25px;">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ url('img/icon/infoIcon.png') }}" alt="" style="margin-top: 10px;">
+                    </div>
+                    <div class="d-flex justify-content-center" style="margin-top: 15px;">
+                        <div>
+                            <p><span>Total Cash</span> merupakan nominal yang wajib disetorkan kepada Head Office pada
+                                tanggal
+                                tersebut</p>
+                            <p><span><span id="dateDeadline">dd Month yyyy</span> <br> <span style="font-size: 22px">Rp.
+                                        <span id="valueDeadline">0</span></span></span></p>
+                        </div>
+                    </div>
+                    <button onclick="goToSetoran();">Lanjutkan Setoran</button>
+                    <button style="background: #FFEAEF; color: #B20731;" onclick="closeInfo();">Nanti Dulu</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
@@ -522,10 +477,17 @@
     $(document).ready(function() {
         // console.log("{{ $dateSelect }}");
         var day = new Date("{{ $dateSelect }}");
+        var dayDeadline = new Date("{{ $dateSelect }}");
+        dayDeadline.setDate(dayDeadline.getDate() + 1);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
+        var stringDayDeadline = dayDeadline.getDate() + ' ' + months[dayDeadline.getMonth()] + ' ' + dayDeadline
+            .getFullYear();
+        console.log(stringDayDeadline);
         document.getElementById('dateTop').innerHTML = stringDay;
+        document.getElementById('dateDeadline').innerHTML = stringDayDeadline;
         resetDetailSesi();
         getAllDataSesi();
+        infoClick();
     });
 
     function getAllDataSesi() {
@@ -534,119 +496,146 @@
                 "{{ $dateSelect }}",
             type: 'get',
             success: function(response) {
-                var obj1 = JSON.parse(JSON.stringify(response));
-                console.log(obj1);
-                var obj = obj1.dataSales;
-                var objReimburseSales = obj1.dataReimburseSales;
-                var allDataHTML = '';
-                var totalHTML = '';
-                var indexButton = 0;
-                var totalAll = 0;
-                var totalReimburseSales =0;
-                var totalReadingCasheer = 0;
-
-                totalHTML += '<div style="margin-top: 25px;">';
-
-                for (var i = 0; i < obj1.dataTotal.length; i++) {
-                    totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
-                    totalHTML += '<div>' + 'Total Sales Sesi ' + obj1.dataTotal[i].sesi + '</div>';
-                    totalHTML += '<div>Rp. ' + obj1.dataTotal[i].total.toLocaleString() + '</div></div>';
-                    totalReadingCasheer += obj1.dataTotal[i].total;
-                }
-                for (var i = 0; i < obj.length; i++) {
-                    allDataHTML += '<div class="typeSales">';
-                    allDataHTML += obj[i].type;
-                    allDataHTML += '</div>';
-
-                    for (var j = 0; j < obj[i].sales.length; j++) {
-                        var detailSesi = '';
-                        var totalPerSesi = '';
-                        var totalValPerSesi = 0;
-                        detailSesi += '<div class="boxDetailSesi" name="detailSesi">';
-                        totalPerSesi += '<div style="margin-top: 15px;">';
-                        for (var k = 0; k < obj[i].sales[j][2].length; k++) {
-                            detailSesi += '<div class="detailSesi">';
-                            detailSesi += '<div class="d-flex justify-content-start">';
-                            detailSesi += '<div>Sesi ' + obj[i].sales[j][2][k].sesi + '</div>';
-                            if ((obj[i].sales[j][2][k].idCuRev == '2') || (obj[i].sales[j][2][k]
-                                    .idTotalRev == '2')) {
-                                var urlRev = "{{ url('img/icon/tertunda.png') }}";
-                                detailSesi += '<img src="' + urlRev +
-                                    '" alt="" style="height: 15px; margin-top:10px;">';
-                            } else if ((obj[i].sales[j][2][k].idCuRev == '3') || (obj[i].sales[j][2][k]
-                                    .idTotalRev == '3')) {
-                                var urlRev = "{{ url('img/icon/sukses.png') }}";
-                                detailSesi += '<img src="' + urlRev +
-                                    '" alt="" style="height: 15px; margin-top:10px;">';
-                            }
-                            detailSesi += '</div><div class="d-flex justify-content-between">';
-                            detailSesi += '<div><span></span></div>';
-                            detailSesi += '<div>' + '' + '</div>';
-                            detailSesi +=
-                                '</div><div style="width: 100%; border: 1px solid #E0E0E0;"></div>';
-                            detailSesi += '<div class="d-flex justify-content-between"><div>Total</div>';
-                            detailSesi += '<div>Rp ' + parseInt(obj[i].sales[j][2][k].totalQty)
-                                .toLocaleString() +
-                                '</div></div></div>';
-
-                            totalPerSesi += '<div class="d-flex justify-content-between totalPerSesi">';
-                            totalPerSesi += '<div>Sesi ' + obj[i].sales[j][2][k].sesi + '</div>';
-                            totalPerSesi += '<div>Rp. ' + parseInt(obj[i].sales[j][2][k].totalQty)
-                                .toLocaleString() +
-                                '</div></div>';
-                            totalValPerSesi += parseInt(obj[i].sales[j][2][k].totalQty);
-
-                            totalAll += parseInt(obj[i].sales[j][2][k].totalQty);
+                var obj = JSON.parse(JSON.stringify(response));
+                console.log(obj);
+                var dataHTML = '';
+                var dataBottom = '';
+                var totalSales = 0;
+                var totalNonTunai = 0;
+                var totalReimburse = 0;
+                var url = "{{ url('') }}";
+                for (var i = 0; i < obj.dataTotal.length; i++) {
+                    var tempHTMLNonTunai = '';
+                    var tempTotalNonTunai = 0;
+                    for (var j = 0; j < obj.dataTotal[i].sales.length; j++) {
+                        tempHTMLNonTunai += '<div class="d-flex justify-content-between totalPerSesi">';
+                        tempHTMLNonTunai +=
+                            '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                        tempHTMLNonTunai += '<div>' + obj.dataTotal[i].sales[j].sales + '</div>';
+                        if (obj.dataTotal[i].sales[j].idRevisiTotal == '2') {
+                            tempHTMLNonTunai += '<img src="' + url + '/img/icon/tertunda.png' +
+                                '" alt="" style="height: 15px; ">';
                         }
+                        tempHTMLNonTunai += '</div>';
+                        tempHTMLNonTunai += '<div>Rp. ' + obj.dataTotal[i].sales[j].total.toLocaleString() +
+                            '</div>';
+                        tempHTMLNonTunai += '</div>';
+                        tempTotalNonTunai += obj.dataTotal[i].sales[j].total;
+                    }
+                    dataHTML +=
+                        '<div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(';
+                    dataHTML += i;
+                    dataHTML += ');">';
+                    dataHTML += '<div class="d-flex justify-content-start align-items-center">';
+                    dataHTML += '<img src="' + url +
+                        '/img/dashboard/laporanSales.png" alt="" style="height: 35px;">';
+                    dataHTML += '<div style="margin-left: 10px;">';
+                    dataHTML += '<div class="itemSales">Sesi ' + obj.dataTotal[i].sesi + '</div>';
+                    dataHTML += '<div class="detailSales">Total Cash <span>Rp ' + (obj.dataTotal[i].total -
+                        tempTotalNonTunai).toLocaleString() + '</span></div>';
+                    dataHTML += '</div></div>';
+                    dataHTML += '<img src="' + url +
+                        '/img/icon/arrowDown.png" alt="" style="height: 8px;">';
+                    dataHTML += '</div>';
 
-                        totalPerSesi +=
-                            '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
-                        totalPerSesi +=
-                            '<div class="d-flex justify-content-between totalAll"><div>Sub Total</div>';
-                        totalPerSesi += '<div>Rp. ' + totalValPerSesi.toLocaleString() +
-                            '</div></div></div>';
+                    dataHTML += '<div class="boxDetailSesi" name="detailSesi">';
+                    dataHTML += '<div style="margin-top: 15px;">';
+                    dataHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                    dataHTML += '<div class="d-flex justify-content-start">';
+                    dataHTML += '<div>Sales (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
+                    dataHTML += '</div>';
+                    dataHTML += '<div>Rp. ' + obj.dataTotal[i].total.toLocaleString() + '</div>';
+                    dataHTML += '</div>';
 
-                        detailSesi += totalPerSesi + '</div>';
+                    dataHTML += '<div class="d-flex justify-content-between totalPerSesi">';
+                    dataHTML += '<div class="d-flex justify-content-start">';
+                    dataHTML += '<div>Sales Non Tunai (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
+                    dataHTML += '</div>';
+                    dataHTML += '<div>Rp. ' + tempTotalNonTunai.toLocaleString() + '</div>';
+                    dataHTML += '</div>';
 
-                        allDataHTML +=
-                            '<div class="d-flex justify-content-between align-items-center wrapSales" onclick="clickOnSesi(';
-                        allDataHTML += indexButton;
-                        allDataHTML += ');"><div class="d-flex justify-content-start align-items-center">';
-                        allDataHTML += '<img src="' + "{{ url('img/dashboard/laporanSales.png') }}" +
-                            '" alt="" style="height: 35px;">';
-                        allDataHTML += '<div style="margin-left: 10px;">';
-                        allDataHTML += '<div class="itemSales">' + obj[i].sales[j][1] + '</div>';
-                        allDataHTML += '<div class="detailSales">';
-                        allDataHTML += 'Total <span>Rp ';
-                        allDataHTML += totalValPerSesi.toLocaleString();
-                        allDataHTML += '</span></div></div></div>';
-                        allDataHTML += '<img src="' + "{{ url('img/icon/arrowDown.png') }}" +
-                            '" alt="" style="height: 8px;">'
-                        allDataHTML += '</div>';
-                        allDataHTML += detailSesi;
+                    dataHTML +=
+                        '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                    dataHTML += tempHTMLNonTunai;
 
-                        indexButton++;
+                    dataHTML +=
+                        '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+                    dataHTML += '<div class="d-flex justify-content-between totalAll">';
+                    dataHTML += '<div>Total Cash (Sesi ' + obj.dataTotal[i].sesi + ')</div>';
+                    dataHTML += '<div>Rp. ' + (obj.dataTotal[i].total - tempTotalNonTunai)
+                        .toLocaleString() + '</div>';
+                    dataHTML += '</div></div></div>'
 
-                        totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
-                        totalHTML += '<div>' + obj[i].sales[j][1] + '</div>';
-                        totalHTML += '<div>- Rp. ' + totalValPerSesi.toLocaleString() + '</div></div>';
+                    totalSales += obj.dataTotal[i].total;
+                    totalNonTunai += tempTotalNonTunai;
+                }
+
+                dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Total Sales</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div>Rp. ' + totalSales.toLocaleString() + '</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Total Sales Non Tunai</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div>Rp. ' + totalNonTunai.toLocaleString() + '</div>';
+                dataBottom += '</div>';
+
+                dataBottom +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+
+                for (var i = 0; i < obj.dataSales.length; i++) {
+                    for (var j = 0; j < obj.dataSales[i].sales.length; j++) {
+                        var totalTempSales = 0;
+                        for (var k = 0; k < obj.dataSales[i].sales[j][2].length; k++) {
+                            totalTempSales += obj.dataSales[i].sales[j][2][k].totalQty;
+                        }
+                        dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                        dataBottom +=
+                            '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                        dataBottom += '<div>' + obj.dataSales[i].sales[j][1] + '</div>';
+                        dataBottom += '</div>';
+                        dataBottom += '<div>Rp. ' + totalTempSales.toLocaleString() + '</div>';
+                        dataBottom += '</div>';
                     }
                 }
-                for (var i = 0; i < objReimburseSales.length; i++) {
-                    totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
-                    totalHTML += '<div>' + 'Reimburse Sales' + '</div>';
-                    totalHTML += '<div>- Rp. ' + objReimburseSales[i].total.toLocaleString() + '</div></div>';
-                    totalReimburseSales -= objReimburseSales[i].total;
-                }
-                totalHTML +=
+
+                dataBottom +=
                     '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
-                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Disetorkan</div>';
-                totalHTML += '<div>Rp. ' + (totalReadingCasheer - totalAll + totalReimburseSales).toLocaleString() +
-                    '</div></div></div>';
 
-                allDataHTML += totalHTML;
+                for (var i = 0; i < obj.dataReimburseSales.length; i++) {
+                    totalReimburse += obj.dataReimburseSales[i].total;
+                }
 
-                document.getElementById('allDataHTML').innerHTML = allDataHTML;
+                dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                dataBottom += '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                dataBottom += '<div>Reimburse Sales</div>';
+                dataBottom += '</div>';
+                dataBottom += '<div>Rp. ' + totalReimburse.toLocaleString() + '</div>';
+                dataBottom += '</div>';
+
+                dataBottom +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+
+                dataBottom += '<div class="d-flex justify-content-between totalAll">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Total Cash</div>';
+                dataBottom += '<img src="' + url + '/img/icon/infoIcon.png" alt="" ';
+                dataBottom +=
+                    ' style="height: 15px; margin-top: 7px; margin-left: 5px;" onclick="infoClick();">';
+                dataBottom += '</div>';
+
+                dataBottom += '<div>Rp. ' + (totalSales - totalNonTunai - totalReimburse).toLocaleString() +
+                    '</div></div>'
+
+                document.getElementById('allDataHTML').innerHTML = dataHTML;
+
+                document.getElementById('dataBottomHtml').innerHTML = dataBottom;
+
+                document.getElementById('valueDeadline').innerHTML = (totalSales - totalNonTunai - totalReimburse).toLocaleString();
+
                 resetDetailSesi();
             },
             error: function(req, err) {}
@@ -669,12 +658,24 @@
         }
     }
 
+    function goToSetoran(){
+        window.location.href = "{{ url('user/setoran/home') }}"
+    }
+
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
     function buttonEditClick() {
         window.location.href = "{{ url('user/salesHarian') }}" + '/' + "{{ $dateSelect }}";
+    }
+
+    function infoClick() {
+        $('#exampleModalCenter').modal('show');
+    }
+
+    function closeInfo() {
+        $('#exampleModalCenter').modal('hide');
     }
 </script>
 

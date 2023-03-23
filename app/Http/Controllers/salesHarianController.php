@@ -1011,7 +1011,8 @@ class salesHarianController extends Controller
             $dataArray = [
                 'idTanggal' => $tanggalID,
                 'idOutlet' => $idOutlet,
-                'idSesi' => $idSesi
+                'idSesi' => $idSesi,
+                'totalManual' => $request->totalManual
             ];
             $dataa = salesharian::create($dataArray)->id;
         } else {
