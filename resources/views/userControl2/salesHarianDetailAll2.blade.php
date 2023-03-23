@@ -606,7 +606,7 @@
                     '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
 
                 for (var i = 0; i < obj.dataReimburseSales.length; i++) {
-                    totalReimburse += obj.dataReimburseSales[i].total;
+                    totalReimburse += parseInt(obj.dataReimburseSales[i].total);
                 }
 
                 dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
