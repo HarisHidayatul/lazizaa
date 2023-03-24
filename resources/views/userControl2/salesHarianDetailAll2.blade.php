@@ -487,7 +487,7 @@
         document.getElementById('dateDeadline').innerHTML = stringDayDeadline;
         resetDetailSesi();
         getAllDataSesi();
-        infoClick();
+        // infoClick();
     });
 
     function getAllDataSesi() {
