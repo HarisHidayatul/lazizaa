@@ -521,7 +521,12 @@
 
     $(document).ready(function() {
         // console.log("{{ $dateSelect }}");
-        var day = new Date("{{ $dateSelect }}");
+        var tempDate = "{{ $dateSelect }}";
+        var dateParts = tempDate.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
+
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateTop').innerHTML = stringDay;
         resetDetailSesi();
@@ -542,7 +547,7 @@
                 var totalHTML = '';
                 var indexButton = 0;
                 var totalAll = 0;
-                var totalReimburseSales =0;
+                var totalReimburseSales = 0;
                 var totalReadingCasheer = 0;
 
                 totalHTML += '<div style="margin-top: 25px;">';
@@ -635,13 +640,16 @@
                 for (var i = 0; i < objReimburseSales.length; i++) {
                     totalHTML += '<div class="d-flex justify-content-between totalPerSesi">';
                     totalHTML += '<div>' + 'Reimburse Sales' + '</div>';
-                    totalHTML += '<div>- Rp. ' + objReimburseSales[i].total.toLocaleString() + '</div></div>';
+                    totalHTML += '<div>- Rp. ' + objReimburseSales[i].total.toLocaleString() +
+                        '</div></div>';
                     totalReimburseSales -= objReimburseSales[i].total;
                 }
                 totalHTML +=
                     '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
-                totalHTML += '<div class="d-flex justify-content-between totalAll"><div>Total Disetorkan</div>';
-                totalHTML += '<div>Rp. ' + (totalReadingCasheer - totalAll + totalReimburseSales).toLocaleString() +
+                totalHTML +=
+                    '<div class="d-flex justify-content-between totalAll"><div>Total Disetorkan</div>';
+                totalHTML += '<div>Rp. ' + (totalReadingCasheer - totalAll + totalReimburseSales)
+                    .toLocaleString() +
                     '</div></div></div>';
 
                 allDataHTML += totalHTML;

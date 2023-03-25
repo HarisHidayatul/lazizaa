@@ -146,7 +146,7 @@ Route::get('salesHarian/store/data', [salesHarianController::class, 'store']);
 Route::get('salesHarian/items/store/revision', [salesHarianController::class, 'storeItemRevision']);
 Route::get('salesHarian/items/show/rev/{id}', [salesHarianController::class, 'showRevisiOutlet']); //revision by id outlet
 
-Route::get('salesHarian/edit/total/data/{id}', [salesHarianController::class, 'editTotal']);
+// Route::get('salesHarian/edit/total/data/{id}', [salesHarianController::class, 'editTotal']);
 Route::get('salesHarian/edit/total/rev/data', [salesHarianController::class, 'editTotalRev']);
 
 Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}',[salesHarianController::class,'showVerifOutlet']);

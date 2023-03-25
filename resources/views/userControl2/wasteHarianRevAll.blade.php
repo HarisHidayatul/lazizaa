@@ -727,7 +727,12 @@
                 var urlImage = "{{ url('img/dashboard/laporanWaste.png') }}";
                 for (var i = 0; i < obj.itemWaste.length; i++) {
                     //Perbarui tanggal
-                    var day = new Date(obj.itemWaste[i].Tanggal);
+                    var tempDate = obj.itemWaste[i].Tanggal;
+                    var dateParts = tempDate.split('-');
+                    var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                    var day = new Date(formattedDate);
+
                     var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day
                         .getMonth()];
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';

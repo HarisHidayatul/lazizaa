@@ -618,7 +618,12 @@
 
     $(document).ready(function() {
         console.log("{{ $dateSelect }}");
-        var day = new Date("{{ $dateSelect }}");
+        var tempDate = "{{ $dateSelect }}";
+        var dateParts = tempDate.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
+
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateTop').innerHTML = stringDay;
         

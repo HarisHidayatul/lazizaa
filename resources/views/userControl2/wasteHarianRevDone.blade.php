@@ -607,7 +607,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -628,36 +629,40 @@
         revisiShow();
     })
 
-    function goToWasteBelum(){
+    function goToWasteBelum() {
         window.location.href = "{{ url('user/rev/wasteHarian/all') }}";
     }
 
-    function goToWasteSudah(){
+    function goToWasteSudah() {
         window.location.href = "{{ url('user/rev/wasteHarian/done') }}";
     }
 
-    
+
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
-    function goToRequestSales(){
+    function goToRequestSales() {
         window.location.href = "{{ url('user/req/salesHarian/all') }}";
     }
-    function goToRequestWaste(){
+
+    function goToRequestWaste() {
         window.location.href = "{{ url('user/req/wasteHarian/all') }}";
     }
-    function goToRequestPattyCash(){
+
+    function goToRequestPattyCash() {
         window.location.href = "{{ url('user/req/pattyCashHarian/all') }}";
     }
 
     function goToRevisiSales() {
         window.location.href = "{{ url('user/rev/salesHarian/all') }}";
     }
-    function goToRevisiWaste(){
+
+    function goToRevisiWaste() {
         window.location.href = "{{ url('user/rev/wasteHarian/all') }}"
     }
-    function goToRevisiPattyCash(){
+
+    function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
 
@@ -729,7 +734,12 @@
                 var urlImage = "{{ url('img/dashboard/laporanWaste.png') }}";
                 for (var i = 0; i < obj.itemWaste.length; i++) {
                     //Perbarui tanggal
-                    var day = new Date(obj.itemWaste[i].Tanggal);
+                    var tempDate = obj.itemWaste[i].Tanggal;
+                    var dateParts = tempDate.split('-');
+                    var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                    var day = new Date(formattedDate);
+
                     var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day
                         .getMonth()];
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';

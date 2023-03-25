@@ -15,6 +15,7 @@
     <title>Detail Waste Harian</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
         .header {
             height: 50px;
             background: white;
@@ -724,7 +725,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -755,7 +757,13 @@
             success: function(response) {
                 var allData = JSON.parse(JSON.stringify(response));
                 console.log(allData);
-                var day = new Date(allData.tanggal);
+
+                var tempDate = allData.tanggal;
+                var dateParts = tempDate.split('-');
+                var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                var day = new Date(formattedDate);
+
                 var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] +
                     ' ' + (day
                         .getYear() + 1900);
@@ -792,9 +800,10 @@
                         }
                         dataFill += '</div><div class="d-flex justify-content-between cuRow">';
                         dataFill += '<div class="cuText">Jumlah</div>';
-                        dataFill += '<div class="cuVal">' + obj[i].waste[j].qty + ' ' + obj[i].waste[j].satuan + '</div></div>';
+                        dataFill += '<div class="cuVal">' + obj[i].waste[j].qty + ' ' + obj[i].waste[j]
+                            .satuan + '</div></div>';
                         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
-                        
+
                         detailPengisi += '<div class="row" style="margin-left: 5px; margin-top: 5px">';
                         detailPengisi += '<div class="col-3 detailName">' + obj[i].waste[j].namaPengisi[0] +
                             '</div>';

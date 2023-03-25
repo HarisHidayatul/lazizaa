@@ -669,7 +669,10 @@
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
     $(document).ready(function() {
-        var day = new Date(dateSelected);
+        var dateParts = dateSelected.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
         console.log(day);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] + ' ' + (day
             .getYear() + 1900);

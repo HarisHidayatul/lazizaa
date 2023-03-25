@@ -705,7 +705,8 @@
                     </div>
                 </div>
                 <div>
-                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus" id="soStatus">
+                    <img src="{{ url('img/dashboard/kosong1.png') }}" alt="kosong1" class="soStatus"
+                        id="soStatus">
                 </div>
             </div>
             <div class="row d-flex justify-content-between layoutBottom" onclick="salesClick();">
@@ -878,24 +879,27 @@
                 console.log(obj);
                 var dataStockSo = '';
                 var dataFound = false;
-                for(var i =0;i< obj.dataLimitSo.length;i++){
+                for (var i = 0; i < obj.dataLimitSo.length; i++) {
                     dataFound = true;
 
                     dataStockSo += '<div name="stockSO">';
                     dataStockSo += '<div class="stokHarian d-flex justify-content-between">';
                     dataStockSo += '<div class="d-flex justify-content-start">';
                     dataStockSo += '<img class="imageIconSo" src="';
-                    dataStockSo += "{{ url('img/soImage') }}" + '/' + obj.dataLimitSo[i].icon + '" alt="">';
+                    dataStockSo += "{{ url('img/soImage') }}" + '/' + obj.dataLimitSo[i].icon +
+                        '" alt="">';
                     dataStockSo += '<div style="margin-left: 20px;">';
                     dataStockSo += '<div class="lblItemSo">' + obj.dataLimitSo[i].item + '</div>';
-                    dataStockSo += '<div class="qtyItemSo">' + obj.dataLimitSo[i].quantity + ' ' + obj.dataLimitSo[i].satuan + '</div>';
+                    dataStockSo += '<div class="qtyItemSo">' + obj.dataLimitSo[i].quantity + ' ' + obj
+                        .dataLimitSo[i].satuan + '</div>';
                     dataStockSo += '</div></div>';
-                    dataStockSo += '<img src="' + "{{ url('img/icon/close.png') }}" + '" alt="" style="height: 17px;" ';
+                    dataStockSo += '<img src="' + "{{ url('img/icon/close.png') }}" +
+                        '" alt="" style="height: 17px;" ';
                     dataStockSo += 'onclick="deleteStockSO(' + i + ')"></div></div>';
                 }
                 document.getElementById('listStockSOAll').innerHTML = dataStockSo;
 
-                if(dataFound){
+                if (dataFound) {
                     document.getElementById('wrapStokSoHarian').style.display = 'block';
                 }
             },
@@ -924,7 +928,8 @@
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
                 console.log(obj);
-                document.getElementById("totalPattyCash").innerHTML = parseInt(obj.allData[0].saldoPattyCash).toLocaleString().replaceAll(',','. ');
+                document.getElementById("totalPattyCash").innerHTML = parseInt(obj.allData[0]
+                    .saldoPattyCash).toLocaleString().replaceAll(',', '. ');
             },
             error: function(req, err) {
                 console.log(err);
@@ -972,7 +977,7 @@
         window.location.href = "{{ url('user/reimburse/kirim') }}";
     }
 
-    function goToSalesReimburseForm (){
+    function goToSalesReimburseForm() {
         window.location.href = "{{ url('user/reimburse/sales/kirim') }}";
     }
 
@@ -1051,7 +1056,8 @@
             window.location.href = "{{ url('user/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) + '-' +
                 dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/all/soHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
+            window.location.href = "{{ url('user/detail/all/soHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+                    1) +
                 '-' + dateSelect;
         }
     }
@@ -1061,7 +1067,8 @@
             window.location.href = "{{ url('user/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/all/salesHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+            window.location.href = "{{ url('user/detail/all/salesHarian') }}" + "/" + currentYear + '-' + (
+                currentMonth +
                 1) + '-' + dateSelect;
         }
     }
@@ -1071,7 +1078,8 @@
             window.location.href = "{{ url('user/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth + 1) +
                 '-' + dateSelect;
         } else {
-            window.location.href = "{{ url('user/detail/all/wasteHarian') }}" + "/" + currentYear + '-' + (currentMonth +
+            window.location.href = "{{ url('user/detail/all/wasteHarian') }}" + "/" + currentYear + '-' + (
+                currentMonth +
                 1) + '-' + dateSelect;
         }
     }
@@ -1256,9 +1264,17 @@
         }
         dateSelect = indexDate;
         var newDate = currentYear;
-        newDate += '-' + (currentMonth + 1);
+        newDate += '-';
+        if (((currentMonth + 1) / 10) < 1) {
+            newDate += '0';
+        }
+        newDate += (currentMonth + 1);
         newDate += '-' + dateSelect;
-        var day = new Date(newDate);
+
+        var dateParts = newDate.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+        
+        var day = new Date(formattedDate);
         var stringDay = '';
         if ((currentMonth == 0) && (currentYear == 2023)) {
             //Terdapat bug untuk hari pada Januari 2023

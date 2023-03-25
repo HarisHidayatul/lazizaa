@@ -617,7 +617,12 @@
 
     $(document).ready(function() {
         console.log("{{ $dateSelect }}");
-        var day = new Date("{{ $dateSelect }}");
+        var dateTemp = "{{ $dateSelect }}";
+        var dateParts = dateTemp.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
+
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateTop').innerHTML = stringDay;
 
@@ -678,7 +683,8 @@
                         // tempHTML += obj[i].dataPattyCash[0][0].pattyCash[j].pattyCash[0].idRevQty;
                         tempHTML += '</span></div>';
                         tempHTML += '<div class="detailRev"><span style="color: #008000;">Rp ';
-                        tempHTML += parseInt(obj[i].dataPattyCash[0][0].pattyCash[j].total).toLocaleString();
+                        tempHTML += parseInt(obj[i].dataPattyCash[0][0].pattyCash[j].total)
+                    .toLocaleString();
                         tempHTML += '</span></div></div></div>';
                         // console.log(tempHTML);
                     }

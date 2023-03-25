@@ -49,20 +49,31 @@ class salesHarianController extends Controller
     public function store(Request $request)
     {
         //
-        $data = salesFill::where('idSales', '=', $request->idSales)
-            ->where('idListSales', '=', $request->idListSales)->first();
-        if ($data == null) {
-            $dataArray = [
-                'idSales' => $request->idSales,
-                'idListSales' => $request->idListSales,
-                'total' => $request->total,
-                'idPengisi' => $request->idPengisi,
-                'idPerevisi' => $request->idPengisi
-            ];
-            salesFill::create($dataArray);
-            echo 1;
-        } else {
-            echo 0;
+        $arraySend = $request->dataSend;
+        // @dd($arraySend);
+        foreach ($arraySend as $dataSend) {
+            $data = salesFill::where('idSales', '=', $dataSend['idSales'])
+                ->where('idListSales', '=', $dataSend['idListSales'])->first();
+
+            if ($data == null) {
+                $dataArray = [
+                    'idSales' => $dataSend['idSales'],
+                    'idListSales' => $dataSend['idListSales'],
+                    'total' => $dataSend['total'],
+                    'idPengisi' => $dataSend['idPengisi'],
+                    'idPerevisi' => $dataSend['idPengisi']
+                ];
+                salesFill::create($dataArray);
+            } else {
+                $tempTotal = $data->total;
+                if($tempTotal != $dataSend['total']){
+                    $data->update([
+                        'idPengisi' => $dataSend['idPengisi'],
+                        'totalRevisi' => $dataSend['total'],
+                        'idRevisiTotal' => '2'
+                    ]);
+                }
+            }
         }
     }
 
@@ -468,14 +479,14 @@ class salesHarianController extends Controller
                 for ($j = 0; $j < $listSaless->count(); $j++) {
                     $total = $listSaless[$j]->pivot->total;
                     $idRevisiTotal = $listSaless[$j]->pivot->idRevisiTotal;
-                    if($idRevisiTotal == '2'){
+                    if ($idRevisiTotal == '2') {
                         $total = $listSaless[$j]->pivot->totalRevisi;
                     }
-                    array_push($arrayListSales,(object)[
+                    array_push($arrayListSales, (object)[
                         'sales' => $listSaless[$j]->sales,
                         'total' => $total,
                         'idRevisiTotal' => $idRevisiTotal
-                    ]);                
+                    ]);
                 }
                 array_push($allTotalManual, (object)[
                     'sesi' => $allsales[$i]->idSesi,

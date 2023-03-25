@@ -523,7 +523,10 @@
     }
 
     $(document).ready(function() {
-        var day = new Date(dateSelected);
+        var dateParts = dateSelected.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         // console.log(stringDay);
         // console.log(day.getDay());
@@ -619,68 +622,37 @@
     }
 
     function sendDataToServer(idSaless) {
-        for (var j = 0; j < 5; j++) { //ulangin kirim sebanyak lima kali
-            for (var i = 0; i < dataIdItem.length; i++) {
-                // var elementIDSendRow1 = document.getElementById('r' + i + 'c1').value;
-                var elementIDSendRow1 = parseInt(valueTotalAll[i].rawValue);
-                var idListSales = dataIdItem[i];
-                if (elementIDSendRow1 == '') {
-                    continue;
-                }
-
-                $.ajax({
-                    url: "{{ url('salesHarian/store/data') }}",
-                    type: 'get',
-                    data: {
-                        idSales: idSaless,
-                        idListSales: idListSales,
-                        total: elementIDSendRow1,
-                        idPengisi: "{{ session('idPengisi') }}"
-                    },
-                    success: function(response) {
-                        // break;
-                        // isSuccess = true;
-                    },
-                    error: function(req, err) {
-                        console.log(err);
-                    }
-                });
+        var termArraySend = [];
+        for (var i = 0; i < dataIdItem.length; i++) {
+            var elementIDSendRow1 = parseInt(valueTotalAll[i].rawValue);
+            var idListSales = dataIdItem[i];
+            if (elementIDSendRow1 == '') {
+                continue;
             }
-        }
-        for (var k = 0; k < 5; k++) {
-            for (var i = 0; i < dataIdItemEdit.length; i++) {
-                for (var j = 0; j < dataIdItem.length; j++) {
-                    if (dataIdItemEdit[i] == dataIdItem[j]) {
-                        var idRow = 'r' + j;
-                        var valTotalInput = valueTotalAll[j].rawValue;
-                        if (valTotalInput != dataTotalEdit[i]) {
-                            $.ajax({
-                                url: "{{ url('salesHarian/edit/total/data/') }}" + "/" + dataSalesEdit[i],
-                                type: 'get',
-                                data: {
-                                    totalRevisi: valTotalInput,
-                                    idPengisi: "{{ session('idPengisi') }}"
-                                },
-                                success: function(response) {
-
-                                },
-                                error: function(req, err) {
-                                    console.log(err);
-                                    // return 0
-                                }
-                            });
-                        }
-                        // dataIdItemEdit.push(obj.itemSales[0].Item[i].idListSales);
-                        // dataTotalEdit.push(obj.itemSales[0].Item[i].totalQty);
-
-                        // valueTotalAll[j].set(obj.itemSales[0].Item[i].totalQty);
-                    }
-                    // console.log("Tessss");
-                }
+            termArraySend.push({
+                idSales: idSaless,
+                idListSales: idListSales,
+                total: elementIDSendRow1,
+                idPengisi: "{{ session('idPengisi') }}"
             }
+            );
         }
+
+        $.ajax({
+            url: "{{ url('salesHarian/store/data') }}",
+            type: 'get',
+            data: {
+                dataSend: termArraySend
+            },
+            success: function(response) {
+                window.location.href = "{{ url('user/detail/salesHarian') }}" + '/' + dateSelected + '/' + selectedSesi;
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
         // goToDashboard();
-        window.location.href = "{{ url('user/detail/salesHarian') }}" + '/' + dateSelected + '/' + selectedSesi;
+        // 
     }
 
     function goToDashboard() {
@@ -750,7 +722,8 @@
                                 bottomFill += '<div class="d-flex justify-content-between">';
                                 bottomFill += '<h6>' + obj.listSales[j].sales + '</h6>';
 
-                                bottomFill += '<h6 class="totalRp">-<span id="t' + row + '">0</span></h6>';
+                                bottomFill += '<h6 class="totalRp">-<span id="t' + row +
+                                    '">0</span></h6>';
                                 bottomFill += '</div>';
 
                                 row++;
@@ -789,7 +762,8 @@
         }
         totalSum = totalSum - sumData;
         document.getElementById('totalALL').innerHTML = 'Rp. ' + parseInt(totalSum).toLocaleString();
-        document.getElementById('totalSalesDisplay').innerHTML = parseInt(totalReadingCasheer.rawValue).toLocaleString();
+        document.getElementById('totalSalesDisplay').innerHTML = parseInt(totalReadingCasheer.rawValue)
+            .toLocaleString();
         // console.log(sumData);
         copyInputToText();
     }

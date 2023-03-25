@@ -656,7 +656,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -669,7 +670,12 @@
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
     $(document).ready(function() {
-        var day = new Date(dateSelected);
+        var tempDate = dateSelected;
+        var dateParts = tempDate.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
+
         console.log(day);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] + ' ' + (day
             .getYear() + 1900);
@@ -693,7 +699,12 @@
             success: function(response) {
                 var allData = JSON.parse(JSON.stringify(response));
                 console.log(allData);
-                var day = new Date(allData.tanggal);
+                var tempDate = allData.tanggal;
+                var dateParts = tempDate.split('-');
+                var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                var day = new Date(formattedDate);
+
                 var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] +
                     ' ' + (day
                         .getYear() + 1900);

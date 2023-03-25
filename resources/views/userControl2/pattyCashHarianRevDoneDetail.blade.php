@@ -510,6 +510,7 @@
             color: #B20731;
 
         }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -656,7 +657,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -698,7 +700,12 @@
                 var namaPengisi3 = '';
                 var namaPengisi4 = '';
                 dateSelected = allData.tanggal;
-                var day = new Date(allData.tanggal);
+
+                var dateParts = allData.tanggal.split('-');
+                var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                var day = new Date(formattedDate);
+
                 console.log(day);
                 var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] +
                     ' ' + (day
@@ -771,30 +778,31 @@
                     document.getElementById('namaPengisi2').style.visibility = "hidden";
                     document.getElementById('namaPengisi3').style.visibility = "hidden";
                     document.getElementById('namaPengisi4').innerHTML = namaPengisi1;
-                }else if(indexRow == 2){
+                } else if (indexRow == 2) {
                     document.getElementById('namaPengisi1').style.visibility = "hidden";
                     document.getElementById('namaPengisi2').style.visibility = "hidden";
                     document.getElementById('namaPengisi3').innerHTML = namaPengisi1;
                     document.getElementById('namaPengisi4').innerHTML = namaPengisi2;
-                }else if(indexRow == 3){
+                } else if (indexRow == 3) {
                     document.getElementById('namaPengisi1').style.visibility = "hidden";
                     document.getElementById('namaPengisi2').innerHTML = namaPengisi1;
                     document.getElementById('namaPengisi3').innerHTML = namaPengisi2;
-                    document.getElementById('namaPengisi4').innerHTML = namaPengisi3;                    
-                }else if(indexRow == 4){
+                    document.getElementById('namaPengisi4').innerHTML = namaPengisi3;
+                } else if (indexRow == 4) {
                     document.getElementById('namaPengisi1').innerHTML = namaPengisi1;
                     document.getElementById('namaPengisi2').innerHTML = namaPengisi2;
                     document.getElementById('namaPengisi3').innerHTML = namaPengisi3;
-                    document.getElementById('namaPengisi4').innerHTML = namaPengisi4;    
-                }else{
+                    document.getElementById('namaPengisi4').innerHTML = namaPengisi4;
+                } else {
                     document.getElementById('namaPengisi1').innerHTML = namaPengisi1;
                     document.getElementById('namaPengisi2').innerHTML = namaPengisi2;
                     document.getElementById('namaPengisi3').innerHTML = namaPengisi3;
-                    document.getElementById('namaPengisi4').innerHTML = (indexRow-3);
+                    document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
                 }
                 document.getElementById('dataFill').innerHTML = dataFill;
                 document.getElementById('dataBottom').innerHTML = dataBottom;
-                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalData).toLocaleString();
+                document.getElementById('totalAll').innerHTML = 'Rp. ' + parseInt(totalData)
+                .toLocaleString();
                 document.getElementById('pengisiFill').innerHTML = detailPengisi;
                 // document.getElementById('namaPengisi4').innerHTML = (indexRow - 3);
             },

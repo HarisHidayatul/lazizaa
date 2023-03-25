@@ -476,8 +476,13 @@
 
     $(document).ready(function() {
         // console.log("{{ $dateSelect }}");
-        var day = new Date("{{ $dateSelect }}");
-        var dayDeadline = new Date("{{ $dateSelect }}");
+        var tempDate = "{{ $dateSelect }}";
+        var dateParts = tempDate.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
+
+        var dayDeadline = new Date(formattedDate);
         dayDeadline.setDate(dayDeadline.getDate() + 1);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         var stringDayDeadline = dayDeadline.getDate() + ' ' + months[dayDeadline.getMonth()] + ' ' + dayDeadline

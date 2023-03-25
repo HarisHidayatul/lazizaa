@@ -280,10 +280,12 @@
             margin-left: -14px;
             margin-top: 7px;
         }
-        .iconImage{
+
+        .iconImage {
             height: 20px;
             margin-left: 0px;
         }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -380,7 +382,8 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <h5 style="margin-top: 5px; margin-left: 10px; color: #B20731;">Sesi</h5>
-                    <h5 style="margin-top: 5px; margin-right: 15px; color: #B20731; font-weight: 600;">{{ $idSesi }}</h5>
+                    <h5 style="margin-top: 5px; margin-right: 15px; color: #B20731; font-weight: 600;">
+                        {{ $idSesi }}</h5>
                 </div>
             </div>
             <div style="height: 15px;content: ''"></div>
@@ -416,7 +419,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -429,7 +433,12 @@
     let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
     $(document).ready(function() {
-        var day = new Date(dateSelected);
+        var tempDate = dateSelected;
+        var dateParts = tempDate.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
+
         console.log(day);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] + ' ' + (day
             .getYear() + 1900);
@@ -466,16 +475,18 @@
                     if (obj.itemfso[i]['idRev'] == 2) {
                         contentSo += '<div class="col-7">';
                         contentSo +=
-                            '<img src="'+urlIcon+'/'+'tertunda.png'+'" alt="menu icon" class="iconImage">';
+                            '<img src="' + urlIcon + '/' + 'tertunda.png' +
+                            '" alt="menu icon" class="iconImage">';
                         contentSo += '</div>';
                     }
                     if (obj.itemfso[i]['idRev'] == 3) {
                         contentSo += '<div class="col-7">';
                         contentSo +=
-                            '<img src="'+urlIcon+'/'+'direvisi.png'+'" alt="menu icon" class="iconImage">';
+                            '<img src="' + urlIcon + '/' + 'direvisi.png' +
+                            '" alt="menu icon" class="iconImage">';
                         contentSo += '</div>';
                     }
-                    
+
                     contentSo += '</div><div class="row rightSo"><div class="col-1">';
                     contentSo += '<h6>' + obj.itemfso[i]['qty'] + '</h6>';
                     contentSo += '</div><div class="col itemSo">';

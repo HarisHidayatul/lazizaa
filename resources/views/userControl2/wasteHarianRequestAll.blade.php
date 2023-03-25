@@ -432,6 +432,7 @@
             text-align: end;
             margin-top: 1px;
         }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -581,7 +582,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -615,23 +617,27 @@
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
-    function goToRequestSales(){
+    function goToRequestSales() {
         window.location.href = "{{ url('user/req/salesHarian/all') }}";
     }
-    function goToRequestWaste(){
+
+    function goToRequestWaste() {
         window.location.href = "{{ url('user/req/wasteHarian/all') }}";
     }
-    function goToRequestPattyCash(){
+
+    function goToRequestPattyCash() {
         window.location.href = "{{ url('user/req/pattyCashHarian/all') }}";
     }
 
     function goToRevisiSales() {
         window.location.href = "{{ url('user/rev/salesHarian/all') }}";
     }
-    function goToRevisiWaste(){
+
+    function goToRevisiWaste() {
         window.location.href = "{{ url('user/rev/wasteHarian/all') }}"
     }
-    function goToRevisiPattyCash(){
+
+    function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
 
@@ -705,7 +711,12 @@
                 var dataRev = '';
                 var urlImage = "{{ url('img/dashboard/laporanWaste.png') }}";
                 for (var i = 0; i < obj.reqWaste.length; i++) {
-                    var day = new Date(obj.reqWaste[i].Tanggal);
+                    var tempDate = obj.reqWaste[i].Tanggal;
+                    var dateParts = tempDate.split('-');
+                    var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                    var day = new Date(formattedDate);
+
                     var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day
                         .getMonth()];
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';

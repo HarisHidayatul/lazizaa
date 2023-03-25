@@ -656,7 +656,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -698,7 +699,13 @@
                 var namaPengisi3 = '';
                 var namaPengisi4 = '';
                 dateSelected = allData.tanggal;
-                var day = new Date(allData.tanggal);
+
+                var tempDate = allData.tanggal;
+                var dateParts = tempDate.split('-');
+                var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                var day = new Date(formattedDate);
+
                 console.log(day);
                 var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()] +
                     ' ' + (day.getYear() + 1900);
@@ -728,12 +735,14 @@
                         dataFill += '<div class="d-flex justify-content-between borderCuTotal"></div>';
                         dataFill += '<div class="d-flex justify-content-between totalRow">';
                         dataFill += '<div class="totalText">Total</div>';
-                        dataFill += '<div class="totalVal">Rp. ' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
+                        dataFill += '<div class="totalVal">Rp. ' + parseInt(obj[i].sales[j].totalQty)
+                            .toLocaleString()
                             .replace(',', '.') + '</div></div>';
 
                         dataBottom += '<div class="d-flex justify-content-between listPrice">';
                         dataBottom += '<div class="listBottom">' + obj[i].sales[j].sales + '</div>';
-                        dataBottom += '<div class="valBottom">' + parseInt(obj[i].sales[j].totalQty).toLocaleString()
+                        dataBottom += '<div class="valBottom">' + parseInt(obj[i].sales[j].totalQty)
+                            .toLocaleString()
                             .replace(',', '.') + '</div>';
                         dataBottom += '</div>';
                         totalData += parseInt(obj[i].sales[j].totalQty);

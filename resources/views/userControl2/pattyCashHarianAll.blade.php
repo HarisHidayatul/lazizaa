@@ -432,6 +432,7 @@
             text-align: end;
             margin-top: 1px;
         }
+
         .footer {
             margin-top: 50px;
             width: 100%;
@@ -602,7 +603,8 @@
                 <img src="{{ url('img/icon/whatsapp.png') }}" alt="" style="width: 24px; height: 24px;">
             </div>
             <div style="height: 20px;"></div>
-            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta</div>
+            <div class="footerLaporta"><span style="font-size: 16px; margin-top: 5px;">&#169;</span> 2022 - Laporta
+            </div>
         </div>
     </div>
 </body>
@@ -620,7 +622,7 @@
     function goToPattyCashSudah() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/done') }}";
     }
-    
+
 
     $(document).ready(function() {
         revisiShow();
@@ -631,28 +633,32 @@
         revisiShow();
     })
 
-    
+
     function goToDashboard() {
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
-    function goToRequestSales(){
+    function goToRequestSales() {
         window.location.href = "{{ url('user/req/salesHarian/all') }}";
     }
-    function goToRequestWaste(){
+
+    function goToRequestWaste() {
         window.location.href = "{{ url('user/req/wasteHarian/all') }}";
     }
-    function goToRequestPattyCash(){
+
+    function goToRequestPattyCash() {
         window.location.href = "{{ url('user/req/pattyCashHarian/all') }}";
     }
 
     function goToRevisiSales() {
         window.location.href = "{{ url('user/rev/salesHarian/all') }}";
     }
-    function goToRevisiWaste(){
+
+    function goToRevisiWaste() {
         window.location.href = "{{ url('user/rev/wasteHarian/all') }}"
     }
-    function goToRevisiPattyCash(){
+
+    function goToRevisiPattyCash() {
         window.location.href = "{{ url('user/rev/pattyCashHarian/all') }}"
     }
 
@@ -726,7 +732,11 @@
                 var urlImage = "{{ url('img/dashboard/laporanPattyCash.png') }}";
                 for (var i = 0; i < obj.itemPattyCash.length; i++) {
                     //Perbarui tanggal
-                    var day = new Date(obj.itemPattyCash[i].Tanggal);
+                    var dateParts = obj.itemPattyCash[i].Tanggal.split('-');
+                    var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+                    var day = new Date(formattedDate);
+                    
                     var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day
                         .getMonth()];
                     dataRev += '<div class="dateTop">' + stringDay + '</div>';
@@ -749,13 +759,15 @@
                             if (obj.itemPattyCash[i].Item[j].Item[k].idQtyRev == 2) {
                                 dataRev +=
                                     '<div class="detailRev">Jumlah &#10132; <span style="color: #008000;">';
-                                dataRev += obj.itemPattyCash[i].Item[j].Item[k].qty + ' ' + obj.itemPattyCash[i].Item[j].Item[k].satuan;
+                                dataRev += obj.itemPattyCash[i].Item[j].Item[k].qty + ' ' + obj
+                                    .itemPattyCash[i].Item[j].Item[k].satuan;
                                 dataRev += '</span></div>';
                             }
                             if (obj.itemPattyCash[i].Item[j].Item[k].idTotalRev == 2) {
                                 dataRev +=
                                     '<div class="detailRev">Total &#10132; <span style="color: #008000;">Rp. ';
-                                dataRev += parseInt(obj.itemPattyCash[i].Item[j].Item[k].total.toLocaleString()).replace(',', '.');
+                                dataRev += parseInt(obj.itemPattyCash[i].Item[j].Item[k].total
+                                    .toLocaleString()).replace(',', '.');
                                 dataRev += '</span></div>';
                             }
                             dataRev += '</div></div>';

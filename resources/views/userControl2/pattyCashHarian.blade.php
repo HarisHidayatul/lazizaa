@@ -976,7 +976,11 @@
     }
 
     $(document).ready(function() {
-        var day = new Date(dateSelected);
+        
+        var dateParts = dateSelected.split('-');
+        var formattedDate = dateParts[1] + '/' + dateParts[2] + '/' + dateParts[0];
+
+        var day = new Date(formattedDate);
         var stringDay = days[day.getDay()] + ', ' + day.getDate() + ' ' + months[day.getMonth()];
         document.getElementById('dateSelected').innerHTML = stringDay;
         document.getElementById('dateSelected2').innerHTML = stringDay;
