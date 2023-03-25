@@ -478,6 +478,13 @@ class reimburseController extends Controller
     {
         $pergerakanSaldo = 0;
         $awalSaldo = true;
+        $tanggalSekarang = tanggalAll::where('Tanggal', '=', now()->format('Y-m-d'))->first();
+        if($tanggalSekarang == null){
+            tanggalAll::create([
+                'Tanggal' => now()->format('Y-m-d')
+            ]);
+        }
+        // @dd($tanggalSekarang);
         $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with('reimburses.penerimaReimburses', 'pattyCashHarians.listItemPattyCashs', 'salesHarianReimburses.sales_reimburses')->get();
         for ($i = 0; $i < $tanggalAll->count(); $i++) {
             $reimburseAll = $tanggalAll[$i]->reimburses;
