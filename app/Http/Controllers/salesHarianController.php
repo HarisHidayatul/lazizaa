@@ -50,7 +50,7 @@ class salesHarianController extends Controller
     {
         //
         $arraySend = $request->dataSend;
-        // @dd($arraySend);
+        @dd($arraySend);
         foreach ($arraySend as $dataSend) {
             $data = salesFill::where('idSales', '=', $dataSend['idSales'])
                 ->where('idListSales', '=', $dataSend['idListSales'])->first();
