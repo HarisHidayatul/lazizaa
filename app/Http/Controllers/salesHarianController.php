@@ -50,28 +50,29 @@ class salesHarianController extends Controller
     {
         //
         $arraySend = $request->dataSend;
-        @dd($arraySend);
+        // @dd($arraySend);
         foreach ($arraySend as $dataSend) {
             $data = salesFill::where('idSales', '=', $dataSend['idSales'])
                 ->where('idListSales', '=', $dataSend['idListSales'])->first();
-
-            if ($data == null) {
-                $dataArray = [
-                    'idSales' => $dataSend['idSales'],
-                    'idListSales' => $dataSend['idListSales'],
-                    'total' => $dataSend['total'],
-                    'idPengisi' => $dataSend['idPengisi'],
-                    'idPerevisi' => $dataSend['idPengisi']
-                ];
-                salesFill::create($dataArray);
-            } else {
-                $tempTotal = $data->total;
-                if($tempTotal != $dataSend['total']){
-                    $data->update([
+            if(is_numeric($dataSend['total'])){
+                if ($data == null) {
+                    $dataArray = [
+                        'idSales' => $dataSend['idSales'],
+                        'idListSales' => $dataSend['idListSales'],
+                        'total' => $dataSend['total'],
                         'idPengisi' => $dataSend['idPengisi'],
-                        'totalRevisi' => $dataSend['total'],
-                        'idRevisiTotal' => '2'
-                    ]);
+                        'idPerevisi' => $dataSend['idPengisi']
+                    ];
+                    salesFill::create($dataArray);
+                } else {
+                    $tempTotal = $data->total;
+                    if($tempTotal != $dataSend['total']){
+                        $data->update([
+                            'idPengisi' => $dataSend['idPengisi'],
+                            'totalRevisi' => $dataSend['total'],
+                            'idRevisiTotal' => '2'
+                        ]);
+                    }
                 }
             }
         }
