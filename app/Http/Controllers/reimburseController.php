@@ -338,7 +338,26 @@ class reimburseController extends Controller
 
                     $pembelianHarian = $allDate[$i]->pattyCashHarians;
                     $reimburseHarian = $reimburse->penerimaReimburses;
-                    // @dd($reimburseHarian);
+                    
+                    $salesReimburse = $tanggalAll[$i]->salesHarianReimburses->where('idOutlet', '=', $outletArray[$indexOutletLoop])->first();
+                    if ($salesReimburse != null) {
+                        if($salesReimburse != null){
+                            $salesReimburse = $salesReimburse->sales_reimburses;
+                            $totalSalesReimburse = $salesReimburse->total;
+                            if ($salesReimburse->idRevisiTotal == '2') {
+                                $totalSalesReimburse = $salesReimburse->totalRevisi;
+                            }
+                            $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
+                            array_push($reimburseSales, (object)[
+                                'id' => $salesReimburse->id,
+                                'idRevisiTotal' => $salesReimburse->idRevisiTotal,
+                                'total' => $totalSalesReimburse,
+                                'saldo' => $pergerakanSaldo
+                            ]);
+                            $dataFound = true;
+                        }
+                    }
+                    
                     for ($k = 0; $k < $reimburseHarian->count(); $k++) {
                         if ($reimburseHarian[$k]->idRevisi == '3') {
                             $pergerakanSaldo = $pergerakanSaldo + $reimburseHarian[$k]->qty;
@@ -383,26 +402,6 @@ class reimburseController extends Controller
                         }
                     }
                     $pattyCash = array_reverse($pattyCash, false);
-
-
-                    $salesReimburse = $tanggalAll[$i]->salesHarianReimburses->where('idOutlet', '=', $outletArray[$indexOutletLoop])->first();
-                    if ($salesReimburse != null) {
-                        if($salesReimburse != null){
-                            $salesReimburse = $salesReimburse->sales_reimburses;
-                            $totalSalesReimburse = $salesReimburse->total;
-                            if ($salesReimburse->idRevisiTotal == '2') {
-                                $totalSalesReimburse = $salesReimburse->totalRevisi;
-                            }
-                            $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
-                            array_push($reimburseSales, (object)[
-                                'id' => $salesReimburse->id,
-                                'idRevisiTotal' => $salesReimburse->idRevisiTotal,
-                                'total' => $totalSalesReimburse,
-                                'saldo' => $pergerakanSaldo
-                            ]);
-                            $dataFound = true;
-                        }
-                    }
 
                     if ($dataFound) {
                         array_push($allHistory, (object)[

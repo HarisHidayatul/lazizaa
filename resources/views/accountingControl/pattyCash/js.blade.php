@@ -131,6 +131,7 @@
         function showUploadView() {
             document.getElementById('wrapImageUpload').style.display = 'none';
             document.getElementById('formUploadImage').style.display = 'block';
+            $('#formUploadImage')[0].reset();
         }
 
         function showBuktiTF() {
