@@ -17,6 +17,7 @@
             <thead>
                 <tr>
                     <td>Tanggal</td>
+                    <td>Outlet</td>
                     <td>Jumlah Transfer</td>
                     <td>Status</td>
                 </tr>

@@ -62,7 +62,7 @@
             });
         }
 
-        function deleteTransfer(){
+        function deleteTransfer() {
             $.ajax({
                 url: "{{ url('setoran/delete/accounting/revisi') }}" + '/' + indexSetoran,
                 type: 'get',
@@ -81,7 +81,7 @@
             var stopDate = document.getElementById('stopDate').value;
             // var accessHistory = document.getElementById('selDate').value;
             var accessOutlet = document.getElementById('selOutlet').value;
-            var urlAll = "{{ url('setoran/show/data/inPart') }}" + '/' + accessOutlet + '/' + 'between' + '/' + startDate +
+            var urlAll = "{{ url('setoran/show/data/inPart2') }}" + '/' + accessOutlet + '/' + 'between' + '/' + startDate +
                 '/' + stopDate;
             $.ajax({
                 url: urlAll,
@@ -90,30 +90,38 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     var historyAll = "";
                     console.log(obj);
-                    for (var i = 0; i < obj.setoran.length; i++) {
-                        for (var j = 0; j < obj.setoran[i].setoran.length; j++) {
-                            historyAll += '<tr style="cursor: pointer;" onClick="clickSetoran(';
-                            historyAll += obj.setoran[i].setoran[j].id;
-                            historyAll += ')">';
+                    for (var i = 0; i < obj.allSetoran.length; i++) {
+                        for (var j = 0; j < obj.allSetoran[i].setoran.length; j++) {
+                            for (var k = 0; k < obj.allSetoran[i].setoran[j].setoran.length; k++) {
+                                historyAll += '<tr style="cursor: pointer;" onClick="clickSetoran(';
+                                historyAll += obj.allSetoran[i].setoran[j].setoran[k].id;
+                                historyAll += ')">';
 
-                            historyAll += '<td>';
-                            historyAll += obj.setoran[i].Tanggal;
-                            historyAll += '</td>';
-                            historyAll += '<td>';
-                            historyAll += obj.setoran[i].setoran[j].qty.toLocaleString().replaceAll(',', '.');
-                            historyAll += '</td>';
-                            historyAll += '<td ';
-                            if (obj.setoran[i].setoran[j].idRev == '2') {
-                                historyAll += 'style="color: red;"';
-                                statusRevisi = 'PENDING';
-                            } else if (obj.setoran[i].setoran[j].idRev == '3') {
-                                historyAll += 'style="color: green;"';
-                                statusRevisi = 'SUKSES';
+                                historyAll += '<td>';
+                                historyAll += obj.allSetoran[i].setoran[j].Tanggal;
+                                historyAll += '</td>';
+
+                                historyAll += '<td>';
+                                historyAll += obj.allSetoran[i].outlet;
+                                historyAll += '</td>';
+                                
+                                historyAll += '<td>';
+                                historyAll += obj.allSetoran[i].setoran[j].setoran[k].qty.toLocaleString().replaceAll(',',
+                                    '.');
+                                historyAll += '</td>';
+                                historyAll += '<td ';
+                                if (obj.allSetoran[i].setoran[j].setoran[k].idRev == '2') {
+                                    historyAll += 'style="color: red;"';
+                                    statusRevisi = 'PENDING';
+                                } else if (obj.allSetoran[i].setoran[j].setoran[k].idRev == '3') {
+                                    historyAll += 'style="color: green;"';
+                                    statusRevisi = 'SUKSES';
+                                }
+                                historyAll += '>';
+                                historyAll += statusRevisi;
+                                historyAll += '</td>';
+                                historyAll += '</tr>';
                             }
-                            historyAll += '>';
-                            historyAll += statusRevisi;
-                            historyAll += '</td>';
-                            historyAll += '</tr>';
                         }
                     }
                     $('#statusInputTabel>tbody').empty().append(historyAll);
@@ -216,6 +224,7 @@
                     var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
                     console.log(obj);
+                    listAllOutlet += '<option value=0>Semua</option>';
                     for (var i = 0; i < obj.Outlet.length; i++) {
                         listAllOutlet += '<option value=';
                         listAllOutlet += obj.Outlet[i].id;

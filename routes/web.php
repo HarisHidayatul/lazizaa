@@ -255,6 +255,7 @@ Route::get('setoran/delete/accounting/revisi/{id}',[setoranController::class,'de
 
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
 Route::get('setoran/show/data/inPart/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart']);
+Route::get('setoran/show/data/inPart2/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart2']);
 Route::get('setoran/show/data/all/{idOutlet}', [setoranController::class, 'showSetoranAll']);
 Route::get('setoran/penerima/sendData', [setoranController::class, 'createSetoran']);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\doutlet;
 use App\Models\dUser;
 use App\Models\jenisBank;
 use App\Models\listBank;
@@ -365,8 +366,39 @@ class setoranController extends Controller
         ]);
     }
 
+    public function showSetoranPart2($idOutlet, $countData, $startDate, $stopDate){
+        $allData = [];
+        $outletArray = [];
+        if($idOutlet == '0'){
+            $tempOutlet = doutlet::all();
+            foreach($tempOutlet as $loopOutlet){
+                array_push($outletArray, $loopOutlet->id);
+            }
+        }else{
+            array_push($outletArray, $idOutlet);
+        }
+        // @dd($outletArray);
+        foreach($outletArray as $loopIdOutlet){
+            $namaOutlet = doutlet::find($loopIdOutlet)['Nama Store'];
+            array_push($allData, (object)[
+                'outlet' => $namaOutlet,
+                'setoran' => $this->showSetoran($loopIdOutlet,  $countData, $startDate, $stopDate)
+            ]);
+        }
+        return response()->json([
+            'allSetoran' => $allData
+        ]);
+    }
+
     public function showSetoranPart($idOutlet, $countData, $startDate, $stopDate)
     {
+        $allData = $this->showSetoran($idOutlet, $countData, $startDate, $stopDate);
+        return response()->json([
+            'setoran' => $allData
+        ]);
+    }
+
+    public function showSetoran($idOutlet, $countData, $startDate, $stopDate){
         $now = Carbon::now();
         $tanggalAll = [];
         $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with('setorans.pengirimLists.listBanks')->get();
@@ -411,9 +443,7 @@ class setoranController extends Controller
                 ]);
             }
         }
-        return response()->json([
-            'setoran' => $allData
-        ]);
+        return $allData;
     }
 
     public function showSetoranAll($idOutlet)
