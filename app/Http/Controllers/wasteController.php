@@ -864,7 +864,8 @@ class wasteController extends Controller
         } else {
             array_push($outletArray, $idOutlet);
         }
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['wasteHarians.listItemWastes'])->get();
+        // @dd($outletArray);
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['wasteHarians.listItemWastes.satuans'])->get();
 
         if ($countData == 'today') {
             $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
@@ -883,32 +884,51 @@ class wasteController extends Controller
         }
 
         foreach ($outletArray as $outletLoop) {
+            $tanggalDataArray = [];
             foreach ($allDate as $tanggalLoop) {
                 $wasteHarians = $tanggalLoop->wasteHarians;
                 // @dd($wasteHarians->count());
                 if ($wasteHarians->count() > 0) {
+                    // @dd($wasteHarians);
                     $wasteHarians = $wasteHarians->where('idOutlet', '=', $outletLoop);
+                    $wasteArraySesi = [];
                     foreach($wasteHarians as $wasteHarian){
                         $listWastes = $wasteHarian->listItemWastes;
+                        // @dd($listWastes);
                         $listWasteArray = [];
                         foreach($listWastes as $listWaste){
+                            // @dd($listWaste);
                             $quantity = $listWaste->pivot->quantity;
                             $idRevQuantity = $listWaste->pivot->idRevQuantity;
-                            if($idRevQuantity){
+                            $pengisi = dUser::find($listWaste->pivot->idPengisi)['Nama Lengkap'];
+                            if($idRevQuantity == '2'){
                                 $quantity = $listWaste->pivot->quantityRevisi;
                             }
                             array_push($listWasteArray,(object)[
                                 'item' => $listWaste->Item,
                                 'satuan' => $listWaste->satuans->Satuan,
                                 'quantity' => $quantity,
-                                ''
+                                'pengisi' => $pengisi,
+                                'idRev' => $idRevQuantity
                             ]);
                         }
+                        array_push($wasteArraySesi,(object)[
+                            'sesi' => $wasteHarian->idSesi,
+                            'waste' => $listWasteArray
+                        ]);
                     }
+                    array_push($tanggalDataArray,(object)[
+                        'tanggal' => $tanggalLoop->Tanggal,
+                        'waste' => $wasteArraySesi
+                    ]);
                 }
             }
+            $namaOutlet = doutlet::find($outletLoop)['Nama Store'];
+            array_push($allData,(object)[
+                'outlet' => $namaOutlet,
+                'data' => $tanggalDataArray
+            ]);
         }
-
         return response()->json([
             'allData' => $allData
         ]);

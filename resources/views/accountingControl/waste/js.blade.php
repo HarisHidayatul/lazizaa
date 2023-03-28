@@ -45,6 +45,46 @@
                 success: function(response) {
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
+                    var dataTable = '';
+                    for(var i=0;i<obj.allData.length;i++){
+                        for(var j=0;j<obj.allData[i]?.data.length;j++){
+                            for(var k=0;k<obj.allData[i].data[j]?.waste.length;k++){
+                                for(var l=0;l<obj.allData[i].data[j].waste[k]?.waste.length;l++){
+                                    dataTable += '<tr>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].data[j].tanggal;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].outlet;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].data[j].waste[k].sesi;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].data[j].waste[k].waste[l].item;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].data[j].waste[k].waste[l].quantity;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].data[j].waste[k].waste[l].satuan;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.allData[i].data[j].waste[k].waste[l].pengisi;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    if(obj.allData[i].data[j].waste[k].waste[l].idRev == '2'){
+                                        dataTable += 'REVISI';
+                                    }
+                                    dataTable += '</td>';
+                                    dataTable += '</tr>';
+                                }
+                            }
+                        }
+                    }
+                    $('#statusInputTabel>tbody').empty().append(dataTable);
                 },
                 error: function(req, err) {
                     console.log(err);

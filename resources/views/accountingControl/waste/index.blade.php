@@ -16,11 +16,13 @@
         <tr>
             <td>Tanggal</td>
             <td>Outlet</td>
+            <td>Sesi</td>
             <td>Item Waste</td>
             <td>Harga Satuan</td>
             <td>Qty</td>
             <td>Satuan</td>
             <td>Pengisi</td>
+            <td>Status</td>
         </tr>
     </thead>
     <tbody>
