@@ -20,6 +20,8 @@
     </div> --}}
 </div>
 <div style="height: 10px;"></div>
+<button type="button" class="btn btn-secondary float-right" onclick="downloadCSV();">Download CSV</button>
+<div style="height: 50px;"></div>
 <div style="overflow-x: auto">
     <table class="table table-striped" id="statusInputTabel">
         <thead>
@@ -38,6 +40,5 @@
         <tbody>
         </tbody>
     </table>
-    <button type="button" class="btn btn-secondary float-right" onclick="downloadCSV();">Download CSV</button>
 </div>
 @endsection

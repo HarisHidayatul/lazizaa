@@ -20,6 +20,14 @@
         </div> --}}
     </div>
     <div style="height: 10px;"></div>
+    <div class="float-right">
+        <div class="d-flex justify-content-start">
+            <button type="button" class="btn btn-secondary" onclick="refreshData();">Refresh Data</button>
+            <div style="content: ''; width: 10px;"></div>
+            <button type="button" class="btn btn-secondary" onclick="downloadCSV();">Download CSV</button>
+        </div>
+    </div>
+    <div style="height: 50px;"></div>
     <div style="overflow-x: auto">
         <table class="table table-striped" id="statusInputTabel">
             <thead>
@@ -32,7 +40,8 @@
                     <td>Qty</td>
                     <td>Satuan</td>
                     <td>Harga Satuan</td>
-                    <td>Harga Total</td>
+                    <td>Kredit</td>
+                    <td>Debit</td>
                     <td>Saldo</td>
                     <td>Status</td>
                 </tr>
@@ -41,7 +50,6 @@
             </tbody>
         </table>
     </div>
-    <button type="button" class="btn btn-secondary float-right" onclick="downloadCSV();">Download CSV</button>
     {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
         Launch demo modal
     </button> --}}
@@ -109,25 +117,29 @@
                     </div>
                     <div class="row">
                         <div class="col-5">Bukti Pembayaran</div>
-                        <div class="col-7">: 
+                        <div class="col-7">:
                             <span style="color: darkgrey" id="buktiPengirim">
                                 <form id="formUploadImage">
                                     <label for="image" class="d-flex justify-content-center align-items-center">
-                                        <img src="{{ url('img/icon/uploadCamera.png') }}" alt="" style="height: 30px;">
+                                        <img src="{{ url('img/icon/uploadCamera.png') }}" alt=""
+                                            style="height: 30px;">
                                         <div>Upload bukti pembayaran</div>
                                     </label>
-                                    <input type="file" class="form-control" id="image" name="image" style="display: none"
-                                        onchange="uploadFileImage();">
+                                    <input type="file" class="form-control" id="image" name="image"
+                                        style="display: none" onchange="uploadFileImage();">
                                 </form>
                                 <div id="wrapImageUpload">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="d-flex justify-content-start">
-                                            <img src="{{ url('img/icon/linkPath.png') }}" alt="" style="height: 20px;">
+                                            <img src="{{ url('img/icon/linkPath.png') }}" alt=""
+                                                style="height: 20px;">
                                             <div style="margin-left: 15px;">
-                                                <a target="_blank" rel="noopener noreferrer" href="#"  id="filePathName"></a>
+                                                <a target="_blank" rel="noopener noreferrer" href="#"
+                                                    id="filePathName"></a>
                                             </div>
                                         </div>
-                                        <img src="{{ url('img/icon/trash.png') }}" alt="" style="height: 20px;" onclick="deleteTempImg();">
+                                        <img src="{{ url('img/icon/trash.png') }}" alt="" style="height: 20px;"
+                                            onclick="deleteTempImg();">
                                     </div>
                                 </div>
                             </span>
@@ -153,8 +165,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

@@ -463,14 +463,12 @@ class reimburseController extends Controller
     public function updateAllHistoryOutlet()
     {
         $outletAll = doutlet::all();
-        for ($i = 0; $i < 3; $i++) {
-            for ($j = 0; $j < $outletAll->count(); $j++) {
-                echo $outletAll[$j]['Nama Store'];
-                echo '<br>';
-                $this->updateAllHistory($outletAll[$j]->id);
-                echo '<br>';
-                echo '<br>';
-            }
+        for ($j = 0; $j < $outletAll->count(); $j++) {
+            echo $outletAll[$j]['Nama Store'];
+            echo '<br>';
+            $this->updateAllHistory($outletAll[$j]->id);
+            echo '<br>';
+            echo '<br>';
         }
     }
     public function updateAllHistory($idOutlet)

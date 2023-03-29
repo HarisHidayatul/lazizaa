@@ -204,7 +204,14 @@
             <div class="d-flex justify-content-center">
                 <div>
                     <div class="tittle">Saldo Patty Cash</div>
-                    <div class="priceTittle" id="totalPattyCash">Rp 0</div>
+                    <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-start">
+                            <div class="priceTittle" id="totalPattyCash">Rp 0</div>
+                            <div onclick="refreshPattyCash();">
+                                <i class="fa fa-refresh" style="color: white; cursor: pointer;"></i>
+                            </div>
+                        </div>
+                    </div>
                     {{-- <div style="height: 70px;"></div> --}}
                     <div style="margin-top: 30px;">
                         <img src="{{ url('img/reimburse/reimburseStat.png') }}" alt="" style="width: 320px;">
@@ -467,6 +474,19 @@
                     .toLocaleString();
                 document.getElementById("totalPattyCash").innerHTML = "Rp " + parseInt(totalPattyCash)
                     .toLocaleString().replaceAll(',','.');
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        })
+    }
+
+    function refreshPattyCash(){
+        $.ajax({
+            url: "{{ url('reimburse/update/history/cycle') }}" + '/' + "{{ session('idOutlet') }}",
+            type: 'get',
+            success: function(response) {
+                window.location.href = "{{ url('user/reimburse/history') }}";
             },
             error: function(req, err) {
                 console.log(err);
