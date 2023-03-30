@@ -393,6 +393,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('accountingControl.pattyCash.index');
     });
 
+    Route::get('accounting/reimburse',function(){
+        return view('accountingControl.reimburse.index');
+    });
+
     Route::get('accounting/setoran', function () {
         return view('accountingControl.setoranTunai.index');
     });

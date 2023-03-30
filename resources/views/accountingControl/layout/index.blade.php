@@ -140,6 +140,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ url('accounting/reimburse') }}" class="nav-link" id="reimburseTabMenu">
+                            <i class="nav-icon fas fa-money-check-alt"></i>
+                            <p class="text">Reimburse</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('accounting/setoran') }}" class="nav-link" id="setoransTabMenu">
                             <i class="nav-icon fas fa-cash-register"></i>
                             <p class="text">Setoran Tunai</p>
