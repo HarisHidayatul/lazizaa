@@ -268,7 +268,7 @@ class loginController extends Controller
     public function getAllDateBetween($fromDate, $toDate)
     {
         //menerapkan eager eloquent
-        $allDate = tanggalAll::with('salesharians', 'fsoharians', 'pattyCashHarians', 'wasteHarians')->whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
+        $allDate = tanggalAll::with('salesharians', 'fsoharians', 'pattyCashHarians', 'wasteHarians','reimburses.penerimaReimburses','setorans')->whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
         // @dd($allDate[4]->salesharians);
         $allOutlet = doutlet::all();
         $allSesi = listSesi::orderBy('id', 'ASC')->get();
@@ -282,6 +282,20 @@ class loginController extends Controller
                 $fsoData = [];
                 $pattyCashData = [];
                 $wasteData = [];
+
+                $reimburseStatus = 0;
+                $reimburseHO = $allDate[$i]->reimburses->where('idOutlet', '=', $allOutlet[$j]->id)->first();
+                if($reimburseHO != null){
+                    if($reimburseHO->penerimaReimburses->count() > 0){
+                        $reimburseStatus = 1;
+                    }
+                }
+
+                $setoranStatus = 0;
+                $setoranHO = $allDate[$i]->setorans->where('idOutlet', '=', $allOutlet[$j]->id);
+                if($setoranHO->count() > 0){
+                    $setoranStatus = 1;
+                }
 
                 for ($k = 0; $k < $allSesi->count(); $k++) {
                     $salesHarian = $allDate[$i]->salesharians->where('idOutlet', '=', $allOutlet[$j]->id)->where('idSesi', '=', $allSesi[$k]->id);
@@ -316,7 +330,9 @@ class loginController extends Controller
 
                 array_push($itemOutlet, (object)[
                     'outlet' => $allOutlet[$j]['Nama Store'],
-                    'data' => array($fsoData, $salesData, $pattyCashData, $wasteData)
+                    'data' => array($fsoData, $salesData, $pattyCashData, $wasteData),
+                    'reimburse' => $reimburseStatus,
+                    'setoran' => $setoranStatus
                 ]);
             }
             array_push($itemTanggal, (object)[

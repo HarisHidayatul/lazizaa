@@ -26,6 +26,8 @@
                     <td></td>
                     <td>Waste</td>
                     <td></td>
+                    <td>Reimburse</td>
+                    <td>Setoran</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -42,6 +44,8 @@
                     <td>1</td>
                     <td>2</td>
                     <td>3</td>
+                    <td>HO</td>
+                    <td>Sales</td>
                 </tr>
             </thead>
             <tbody>

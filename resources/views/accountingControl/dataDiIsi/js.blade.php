@@ -87,6 +87,31 @@
                     dataTable += obj.dataTanggal[i].itemOutlet[j].outlet;
                     dataTable += '</td>';
                     dataTable += dataSesi;
+                    
+                    var status2 = 'Belum';
+                    dataTable += '<td ';
+                    if(obj.dataTanggal[i].itemOutlet[j].reimburse == '1'){
+                        dataTable += 'style="color: green;"';
+                        status2 = 'Sudah'
+                    }else{
+                        dataTable += 'style="color: red;"';
+                    }
+                    dataTable += '>'
+                    dataTable += status2;
+                    dataTable += '</td>';
+
+                    status2 = 'Belum';
+                    dataTable += '<td ';
+                    if(obj.dataTanggal[i].itemOutlet[j].setoran == '1'){
+                        dataTable += 'style="color: green;"';
+                        status2 = 'Sudah'
+                    }else{
+                        dataTable += 'style="color: red;"';
+                    }
+                    dataTable += '>'
+                    dataTable += status2;
+                    dataTable += '</td>';
+
                     dataTable += '</tr>';
                 }
             }
