@@ -45,7 +45,7 @@
                     <td>2</td>
                     <td>3</td>
                     <td>HO</td>
-                    <td>Sales</td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
