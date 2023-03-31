@@ -588,7 +588,7 @@ class reimburseController extends Controller
         $idRevisi = $request->idRevisi;
         $penerimaReimburse = penerimaReimburse::find($id);
         if ($idRevisi != '2') {
-            if($request->idImageTemp != null){
+            if($request->idImageTemp != 0){
                 $imagePathTemp = tempImgAll::find($request->idImageTemp)->imagePath;
                 $imagePathNew = 'penerimaReimburse/';
                 $imagePathNew .= now()->format('Y_m_d_H_i_s_');
