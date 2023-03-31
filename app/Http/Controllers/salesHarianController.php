@@ -546,7 +546,7 @@ class salesHarianController extends Controller
 
         if ($tanggalAll != null) {
             //hitung untuk mengkalkulasi setoran dan reimburse sales
-            $setoran = $tanggalAll->setorans;
+            $setoran = $tanggalAll->setorans->where('idOutlet', '=', $idOutlet);
             // @dd($setoran);
             $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first();
             if ($salesReimburse != null) {
