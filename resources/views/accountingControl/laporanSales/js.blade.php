@@ -65,7 +65,7 @@
                             const tanggalString = `${day}/${month}/${year}`;
 
                             for (var k = 0; k < obj.dataSales[i].data[j].dataSales.length; k++) {
-                                saldo += obj.dataSales[i].data[j].dataSales[k].totalManual;
+                                saldo += parseInt(obj.dataSales[i].data[j].dataSales[k].totalManual);
                                 var tempDataExport = [];
                                 dataTable += '<tr>';
                                 dataTable += '<td>';
@@ -107,7 +107,7 @@
 
                                 for (var l = 0; l < obj.dataSales[i].data[j].dataSales[k].data.length; l++) {
                                     tempDataExport = [];
-                                    saldo -= obj.dataSales[i].data[j].dataSales[k].data[l].total;
+                                    saldo -= parseInt(obj.dataSales[i].data[j].dataSales[k].data[l].total);
                                     var selisih = obj.dataSales[i].data[j].dataSales[k].data[l].total - obj
                                         .dataSales[i].data[j].dataSales[k].data[l].totalDiterima;
                                     dataTable += '<tr>';
@@ -162,7 +162,7 @@
 
                             for (var k = 0; k < obj.dataSales[i].data[j].dataReimburse.length; k++) {
                                 var tempDataExport = [];
-                                saldo -= obj.dataSales[i].data[j].dataReimburse[k].total;
+                                saldo -= parseInt(obj.dataSales[i].data[j].dataReimburse[k].total);
                                 dataTable += '<tr>';
                                 dataTable += '<td>';
                                 dataTable += tanggalString;
@@ -207,7 +207,7 @@
                             }
 
                             for (var k = 0; k < obj.dataSales[i].data[j].dataSetor.length; k++) {
-                                saldoSetoran += obj.dataSales[i].data[j].dataSetor[k].total;
+                                saldoSetoran += parseInt(obj.dataSales[i].data[j].dataSetor[k].total);
                                 if (obj.dataSales[i].data[j].dataSetor[k].idReivisiTotal == '2') {
                                     pendingStatus = true;
                                 }
