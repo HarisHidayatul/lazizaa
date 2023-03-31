@@ -547,6 +547,7 @@ class salesHarianController extends Controller
         if ($tanggalAll != null) {
             //hitung untuk mengkalkulasi setoran dan reimburse sales
             $setoran = $tanggalAll->setorans;
+            // @dd($setoran);
             $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet', '=', $idOutlet)->first();
             if ($salesReimburse != null) {
                 $salesReimburse = $salesReimburse->sales_reimburses;
@@ -560,12 +561,12 @@ class salesHarianController extends Controller
                     'total' => $totalReimburse
                 ]);
                 // @dd($salesHarianReimburse);
-                for ($i = 0; $i < $setoran->count(); $i++) {
-                    array_push($setoranArray, (object)[
-                        'idRevisi' => $setoran[$i]->idRevisi,
-                        'qtySetor' => $setoran[$i]->qtySetor
-                    ]);
-                }
+            }
+            for ($i = 0; $i < $setoran->count(); $i++) {
+                array_push($setoranArray, (object)[
+                    'idRevisi' => $setoran[$i]->idRevisi,
+                    'qtySetor' => $setoran[$i]->qtySetor
+                ]);
             }
             // @dd($setoranArray);
         }

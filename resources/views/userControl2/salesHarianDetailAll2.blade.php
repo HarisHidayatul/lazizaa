@@ -508,6 +508,7 @@
                 var totalSales = 0;
                 var totalNonTunai = 0;
                 var totalReimburse = 0;
+                var totalSetor = 0;
                 var url = "{{ url('') }}";
                 for (var i = 0; i < obj.dataTotal.length; i++) {
                     var tempHTMLNonTunai = '';
@@ -522,7 +523,8 @@
                                 '" alt="" style="height: 15px; ">';
                         }
                         tempHTMLNonTunai += '</div>';
-                        tempHTMLNonTunai += '<div>Rp. ' + parseInt(obj.dataTotal[i].sales[j].total).toLocaleString() +
+                        tempHTMLNonTunai += '<div>Rp. ' + parseInt(obj.dataTotal[i].sales[j].total)
+                            .toLocaleString() +
                             '</div>';
                         tempHTMLNonTunai += '</div>';
                         tempTotalNonTunai += parseInt(obj.dataTotal[i].sales[j].total);
@@ -536,7 +538,8 @@
                         '/img/dashboard/laporanSales.png" alt="" style="height: 35px;">';
                     dataHTML += '<div style="margin-left: 10px;">';
                     dataHTML += '<div class="itemSales">Sesi ' + obj.dataTotal[i].sesi + '</div>';
-                    dataHTML += '<div class="detailSales">Total Cash <span>Rp ' + (parseInt(obj.dataTotal[i].total) -
+                    dataHTML += '<div class="detailSales">Total Cash <span>Rp ' + (parseInt(obj.dataTotal[i]
+                            .total) -
                         tempTotalNonTunai).toLocaleString() + '</span></div>';
                     dataHTML += '</div></div>';
                     dataHTML += '<img src="' + url +
@@ -633,13 +636,36 @@
                 dataBottom += '</div>';
 
                 dataBottom += '<div>Rp. ' + (totalSales - totalNonTunai - totalReimburse).toLocaleString() +
-                    '</div></div>'
+                    '</div></div>';
+
+                for (var i = 0; i < obj.dataSetor.length; i++) {
+                    if (obj.dataSetor[i].idRevisi != '2') {
+                        totalSetor += parseInt(obj.dataSetor[i].qtySetor);
+                    }
+                    dataBottom += '<div class="d-flex justify-content-between totalPerSesi">';
+                    dataBottom += '<div class="d-flex justify-content-start" style="margin-left: 15px">';
+                    dataBottom += '<div>Setoran</div>';
+                    dataBottom += '</div>';
+                    dataBottom += '<div>Rp. ' + parseInt(obj.dataSetor[i].qtySetor).toLocaleString() + '</div>';
+                    dataBottom += '</div>';
+                }
+                dataBottom +=
+                    '<div style="width: 100%; border: 1px solid #B20731; margin-top: 10px;"></div>';
+
+                dataBottom += '<div class="d-flex justify-content-between totalAll">';
+                dataBottom += '<div class="d-flex justify-content-start">';
+                dataBottom += '<div>Kewajiban Setor</div>';
+                dataBottom += '</div>';
+
+                dataBottom += '<div>Rp. ' + (totalSales - totalNonTunai - totalReimburse - totalSetor).toLocaleString() +
+                    '</div></div>';
 
                 document.getElementById('allDataHTML').innerHTML = dataHTML;
 
                 document.getElementById('dataBottomHtml').innerHTML = dataBottom;
 
-                document.getElementById('valueDeadline').innerHTML = (totalSales - totalNonTunai - totalReimburse).toLocaleString();
+                document.getElementById('valueDeadline').innerHTML = (totalSales - totalNonTunai -
+                    totalReimburse).toLocaleString();
 
                 resetDetailSesi();
             },
@@ -663,7 +689,7 @@
         }
     }
 
-    function goToSetoran(){
+    function goToSetoran() {
         window.location.href = "{{ url('user/setoran/home') }}"
     }
 
