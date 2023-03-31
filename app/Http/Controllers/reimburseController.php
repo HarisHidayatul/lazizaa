@@ -588,21 +588,29 @@ class reimburseController extends Controller
         $idRevisi = $request->idRevisi;
         $penerimaReimburse = penerimaReimburse::find($id);
         if ($idRevisi != '2') {
-            $imagePathTemp = tempImgAll::find($request->idImageTemp)->imagePath;
-            $imagePathNew = 'penerimaReimburse/';
-            $imagePathNew .= now()->format('Y_m_d_H_i_s_');
-            $imagePathNew .= substr($imagePathTemp, -5);
-
-            Storage::copy($imagePathTemp, $imagePathNew);
-            Storage::delete($imagePathTemp);
-            tempImgAll::find($request->idImageTemp)->delete();
-
-            $penerimaReimburse->update([
-                'idPengirim' => $request->idPengirim,
-                'idRevisi' => $idRevisi,
-                'pesan' => $request->pesan,
-                'imgTransfer' => $imagePathNew
-            ]);
+            if($request->idImageTemp != null){
+                $imagePathTemp = tempImgAll::find($request->idImageTemp)->imagePath;
+                $imagePathNew = 'penerimaReimburse/';
+                $imagePathNew .= now()->format('Y_m_d_H_i_s_');
+                $imagePathNew .= substr($imagePathTemp, -5);
+    
+                Storage::copy($imagePathTemp, $imagePathNew);
+                Storage::delete($imagePathTemp);
+                tempImgAll::find($request->idImageTemp)->delete();
+    
+                $penerimaReimburse->update([
+                    'idPengirim' => $request->idPengirim,
+                    'idRevisi' => $idRevisi,
+                    'pesan' => $request->pesan,
+                    'imgTransfer' => $imagePathNew
+                ]);
+            }else{
+                $penerimaReimburse->update([
+                    'idPengirim' => $request->idPengirim,
+                    'idRevisi' => $idRevisi,
+                    'pesan' => $request->pesan
+                ]);
+            }
         } else {
             $penerimaReimburse->update([
                 'idPengirim' => $request->idPengirim,
