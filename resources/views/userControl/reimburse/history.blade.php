@@ -189,6 +189,171 @@
             padding-bottom: 15px;
             border-bottom: 1px solid #F3F4F6;
         }
+
+                /* calendar */
+                .dateSelect {
+            /* position: relative; */
+            /* z-index: 1; */
+            color: white;
+        }
+
+        .dateSelect::before {
+            content: "";
+            background: #b20732;
+
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 6px;
+
+            height: 30px;
+            width: 30px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        td {
+            cursor: pointer;
+            padding: 0 1.7vw;
+            position: relative;
+        }
+
+        td:hover {
+            color: white;
+        }
+
+        td:hover::after {
+            content: "";
+            background: #afafaf;
+
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 6px;
+
+            height: 30px;
+            width: 30px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .dateNow::before {
+            content: "";
+            background: #B20731;
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
+            border-radius: 1.5px;
+            height: 5px;
+            width: 5px;
+            color: #B20731;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .mainTable {
+            text-align: center;
+            vertical-align: middle;
+            /* Semibold/base */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 4.5vh;
+            border-spacing: 100px 0;
+        }
+
+        .beforeAfterDate {
+            color: #E0E0E0;
+        }
+
+        .previousNext {
+            text-align: center;
+            vertical-align: middle;
+            /* Semibold/base */
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 0.9rem;
+            line-height: 4.5vh;
+        }
+
+        h3 {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 120%;
+            /* identical to box height, or 24px */
+
+            /* display: flex; */
+            align-items: center;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .pilihTanggal {
+            margin-left: 10px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            color: #585858;
+            margin-bottom: 5px;
+        }
+
+        .wrapSelectTanggal {
+            height: 42px;
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+        }
+
+        .dateKirimLbl {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 140%;
+            color: #585858;
+            margin-left: 8px;
+        }
+
+        .calendarLayout {
+            /* shadow/Hard */
+            box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.1), 0px 11.1008px 13.3209px rgba(20, 37, 63, 0.06);
+            border-radius: 6.90722px;
+            position: absolute;
+            top: 60vh;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 500px;
+            width: 100vw;
+            background: white;
+        }
+        .buttonNonActive {
+            background: #FFEAEF;
+            color: #B20731;
+        }
+        button {
+            /* width: 100%; */
+            height: 40px;
+            background: #B20731;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 140%;
+            text-align: center;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 
@@ -233,11 +398,53 @@
                     <div class="wrapSortDate">
                         <div name="sortHistory" style="flex: 0 0 67px;" class="active" onclick="getAllHistory(0)">Hari
                             ini</div>
-                        <div name="sortHistory" style="flex: 0 0 129px;" onclick="getAllHistory(1)">1 Minggu Terakhir
+                        {{-- <div name="sortHistory" style="flex: 0 0 129px;" onclick="getAllHistory(1)">1 Minggu Terakhir
                         </div>
                         <div name="sortHistory" style="flex: 0 0 117px;" onclick="getAllHistory(2)">30 Hari Terakhir
                         </div>
-                        <div name="sortHistory" style="flex: 0 0 67px;" onclick="getAllHistory(3)">Semua</div>
+                        <div name="sortHistory" style="flex: 0 0 67px;" onclick="getAllHistory(3)">Semua</div> --}}
+                        <div name="sortHistory" style="flex: 0 0 85px;" onclick="getAllHistory(1)">Bulan Ini
+                        </div>
+                        <div name="sortHistory" style="flex: 0 0 200px;" onclick="getAllHistory(1)">
+                            01/10/2023 - 06/10/2023
+                        </div>
+                    </div>
+                    <div class="calendarLayout" id="calendarLayout">
+                        <div class="d-flex justify-content-center">
+                            <div style="margin-right: 40px;">
+                                <div class="previousNext" onclick="previous(0)">&#10094;</div>
+                            </div>
+                            <div>
+                                <h3 id="monthAndYear"></h3>
+                            </div>
+                            <div style="margin-left: 40px;">
+                                <div class="previousNext" onclick="next(0)">&#10095;</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <table class="mainTable" id="calendar">
+                                <thead>
+                                    <tr>
+                                        <td>Sen</td>
+                                        <td>Sel</td>
+                                        <td>Rab</td>
+                                        <td>Kam</td>
+                                        <td>Jum</td>
+                                        <td>Sab</td>
+                                        <td>Min</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="calendar-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="height: 20px;"></div>
+                        <div class="d-flex justify-content-center">
+                            <button class="buttonNonActive" style="width: 30vw; margin-right: 3vw;"
+                                onclick="calendarLayoutHide();">Batal</button>
+                            <button style="width: 30vw;" onclick="terapkanCalendar();">Terapkan</button>
+                        </div>
+                        <div style="height: 20px;"></div>
                     </div>
                     {{-- <div style="margin-top: 20px;"></div> --}}
                     <div class="historyTransaksiLabel">History Transaksi</div>
@@ -418,13 +625,14 @@
                             historyToday += 'pendingValPembelian';
                         }
                         historyToday += '">+ Rp ';
-                        historyToday += parseInt(obj.dataHistory[i].reimburse[j].reimburse).toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].reimburse[j].reimburse)
+                    .toLocaleString();
                         historyToday += '</div><div class="labelValuePattyCash">Rp ';
                         historyToday += parseInt(obj.dataHistory[i].reimburse[j].saldo).toLocaleString();
                         historyToday += '</div></div></div>';
                     }
 
-                    for(var j =0; j < obj.dataHistory[i].reimburseSales.length; j++){
+                    for (var j = 0; j < obj.dataHistory[i].reimburseSales.length; j++) {
                         dataFound = true;
                         historyToday +=
                             '<div class="d-flex justify-content-between wrapPattyCash" onClick="goToDetailReimburseSales(' +
@@ -455,15 +663,17 @@
                             historyToday += 'pendingValPembelian';
                         }
                         historyToday += '">+ Rp ';
-                        historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].total).toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].total)
+                        .toLocaleString();
                         historyToday += '</div><div class="labelValuePattyCash">Rp ';
-                        historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].saldo).toLocaleString();
+                        historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].saldo)
+                        .toLocaleString();
                         historyToday += '</div></div></div>';
 
                         totalReimburse += parseInt(obj.dataHistory[i].reimburseSales[j].total);
                     }
 
-                    if(dataFound){
+                    if (dataFound) {
                         historyAll += historyToday;
                     }
                 }
@@ -473,7 +683,7 @@
                 document.getElementById("totalPembelian").innerHTML = "- Rp " + parseInt(totalPembelian)
                     .toLocaleString();
                 document.getElementById("totalPattyCash").innerHTML = "Rp " + parseInt(totalPattyCash)
-                    .toLocaleString().replaceAll(',','.');
+                    .toLocaleString().replaceAll(',', '.');
             },
             error: function(req, err) {
                 console.log(err);
@@ -481,7 +691,7 @@
         })
     }
 
-    function refreshPattyCash(){
+    function refreshPattyCash() {
         $.ajax({
             url: "{{ url('reimburse/update/history/cycle') }}" + '/' + "{{ session('idOutlet') }}",
             type: 'get',
@@ -502,8 +712,102 @@
         window.location.href = "{{ url('user/detail/all/pattyCashHarian') }}" + "/" + index;
     }
 
-    function goToDetailReimburseSales(index){
+    function goToDetailReimburseSales(index) {
         window.location.href = "{{ url('user/reimburse/sales/detail') }}" + "/" + index;
+    }
+
+    
+    function next(indexDate) {
+        if (indexDate != 0) {
+            dateSelect = indexDate;
+        }
+        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+        currentMonth = (currentMonth + 1) % 12;
+        showCalendar(currentMonth, currentYear);
+    }
+
+    function previous(indexDate) {
+        if (indexDate != 0) {
+            dateSelect = indexDate;
+        }
+        currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+        currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+        showCalendar(currentMonth, currentYear);
+    }
+
+    function showCalendar(month, year) {
+        let firstDay = (new Date(year, month)).getDay() - 1;
+        let daysInMonth = 32 - new Date(year, month, 32).getDate();
+        let daysInMonthBefore = 32 - new Date(year, month - 1, 32).getDate();
+
+        let tbl = document.getElementById("calendar-body"); // body of the calendar
+
+        // clearing all previous cells
+        tbl.innerHTML = "";
+
+        // filing data about month and in the page via DOM.
+        monthAndYear.innerHTML = months[month] + " " + year;
+
+        // creating all cells
+        let dateBefore = daysInMonthBefore - firstDay + 1;
+        let date = 1;
+        let dateAfter = 1;
+        let fillTable = '';
+        for (let i = 0; i < 6; i++) {
+            // creates a table row
+            fillTable += '<tr>';
+            //creating individual cells, filing them up with data.
+            for (let j = 0; j < 7; j++) {
+                fillTable += '<td ';
+                if (i === 0 && j < firstDay) {
+                    fillTable += 'class="beforeAfterDate" ';
+                    fillTable += 'onClick="previous(' + dateBefore + ');" ';
+                    fillTable += '>';
+                    fillTable += dateBefore;
+                    dateBefore++;
+                } else if (date > daysInMonth) {
+                    fillTable += 'class="beforeAfterDate" ';
+                    fillTable += 'onClick="next(' + dateAfter + ');" ';
+                    fillTable += '>';
+                    fillTable += dateAfter;
+                    dateAfter++;
+                    // break;
+                } else {
+                    if (date === dateSelect) {
+                        fillTable += 'class="dateSelect" ';
+                    } else {
+                        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                            fillTable += 'class="dateNow" ';
+                        } // color today's date
+                    }
+                    fillTable += 'onClick="selectDate(' + date + ');" ';
+                    fillTable += '>';
+                    fillTable += date;
+                    date++;
+                }
+                fillTable += '</td>';
+            }
+            fillTable += '</tr>';
+        }
+        $('#calendar-body').empty().append(fillTable);
+        // console.log(fillTable);
+    }
+
+    function selectDate(indexDate) {
+        dateSelect = indexDate;
+        showCalendar(currentMonth, currentYear);
+    }
+
+    function terapkanCalendar() {
+        var newDate = currentYear;
+        newDate += '-' + (currentMonth + 1);
+        newDate += '-' + dateSelect;
+        var day = new Date(newDate);
+        var stringDay = '';
+        stringDay += dateSelect + '/' + (currentMonth + 1) + '/' + currentYear;
+        currentDateMonthYear = currentYear + '-' + (currentMonth + 1) + '-' + dateSelect;
+        document.getElementById('dateKirimLbl').innerHTML = stringDay;
+        calendarLayoutHide();
     }
 </script>
 
