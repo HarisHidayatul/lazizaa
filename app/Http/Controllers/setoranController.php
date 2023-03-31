@@ -486,6 +486,7 @@ class setoranController extends Controller
     public function showSetoranDetail($idSetoran)
     {
         $setoran = setoran::find($idSetoran);
+        // @dd($setoran->tanggalAlls->Tanggal);
         return response()->json([
             'id' => $idSetoran,
             'namaRekeningPengirim' => $setoran->pengirimLists->namaRekening,
@@ -497,7 +498,7 @@ class setoranController extends Controller
             'bankPenerima' => $setoran->penerimaLists->listBanks->bank,
             'idPenerima' => $setoran->penerimaLists->id,
             'idStatus' => $setoran->idRevisi,
-            'date' => $setoran->updated_at->format('Y-m-d'),
+            'date' => $setoran->tanggalAlls->Tanggal,
             'time' => $setoran->updated_at->format('H:i'),
             'qty' => $setoran->qtySetor,
             'imagePathFile' => $setoran->imgTransfer

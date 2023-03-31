@@ -26,6 +26,9 @@ class setoran extends Model
     public function revisis(){
         return $this->belongsTo(revisi::class, 'idRevisi', 'id');
     }
+    public function tanggalAlls(){
+        return $this->belongsTo(tanggalAll::class,'idTanggal','id');
+    }
 
     protected $fillable = [
         'idPengirim',
