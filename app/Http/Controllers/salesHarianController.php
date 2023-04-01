@@ -288,43 +288,43 @@ class salesHarianController extends Controller
         // @dd($tanggalAll[0]->salesharians);
         $salesDate = [];
         for ($h = 0; $h < $tanggalAll->count(); $h++) {
-            $datasales = $tanggalAll[$h]->salesharians;
+            $datasaless = $tanggalAll[$h]->salesharians;
             if ($idOutlet != 0) {
-                $datasales = $datasales->where('idOutlet', '=', $idOutlet);
+                $datasaless = $datasaless->where('idOutlet', '=', $idOutlet);
             }
             $revisionDateFound = false;
             // @dd($datasales[0]->listsaless);
             $salesOutlet = [];
-            for ($i = 0; $i < $datasales->count(); $i++) {
+            foreach($datasaless as $datasales){
                 $salesArray = [];
                 $revisionFound = false;
-                $idSesi = $datasales[$i]->idSesi;
-                for ($j = 0; $j < ($datasales[$i]->listSaless->count()); $j++) {
-                    if ($datasales[$i]->listSaless[$j]->butuhVerifikasi > 0) {
-                        $idTotalRevisi = $datasales[$i]->listSaless[$j]->pivot->idRevisiTotal;
+                $idSesi = $datasales->idSesi;
+                for ($j = 0; $j < ($datasales->listSaless->count()); $j++) {
+                    if ($datasales->listSaless[$j]->butuhVerifikasi > 0) {
+                        $idTotalRevisi = $datasales->listSaless[$j]->pivot->idRevisiTotal;
                         $revisionFound = true;
 
-                        $totalQty = $datasales[$i]->listSaless[$j]->pivot->total;
+                        $totalQty = $datasales->listSaless[$j]->pivot->total;
                         $totalSblm = $totalQty;
 
                         if ($idTotalRevisi == '2') {
-                            $totalQty = $datasales[$i]->listSaless[$j]->pivot->totalRevisi;
+                            $totalQty = $datasales->listSaless[$j]->pivot->totalRevisi;
                         }
 
-                        $jumlahDiterima = $datasales[$i]->listSaless[$j]->pivot->totalDiterima;
+                        $jumlahDiterima = $datasales->listSaless[$j]->pivot->totalDiterima;
                         $selisih = $totalQty - $jumlahDiterima;
 
                         array_push($salesArray, (object)[
-                            'idSalesFill' => $datasales[$i]->listSaless[$j]->pivot->id,
-                            // 'idListSales' => $datasales[$i]->listSaless[$j]->id,
-                            'sales' => $datasales[$i]->listSaless[$j]->sales,
+                            'idSalesFill' => $datasales->listSaless[$j]->pivot->id,
+                            // 'idListSales' => $datasales->listSaless[$j]->id,
+                            'sales' => $datasales->listSaless[$j]->sales,
                             'idTotalRev' => $idTotalRevisi,
 
                             'totalQty' => $totalQty,
                             'totalSblm' => $totalSblm,
 
                             'jumlahDiterima' => $jumlahDiterima,
-                            'idRevJumlah' => $datasales[$i]->listSaless[$j]->pivot->idRevDiterima,
+                            'idRevJumlah' => $datasales->listSaless[$j]->pivot->idRevDiterima,
                             'selisih' => $selisih,
 
                             'idSesi' => $idSesi
@@ -332,9 +332,9 @@ class salesHarianController extends Controller
                     }
                 }
                 if ($revisionFound) {
-                    $outlet = doutlet::find($datasales[$i]['idOutlet']);
+                    $outlet = doutlet::find($datasales['idOutlet']);
                     array_push($salesOutlet, (object)[
-                        // 'Tanggal' => $datasales[$i]['Tanggal'],
+                        // 'Tanggal' => $datasales['Tanggal'],
                         'Outlet' => $outlet['Nama Store'],
                         'Item' => $salesArray,
                     ]);
