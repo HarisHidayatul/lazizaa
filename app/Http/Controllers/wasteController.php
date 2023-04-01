@@ -405,18 +405,22 @@ class wasteController extends Controller
         }
         // @dd($listWaste[0]->satuans);
         for ($i = 0; $i < $listWaste->count(); $i++) {
-            $outlet = $listWaste[$i]->doutlets;
-            $brand = $listWaste[$i]->dbrands;
-            array_push($arraylistWaste, (object)[
-                'id' => $listWaste[$i]['id'],
-                'Item' => $listWaste[$i]['Item'],
-                'Satuan' => $listWaste[$i]->satuans['Satuan'],
-                'Outlet' => $outlet['Nama Store'],
-                'Brand' => $brand['Nama Brand'],
-                'jenisBahan' => $listWaste[$i]->jenisBahans['jenis'],
-                'idJenis' => $listWaste[$i]->idJenisBahan,
-                'idSatuan' => $listWaste[$i]->idSatuan
-            ]);
+            try{
+                $outlet = $listWaste[$i]->doutlets;
+                $brand = $listWaste[$i]->dbrands;
+                array_push($arraylistWaste, (object)[
+                    'id' => $listWaste[$i]['id'],
+                    'Item' => $listWaste[$i]['Item'],
+                    'Satuan' => $listWaste[$i]->satuans['Satuan'],
+                    'Outlet' => $outlet['Nama Store'],
+                    'Brand' => $brand['Nama Brand'],
+                    'jenisBahan' => $listWaste[$i]->jenisBahans['jenis'],
+                    'idJenis' => $listWaste[$i]->idJenisBahan,
+                    'idSatuan' => $listWaste[$i]->idSatuan
+                ]);
+            }catch(Exception $e){
+                
+            }
         }
         return response()->json([
             'countItem' => $listWaste->count(),
