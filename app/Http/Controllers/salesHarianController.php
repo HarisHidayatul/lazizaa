@@ -562,10 +562,10 @@ class salesHarianController extends Controller
                 ]);
                 // @dd($salesHarianReimburse);
             }
-            for ($i = 0; $i < $setoran->count(); $i++) {
+            foreach($setoran as $loopSetoran){
                 array_push($setoranArray, (object)[
-                    'idRevisi' => $setoran[$i]->idRevisi,
-                    'qtySetor' => $setoran[$i]->qtySetor
+                    'idRevisi' => $loopSetoran->idRevisi,
+                    'qtySetor' => $loopSetoran->qtySetor
                 ]);
             }
             // @dd($setoranArray);
