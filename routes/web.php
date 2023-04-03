@@ -306,6 +306,12 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl2.dashboard');
     });
 
+    //Route akses untuk gudang
+    Route::get('gudang/soBulanan', function(){
+        return view('gudangControl.stockOpnameBulanan.index');
+    });
+
+    //Route akses untuk admin
     Route::get('admin/so/item', function () {
         // return view('adminControl.setItem.soHarian');
         return view('adminControl.setItem.so.listItem.index');
@@ -371,6 +377,8 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('admin/setBank', function(){
         return view('adminControl.setBank.index');
     });
+
+    //Route akses untuk accounting
 
     Route::get('accounting/revisi/sales', function () {
         return view('accountingControl.revisi.sales.index');
@@ -472,6 +480,8 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/satuan', function () {
         return view('accountingControl.setItem.satuan.index');
     });
+
+    //Route akses untuk user
 
     Route::get('user/soHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.soHarian', [

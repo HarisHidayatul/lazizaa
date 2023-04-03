@@ -155,7 +155,18 @@ class loginController extends Controller
                         'idTanggal' => $tanggalID
                     ]);
                     return redirect('admin/so/item');
-                } else {
+                } else if($data['idRole'] == '4'){
+                    //idRole 4 untuk DC / Gudang
+                    session(['berhasil_login' => true]);
+                    session([
+                        'idPengisi' => $data['id'],
+                        'date'    => date("Y-m-d"),
+                        'namaPengisi' => $data['Nama Lengkap'],
+                        'idTanggal' => $tanggalID
+                    ]);
+                    return redirect('gudang/soBulanan');
+                }
+                else {
                     return redirect('/')->with('message', 'Role tidak terdaftar');
                 }
             }

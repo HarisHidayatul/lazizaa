@@ -111,6 +111,11 @@ class soHarian extends Seeder
                     'Role' => 'Admin',
                     
                     'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ],
+                [
+                    'Role' => 'Gudang',
+                    
+                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ]
             )
         );
