@@ -72,7 +72,11 @@ Route::get('itemSO/update/{id}', [itemSOController::class, 'update']);
 Route::get('listType/soHarian/show', [typeOutletItemController::class, 'index']);
 Route::get('listType/soHarian/store', [typeOutletItemController::class, 'store']);
 Route::get('listType/soHarian/updateType/{id}', [typeOutletItemController::class, 'updateType']);
+Route::get('listType/soHarian/updateKategori/{id}', [typeOutletItemController::class, 'updateKategori']);
+
 Route::get('listType/soHarian/store/item', [typeOutletItemController::class, 'storeItem']);
+Route::get('listType/soHarian/store/kategori',[typeOutletItemController::class,'storeKategori']);
+
 Route::get('listType/soHarian/store/outlet', [typeOutletItemController::class, 'storeOutletOnType']);
 Route::get('listType/soHarian/show/item/{id}', [typeOutletItemController::class, 'showByItem']);
 Route::get('listType/soHarian/show/outlet/{id}', [typeOutletItemController::class, 'showByOutlet']);
@@ -95,6 +99,7 @@ Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRe
 Route::get('soHarian/show/revision/all/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevisionDone']);
 Route::get('soHarian/show/history',[fsoHarianController::class, 'showHistory']);
+Route::get('soHarian/show/history2',[fsoHarianController::class, 'showHistory2']);
 
 Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
 Route::get('soHarian/setting/soBatas/show/{idOutlet}', [fsoHarianController::class, 'showBatas']);
@@ -308,7 +313,17 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     //Route akses untuk gudang
     Route::get('gudang/soBulanan', function(){
-        return view('gudangControl.stockOpnameBulanan.index');
+        return view('gudangControl.stockOpname.bulanan.index');
+    });
+    Route::get('gudang/soHarian', function(){
+        return view('gudangControl.stockOpname.harian.index');
+    });
+
+    Route::get('gudang/so/kategori',function(){
+        return view('gudangControl.setItem.so.kategori.index');
+    });
+    Route::get('gudang/so/listItem',function(){
+        return view('gudangControl.setItem.so.listItem.index');
     });
 
     //Route akses untuk admin

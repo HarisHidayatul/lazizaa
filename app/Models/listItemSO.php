@@ -25,6 +25,7 @@ class listItemSO extends Model
     protected $fillable = [
         'Item',
         'idSatuan',
+        'idKategoriSo',
         'icon',
         'id_bee_cloud_item',
         'munculMingguan',

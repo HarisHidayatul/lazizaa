@@ -113,10 +113,21 @@ return new class extends Migration
             $table->softDeletes();
         });
 
+        Schema::create('kategori_so', function (Blueprint $table) {
+            $table->id();
+            $table->string('namaKategori',255);
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('list_item_so', function (Blueprint $table) {
             $table->id();
             $table->string('Item',50);
             $table->string('icon',50);
+
+            $table->unsignedBigInteger('idKategoriSo')->default('1');
+            $table->foreign('idKategoriSo')->references('id')->on('kategori_so');
 
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');
@@ -259,6 +270,7 @@ return new class extends Migration
         Schema::dropIfExists('type_sales');
 
         Schema::dropIfExists('list_item_so');
+        Schema::dropIfExists('kategori_so');
 
         Schema::dropIfExists('sales_harian');
         Schema::dropIfExists('sales_harian_transaksi_bee_cloud');

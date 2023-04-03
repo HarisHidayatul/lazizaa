@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\listItemSO;
 use App\Models\satuan;
 use Illuminate\Http\Request;
+use App\Models\kategori_so;
 
 class itemSOController extends Controller
 {
@@ -162,6 +163,8 @@ class itemSOController extends Controller
     public function showAllItem(){
         $itemso = listItemSO::orderBy('id', 'DESC')->get();
         $satuanAll = satuan::all();
+        $dataKategoriSo = kategori_so::all();
+        $arrayKategoriSo = [];
         $arraySO = [];
         $arrayAllSatuan = [];
         for($i =0; $i < $satuanAll->count();$i++){
@@ -170,12 +173,19 @@ class itemSOController extends Controller
                 'satuan' => $satuanAll[$i]->Satuan
             ]);
         }
+        for($i =0;$i < $dataKategoriSo->count();$i++){
+            array_push($arrayKategoriSo, (object)[
+                'id' => $dataKategoriSo[$i]->id,
+                'kategori' => $dataKategoriSo[$i]->namaKategori
+            ]);
+        }
         for($i=0;$i<$itemso->count();$i++)
         {
             array_push($arraySO,(object)[
                 'id' => $itemso[$i]['id'],
                 'item' => $itemso[$i]['Item'],
                 'idSatuan' => $itemso[$i]['idSatuan'],
+                'idKategori' => $itemso[$i]['idKategoriSo'],
                 'icon' => $itemso[$i]['icon'],
                 'mingguanItem' => $itemso[$i]['munculMingguan'],
                 'harianItem' => $itemso[$i]['munculHarian']
@@ -183,7 +193,8 @@ class itemSOController extends Controller
         }
         return response()->json([
             'satuan' => $arrayAllSatuan,
-            'itemSO'=> $arraySO
+            'itemSO'=> $arraySO,
+            'kategori' => $arrayKategoriSo
         ]);
     }
 
@@ -248,13 +259,27 @@ class itemSOController extends Controller
     {
         //
         $listItemSO = listItemSO::find($id);
-        $listItemSO->update([
-            'Item' => $request->item,
-            'idSatuan' => $request->idSatuan,
-            'icon' => $request->icon,
-            'munculMingguan' => $request->munculMingguan,
-            'munculHarian' => $request->munculHarian
-        ]);
+        if($request->item != null){
+            $listItemSO->Item = $request->item;
+        }
+        if($request->idSatuan != null){
+            $listItemSO->idSatuan = $request->idSatuan;
+        }
+        if($request->icon != null){
+            $listItemSO->icon = $request->icon;
+        }
+        if($request->munculMingguan != null){
+            $listItemSO->munculMingguan = $request->munculMingguan;
+        }
+        if($request->munculHarian != null){
+            $listItemSO->munculHarian = $request->munculHarian;
+        }
+        if($request->idKategoriSo != null){
+            $listItemSO->idKategoriSo = $request->idKategoriSo;
+        }
+        $listItemSO->save();
+        // @dd($listItemSO->idKategoriSo);
+        // @dd(listItemSO::find($id));
         echo 1;
         // @dd($listItemSO);
     }

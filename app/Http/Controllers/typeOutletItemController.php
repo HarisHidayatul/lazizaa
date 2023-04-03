@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\doutlet;
+use App\Models\kategori_so;
 use App\Models\listItemSO;
 use App\Models\outlet_type;
 use App\Models\type_item;
@@ -86,6 +87,14 @@ class typeOutletItemController extends Controller
             );
         }
     }
+
+    public function storeKategori(Request $request){
+        $dataArray = [
+            'namaKategori' => $request->namaKategori
+        ];
+        kategori_so::create($dataArray);
+    }
+
     public function storeOutletOnType(Request $request)
     {
         $data = outlet_type::where('idOutlet', '=', $request->idOutlet)->where('idType', '=', $request->idType)->first();
@@ -257,6 +266,13 @@ class typeOutletItemController extends Controller
         ]);
         echo 1;
         // @dd($typeOutlet);
+    }
+
+    public function updateKategori(Request $request, $id){
+        $kategori_so = kategori_so::find($id);
+        $kategori_so->update([
+            'namaKategori' => $request->kategori
+        ]);
     }
 
     /**

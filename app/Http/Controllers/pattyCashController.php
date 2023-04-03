@@ -11,6 +11,7 @@ use App\Models\pattyCashFill;
 use App\Models\pattyCashHarian;
 use App\Models\reqItemPattyCash;
 use App\Models\kategori_patty_cash;
+use App\Models\kategori_so;
 use App\Models\jenis_patty_cash;
 use App\Models\satuan;
 use App\Models\tanggalAll;
@@ -746,14 +747,22 @@ class pattyCashController extends Controller
         $dataa = satuan::all();
         $dataJenis = jenis_patty_cash::with('kategori_patty_cashs')->get();
         $dataKategori = kategori_patty_cash::all();
+        $dataKategoriSo = kategori_so::all();
         // @dd($dataa);
         $array = [];
         $arrayJenis = [];
         $arrayKategori = [];
+        $arrayKategoriSo = [];
         for ($i = 0; $i < $dataa->count(); $i++) {
             array_push($array, (object)[
                 'id' => $dataa[$i]['id'],
                 'Satuan' => $dataa[$i]['Satuan']
+            ]);
+        }
+        for($i =0;$i < $dataKategoriSo->count();$i++){
+            array_push($arrayKategoriSo, (object)[
+                'id' => $dataKategoriSo[$i]->id,
+                'kategori' => $dataKategoriSo[$i]->namaKategori
             ]);
         }
         for($i=0;$i<$dataJenis->count();$i++){
@@ -774,7 +783,8 @@ class pattyCashController extends Controller
             'countItem' => $dataa->count(),
             'dataItem' => $array,
             'dataJenis' => $arrayJenis,
-            'dataKategori' => $arrayKategori
+            'dataKategori' => $arrayKategori,
+            'dataKategoriSo' => $arrayKategoriSo
         ]);
     }
 

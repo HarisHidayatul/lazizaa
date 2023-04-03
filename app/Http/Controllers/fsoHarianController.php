@@ -6,6 +6,7 @@ use App\Models\dBrand;
 use App\Models\doutlet;
 use App\Models\dUser;
 use App\Models\fsoHarian;
+use App\Models\kategori_so;
 use App\Models\listItemSO;
 use App\Models\soFill;
 use App\Models\soHarianBatas;
@@ -610,8 +611,8 @@ class fsoHarianController extends Controller
 
         $dataItemSo = [];
         $allItemSo = listItemSO::all();
-        foreach($allItemSo as $eachItemSO){
-            array_push($dataItemSo,(object)[
+        foreach ($allItemSo as $eachItemSO) {
+            array_push($dataItemSo, (object)[
                 'id' => $eachItemSO->id,
                 'Item' => $eachItemSO->Item,
                 'Satuan' => $eachItemSO->satuans->Satuan
@@ -666,8 +667,8 @@ class fsoHarianController extends Controller
                 }
 
                 if ($accessRole == 'accounting') {
-                    if(!$tengahBulan){
-                        if(!$akhirBulan){
+                    if (!$tengahBulan) {
+                        if (!$akhirBulan) {
                             continue;
                         }
                     }
@@ -676,7 +677,7 @@ class fsoHarianController extends Controller
                 $loopSesi = 0;
                 foreach ($soHarianAll as $soHarian) {
                     $dataSoHarian = [];
-                    if($loopSesi > 0){
+                    if ($loopSesi > 0) {
                         continue;
                     }
                     foreach ($soHarian->listItemSOs as $itemSo) {
@@ -706,7 +707,7 @@ class fsoHarianController extends Controller
             }
             // $allHistory = array_reverse($allHistory, false);
 
-            if($dataFound){
+            if ($dataFound) {
                 array_push($allData, (object)[
                     'dataHistory' => $allHistory,
                     'outlet' => $namaOutlet
@@ -716,8 +717,84 @@ class fsoHarianController extends Controller
         // @dd($allData);
         return response()->json([
             'allData' => $allData,
-            'dataItemSO'=> $dataItemSo
+            'dataItemSO' => $dataItemSo
         ]);
+    }
+
+    public function showHistory2(Request $request)
+    {
+        $date = $request->date;
+        $allOutlet = doutlet::all();
+        $allKategoris = kategori_so::all();
+        $allDatas = [];
+        $soData = [];
+        $tanggal = tanggalAll::where('Tanggal', '=', $date)->with(['fsoharians.listItemSOs'])->first();
+        if ($tanggal != null) {
+            $fsoHarians = $tanggal->fsoharians;
+            foreach ($allOutlet as $eachOutlet) {
+                $fsoHarian = $fsoHarians->where('idOutlet', '=', $eachOutlet->id)->first();
+                if ($fsoHarian != null) {
+                    $listItemSOs = $fsoHarian->listItemSOs->where('munculHarian','>',0);
+                    foreach ($listItemSOs as $listItemSO) {
+                        $quantity = $listItemSO->pivot->quantity;
+                        if ($listItemSO->pivot->idRevisi == '2') {
+                            $quantity = $listItemSO->pivot->quantityRevisi;
+                        }
+                        array_push($allDatas, (object)[
+                            'idItem' => $listItemSO->id,
+                            'idKategoriSo' => $listItemSO->idKategoriSo,
+                            'quantity' => $quantity,
+                            'idOutlet' => $eachOutlet->id
+                        ]);
+                    }
+                }
+            }
+            foreach ($allKategoris as $allKategori) {
+                $listItemSOs = $allKategori->listItemSOs->where('munculHarian','>',0);
+                $itemKategori = [];
+                $dataItemOutlet = [];
+                foreach ($listItemSOs as $listItemSO) {
+                    array_push($itemKategori, (object)[
+                        'id' => $listItemSO->id,
+                        'item' => $listItemSO->Item,
+                        'satuan' => $listItemSO->satuans->Satuan
+                    ]);
+                }
+                foreach ($allOutlet as $eachOutlet) {
+                    $tempItemOutlet = [];
+                    foreach ($listItemSOs as $listItemSO) {
+                        //findDataSo on $allData
+                        $quantity = 0;
+                        for ($i = 0; $i < count($allDatas); $i++) {
+                            if (($allDatas[$i]->idItem == $listItemSO->id) && ($allDatas[$i]->idOutlet == $eachOutlet->id)) {
+                                $quantity = $allDatas[$i]->quantity;
+                                break;
+                            }
+                        }
+                        array_push($tempItemOutlet, (object)[
+                            'quantity' => $quantity,
+                            'item' => $listItemSO->Item
+                        ]);
+                    }
+                    array_push($dataItemOutlet, (object)[
+                        'Outlet' => $eachOutlet['Nama Store'],
+                        'data' => $tempItemOutlet
+                    ]);
+                }
+                if(count($itemKategori) > 0){
+                    array_push($soData, (object)[
+                        'kategori' => $allKategori->namaKategori,
+                        'item' => $itemKategori,
+                        'dataOutlet' => $dataItemOutlet
+                    ]);
+                }
+            }
+        }
+        return response()->json(
+            [
+                'dataSo' => $soData
+            ]
+        );
     }
 
     /**
@@ -745,8 +822,8 @@ class fsoHarianController extends Controller
         // $request->dataEdit memiliki struktur data [idSoFill,Edit]
         // @dd($request->dataEdit);
         $arrayEdit = $request->dataEdit;
-        if($arrayEdit != null){
-            for($i =0;$i<count($arrayEdit);$i++){
+        if ($arrayEdit != null) {
+            for ($i = 0; $i < count($arrayEdit); $i++) {
                 soFill::find($arrayEdit[$i][0])->update([
                     'quantityRevisi' => $arrayEdit[$i][1],
                     'idRevisi'      => '2'

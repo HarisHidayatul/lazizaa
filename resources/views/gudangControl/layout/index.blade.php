@@ -51,8 +51,25 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                        with font-awesome or any other icon font library -->
-                    <li class="nav-item" id="itemTabMenu">
+                       <li class="nav-item" id="itemTabMenu">
                         <a href="#" class="nav-link" id="itemSubMenu">
+                            <i class="nav-icon 	fas fa-bread-slice"></i>
+                            <p>
+                                Set Item
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ url('gudang/so/listItem') }}" class="nav-link" id="soSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Stock Opname</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="stockTabMenu">
+                        <a href="#" class="nav-link" id="stockSubMenu">
                             <i class="nav-icon fas fa-box-open"></i>
                             <p>
                                 Stock Opname
@@ -61,7 +78,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ url('gudang/soBulanan') }}" class="nav-link" id="soHarianSubMenu">
+                                <a href="{{ url('gudang/soHarian') }}" class="nav-link" id="soHarianSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Harian</p>
                                 </a>
