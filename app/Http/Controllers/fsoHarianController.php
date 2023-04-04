@@ -58,30 +58,35 @@ class fsoHarianController extends Controller
 
     public function storeBatas($idOutlet, Request $request)
     {
-        $soHarianBatas = soHarianBatas::where('idOutlet', '=', $idOutlet)->get();
+        $allData = $request->allElementSend;
+        // @dd($request->allElementSend);
         // @dd($soHarianBatas->count() == 0);
-        if ($soHarianBatas->count() == 0) {
-            $soHarianBatas = soHarianBatas::create([
-                'idOutlet' => $idOutlet,
-                'idPengisi' => $request->idPengisi,
-                'quantity' => $request->quantity,
-                'idItemSo' => $request->idItemSo
-            ]);
-        } else {
-            $soHarianBatas = $soHarianBatas->where('idItemSo', '=', $request->idItemSo);
-            // @dd();
+        foreach ($allData as $loopData) {
+            // @dd($loopData['idItemSo']);
+            $soHarianBatas = soHarianBatas::where('idOutlet', '=', $idOutlet)->get();
             if ($soHarianBatas->count() == 0) {
-                $soHarianBatas = soHarianBatas::create([
+                soHarianBatas::create([
                     'idOutlet' => $idOutlet,
-                    'idPengisi' => $request->idPengisi,
-                    'quantity' => $request->quantity,
-                    'idItemSo' => $request->idItemSo
+                    'idPengisi' => $loopData['idPengisi'],
+                    'quantity' => $loopData['quantity'],
+                    'idItemSo' => $loopData['idItemSo']
                 ]);
             } else {
-                $soHarianBatas = $soHarianBatas->first()->update([
-                    'quantity' => $request->quantity,
-                    'idPengisi' => $request->idPengisi
-                ]);
+                $soHarianBatas = $soHarianBatas->where('idItemSo', '=', $loopData['idItemSo']);
+                // @dd();
+                if ($soHarianBatas->count() == 0) {
+                    soHarianBatas::create([
+                        'idOutlet' => $idOutlet,
+                        'idPengisi' => $loopData['idPengisi'],
+                        'quantity' => $loopData['quantity'],
+                        'idItemSo' => $loopData['idItemSo']
+                    ]);
+                } else {
+                    $soHarianBatas = $soHarianBatas->first()->update([
+                        'quantity' => $loopData['quantity'],
+                        'idPengisi' => $loopData['idPengisi']
+                    ]);
+                }
             }
         }
         echo 1;
@@ -724,17 +729,31 @@ class fsoHarianController extends Controller
     public function showHistory2(Request $request)
     {
         $date = $request->date;
+        $tengahBulan = false;
+        $akhirBulan = false;
+
+        if (date('d', strtotime($date)) == 15) {
+            $tengahBulan = true;
+        }
+        if (date("Y-m-d", strtotime($date)) == date("Y-m-t", strtotime($date))) {
+            $akhirBulan = true;
+        }
+
         $allOutlet = doutlet::all();
         $allKategoris = kategori_so::all();
         $allDatas = [];
         $soData = [];
         $tanggal = tanggalAll::where('Tanggal', '=', $date)->with(['fsoharians.listItemSOs'])->first();
+        $soHarianBatas = soHarianBatas::all();
         if ($tanggal != null) {
             $fsoHarians = $tanggal->fsoharians;
             foreach ($allOutlet as $eachOutlet) {
                 $fsoHarian = $fsoHarians->where('idOutlet', '=', $eachOutlet->id)->first();
                 if ($fsoHarian != null) {
-                    $listItemSOs = $fsoHarian->listItemSOs->where('munculHarian','>',0);
+                    $listItemSOs = $fsoHarian->listItemSOs;
+                    if(!($tengahBulan || $akhirBulan)){
+                        $listItemSOs = $listItemSOs->where('munculHarian', '>', 0);
+                    }
                     foreach ($listItemSOs as $listItemSO) {
                         $quantity = $listItemSO->pivot->quantity;
                         if ($listItemSO->pivot->idRevisi == '2') {
@@ -750,7 +769,10 @@ class fsoHarianController extends Controller
                 }
             }
             foreach ($allKategoris as $allKategori) {
-                $listItemSOs = $allKategori->listItemSOs->where('munculHarian','>',0);
+                $listItemSOs = $allKategori->listItemSOs;
+                if(!($tengahBulan || $akhirBulan)){
+                    $listItemSOs = $listItemSOs->where('munculHarian', '>', 0);
+                }
                 $itemKategori = [];
                 $dataItemOutlet = [];
                 foreach ($listItemSOs as $listItemSO) {
@@ -762,18 +784,32 @@ class fsoHarianController extends Controller
                 }
                 foreach ($allOutlet as $eachOutlet) {
                     $tempItemOutlet = [];
+                    $soBatasOutlet = $soHarianBatas->where('idOutlet','=',$eachOutlet->id);
                     foreach ($listItemSOs as $listItemSO) {
                         //findDataSo on $allData
                         $quantity = 0;
+                        $quantityBatas = 0;
+                        $statusMelebihiBatas = false;
+                        if($soBatasOutlet->count()> 0){
+                            $soBatasItem = $soBatasOutlet->where('idItemSo','=',$listItemSO->id)->first();
+                            if($soBatasItem != null){
+                                $quantityBatas = $soBatasItem->quantity;
+                            }
+                        }
                         for ($i = 0; $i < count($allDatas); $i++) {
                             if (($allDatas[$i]->idItem == $listItemSO->id) && ($allDatas[$i]->idOutlet == $eachOutlet->id)) {
                                 $quantity = $allDatas[$i]->quantity;
                                 break;
                             }
                         }
+
+                        if($quantityBatas >= $quantity){
+                            $statusMelebihiBatas = true;
+                        }
                         array_push($tempItemOutlet, (object)[
                             'quantity' => $quantity,
-                            'item' => $listItemSO->Item
+                            'item' => $listItemSO->Item,
+                            'melebihiBatas' => $statusMelebihiBatas
                         ]);
                     }
                     array_push($dataItemOutlet, (object)[
@@ -781,7 +817,7 @@ class fsoHarianController extends Controller
                         'data' => $tempItemOutlet
                     ]);
                 }
-                if(count($itemKategori) > 0){
+                if (count($itemKategori) > 0) {
                     array_push($soData, (object)[
                         'kategori' => $allKategori->namaKategori,
                         'item' => $itemKategori,

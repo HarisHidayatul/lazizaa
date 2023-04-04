@@ -82,7 +82,11 @@
                             allData += '</td>';
                             
                             for(var k =0;k<obj.dataSo[i].dataOutlet[j].data.length;k++){
-                                allData += '<td>';
+                                allData += '<td ';
+                                if(obj.dataSo[i].dataOutlet[j].data[k].melebihiBatas){
+                                    allData += ' style="color: red" ';
+                                }
+                                allData += '>';
                                 allData += obj.dataSo[i].dataOutlet[j].data[k].quantity;
                                 allData += '</td>';
                             }

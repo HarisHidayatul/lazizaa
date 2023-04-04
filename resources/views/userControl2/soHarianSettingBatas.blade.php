@@ -99,7 +99,8 @@
             <div id="dataAllSO"></div>
             <div style="height: 55px;"></div>
             <div class="d-flex justify-content-between">
-                <div class="d-flex justify-content-center align-items-center button reset" onclick="goToSoHarian();">Cancel</div>
+                <div class="d-flex justify-content-center align-items-center button reset" onclick="goToSoHarian();">
+                    Cancel</div>
                 <div style="width: 20px;"></div>
                 <div class="d-flex justify-content-center align-items-center button selesai"
                     onclick="checkAndSendItem();">Selesai</div>
@@ -117,12 +118,13 @@
         showItemOutlet("{{ session('idOutlet') }}");
     })
 
-    function goToSoHarian(){
+    function goToSoHarian() {
         window.location.href = "{{ url('user/soHarian') }}" + '/' + "{{ $dateSelect }}";
     }
 
     function checkAndSendItem() {
         // do{}
+        var allElementSend = [];
         loopData = 0;
         dataSend.length = 0;
         for (var i = 0; i < objItemSo.DataItem.length; i++) {
@@ -151,26 +153,29 @@
         }
         console.log(dataSend);
         var countDataSend = dataSend.length;
-        var i =0;
-        for (i = 0; i < countDataSend * 10; i++) {
-            $.ajax({
-                url: "{{ url('soHarian/setting/soBatas/store') }}" + '/' + "{{ session('idOutlet') }}",
-                type: 'get',
-                data: {
-                    idPengisi: "{{ session('idPengisi') }}",
-                    quantity: dataSend[i % countDataSend][1],
-                    idItemSo: dataSend[i % countDataSend][0]
-                },
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(req, err) {
-                    console.log(err);
-                }
+        var i = 0;
+        for (i = 0; i < countDataSend; i++) {
+            allElementSend.push({
+                idPengisi: "{{ session('idPengisi') }}",
+                quantity: dataSend[i % countDataSend][1],
+                idItemSo: dataSend[i % countDataSend][0]
             });
         }
+        $.ajax({
+            url: "{{ url('soHarian/setting/soBatas/store') }}" + '/' + "{{ session('idOutlet') }}",
+            type: 'get',
+            data: {
+                allElementSend: allElementSend
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(req, err) {
+                console.log(err);
+            }
+        });
         // console.log('.');
-        goToSoHarian();
+        // goToSoHarian();
     }
 
 
