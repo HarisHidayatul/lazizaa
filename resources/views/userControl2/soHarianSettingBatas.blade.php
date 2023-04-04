@@ -169,12 +169,12 @@
             },
             success: function(response) {
                 console.log(response);
-                goToSoHarian();
             },
             error: function(req, err) {
                 console.log(err);
             }
         });
+        goToSoHarian();
         // console.log('.');
     }
 
