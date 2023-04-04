@@ -175,7 +175,7 @@
             }
         });
         // console.log('.');
-        // goToSoHarian();
+        goToSoHarian();
     }
 
 
