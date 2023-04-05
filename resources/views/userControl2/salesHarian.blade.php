@@ -597,28 +597,26 @@
     }
 
     function submitSalesHarian() {
-        if (totalReadingCasheer.rawValue != 0) {
-            $.ajax({
-                url: "{{ url('salesHarian/data/getId') }}",
-                type: 'get',
-                data: {
-                    // tanggal: document.getElementById('dateAdd').value,
-                    tanggal: dateSelected,
-                    idOutlet: "{{ session('idOutlet') }}",
-                    idSesi: selectedSesi,
-                    totalManual: parseInt(totalReadingCasheer.rawValue)
-                },
-                success: function(response) {
-                    // console.log(response);
-                    idSales = response;
-                    sendDataToServer(idSales)
-                },
-                error: function(req, err) {
-                    console.log(err);
-                    // return 0
-                }
-            });
-        }
+        $.ajax({
+            url: "{{ url('salesHarian/data/getId') }}",
+            type: 'get',
+            data: {
+                // tanggal: document.getElementById('dateAdd').value,
+                tanggal: dateSelected,
+                idOutlet: "{{ session('idOutlet') }}",
+                idSesi: selectedSesi,
+                totalManual: parseInt(totalReadingCasheer.rawValue)
+            },
+            success: function(response) {
+                // console.log(response);
+                idSales = response;
+                sendDataToServer(idSales)
+            },
+            error: function(req, err) {
+                console.log(err);
+                // return 0
+            }
+        });
     }
 
     function sendDataToServer(idSaless) {
@@ -626,16 +624,12 @@
         for (var i = 0; i < dataIdItem.length; i++) {
             var elementIDSendRow1 = parseInt(valueTotalAll[i].rawValue);
             var idListSales = dataIdItem[i];
-            if (elementIDSendRow1 == '') {
-                continue;
-            }
             termArraySend.push({
                 idSales: idSaless,
                 idListSales: idListSales,
                 total: elementIDSendRow1,
                 idPengisi: "{{ session('idPengisi') }}"
-            }
-            );
+            });
         }
 
         $.ajax({
