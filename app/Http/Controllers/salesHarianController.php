@@ -66,12 +66,20 @@ class salesHarianController extends Controller
                     salesFill::create($dataArray);
                 } else {
                     $tempTotal = $data->total;
-                    if($tempTotal != $dataSend['total']){
+                    if($data->idRevisiTotal == '2'){
                         $data->update([
                             'idPengisi' => $dataSend['idPengisi'],
                             'totalRevisi' => $dataSend['total'],
                             'idRevisiTotal' => '2'
                         ]);
+                    }else{
+                        if($tempTotal != $dataSend['total']){
+                            $data->update([
+                                'idPengisi' => $dataSend['idPengisi'],
+                                'totalRevisi' => $dataSend['total'],
+                                'idRevisiTotal' => '2'
+                            ]);
+                        }
                     }
                 }
             }
