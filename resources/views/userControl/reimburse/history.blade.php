@@ -190,8 +190,8 @@
             border-bottom: 1px solid #F3F4F6;
         }
 
-                /* calendar */
-                .dateSelect {
+        /* calendar */
+        .dateSelect {
             /* position: relative; */
             /* z-index: 1; */
             color: white;
@@ -203,6 +203,24 @@
 
             box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.24), 0px 1.66512px 4.44032px -0.555039px rgba(50, 50, 71, 0.05);
             border-radius: 6px;
+
+            height: 30px;
+            width: 30px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .dateBetween::before{
+            content: "";
+            /* background: #a7b207; */
+
+            box-shadow: 0px 0px 0.479222px rgba(12, 26, 75, 0.24), 0px 1.43767px 3.83378px -0.479222px rgba(50, 50, 71, 0.05);
+            border-radius: 6px;
+            border: 1px solid #B20731;
 
             height: 30px;
             width: 30px;
@@ -329,17 +347,19 @@
             box-shadow: 0px 0px 0.555039px rgba(12, 26, 75, 0.1), 0px 11.1008px 13.3209px rgba(20, 37, 63, 0.06);
             border-radius: 6.90722px;
             position: absolute;
-            top: 60vh;
+            top: 575px;
             left: 50%;
             transform: translate(-50%, -50%);
             max-width: 500px;
             width: 100vw;
             background: white;
         }
+
         .buttonNonActive {
             background: #FFEAEF;
             color: #B20731;
         }
+
         button {
             /* width: 100%; */
             height: 40px;
@@ -405,7 +425,8 @@
                         <div name="sortHistory" style="flex: 0 0 67px;" onclick="getAllHistory(3)">Semua</div> --}}
                         <div name="sortHistory" style="flex: 0 0 85px;" onclick="getAllHistory(1)">Bulan Ini
                         </div>
-                        <div name="sortHistory" style="flex: 0 0 200px;" onclick="getAllHistory(1)">
+                        <div name="sortHistory" style="flex: 0 0 200px;" onclick="calendarLayoutShow()"
+                            id="dateKirimLbl">
                             01/10/2023 - 06/10/2023
                         </div>
                     </div>
@@ -516,8 +537,21 @@
     let months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober",
         "November", "Desember"
     ];
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    let dateSelect = today.getDate();
+
+    let dateSelectBefore = new Date();
+
+    let dateSelectAfter = new Date();
+
+    var boolSelectDate = true; //jika true, pilih tanggal sebelum, jika false, pilih tanggal sesudah
+
+    showCalendar(currentMonth, currentYear);
 
     $(document).ready(function() {
+        calendarLayoutHide();
         getAllHistory(0);
     })
 
@@ -525,9 +559,37 @@
         window.location.href = "{{ url('user/dashboard') }}";
     }
 
+    function calendarLayoutShow() {
+        document.getElementById('calendarLayout').style.visibility = "visible";
+    }
+
+    function calendarLayoutHide() {
+        document.getElementById('calendarLayout').style.visibility = "hidden";
+    }
+
     function getAllHistory(index) {
         var accessHistory = '';
         var element = document.getElementsByName("sortHistory");
+        var stringDateSelectBefore = dateSelectBefore.getFullYear() + '-' ;
+        if((dateSelectBefore.getMonth()+1)<10){
+            stringDateSelectBefore += '0';
+        }
+        stringDateSelectBefore += (dateSelectBefore.getMonth()+1) + '-' ;
+        if(dateSelectBefore.getDate() < 10){
+            stringDateSelectBefore += '0';
+        }
+        stringDateSelectBefore += dateSelectBefore.getDate();
+
+        var stringDateSelectAfter = dateSelectAfter.getFullYear() + '-' ;
+        if((dateSelectAfter.getMonth()+1)<10){
+            stringDateSelectAfter += '0';
+        }
+        stringDateSelectAfter += (dateSelectAfter.getMonth()+1) + '-' ;
+        if(dateSelectAfter.getDate() < 10){
+            stringDateSelectAfter += '0';
+        }
+        stringDateSelectAfter += dateSelectAfter.getDate();
+
         for (var i = 0; i < element.length; i++) {
             if (i == index) {
                 element[i].classList.add("active");
@@ -538,15 +600,13 @@
         if (index == 0) {
             accessHistory = 'today';
         } else if (index == 1) {
-            accessHistory = '7day';
-        } else if (index == 2) {
             accessHistory = '30day';
-        } else if (index == 3) {
-            accessHistory = 'all';
+        } else if (index == 2) {
+            accessHistory = 'between';
         }
         $.ajax({
             url: "{{ url('reimburse/show/history/outlet') }}" + '/' + "{{ session('idOutlet') }}" + '/' +
-                accessHistory + '/0/0',
+                accessHistory + '/'+ stringDateSelectBefore + '/' + stringDateSelectAfter,
             type: 'get',
             success: function(response) {
                 var obj = JSON.parse(JSON.stringify(response));
@@ -626,7 +686,7 @@
                         }
                         historyToday += '">+ Rp ';
                         historyToday += parseInt(obj.dataHistory[i].reimburse[j].reimburse)
-                    .toLocaleString();
+                            .toLocaleString();
                         historyToday += '</div><div class="labelValuePattyCash">Rp ';
                         historyToday += parseInt(obj.dataHistory[i].reimburse[j].saldo).toLocaleString();
                         historyToday += '</div></div></div>';
@@ -664,10 +724,10 @@
                         }
                         historyToday += '">+ Rp ';
                         historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].total)
-                        .toLocaleString();
+                            .toLocaleString();
                         historyToday += '</div><div class="labelValuePattyCash">Rp ';
                         historyToday += parseInt(obj.dataHistory[i].reimburseSales[j].saldo)
-                        .toLocaleString();
+                            .toLocaleString();
                         historyToday += '</div></div></div>';
 
                         totalReimburse += parseInt(obj.dataHistory[i].reimburseSales[j].total);
@@ -716,13 +776,14 @@
         window.location.href = "{{ url('user/reimburse/sales/detail') }}" + "/" + index;
     }
 
-    
+
     function next(indexDate) {
         if (indexDate != 0) {
             dateSelect = indexDate;
         }
         currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
         currentMonth = (currentMonth + 1) % 12;
+        resetDate();
         showCalendar(currentMonth, currentYear);
     }
 
@@ -732,6 +793,7 @@
         }
         currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
         currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+        resetDate();
         showCalendar(currentMonth, currentYear);
     }
 
@@ -741,6 +803,20 @@
         let daysInMonthBefore = 32 - new Date(year, month - 1, 32).getDate();
 
         let tbl = document.getElementById("calendar-body"); // body of the calendar
+
+        let dateAfterSelection = 0;
+        let dateBeforeSelection = 0;
+        let selisihDate = 0;
+
+        if ((dateSelectAfter.getFullYear() == year) && (dateSelectAfter.getMonth() == month)) {
+            dateAfterSelection = dateSelectAfter.getDate();
+        }
+        selisihDate = Math.floor((dateSelectAfter.getTime() - dateSelectBefore.getTime()) / (1000 * 3600 * 24));
+        if ((dateAfterSelection - selisihDate) > 0) {
+            dateBeforeSelection = dateSelectBefore.getDate();
+        }
+
+        console.log(selisihDate);
 
         // clearing all previous cells
         tbl.innerHTML = "";
@@ -773,9 +849,15 @@
                     dateAfter++;
                     // break;
                 } else {
-                    if (date === dateSelect) {
+                    if (date === dateAfterSelection) {
                         fillTable += 'class="dateSelect" ';
-                    } else {
+                    } else if (date === dateBeforeSelection) {
+                        fillTable += 'class="dateSelect" ';
+                    } 
+                    else if(( dateAfterSelection > date )&&(dateBeforeSelection < date)){
+                        fillTable += 'class="dateBetween" ';
+                    }
+                    else {
                         if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
                             fillTable += 'class="dateNow" ';
                         } // color today's date
@@ -795,19 +877,65 @@
 
     function selectDate(indexDate) {
         dateSelect = indexDate;
+        updateDate();
         showCalendar(currentMonth, currentYear);
     }
 
+    function updateDate() {
+        // console.log();
+        var tempStringDate = "'" + (currentMonth + 1) + '/' + dateSelect + '/' + currentYear + "'";
+        var tempDate = new Date(tempStringDate);
+        if (tempDate < dateSelectBefore) {
+            dateSelectBefore = tempDate;
+        }
+        else if(tempDate == dateSelectBefore){
+            dateSelectAfter = tempDate;
+        }
+        else if (tempDate > dateSelectAfter) {
+            dateSelectAfter = tempDate;
+        }
+        else if(tempDate == dateSelectAfter){
+            dateSelectAfter = tempDate;
+        }
+        else {
+            dateSelectBefore = tempDate;
+            dateSelectAfter = tempDate;
+        }
+        console.log(dateSelectAfter);
+        console.log(dateSelectBefore);
+        // console.log(tempDate);
+    }
+
+    function resetDate() {
+        var tempStringDate = "'" + (currentMonth + 1) + '/' + dateSelect + '/' + currentYear + "'";
+        var tempDate = new Date(tempStringDate);
+        dateSelectBefore = tempDate;
+        dateSelectAfter = tempDate;
+    }
+
     function terapkanCalendar() {
-        var newDate = currentYear;
-        newDate += '-' + (currentMonth + 1);
-        newDate += '-' + dateSelect;
-        var day = new Date(newDate);
         var stringDay = '';
-        stringDay += dateSelect + '/' + (currentMonth + 1) + '/' + currentYear;
-        currentDateMonthYear = currentYear + '-' + (currentMonth + 1) + '-' + dateSelect;
+        if(dateSelectBefore.getDate() < 10){
+            stringDay += '0';
+        }
+        stringDay += dateSelectBefore.getDate() + '/';
+        if((dateSelectBefore.getMonth()+1) < 10){
+            stringDay += '0';
+        }
+        stringDay += (dateSelectBefore.getMonth()+1) + '/' + dateSelectBefore.getFullYear();
+        stringDay += ' - ';
+        
+        if(dateSelectAfter.getDate() < 10){
+            stringDay += '0';
+        }
+        stringDay += dateSelectAfter.getDate() + '/';
+        if((dateSelectAfter.getMonth()+1) < 10){
+            stringDay += '0';
+        }
+        stringDay += (dateSelectAfter.getMonth()+1) + '/' +dateSelectAfter.getFullYear();
         document.getElementById('dateKirimLbl').innerHTML = stringDay;
         calendarLayoutHide();
+        getAllHistory(2);
     }
 </script>
 
