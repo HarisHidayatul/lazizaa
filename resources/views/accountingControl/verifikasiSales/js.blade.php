@@ -8,7 +8,7 @@
         var objAll = '';
 
         $(document).ready(function() {
-           
+
             // membuat objek Date untuk tanggal hari ini
             var today = new Date();
 
@@ -37,6 +37,7 @@
             document.getElementById('tittleContent').innerHTML = "Verifikasi Sales";
             document.getElementById('linkContent').innerHTML = "Verifikasi Sales";
             getAllOutlet();
+            getListSales();
         })
 
         function editItem(index) {
@@ -72,61 +73,67 @@
                     valueTotalAll.length = 0;
                     idSalesFill.length = 0;
                     var loopCount = 0;
+                    var idListSales = document.getElementById('selFilterSales').value;
                     for (var i = 0; i < obj.itemSales.length; i++) {
                         for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
                             for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                                historyAll += '<tr>';
-                                historyAll += '<td>';
-                                // Example date in yyyy-mm-dd format
-                                const dateStr = obj.itemSales[i].Tanggal;
+                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].Item[j].Item[k]
+                                        .idListSales)) {
 
-                                // Split the string into year, month, and day components
-                                const [year, month, day] = dateStr.split('-');
+                                    historyAll += '<tr>';
+                                    historyAll += '<td>';
+                                    // Example date in yyyy-mm-dd format
+                                    const dateStr = obj.itemSales[i].Tanggal;
 
-                                historyAll += `${day}/${month}/${year}`;
-                                historyAll += '</td>';
-                                historyAll += '<td>';
-                                historyAll += obj.itemSales[i].Item[j].Outlet;
-                                historyAll += '</td>';
-                                historyAll += '<td>';
-                                historyAll += obj.itemSales[i].Item[j].Item[k].sales;
-                                historyAll += '</td>';
+                                    // Split the string into year, month, and day components
+                                    const [year, month, day] = dateStr.split('-');
 
-                                historyAll += '<td ';
-                                if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
-                                    historyAll += 'style="color:tomato;" ';
-                                } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
-                                    historyAll += 'style="color:rgb(30, 206, 9);" ';
+                                    historyAll += `${day}/${month}/${year}`;
+                                    historyAll += '</td>';
+                                    historyAll += '<td>';
+                                    historyAll += obj.itemSales[i].Item[j].Outlet;
+                                    historyAll += '</td>';
+                                    historyAll += '<td>';
+                                    historyAll += obj.itemSales[i].Item[j].Item[k].sales;
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td ';
+                                    if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
+                                        historyAll += 'style="color:tomato;" ';
+                                    } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
+                                        historyAll += 'style="color:rgb(30, 206, 9);" ';
+                                    }
+                                    historyAll += '>';
+
+                                    historyAll += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
+                                    historyAll += '</td>';
+                                    historyAll += '<td>';
+                                    historyAll += '<input class="inputTotal" name="inputTotal" ';
+                                    // historyAll += obj.itemSales[i].Item[j].Item[k].jumlahDiterima;
+                                    historyAll += '>';
+                                    historyAll += '</td>';
+                                    historyAll += '<td>';
+                                    historyAll += obj.itemSales[i].Item[j].Item[k].selisih.toLocaleString();
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td>';
+                                    historyAll += Math.round(((obj.itemSales[i].Item[j].Item[k].selisih) *
+                                        100) / (
+                                        obj.itemSales[i].Item[j].Item[k].totalQty));
+                                    historyAll += '%';
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td>';
+                                    historyAll +=
+                                        '<button type="button" class="btn btn-secondary" onClick="editItem(' +
+                                        loopCount +
+                                        ');">Submit</button>';
+                                    historyAll += '</td>';
+                                    historyAll += '</tr>';
+
+                                    idSalesFill.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
+                                    loopCount++;
                                 }
-                                historyAll += '>';
-
-                                historyAll += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
-                                historyAll += '</td>';
-                                historyAll += '<td>';
-                                historyAll += '<input class="inputTotal" name="inputTotal" ';
-                                // historyAll += obj.itemSales[i].Item[j].Item[k].jumlahDiterima;
-                                historyAll += '>';
-                                historyAll += '</td>';
-                                historyAll += '<td>';
-                                historyAll += obj.itemSales[i].Item[j].Item[k].selisih.toLocaleString();
-                                historyAll += '</td>';
-
-                                historyAll += '<td>';
-                                historyAll += Math.round(((obj.itemSales[i].Item[j].Item[k].selisih) * 100) / (
-                                    obj.itemSales[i].Item[j].Item[k].totalQty));
-                                historyAll += '%';
-                                historyAll += '</td>';
-
-                                historyAll += '<td>';
-                                historyAll +=
-                                    '<button type="button" class="btn btn-secondary" onClick="editItem(' +
-                                    loopCount +
-                                    ');">Submit</button>';
-                                historyAll += '</td>';
-                                historyAll += '</tr>';
-
-                                idSalesFill.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
-                                loopCount++;
                             }
                         }
                     }
@@ -142,8 +149,12 @@
                     for (var i = 0; i < obj.itemSales.length; i++) {
                         for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
                             for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                                valueTotalAll[loopCount].set(obj.itemSales[i].Item[j].Item[k].jumlahDiterima);
-                                loopCount++;
+                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].Item[j].Item[k]
+                                        .idListSales)) {
+                                    valueTotalAll[loopCount].set(obj.itemSales[i].Item[j].Item[k]
+                                        .jumlahDiterima);
+                                    loopCount++;
+                                }
                             }
                         }
                     }
@@ -217,7 +228,7 @@
                     }
                 }
             }
-            exportToCsv(namaFile,arrayAllData);
+            exportToCsv(namaFile, arrayAllData);
         }
 
         function exportToCsv(filename, rows) {
@@ -282,6 +293,32 @@
                         listAllOutlet += '</option>';
                     }
                     $('#selOutlet').empty().append(listAllOutlet);
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function getListSales() {
+            $.ajax({
+                url: "{{ url('salesHarian/show/list/all') }}" + '/0',
+                type: 'get',
+                success: function(response) {
+                    var obj = JSON.parse(JSON.stringify(response));
+                    console.log(obj);
+                    var listSales = "";
+                    listSales += '<option value=0>Semua Sales</option>';
+                    for (var i = 0; i < obj.listSales.length; i++) {
+                        for (var j = 0; j < obj.listSales[i].sales.length; j++) {
+                            listSales += '<option value=';
+                            listSales += obj.listSales[i].sales[j].id;
+                            listSales += '>';
+                            listSales += obj.listSales[i].sales[j].sales;
+                            listSales += '</option>';
+                        }
+                    }
+                    $('#selFilterSales').empty().append(listSales);
                 },
                 error: function(req, err) {
                     console.log(err);

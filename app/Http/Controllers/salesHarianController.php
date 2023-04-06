@@ -324,7 +324,7 @@ class salesHarianController extends Controller
 
                         array_push($salesArray, (object)[
                             'idSalesFill' => $datasales->listSaless[$j]->pivot->id,
-                            // 'idListSales' => $datasales->listSaless[$j]->id,
+                            'idListSales' => $datasales->listSaless[$j]->id,
                             'sales' => $datasales->listSaless[$j]->sales,
                             'idTotalRev' => $idTotalRevisi,
 
