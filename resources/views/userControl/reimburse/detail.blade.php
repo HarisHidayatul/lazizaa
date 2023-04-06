@@ -412,7 +412,7 @@
                     document.getElementById('imageStatusSetoran').src =
                         "{{ url('img/icon/pending.png') }}";
                 } else {
-                    document.getElementById('deleteText').style.visibility = "hidden";
+                    // document.getElementById('deleteText').style.visibility = "hidden";
                     document.getElementById('imageStatusSetoran').src = "{{ url('img/icon/sukses.png') }}";
                     document.getElementById('namaPengirim').innerHTML = obj.namaPengirim;
                     document.getElementById('rekeningPengirim').innerHTML = obj.rekeningPengirim;
