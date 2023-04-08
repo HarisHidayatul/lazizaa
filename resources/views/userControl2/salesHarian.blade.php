@@ -419,7 +419,7 @@
             <div class="d-flex justify-content-center wrapSesi">
                 <div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>
                 <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
-                {{-- <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div> --}}
+                <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
             </div>
             {{-- <div style="content: ''; height: 30px"></div> --}}
             <h2 class="typeSales">Total Sales</h2>
