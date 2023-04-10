@@ -237,15 +237,17 @@ class salesHarianController extends Controller
                     ]);
                 }
                 if ($salesHarianReimburse != null) {
-                    $totalTemp = $salesHarianReimburse->sales_reimburses->total;
-                    $idRevisiTotal = $salesHarianReimburse->sales_reimburses->idRevisiTotal;
-                    if ($idRevisiTotal == '2') {
-                        $totalTemp = $salesHarianReimburse->sales_reimburses->totalRevisi;
+                    if($salesHarianReimburse->sales_reimburses != null){
+                        $totalTemp = $salesHarianReimburse->sales_reimburses->total;
+                        $idRevisiTotal = $salesHarianReimburse->sales_reimburses->idRevisiTotal;
+                        if ($idRevisiTotal == '2') {
+                            $totalTemp = $salesHarianReimburse->sales_reimburses->totalRevisi;
+                        }
+                        array_push($dataReimburse, (object)[
+                            'total' => $totalTemp,
+                            'idRevisiTotal' => $idRevisiTotal
+                        ]);
                     }
-                    array_push($dataReimburse, (object)[
-                        'total' => $totalTemp,
-                        'idRevisiTotal' => $idRevisiTotal
-                    ]);
                 }
                 foreach ($salesHarian as $salesHarianSesi) {
                     $salesLists = $salesHarianSesi->listSaless;
