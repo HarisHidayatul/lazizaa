@@ -22,29 +22,11 @@
                     // console.log(dataAllSo[i][2]);
                     if (dataAllSales[i][1] == '2') {
                         $.ajax({
-                            url: "{{ url('salesHarian/edit/cu/rev/data') }}",
-                            type: 'get',
-                            data: {
-                                cuRevisi: dataAllSales[i][2],
-                                idSalesFill: dataAllSales[i][5],
-                                idPerevisi: "{{ session('idPengisi') }}"
-                            },
-                            success: function(response) {
-                                // console.log(response);
-                            },
-                            error: function(req, err) {
-                                console.log(err);
-                                // return 0
-                            }
-                        });
-                    }
-                    if (dataAllSales[i][3] == '2') {
-                        $.ajax({
                             url: "{{ url('salesHarian/edit/total/rev/data') }}",
                             type: 'get',
                             data: {
-                                totalRevisi: dataAllSales[i][4],
-                                idSalesFill: dataAllSales[i][5],
+                                totalRevisi: dataAllSales[i][2],
+                                idSalesFill: dataAllSales[i][3],
                                 idPerevisi: "{{ session('idPengisi') }}"
                             },
                             success: function(response) {},
@@ -99,33 +81,14 @@
         }
 
         function submitRevSales() {
-            var cu = document.getElementById('editCU').value;
             var total = document.getElementById('editTotal').value;
             if (dataAllSales[clickLastEditSales][1] == '2') {
-                $.ajax({
-                    url: "{{ url('salesHarian/edit/cu/rev/data') }}",
-                    type: 'get',
-                    data: {
-                        cuRevisi: cu,
-                        idSalesFill: dataAllSales[clickLastEditSales][5],
-                        idPerevisi: "{{ session('idPengisi') }}"
-                    },
-                    success: function(response) {
-                        // console.log(response);
-                    },
-                    error: function(req, err) {
-                        console.log(err);
-                        // return 0
-                    }
-                });
-            }
-            if (dataAllSales[clickLastEditSales][3] == '2') {
                 $.ajax({
                     url: "{{ url('salesHarian/edit/total/rev/data') }}",
                     type: 'get',
                     data: {
-                        totalRevisi: total,
-                        idSalesFill: dataAllSales[clickLastEditSales][5],
+                        totalRevisi: dataAllSales[clickLastEditSales][2],
+                        idSalesFill: dataAllSales[clickLastEditSales][3],
                         idPerevisi: "{{ session('idPengisi') }}"
                     },
                     success: function(response) {},
