@@ -63,6 +63,7 @@
                             // Split the string into year, month, and day components
                             const [year, month, day] = dateStr.split('-');
                             const tanggalString = `${day}/${month}/${year}`;
+                            const tanggalExcel = `${month}/${day}/${year}`;
 
                             for (var k = 0; k < obj.dataSales[i].data[j].dataSales.length; k++) {
                                 saldo += parseInt(obj.dataSales[i].data[j].dataSales[k].totalManual);
@@ -70,7 +71,7 @@
                                 dataTable += '<tr>';
                                 dataTable += '<td>';
                                 dataTable += tanggalString;
-                                tempDataExport.push(tanggalString);
+                                tempDataExport.push(tanggalExcel);
                                 dataTable += '</td>';
                                 dataTable += '<td>';
                                 dataTable += outlet;
@@ -114,7 +115,7 @@
                                     dataTable += '<td>';
                                     dataTable += tanggalString;
                                     dataTable += '</td>';
-                                    tempDataExport.push(tanggalString);
+                                    tempDataExport.push(tanggalExcel);
                                     dataTable += '<td>';
                                     dataTable += outlet;
                                     dataTable += '</td>';
@@ -166,7 +167,7 @@
                                 dataTable += '<tr>';
                                 dataTable += '<td>';
                                 dataTable += tanggalString;
-                                tempDataExport.push(tanggalString);
+                                tempDataExport.push(tanggalExcel);
                                 dataTable += '</td>';
                                 dataTable += '<td>';
                                 dataTable += outlet;
@@ -217,7 +218,7 @@
                             dataTable += '<td>';
                             dataTable += tanggalString;
                             dataTable += '</td>';
-                            tempDataExport.push(tanggalString);
+                            tempDataExport.push(tanggalExcel);
 
                             dataTable += '<td>';
                             dataTable += outlet;
@@ -312,7 +313,7 @@
             namaFile += ' Sampai ';
             namaFile += document.getElementById('stopDate').value;
             arrayAllData.push([
-                'Tanggal',
+                'Tanggal (Format mm/dd/yyyy)',
                 'Outlet',
                 'Item Sales',
                 'Jumlah (+-)',
