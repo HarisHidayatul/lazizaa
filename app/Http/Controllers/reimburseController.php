@@ -349,18 +349,20 @@ class reimburseController extends Controller
                 if ($salesReimburse != null) {
                     if ($salesReimburse != null) {
                         $salesReimburse = $salesReimburse->sales_reimburses;
-                        $totalSalesReimburse = $salesReimburse->total;
-                        if ($salesReimburse->idRevisiTotal == '2') {
-                            $totalSalesReimburse = $salesReimburse->totalRevisi;
+                        if($salesReimburse != null){
+                            $totalSalesReimburse = $salesReimburse->total;
+                            if ($salesReimburse->idRevisiTotal == '2') {
+                                $totalSalesReimburse = $salesReimburse->totalRevisi;
+                            }
+                            $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
+                            array_push($reimburseSales, (object)[
+                                'id' => $salesReimburse->id,
+                                'idRevisiTotal' => $salesReimburse->idRevisiTotal,
+                                'total' => $totalSalesReimburse,
+                                'saldo' => $pergerakanSaldo
+                            ]);
+                            $dataFound = true;
                         }
-                        $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
-                        array_push($reimburseSales, (object)[
-                            'id' => $salesReimburse->id,
-                            'idRevisiTotal' => $salesReimburse->idRevisiTotal,
-                            'total' => $totalSalesReimburse,
-                            'saldo' => $pergerakanSaldo
-                        ]);
-                        $dataFound = true;
                     }
                 }
 
@@ -571,16 +573,17 @@ class reimburseController extends Controller
             if ($salesReimburse != null) {
                 if ($salesReimburse != null) {
                     $salesReimburse = $salesReimburse->sales_reimburses;
-
-                    $totalSalesReimburse = $salesReimburse->total;
-                    if ($salesReimburse->idRevisiTotal == '2') {
-                        $totalSalesReimburse = $salesReimburse->totalRevisi;
+                    if($salesReimburse != null){
+                        $totalSalesReimburse = $salesReimburse->total;
+                        if ($salesReimburse->idRevisiTotal == '2') {
+                            $totalSalesReimburse = $salesReimburse->totalRevisi;
+                        }
+                        $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
+    
+                        echo "sales reimburse : ";
+                        echo $totalSalesReimburse;
+                        echo "<br>\n";
                     }
-                    $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
-
-                    echo "sales reimburse : ";
-                    echo $totalSalesReimburse;
-                    echo "<br>\n";
                 }
             }
         }
