@@ -2,7 +2,13 @@
 
 @section('fillBody')
     <div class="d-flex justify-content-between">
-        <select name="" id="selOutlet"></select>
+        <div>
+            <select name="" id="selOutlet"></select>
+            <select name="" id="selFilterStatus">
+                <option value="0">Semua Status</option>
+                <option value="1">Pending</option>
+            </select>
+        </div>
         <div class="d-flex justify-content-right">
             <div>Start Date : </div>
             <input type="date" id="startDate">
@@ -65,7 +71,8 @@
                     </div>
                     <div class="row">
                         <div class="col-5">Bukti Transfer</div>
-                        <div class="col-7">: <span><a href="#" target="_blank" rel="noopener noreferrer" id="filePathName"></a></span></div>
+                        <div class="col-7">: <span><a href="#" target="_blank" rel="noopener noreferrer"
+                                    id="filePathName"></a></span></div>
                     </div>
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
                     <div class="form-check">
@@ -104,8 +111,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

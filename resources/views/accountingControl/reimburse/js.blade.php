@@ -286,6 +286,7 @@
                     var historyAll = "";
                     var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
+                    var statusFilter = document.getElementById('selFilterStatus').value;
                     console.log(objAllData);
                     dataExportToCSV.length = 0;
 
@@ -295,6 +296,11 @@
                         for (var i = 0; i < obj.dataHistory.length; i++) {
 
                             for (var j = 0; j < obj.dataHistory[i].reimburse.length; j++) {
+                                if (obj.dataHistory[i].reimburse[j].idRev != '2') {
+                                    if (statusFilter == 1) {
+                                        continue;
+                                    }
+                                }
                                 var statusRevisi = '';
                                 var tempDataExport = [];
 
@@ -344,6 +350,9 @@
                             }
 
                             for (var j = 0; j < obj.dataHistory[i].reimburseSales.length; j++) {
+                                if (statusFilter == 1) {
+                                    continue;
+                                }
                                 var statusRevisi = '';
                                 var tempDataExport = [];
 
@@ -374,7 +383,7 @@
                                 historyAll += obj.dataHistory[i].reimburseSales[j].total.toLocaleString();
                                 historyAll += '</td>';
                                 tempDataExport.push(obj.dataHistory[i].reimburseSales[j].total
-                            .toLocaleString());
+                                    .toLocaleString());
 
                                 historyAll += '<td ';
                                 if (obj.dataHistory[i].reimburseSales[j].idRevisiTotal == '2') {

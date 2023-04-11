@@ -90,9 +90,15 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     var historyAll = "";
                     console.log(obj);
+                    var statusFilter = document.getElementById('selFilterStatus').value;
                     for (var i = 0; i < obj.allSetoran.length; i++) {
                         for (var j = 0; j < obj.allSetoran[i].setoran.length; j++) {
                             for (var k = 0; k < obj.allSetoran[i].setoran[j].setoran.length; k++) {
+                                if(obj.allSetoran[i].setoran[j].setoran[k].idRev != '2'){
+                                    if(statusFilter == 1){
+                                        continue;
+                                    }
+                                }
                                 historyAll += '<tr style="cursor: pointer;" onClick="clickSetoran(';
                                 historyAll += obj.allSetoran[i].setoran[j].setoran[k].id;
                                 historyAll += ')">';
