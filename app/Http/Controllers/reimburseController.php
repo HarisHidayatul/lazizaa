@@ -337,19 +337,19 @@ class reimburseController extends Controller
 
                 $reimburse = $reimburseAll->first();
                 $reimburseHarians = [];
-                if($reimburse != null){
+                if ($reimburse != null) {
                     $pergerakanSaldo = $reimburse->saldoTerakhir;
                     $reimburseHarians = $reimburse->penerimaReimburses;
                 }
 
                 $pembelianHarians = $tanggalAll->pattyCashHarians;
-                
+
 
                 $salesReimburse = $tanggalAll->salesHarianReimburses->where('idOutlet', '=', $outletArray[$indexOutletLoop])->first();
                 if ($salesReimburse != null) {
                     if ($salesReimburse != null) {
                         $salesReimburse = $salesReimburse->sales_reimburses;
-                        if($salesReimburse != null){
+                        if ($salesReimburse != null) {
                             $totalSalesReimburse = $salesReimburse->total;
                             if ($salesReimburse->idRevisiTotal == '2') {
                                 $totalSalesReimburse = $salesReimburse->totalRevisi;
@@ -366,7 +366,7 @@ class reimburseController extends Controller
                     }
                 }
 
-                foreach($reimburseHarians as $reimburseHarian){
+                foreach ($reimburseHarians as $reimburseHarian) {
                     if ($reimburseHarian->idRevisi == '3') {
                         $pergerakanSaldo = $pergerakanSaldo + $reimburseHarian->qty;
                     }
@@ -378,14 +378,14 @@ class reimburseController extends Controller
                     ]);
                     $dataFound = true;
                 }
-                
+
                 $reimburseTanggalIni = array_reverse($reimburseTanggalIni, false);
 
                 $pembelianHarians = $pembelianHarians->where('idOutlet', '=', $outletArray[$indexOutletLoop]);
                 foreach ($pembelianHarians as $pembelianHarian) {
                     $pembelianLists = $pembelianHarian->listItemPattyCashs;
                     $idSesi = $pembelianHarian->idSesi;
-                    foreach($pembelianLists as $pembelianList){
+                    foreach ($pembelianLists as $pembelianList) {
                         $qtyPembelian = $pembelianList->pivot->quantity;
                         $totalPembelian = $pembelianList->pivot->total;
                         if ($pembelianList->pivot->idRevTotal == 2) {
@@ -481,7 +481,7 @@ class reimburseController extends Controller
         $awalSaldo = true;
         $now = Carbon::now();
         $dateNow = $now->format('Y-m-d');
-        $firstDate =$now->subMonth(1)->firstOfMonth()->format('Y-m-d');//mendapatkan firstdate di tanggal 1 di tanggal sebelumnya
+        $firstDate = $now->subMonth(1)->firstOfMonth()->format('Y-m-d'); //mendapatkan firstdate di tanggal 1 di tanggal sebelumnya
 
         $tanggalSekarang = tanggalAll::where('Tanggal', '=', $dateNow)->first();
         if ($tanggalSekarang == null) {
@@ -504,8 +504,10 @@ class reimburseController extends Controller
                     'idOutlet' => $idOutlet,
                     'saldoTerakhir' => $pergerakanSaldo
                 ]);
-                break;
+                // break;
+                $reimburseAll = $allDate->reimburses;
             }
+            
             $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             if (count($reimburseAll) == 0) {
                 reimburse::create([
@@ -513,9 +515,10 @@ class reimburseController extends Controller
                     'idOutlet' => $idOutlet,
                     'saldoTerakhir' => $pergerakanSaldo
                 ]);
-                break;
+                // break;
+                $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             }
-            $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
+            // $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             $reimburse = $reimburseAll->first();
 
             if ($awalSaldo) {
@@ -573,13 +576,13 @@ class reimburseController extends Controller
             if ($salesReimburse != null) {
                 if ($salesReimburse != null) {
                     $salesReimburse = $salesReimburse->sales_reimburses;
-                    if($salesReimburse != null){
+                    if ($salesReimburse != null) {
                         $totalSalesReimburse = $salesReimburse->total;
                         if ($salesReimburse->idRevisiTotal == '2') {
                             $totalSalesReimburse = $salesReimburse->totalRevisi;
                         }
                         $pergerakanSaldo = $pergerakanSaldo + $totalSalesReimburse;
-    
+
                         echo "sales reimburse : ";
                         echo $totalSalesReimburse;
                         echo "<br>\n";

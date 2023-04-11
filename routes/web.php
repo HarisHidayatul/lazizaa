@@ -417,6 +417,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('accountingControl.pattyCash.index');
     });
 
+    Route::get('accounting/saldoPattyCash', function(){
+        return view('accountingControl.saldoPattyCash.index');
+    });
+
     Route::get('accounting/reimburse',function(){
         return view('accountingControl.reimburse.index');
     });

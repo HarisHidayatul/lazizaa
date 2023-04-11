@@ -140,6 +140,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ url('accounting/saldoPattyCash') }}" class="nav-link" id="saldoPattyCashsTabMenu">
+                            <i class="nav-icon fa fa-credit-card"></i>
+                            <p class="text">Saldo Patty Cash</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('accounting/reimburse') }}" class="nav-link" id="reimburseTabMenu">
                             <i class="nav-icon fas fa-money-check-alt"></i>
                             <p class="text">Reimburse</p>
