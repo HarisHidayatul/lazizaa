@@ -467,12 +467,14 @@ class reimburseController extends Controller
     public function updateAllHistoryOutlet()
     {
         $outletAll = doutlet::all();
-        for ($j = 0; $j < $outletAll->count(); $j++) {
-            echo $outletAll[$j]['Nama Store'];
-            echo '<br>';
-            $this->updateAllHistory($outletAll[$j]->id);
-            echo '<br>';
-            echo '<br>';
+        for($i =0;$i<$outletAll->count();$i++){
+            for ($j = 0; $j < $outletAll->count(); $j++) {
+                echo $outletAll[$j]['Nama Store'];
+                echo '<br>';
+                $this->updateAllHistory($outletAll[$j]->id);
+                echo '<br>';
+                echo '<br>';
+            }
         }
     }
     public function updateAllHistory($idOutlet)
@@ -504,8 +506,8 @@ class reimburseController extends Controller
                     'idOutlet' => $idOutlet,
                     'saldoTerakhir' => $pergerakanSaldo
                 ]);
-                // break;
-                $reimburseAll = $allDate->reimburses;
+                break;
+                // $reimburseAll = $allDate->reimburses;
             }
             
             $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
@@ -515,8 +517,8 @@ class reimburseController extends Controller
                     'idOutlet' => $idOutlet,
                     'saldoTerakhir' => $pergerakanSaldo
                 ]);
-                // break;
-                $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
+                break;
+                // $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             }
             // $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             $reimburse = $reimburseAll->first();
