@@ -701,7 +701,7 @@
                         <img src="{{ url('img/dashboard/laporanSo.png') }}" alt="laporanSo" class="soIcon">
                     </div>
                     <div class="col" style="margin-top: 3px;margin-left: 1px;">
-                        <h5>Laporan SO</h5>
+                        <h5 id="soTextMonthOrDay"></h5>
                     </div>
                 </div>
                 <div>
@@ -1261,6 +1261,14 @@
         } else {
             changeIcon(dataExistType[indexDataOnDate][0], dataExistType[indexDataOnDate][1], dataExistType[
                 indexDataOnDate][2], dataExistType[indexDataOnDate][3]);
+        }
+        var tanggalAkhirBulan = new Date(currentYear,currentMonth + 1,0).getDate();
+        if((indexDate == 15)||(indexDate == tanggalAkhirBulan)){
+            document.getElementById('soTextMonthOrDay').innerHTML = 'Laporan SO Bulanan';
+            document.getElementById('soTextMonthOrDay').style.marginLeft = "-13px";
+        }else{
+            document.getElementById('soTextMonthOrDay').innerHTML = 'Laporan SO';
+            document.getElementById('soTextMonthOrDay').style.marginLeft = "0px";
         }
         dateSelect = indexDate;
         var newDate = currentYear;

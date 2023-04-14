@@ -384,10 +384,13 @@
                             <img src="{{ url('img/icon/settingSo.png') }}" alt=""
                                 style="height: 24px; margin-top: 3px;" onclick="goToSettingBatasSo();">
                         </div>
-                        <div class="d-flex justify-content-center wrapSesi">
+                        <div id="sesiTextMonthOrDay" class="d-flex justify-content-center wrapSesi">
+                            
+                            {{-- 
                             <div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>
                             <div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>
                             <div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>
+                             --}}
                         </div>
                         {{-- <h3 style="margin-top: 20px">Laporan SO</h3> --}}
                         <div id="groupAddItem"></div>
@@ -464,6 +467,15 @@
         dataId.length = 0;
         showItemOutlet("{{ session('idOutlet') }}");
         console.log("{{ $dateSelect }}");
+
+        var tanggalAkhirBulan = new Date(day.getFullYear(),day.getMonth()+1,0).getDate();
+        if(!((day.getDate() == 15)||(day.getDate() == tanggalAkhirBulan))){
+            var sesiHtml = '';
+            sesiHtml += '<div name="sesi" class="sesiActive" onclick="changeSesi(0)">Sesi 1</div>'
+            sesiHtml += '<div name="sesi" class="sesiNonActive" onclick="changeSesi(1)">Sesi 2</div>'
+            sesiHtml += '<div name="sesi" class="sesiNonActive" onclick="changeSesi(2)">Sesi 3</div>'
+            document.getElementById('sesiTextMonthOrDay').innerHTML = sesiHtml;
+        }
     });
 
     function goToSettingBatasSo() {

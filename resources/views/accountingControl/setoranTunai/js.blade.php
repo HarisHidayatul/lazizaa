@@ -91,6 +91,8 @@
                     var historyAll = "";
                     console.log(obj);
                     var statusFilter = document.getElementById('selFilterStatus').value;
+                    var totalSukses = 0;
+                    var totalPending = 0;
                     for (var i = 0; i < obj.allSetoran.length; i++) {
                         for (var j = 0; j < obj.allSetoran[i].setoran.length; j++) {
                             for (var k = 0; k < obj.allSetoran[i].setoran[j].setoran.length; k++) {
@@ -119,9 +121,11 @@
                                 if (obj.allSetoran[i].setoran[j].setoran[k].idRev == '2') {
                                     historyAll += 'style="color: red;"';
                                     statusRevisi = 'PENDING';
+                                    totalPending += parseInt(obj.allSetoran[i].setoran[j].setoran[k].qty);
                                 } else if (obj.allSetoran[i].setoran[j].setoran[k].idRev == '3') {
                                     historyAll += 'style="color: green;"';
                                     statusRevisi = 'SUKSES';
+                                    totalSukses += parseInt(obj.allSetoran[i].setoran[j].setoran[k].qty);
                                 }
                                 historyAll += '>';
                                 historyAll += statusRevisi;
@@ -131,6 +135,8 @@
                         }
                     }
                     $('#statusInputTabel>tbody').empty().append(historyAll);
+                    document.getElementById('totalSukses').innerHTML = totalSukses.toLocaleString();
+                    document.getElementById('totalPending').innerHTML = totalPending.toLocaleString();
                 },
                 error: function(req, err) {
                     console.log(err);

@@ -32,6 +32,8 @@
             </tbody>
         </table>
     </div>
+    <h3>Total Sukses : <span id="totalSukses">0</span></h3>
+    <h3>Total Pending : <span id="totalPending">0</span></h3>
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
