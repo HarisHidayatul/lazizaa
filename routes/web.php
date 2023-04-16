@@ -13,6 +13,7 @@ use App\Http\Controllers\soHarianController;
 use App\Http\Controllers\typeOutletItemController;
 use App\Http\Controllers\typeSalesController;
 use App\Http\Controllers\wasteController;
+use App\Http\Controllers\robotController;
 use App\Models\dUser;
 use App\Models\fsoHarian;
 use App\Models\itemWaste;
@@ -286,6 +287,10 @@ Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class,
 
 Route::get('reimburse/show/pengirim/all/{idUser}', [reimburseController::class, 'showPengirimAll']);
 
+Route::get('robot/pembelian/show/all',[robotController::class,'showPembelian']);
+Route::post('robot/pembelian/create',[robotController::class,'createRobotPembelian']);
+Route::delete('robot/pembelian/delete',[robotController::class,'deleteRobotPembelian']);
+
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
 Route::get('checkLogin', [loginController::class, 'loginCheck']);
@@ -411,6 +416,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/checkExist', function () {
         return view('accountingControl.dataDiIsi.index');
+    });
+
+    Route::get('accounting/robot/pembelian',function(){
+        return view('accountingControl.beeCloudRobot.pembelian.index');
     });
 
     Route::get('accounting/pattyCash', function () {

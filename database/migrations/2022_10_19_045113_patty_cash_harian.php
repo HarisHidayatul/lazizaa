@@ -128,6 +128,26 @@ return new class extends Migration
             $table->timestamps();
             
         });
+
+        Schema::create('status_robot', function (Blueprint $table) {
+            $table->id();
+            $table->string('status');
+
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('robot_pembelian_status',function(Blueprint $table){
+            $table->id();
+
+            $table->unsignedBigInteger('idPattyCashHarian');
+            $table->foreign('idPattyCashHarian')->references('id')->on('patty_cash_harian');
+            
+            $table->unsignedBigInteger('idPemverifikasi');
+            $table->foreign('idPemverifikasi')->references('id')->on('duser');
+            
+            $table->timestamps();
+        });
     }
 
     /**

@@ -18,6 +18,10 @@ class pattyCashHarian extends Model
         return $this->hasMany(doutlet::class,'id');
     }
 
+    public function robotPembelianStatuss(){
+        return $this->hasMany(robot_pembelian_status::class,'idPattyCashHarian','id');
+    }
+
     public function listItemPattyCashs(){
         return $this->belongsToMany(listItemPattyCash::class,pattyCashFill::class,'idPattyCash','idListItem')->withPivot('id','idPerevisi','quantity','quantityRevisi','total','totalRevisi','idPengisi','idRevQuantity','idRevTotal');
     }
