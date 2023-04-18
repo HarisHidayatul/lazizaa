@@ -40,8 +40,8 @@
                     <td>Qty</td>
                     <td>Satuan</td>
                     <td>Harga Satuan</td>
-                    <td>Kredit</td>
                     <td>Debit</td>
+                    <td>Kredit</td>
                     <td>Saldo</td>
                     <td>Status</td>
                 </tr>

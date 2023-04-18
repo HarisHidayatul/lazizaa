@@ -348,14 +348,15 @@
                                 historyAll += '</td>';
                                 tempDataExport.push(hargaSatuan.toLocaleString());
 
-                                historyAll += '<td>';
-                                historyAll += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
-                                historyAll += '</td>';
-                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].total.toLocaleString());
 
                                 historyAll += '<td>';
                                 historyAll += '</td>';
                                 tempDataExport.push('');
+
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].pattyCash[j].total.toLocaleString();
+                                historyAll += '</td>';
+                                tempDataExport.push(obj.dataHistory[i].pattyCash[j].total.toLocaleString());
 
                                 historyAll += '<td>';
                                 historyAll += obj.dataHistory[i].pattyCash[j].saldo.toLocaleString();
@@ -427,13 +428,13 @@
                                 tempDataExport.push('');
 
                                 historyAll += '<td>';
-                                historyAll += '</td>';
-                                tempDataExport.push('');
-
-                                historyAll += '<td>';
                                 historyAll += obj.dataHistory[i].reimburse[j].reimburse.toLocaleString();
                                 historyAll += '</td>';
                                 tempDataExport.push(obj.dataHistory[i].reimburse[j].reimburse.toLocaleString());
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
 
                                 historyAll += '<td>';
                                 historyAll += obj.dataHistory[i].reimburse[j].saldo.toLocaleString();
@@ -505,20 +506,20 @@
                                 tempDataExport.push('');
 
                                 historyAll += '<td>';
-                                historyAll += '</td>';
-                                tempDataExport.push('');
-
-                                historyAll += '<td>';
                                 historyAll += obj.dataHistory[i].reimburseSales[j].total.toLocaleString();
                                 historyAll += '</td>';
                                 tempDataExport.push(obj.dataHistory[i].reimburseSales[j].total
-                            .toLocaleString());
+                                    .toLocaleString());
+
+                                historyAll += '<td>';
+                                historyAll += '</td>';
+                                tempDataExport.push('');
 
                                 historyAll += '<td>';
                                 historyAll += obj.dataHistory[i].reimburseSales[j].saldo.toLocaleString();
                                 historyAll += '</td>';
                                 tempDataExport.push(obj.dataHistory[i].reimburseSales[j].saldo
-                            .toLocaleString());
+                                    .toLocaleString());
 
                                 historyAll += '<td ';
                                 if (obj.dataHistory[i].reimburseSales[j].idRevisiTotal == '2') {
@@ -616,8 +617,8 @@
                 'Qty',
                 'Satuan',
                 'Harga Satuan',
-                'Kredit',
                 'Debit',
+                'Kredit',
                 'Saldo',
                 'Status',
             ]);
