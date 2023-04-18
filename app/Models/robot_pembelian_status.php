@@ -20,6 +20,10 @@ class robot_pembelian_status extends Model
         return $this->belongsTo(status_robot::class,'idStatusRobot','id');
     }
 
+    public function pattyCashHarians(){
+        return $this->belongsTo(pattyCashHarian::class,'idPattyCashHarian','id');
+    }
+
     protected $fillable = [
         'idPattyCashHarian',
         'idPemverifikasi',

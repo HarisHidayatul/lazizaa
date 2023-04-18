@@ -291,6 +291,9 @@ Route::get('robot/pembelian/show/all',[robotController::class,'showPembelian']);
 Route::post('robot/pembelian/create',[robotController::class,'createRobotPembelian']);
 Route::delete('robot/pembelian/delete',[robotController::class,'deleteRobotPembelian']);
 
+Route::get('robot/api/pembelian/show',[robotController::class,'showRobotPembelian']);
+Route::get('robot/api/pembelian/done/{id}',[robotController::class,'doneRobotPembelian']);
+
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
 Route::get('checkLogin', [loginController::class, 'loginCheck']);

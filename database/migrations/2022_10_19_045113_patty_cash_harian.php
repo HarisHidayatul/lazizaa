@@ -36,6 +36,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('Item');
+
+            $table->string('kodeBeeCloud')->nullable(true)->change();
             
             $table->unsignedBigInteger('idSatuan');
             $table->foreign('idSatuan')->references('id')->on('satuan');

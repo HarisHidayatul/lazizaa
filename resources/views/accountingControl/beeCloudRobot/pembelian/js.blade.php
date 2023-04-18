@@ -50,6 +50,7 @@
                     var historyAll = "";
                     var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
+                    var selectFilter = document.getElementById('selFilter').value;
                     console.log(objAllData);
 
                     for (var i = 0; i < objAllData.allData.length; i++) {
@@ -57,6 +58,41 @@
                             for (var k = 0; k < objAllData.allData[i].dataHistory[j].pattyCash.length; k++) {
                                 for (var l = 0; l < objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash
                                     .length; l++) {
+                                    if (selectFilter == 1) {
+                                        var foundPending = false;
+                                        if (objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                            .dataRobot.length == 0) {
+                                            continue;
+                                        }
+                                        for (var m = 0; m < objAllData.allData[i].dataHistory[j].pattyCash[
+                                                k].dataRobot.length; m++) {
+                                            if (objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                                .dataRobot[m].status == 'pending') {
+                                                foundPending = true;
+                                            }
+                                        }
+                                        if(!foundPending){
+                                            continue;
+                                        }
+                                    }
+                                    if (selectFilter == 2) {
+                                        var foundSukses = false;
+                                        if (objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                            .dataRobot.length == 0) {
+                                            continue;
+                                        }
+                                        for (var m = 0; m < objAllData.allData[i].dataHistory[j].pattyCash[
+                                                k].dataRobot.length; m++) {
+                                            if (objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                                .dataRobot[m].status == 'sukses') {
+                                                foundSukses = true;
+                                            }
+                                        }
+                                        if(!foundSukses){
+                                            continue;
+                                        }
+                                    }
+
                                     var lengthPatty = objAllData.allData[i].dataHistory[j].pattyCash[k]
                                         .pattyCash.length;
                                     historyAll += '<tr>';

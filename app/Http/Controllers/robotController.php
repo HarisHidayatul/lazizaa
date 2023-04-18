@@ -10,6 +10,40 @@ use Illuminate\Http\Request;
 class robotController extends Controller
 {
     //
+    public function showRobotPembelian(){
+        $robotPembelianStatuss = robot_pembelian_status::where('idStatusRobot','=','1')->get()->first();
+        $arrayPatty = [];
+        $listPattys = $robotPembelianStatuss->pattyCashHarians->listItemPattyCashs;
+        $tanggal = $robotPembelianStatuss->pattyCashHarians->tanggalAlls->Tanggal;
+        $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
+        $termin = 'Kasir';
+        $cabang = 'Bekasi';
+        $gudang = 'Gudang';
+        foreach($listPattys as $listPatty){
+            $qty = $listPatty->pivot->quantity;
+            $total = $listPatty->pivot->total;
+            $hargaSatuan = $total/$qty;
+            if($listPatty->jenis_patty_cashs->namaJenis == 'HPP'){
+                array_push($arrayPatty,(object)[
+                    'idBeeCloud' => $listPatty->kodeBeeCloud,
+                    'namaItem' => $listPatty->Item,
+                    'qty' => $qty,
+                    'total' => $total,
+                    'satuan' => $listPatty->satuans->Satuan,
+                    'hargaSatuan' => $hargaSatuan,
+                    'gudang'    => $gudang
+                ]);
+            }
+        }
+        // @dd($tanggal);
+        return response()->json([
+            'Tanggal' => $tanggalDDmmYY,
+            'Termin' => $termin,
+            'Cabang' => $cabang,
+            'idRobotPembelian' => $robotPembelianStatuss->id,
+            'Data'  => $arrayPatty
+        ]);
+    }
     public function showPembelian(Request $request){
         $idOutlet = $request->idOutlet;
         $startDate = $request->startDate;
@@ -110,6 +144,14 @@ class robotController extends Controller
             'idPemverifikasi' => $idPemverifikasi,
             'idStatusRobot' => '1'
         ]);
+    }
+
+    public function doneRobotPembelian($id){
+        $robot_pembelian_status = robot_pembelian_status::find($id);
+        $robot_pembelian_status->update([
+            'idStatusRobot' => '2'
+        ]);
+        // @dd($robot_pembelian_status);
     }
 
     public function deleteRobotPembelian(Request $request){

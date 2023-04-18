@@ -25,6 +25,7 @@
             <th>ID</th>
             <th>Nama Item</th>
             <th>Satuan</th>
+            <th>Kode BeeCloud</th>
             <th>Jenis Item</th>
             <th>Kategori Item</th>
             <th>Edit</th>

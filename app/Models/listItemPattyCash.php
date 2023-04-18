@@ -25,6 +25,7 @@ class listItemPattyCash extends Model
     protected $fillable = [
         'Item',
         'idSatuan',
+        'kodeBeeCloud',
         'idJenisItem',
         'created_at',
         'updated_at',

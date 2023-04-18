@@ -2,7 +2,14 @@
 
 @section('robotBody')
 <div class="d-flex justify-content-between">
-    <select name="" id="selOutlet"></select>
+    <div>
+        <select name="" id="selOutlet"></select>
+        <select name="" id="selFilter">
+            <option value="0">Semua</option>
+            <option value="1">Pending</option>
+            <option value="2">Sukses</option>
+        </select>
+    </div>
     <div class="d-flex justify-content-right">
         <div>Start Date : </div>
         <input type="date" id="startDate">
