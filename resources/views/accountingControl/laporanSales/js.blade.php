@@ -49,12 +49,18 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
                     var dataTable = '';
+                    var surplusTableSetoran = '';
+                    var minusTableSetoran = '';
+
+                    var filterTableSetoran = document.getElementById('selAccess').value;
                     dataExportToCSV.length = 0;
                     for (var i = 0; i < obj.dataSales.length; i++) {
                         const outlet = obj.dataSales[i].Outlet;
                         for (var j = 0; j < obj.dataSales[i].data.length; j++) {
                             var saldo = 0;
                             var saldoSetoran = 0;
+
+                            var tempTableSetoran = '';
 
                             var pendingStatus = false;
 
@@ -220,39 +226,71 @@
                             dataTable += '</td>';
                             tempDataExport.push(tanggalExcel);
 
+                            tempTableSetoran += '<tr>';
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += tanggalString;
+                            tempTableSetoran += '</td>';
+
                             dataTable += '<td>';
                             dataTable += outlet;
                             dataTable += '</td>';
                             tempDataExport.push(outlet);
+
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += outlet;
+                            tempTableSetoran += '</td>';
 
                             dataTable += '<td>';
                             dataTable += 'Setoran Tunai/Sales';
                             dataTable += '</td>';
                             tempDataExport.push('Setoran Tunai/Sales');
 
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += 'Setoran Tunai/Sales';
+                            tempTableSetoran += '</td>';
+
                             dataTable += '<td>';
                             dataTable += '</td>';
                             tempDataExport.push('');
+
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += '</td>';
 
                             dataTable += '<td>';
                             dataTable += saldo.toLocaleString();
                             dataTable += '</td>';
                             tempDataExport.push(saldo.toLocaleString());
 
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += saldo.toLocaleString();
+                            tempTableSetoran += '</td>';
+
                             dataTable += '<td>';
                             dataTable += saldoSetoran.toLocaleString();
                             dataTable += '</td>';
                             tempDataExport.push(saldoSetoran.toLocaleString());
+
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += saldoSetoran.toLocaleString();
+                            tempTableSetoran += '</td>';
 
                             dataTable += '<td>';
                             dataTable += (saldo-saldoSetoran).toLocaleString();
                             dataTable += '</td>';
                             tempDataExport.push((saldo-saldoSetoran).toLocaleString());
 
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += (saldo-saldoSetoran).toLocaleString();
+                            tempTableSetoran += '</td>';
+
                             dataTable += '<td>';
                             dataTable += '0';
                             dataTable += '</td>';
                             tempDataExport.push('0');
+
+                            tempTableSetoran += '<td>';
+                            tempTableSetoran += '0';
+                            tempTableSetoran += '</td>';
 
                             dataTable += '<td>';
                             if (pendingStatus) {
@@ -263,11 +301,34 @@
                             }
                             dataTable += '</td>';
 
+                            tempTableSetoran += '<td>';
+                            if (pendingStatus) {
+                                tempTableSetoran += 'PENDING';
+                            }
+                            tempTableSetoran += '</td>';
+
                             dataTable += '</tr>';
                             dataExportToCSV.push(tempDataExport);
+
+                            tempTableSetoran += '</tr>';
+
+                            // if()
+                            if((saldo-saldoSetoran) > 0){
+                                minusTableSetoran += tempTableSetoran;
+                            }
+                            if((saldo-saldoSetoran) < 0){
+                                surplusTableSetoran += tempTableSetoran;
+                            }
                         }
                     }
-                    $('#statusInputTabel>tbody').empty().append(dataTable);
+                    if(filterTableSetoran == 0){
+                        $('#statusInputTabel>tbody').empty().append(dataTable);
+                    }else if(filterTableSetoran == 1){
+                        $('#statusInputTabel>tbody').empty().append(surplusTableSetoran);
+                    }else if(filterTableSetoran == 2){
+                        $('#statusInputTabel>tbody').empty().append(minusTableSetoran);
+                    }
+                    
                 },
                 error: function(req, err) {
                     console.log(err);

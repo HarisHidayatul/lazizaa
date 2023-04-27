@@ -2,7 +2,14 @@
 
 @section('fillBody')
 <div class="d-flex justify-content-between">
-    <select name="" id="selOutlet"></select>
+    <div>
+        <select name="" id="selOutlet"></select>
+        <select name="" id="selAccess">
+            <option value="0">Semua</option>
+            <option value="1">Surplus Setoran</option>
+            <option value="2">Minus Setoran</option>
+        </select>
+    </div>
     <div class="d-flex justify-content-right">
         <div>Start Date : </div>
         <input type="date" id="startDate">
