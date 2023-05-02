@@ -225,15 +225,15 @@
             })
         }
 
-        // function downloadCSV() {
-        //     var filename = 'Data SO Outlet ';
-        //     filename += document.getElementById('statusInputTabel').value;
-        //     filename += ' ';
-        //     filename += document.getElementById('startDate').value;
-        //     filename += ' Sampai ';
-        //     filename += document.getElementById('stopDate').value;
-        //     exportTableToCSV(filename);
-        // }
+        function downloadCSV() {
+            var filename = 'Data SO Outlet ';
+            filename += document.getElementById('statusInputTabel').value;
+            filename += ' ';
+            filename += document.getElementById('startDate').value;
+            filename += ' Sampai ';
+            filename += document.getElementById('stopDate').value;
+            downloadCSV2(filename);
+        }
 
         function downloadCSV2(filename) {
             // Mendapatkan referensi ke tabel
