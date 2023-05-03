@@ -56,6 +56,11 @@ class doutlet extends Model
         'Alamat Lengkap',
         'idBrand',
         'branch_id_bee_cloud',
+        'keywoardBee',
+        'indexTerminBee',
+        'indexCabangBee',
+        'indexGudangBee',
+        'keywoardBee',
         'created_at',
         'updated_at',
         'deleted_at'

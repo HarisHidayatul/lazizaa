@@ -15,7 +15,7 @@ class pattyCashHarian extends Model
     public $guarded = ['id'];
 
     public function dOutlets(){
-        return $this->hasMany(doutlet::class,'id');
+        return $this->belongsTo(doutlet::class,'idOutlet','id');
     }
 
     public function robotPembelianStatuss(){

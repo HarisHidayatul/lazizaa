@@ -9,17 +9,27 @@
             getAllBrand();
         })
 
-        function editItem(index){
+        function editItem(index) {
             var namaStore = document.getElementsByName('inputEdit')[index].value;
             var alamatStore = document.getElementsByName('addressEdit')[index].value;
             var idBrand = document.getElementsByName('dropDownBrandEdit')[index].value;
+
+            var indexTerminBee = document.getElementsByName('indexTerminBee')[index].value;
+            var indexCabangBee = document.getElementsByName('indexCabangBee')[index].value;
+            var indexGudangBee = document.getElementsByName('indexGudangBee')[index].value;
+            var keywoardBee = document.getElementsByName('keywoardBee')[index].value;
+
             $.ajax({
                 url: "{{ url('common/outlet/update') }}" + '/' + idOutletArray[index],
                 type: 'get',
                 data: {
                     idBrand: idBrand,
                     namaStore: namaStore,
-                    alamatStore: alamatStore
+                    alamatStore: alamatStore,
+                    indexTerminBee: indexTerminBee,
+                    indexGudangBee: indexGudangBee,
+                    indexCabangBee: indexCabangBee,
+                    keywoardBee: keywoardBee
                 },
                 success: function(response) {
                     getOutlet();
@@ -103,6 +113,31 @@
                         dataTable += '</div>';
                         dataTable += '</td>';
 
+                        dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].keywoardBee;
+                        dataTable += '" name="keywoardBee">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<input type="number" class="form-control" value="';
+                        dataTable += obj.dataItem[i].indexTerminBee;
+                        dataTable += '" name="indexTerminBee">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<input type="number" class="form-control" value="';
+                        dataTable += obj.dataItem[i].indexCabangBee;
+                        dataTable += '" name="indexCabangBee">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<input type="number" class="form-control" value="';
+                        dataTable += obj.dataItem[i].indexGudangBee;
+                        dataTable += '" name="indexGudangBee">';
+                        dataTable += '</td>';
+
+                        
                         dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' +
                             i +

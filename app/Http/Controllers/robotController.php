@@ -16,12 +16,20 @@ class robotController extends Controller
         $listPattys = $robotPembelianStatuss->pattyCashHarians->listItemPattyCashs;
         $tanggal = $robotPembelianStatuss->pattyCashHarians->tanggalAlls->Tanggal;
         $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
-        $termin = 'Kasir';
-        $cabang = 'Bekasi';
-        $gudang = 'Gudang';
+        $termin = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
+        $indexTermin = $robotPembelianStatuss->pattyCashHarians->dOutlets->indexTerminBee;
+        $cabang = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
+        $indexCabang = $robotPembelianStatuss->pattyCashHarians->dOutlets->indexCabangBee;
+        $gudang = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
+        $indexGudang = $robotPembelianStatuss->pattyCashHarians->dOutlets->indexGudangBee;
+        $notes = '';
+
         foreach($listPattys as $listPatty){
             $qty = $listPatty->pivot->quantity;
             $total = $listPatty->pivot->total;
+            if(($qty == 0)||($total == 0)){
+                continue;
+            }
             $hargaSatuan = $total/$qty;
             if($listPatty->jenis_patty_cashs->namaJenis == 'HPP'){
                 array_push($arrayPatty,(object)[
@@ -31,17 +39,30 @@ class robotController extends Controller
                     'total' => $total,
                     'satuan' => $listPatty->satuans->Satuan,
                     'hargaSatuan' => $hargaSatuan,
-                    'gudang'    => $gudang
+                    'gudang'    => $gudang,
+                    'indexGudang' => $indexGudang
                 ]);
+                $notes .= $listPatty->Item;
+                $notes .= '  ';
+                $notes .= $qty;
+                $notes .= ' ';
+                $notes .= $listPatty->satuans->Satuan;
+                $notes .= '  ';
+                $notes .= 'Rp ';
+                $notes .= $total;
+                $notes .= '        ,         ';
             }
         }
         // @dd($tanggal);
         return response()->json([
             'Tanggal' => $tanggalDDmmYY,
             'Termin' => $termin,
+            'indexTermin' => $indexTermin,
             'Cabang' => $cabang,
+            'indexCabang' => $indexCabang,
             'idRobotPembelian' => $robotPembelianStatuss->id,
-            'Data'  => $arrayPatty
+            'Data'  => $arrayPatty,
+            'Notes' => $notes
         ]);
     }
     public function showPembelian(Request $request){
