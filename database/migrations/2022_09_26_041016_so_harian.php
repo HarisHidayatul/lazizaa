@@ -75,6 +75,12 @@ return new class extends Migration
 
             $table->unsignedBigInteger('branch_id_bee_cloud')->default('0');
 
+            $table->string('keywoardBee')->nullable();
+
+            $table->unsignedInteger('indexTerminBee')->default('0');
+            $table->unsignedInteger('indexGudangBee')->default('0');
+            $table->unsignedInteger('indexCabangBee')->default('0');
+
             $table->timestamps();
             $table->softDeletes();
         });

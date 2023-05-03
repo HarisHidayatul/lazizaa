@@ -127,6 +127,47 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item" id="robotTabMenu">
+                        <a href="#" class="nav-link" id="robotSubMenu">
+                            <i class="nav-icon 	fas fa-robot"></i>
+                            <p>
+                                Bee Cloud Robot
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/robot/pembelian') }}" class="nav-link" id="pembelianRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pembelian</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="pembayaranRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pembayaran</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="eCommerceRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>E-Commerce</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="reimburseSalesRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reimburse Sales</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="reimburseFinanceRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reimburse Finance</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url('accounting/checkExist') }}" class="nav-link" id="checkExistTabMenu">
                             <i class="nav-icon fas fa-pen-square"></i>

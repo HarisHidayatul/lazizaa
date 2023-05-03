@@ -161,7 +161,11 @@ class commonController extends Controller
                 'store' => $outlet[$i]['Nama Store'],
                 'alamat' => $outlet[$i]['Alamat Lengkap'],
                 'brand' => $outlet[$i]->dBrands['Nama Brand'],
-                'idBrand' => $outlet[$i]->idBrand
+                'idBrand' => $outlet[$i]->idBrand,
+                'indexTerminBee' => $outlet[$i]->indexTerminBee,
+                'indexCabangBee' => $outlet[$i]->indexCabangBee,
+                'indexGudangBee' => $outlet[$i]->indexGudangBee,
+                'keywoardBee' => $outlet[$i]->keywoardBee
             ]);
         }
         return response()->json([
@@ -275,7 +279,11 @@ class commonController extends Controller
         $outlet = doutlet::find($id)->update([
             'Nama Store' => $request->namaStore,
             'Alamat Lengkap' => $request->alamatStore,
-            'idBrand' => $request->idBrand
+            'idBrand' => $request->idBrand,
+            'indexTerminBee' => $request->indexTerminBee,
+            'indexCabangBee' => $request->indexCabangBee,
+            'indexGudangBee' => $request->indexGudangBee,
+            'keywoardBee' => $request->keywoardBee
         ]);
     }
 

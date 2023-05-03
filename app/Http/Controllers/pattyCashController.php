@@ -675,6 +675,7 @@ class pattyCashController extends Controller
             array_push($arraylistPattyCash, (object)[
                 'id' => $listPattyCash[$i]->id,
                 'Item' => $listPattyCash[$i]->Item,
+                'kodeBeeCloud' => $listPattyCash[$i]->kodeBeeCloud,
                 'Satuan' => $listPattyCash[$i]->satuans['Satuan'],
                 'idSatuan' => $listPattyCash[$i]->idSatuan,
                 'jenis' => $listPattyCash[$i]->jenis_patty_cashs->namaJenis,
@@ -1214,7 +1215,8 @@ class pattyCashController extends Controller
         $listPattyCash->update([
             'Item' => $request->Item,
             'idSatuan' => $request->idSatuan,
-            'idJenisItem' => $request->idJenis
+            'idJenisItem' => $request->idJenis,
+            'kodeBeeCloud' => $request->kodeBeeCloud
         ]);
     }
 

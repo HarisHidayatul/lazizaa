@@ -33,6 +33,10 @@
                 <th>Nama Store</th>
                 <th>Keterangan</th>
                 <th>Brand</th>
+                <th>Keywoard Bee</th>
+                <th>Index Termin Bee</th>
+                <th>Index Cabang Bee</th>
+                <th>Index Gudang Bee</th>
                 <th>Edit</th>
             </tr>
         </thead>

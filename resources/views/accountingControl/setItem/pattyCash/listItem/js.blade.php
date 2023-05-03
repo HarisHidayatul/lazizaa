@@ -91,6 +91,12 @@
                         dataTable += '</td>';
 
                         dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.listPattyCash[i].kodeBeeCloud;
+                        dataTable += '" name="kodeBeeCloudEdit">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
                         dataTable += '<div class="form-group">';
                         dataTable += '<select class="form-control" name="dropDownJenisEdit">';
                         dataTable += jenisDropdown;
@@ -134,13 +140,15 @@
             var item = document.getElementsByName('inputEdit')[index].value;
             var idSatuan = document.getElementsByName('dropDownEdit')[index].value;
             var idJenis = document.getElementsByName('dropDownJenisEdit')[index].value;
+            var kodeBeeCloud = document.getElementsByName('kodeBeeCloudEdit')[index].value;
             $.ajax({
                 url: "{{ url('pattyCash/update/item') }}" + "/" + idPattyCash,
                 type: 'get',
                 data: {
                     Item: item,
                     idSatuan: idSatuan,
-                    idJenis: idJenis
+                    idJenis: idJenis,
+                    kodeBeeCloud: kodeBeeCloud
                 },
                 success: function(response) {
                     getListAllItem();
