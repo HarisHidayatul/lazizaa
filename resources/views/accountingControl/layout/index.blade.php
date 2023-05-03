@@ -143,7 +143,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('accounting/robot/pembayaran') }}" class="nav-link" id="pembayaranRobotSubMenu">
+                                <a href="#" class="nav-link" id="pembayaranRobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Pembayaran</p>
                                 </a>
