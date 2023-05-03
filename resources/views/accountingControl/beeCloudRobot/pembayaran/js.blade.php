@@ -3,7 +3,7 @@
 @section('robotjs')
     <script>
         $(document).ready(function() {
-            document.getElementById("pembelianRobotSubMenu").classList.add("active");
+            document.getElementById("pembayaranRobotSubMenu").classList.add("active");
         })
         $(document).ready(function() {
             // membuat objek Date untuk tanggal hari ini
@@ -31,14 +31,38 @@
 
             getAllOutlet();
         })
-
+        function getAllOutlet() {
+            $.ajax({
+                url: "{{ url('pattyCash/outlet/show') }}",
+                type: 'get',
+                success: function(response) {
+                    var obj = JSON.parse(JSON.stringify(response));
+                    var listAllOutlet = "";
+                    // var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
+                    var imgPending = "{{ url('img/icon/pending.png') }}";
+                    console.log(obj);
+                    listAllOutlet += '<option value=0>Semua</option>';
+                    for (var i = 0; i < obj.Outlet.length; i++) {
+                        listAllOutlet += '<option value=';
+                        listAllOutlet += obj.Outlet[i].id;
+                        listAllOutlet += '>';
+                        listAllOutlet += obj.Outlet[i].namaOutlet;
+                        listAllOutlet += '</option>';
+                    }
+                    $('#selOutlet').empty().append(listAllOutlet);
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
         function getListAllFilter() {
             var idOutlet = document.getElementById('selOutlet').value;
             var startDate = document.getElementById('startDate').value;
             var stopDate = document.getElementById('stopDate').value;
 
             $.ajax({
-                url: "{{ url('robot/pembelian/show/all') }}",
+                url: "{{ url('robot/pembayaran/show/all') }}",
                 type: 'get',
                 data: {
                     idOutlet: idOutlet,
@@ -48,7 +72,7 @@
                 success: function(response) {
                     var objAllData = JSON.parse(JSON.stringify(response));
                     var historyAll = "";
-                    var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
+                    // var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
                     var imgPending = "{{ url('img/icon/pending.png') }}";
                     var selectFilter = document.getElementById('selFilter').value;
                     console.log(objAllData);
@@ -219,13 +243,13 @@
             })
         }
 
-        function deleteVerifikasi(idRobotPembelianStatus) {
+        function deleteVerifikasi(idRobotPembayaranStatus) {
             $.ajax({
-                url: "{{ url('robot/pembelian/delete') }}",
+                url: "{{ url('robot/pembayaran/delete') }}",
                 type: 'delete',
                 data: {
                     "_token": "{{ csrf_token() }}",
-                    idRobotPembelianStatus: idRobotPembelianStatus
+                    idRobotPembayaranStatus: idRobotPembayaranStatus
                 },
                 success: function(response) {
                     getListAllFilter();
@@ -238,7 +262,7 @@
 
         function sendVerifikasi(idPattyHarian) {
             $.ajax({
-                url: "{{ url('robot/pembelian/create') }}",
+                url: "{{ url('robot/pembayaran/create') }}",
                 type: 'post',
                 data: {
                     "_token": "{{ csrf_token() }}",
@@ -247,32 +271,6 @@
                 },
                 success: function(response) {
                     getListAllFilter();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                }
-            })
-        }
-
-        function getAllOutlet() {
-            $.ajax({
-                url: "{{ url('pattyCash/outlet/show') }}",
-                type: 'get',
-                success: function(response) {
-                    var obj = JSON.parse(JSON.stringify(response));
-                    var listAllOutlet = "";
-                    var imgLaporanPembelian = "{{ url('img/dashboard/laporanPembelian.png') }}";
-                    var imgPending = "{{ url('img/icon/pending.png') }}";
-                    console.log(obj);
-                    listAllOutlet += '<option value=0>Semua</option>';
-                    for (var i = 0; i < obj.Outlet.length; i++) {
-                        listAllOutlet += '<option value=';
-                        listAllOutlet += obj.Outlet[i].id;
-                        listAllOutlet += '>';
-                        listAllOutlet += obj.Outlet[i].namaOutlet;
-                        listAllOutlet += '</option>';
-                    }
-                    $('#selOutlet').empty().append(listAllOutlet);
                 },
                 error: function(req, err) {
                     console.log(err);

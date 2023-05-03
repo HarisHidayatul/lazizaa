@@ -22,6 +22,10 @@ class pattyCashHarian extends Model
         return $this->hasMany(robot_pembelian_status::class,'idPattyCashHarian','id');
     }
 
+    public function robotPembayaranStatuss(){
+        return $this->hasMany(robot_pembayaran_status::class,'idPattyCashHarian','id');
+    }
+
     public function listItemPattyCashs(){
         return $this->belongsToMany(listItemPattyCash::class,pattyCashFill::class,'idPattyCash','idListItem')->withPivot('id','idPerevisi','quantity','quantityRevisi','total','totalRevisi','idPengisi','idRevQuantity','idRevTotal');
     }

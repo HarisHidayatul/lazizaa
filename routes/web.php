@@ -291,8 +291,15 @@ Route::get('robot/pembelian/show/all',[robotController::class,'showPembelian']);
 Route::post('robot/pembelian/create',[robotController::class,'createRobotPembelian']);
 Route::delete('robot/pembelian/delete',[robotController::class,'deleteRobotPembelian']);
 
+Route::get('robot/pembayaran/show/all',[robotController::class,'showPembayaran']);
+Route::post('robot/pembayaran/create',[robotController::class,'createRobotPembayaran']);
+Route::delete('robot/pembayaran/delete',[robotController::class,'deleteRobotPembayaran']);
+
 Route::get('robot/api/pembelian/show',[robotController::class,'showRobotPembelian']);
 Route::get('robot/api/pembelian/done/{id}',[robotController::class,'doneRobotPembelian']);
+
+Route::get('robot/api/pembayaran/show',[robotController::class,'showRobotPembayaran']);
+Route::get('robot/api/pembayaran/done/{id}',[robotController::class,'doneRobotPembayaran']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
@@ -423,6 +430,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/robot/pembelian',function(){
         return view('accountingControl.beeCloudRobot.pembelian.index');
+    });
+
+    Route::get('accounting/robot/pembayaran',function(){
+        return view('accountingControl.beeCloudRobot.pembayaran.index');
     });
 
     Route::get('accounting/pattyCash', function () {
