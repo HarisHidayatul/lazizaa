@@ -128,6 +128,7 @@
             headOutlet += '<tr>';
             headOutlet += '<td></td>';
             headOutlet += '<td></td>';
+            headOutlet += '<td></td>';
 
             headDate += '<tr>';
             headDate += '<td>Kode Akun</td>';
@@ -135,6 +136,7 @@
             headDate += '<td>Satuan</td>';
 
             headMonth += '<tr>';
+            headMonth += '<td></td>';
             headMonth += '<td></td>';
             headMonth += '<td></td>';
 
