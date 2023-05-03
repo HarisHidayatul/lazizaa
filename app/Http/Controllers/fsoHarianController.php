@@ -620,7 +620,8 @@ class fsoHarianController extends Controller
             array_push($dataItemSo, (object)[
                 'id' => $eachItemSO->id,
                 'Item' => $eachItemSO->Item,
-                'Satuan' => $eachItemSO->satuans->Satuan
+                'Satuan' => $eachItemSO->satuans->Satuan,
+                'kodeAkun' => $eachItemSO->kode_akun
             ]);
         }
 

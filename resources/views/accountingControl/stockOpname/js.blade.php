@@ -67,13 +67,17 @@
                         arrayItem.push([
                             obj.dataItemSO[i].id,
                             obj.dataItemSO[i].Item,
-                            obj.dataItemSO[i].Satuan
+                            obj.dataItemSO[i].Satuan,
+                            obj.dataItemSO[i].kodeAkun
                         ]);
                     }
 
                     for (var i = 0; i < arrayItem.length; i++) {
                         //Loop untuk tiap item
                         dataBody += '<tr>';
+                        dataBody += '<td>';
+                        dataBody += arrayItem[i][3];
+                        dataBody += '</td>';
                         dataBody += '<td>';
                         dataBody += arrayItem[i][1];
                         dataBody += '</td>';
@@ -126,6 +130,7 @@
             headOutlet += '<td></td>';
 
             headDate += '<tr>';
+            headDate += '<td>Kode Akun</td>';
             headDate += '<td>Nama Item</td>';
             headDate += '<td>Satuan</td>';
 

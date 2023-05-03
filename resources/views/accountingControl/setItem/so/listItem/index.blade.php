@@ -27,6 +27,7 @@
                 <th>Image</th>
                 <th>Harian</th>
                 <th>Mingguan</th>
+                <th>Kode Akun</th>
                 <th>Submit</th>
             </tr>
         </thead>

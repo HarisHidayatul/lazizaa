@@ -28,6 +28,7 @@ class listItemSO extends Model
         'idKategoriSo',
         'icon',
         'id_bee_cloud_item',
+        'kode_akun',
         'munculMingguan',
         'munculHarian',
         'created_at',

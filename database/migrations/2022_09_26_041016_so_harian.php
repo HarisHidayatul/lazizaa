@@ -143,6 +143,8 @@ return new class extends Migration
 
             $table->integer('id_bee_cloud_item')->unsigned()->default('0');
 
+            $table->string('kode_akun',5)->default('1');
+
             $table->timestamps();
             $table->softDeletes();
         });

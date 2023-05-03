@@ -125,6 +125,12 @@
                         dataTable += '</td>';
 
                         dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.itemSO[i].kodeAkun;
+                        dataTable += '" name="kodeAkun">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' + i +
                             ');">Edit</button>';
 
@@ -152,6 +158,7 @@
             var dropdownEdit = document.getElementsByName('dropDownEdit')[index].value;
             var itemEdit = document.getElementsByName('inputEdit')[index].value;
             var iconEdit = document.getElementsByName('locationEdit')[index].value;
+            var kodeAkun = document.getElementsByName('kodeAkun')[index].value;
             var idItem = listItemSoArray[index];
             var checkBoxMingguan = document.getElementsByName('checkBoxMingguan')[index].checked;
             var checkBoxHarian = document.getElementsByName('checkBoxHarian')[index].checked;
@@ -172,7 +179,8 @@
                     idSatuan: dropdownEdit,
                     icon: iconEdit,
                     munculMingguan: munculMingguan,
-                    munculHarian: munculHarian
+                    munculHarian: munculHarian,
+                    kodeAkun: kodeAkun
                 },
                 success: function(response) {
                     getListAllItem();

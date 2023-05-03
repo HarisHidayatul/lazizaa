@@ -188,7 +188,8 @@ class itemSOController extends Controller
                 'idKategori' => $itemso[$i]['idKategoriSo'],
                 'icon' => $itemso[$i]['icon'],
                 'mingguanItem' => $itemso[$i]['munculMingguan'],
-                'harianItem' => $itemso[$i]['munculHarian']
+                'harianItem' => $itemso[$i]['munculHarian'],
+                'kodeAkun' => $itemso[$i]['kode_akun']
             ]);
         }
         return response()->json([
@@ -276,6 +277,9 @@ class itemSOController extends Controller
         }
         if($request->idKategoriSo != null){
             $listItemSO->idKategoriSo = $request->idKategoriSo;
+        }
+        if($request->kodeAkun != null){
+            $listItemSO->kode_akun = $request->kodeAkun;
         }
         $listItemSO->save();
         // @dd($listItemSO->idKategoriSo);
