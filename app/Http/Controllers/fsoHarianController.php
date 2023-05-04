@@ -610,6 +610,8 @@ class fsoHarianController extends Controller
         $stopDate = $request->stopDate;
         $accessRole = $request->accessRole;
 
+        @dd($accessRole);
+        
         $now = Carbon::now();
         $outletArray = [];
         $allData = [];
