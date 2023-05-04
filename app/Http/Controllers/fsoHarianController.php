@@ -693,8 +693,8 @@ class fsoHarianController extends Controller
                         }
                         array_push($dataSoHarian, (object)[
                             'idItem' => $itemSo->id,
-                            'Item' => $itemSo->Item,
-                            'Satuan' => $itemSo->satuans->Satuan,
+                            // 'Item' => $itemSo->Item,
+                            // 'Satuan' => $itemSo->satuans->Satuan,
                             'quantity' => $quantity,
                             'idRevisi' => $itemSo->pivot->idRevisi
                         ]);
