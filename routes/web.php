@@ -99,7 +99,7 @@ Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRe
 
 Route::get('soHarian/show/revision/all/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevisionDone']);
-Route::get('soHarian/show/history',[fsoHarianController::class, 'showHistory']);//history untuk bulanan
+Route::get('soHarian/show/historyy',[fsoHarianController::class, 'showHistory']);//history untuk bulanan
 Route::get('soHarian/show/history2',[fsoHarianController::class, 'showHistory2']);//history untuk harian
 Route::get('soHarian/show/history3',[fsoHarianController::class, 'showHistory3']);
 
