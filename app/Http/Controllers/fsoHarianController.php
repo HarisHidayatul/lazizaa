@@ -610,8 +610,8 @@ class fsoHarianController extends Controller
         $stopDate = $request->stopDate;
         $accessRole = $request->accessRole;
 
-        @dd($accessRole);
-        
+        // @dd($accessRole);
+
         $now = Carbon::now();
         $outletArray = [];
         $allData = [];
@@ -635,7 +635,8 @@ class fsoHarianController extends Controller
         } else {
             array_push($outletArray, $idOutlet);
         }
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['fsoharians.listItemSOs.satuans'])->get();
+        
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC');
 
         if ($countData == 'today') {
             $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
@@ -652,6 +653,8 @@ class fsoHarianController extends Controller
         } else if ($countData == 'all') {
             $allDate = $tanggalAll;
         }
+
+        $allDate = $allDate->with(['fsoharians.listItemSOs.satuans'])->get();
 
         // @dd($allDate[2]->fsoharians);
 
