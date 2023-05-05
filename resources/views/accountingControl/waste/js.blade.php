@@ -116,5 +116,63 @@
                 }
             })
         }
+
+        function downloadCSV() {
+            var filename = 'Data Waste ';
+            filename += document.getElementById('statusInputTabel').value;
+            filename += ' ';
+            filename += document.getElementById('startDate').value;
+            filename += ' Sampai ';
+            filename += document.getElementById('stopDate').value;
+            downloadCSV2(filename);
+        }
+
+        function downloadCSV2(filename) {
+            // Mendapatkan referensi ke tabel
+            var table = document.getElementById("statusInputTabel");
+
+            // Membuat variabel untuk menyimpan data
+            var data = [];
+
+            // Mendapatkan header tabel
+            var header = [];
+            var headerRow = table.rows[0].cells;
+            for (var i = 0; i < headerRow.length; i++) {
+                var cell = headerRow[i];
+                var colspan = cell.getAttribute("colspan");
+                colspan = colspan ? parseInt(colspan) : 1;
+                for (var j = 0; j < colspan; j++) {
+                    header.push(cell.textContent.trim());
+                }
+            }
+            data.push(header);
+
+            // Mendapatkan data dari setiap baris tabel
+            for (var i = 1; i < table.rows.length; i++) {
+                var row = [];
+                for (var j = 0; j < table.rows[i].cells.length; j++) {
+                    var cell = table.rows[i].cells[j];
+                    var colspan = cell.getAttribute("colspan");
+                    colspan = colspan ? parseInt(colspan) : 1;
+                    for (var k = 0; k < colspan; k++) {
+                        row.push(cell.textContent.trim());
+                    }
+                }
+                data.push(row);
+            }
+
+            // Membuat tautan untuk mengunduh CSV
+            var csvContent = "data:text/csv;charset=utf-8,";
+            data.forEach(function(rowArray) {
+                var row = rowArray.join(",");
+                csvContent += row + "\r\n";
+            });
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "tabel.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
     </script>
 @endsection
