@@ -165,6 +165,7 @@ class commonController extends Controller
                 'indexTerminBee' => $outlet[$i]->indexTerminBee,
                 'indexCabangBee' => $outlet[$i]->indexCabangBee,
                 'indexGudangBee' => $outlet[$i]->indexGudangBee,
+                'indexKasBee' => $outlet[$i]->indexKasBee,
                 'keywoardBee' => $outlet[$i]->keywoardBee
             ]);
         }
@@ -283,6 +284,7 @@ class commonController extends Controller
             'indexTerminBee' => $request->indexTerminBee,
             'indexCabangBee' => $request->indexCabangBee,
             'indexGudangBee' => $request->indexGudangBee,
+            'indexKasBee' => $request->indexKasBee,
             'keywoardBee' => $request->keywoardBee
         ]);
     }

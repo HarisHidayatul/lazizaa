@@ -30,12 +30,14 @@
             var idJenis = idJenisPattyCash[index];
             var namaJenis = document.getElementsByName('inputEdit')[index].value;
             var idKategori = document.getElementsByName('dropDownEdit')[index].value;
+            var kodeAkun = document.getElementsByName('kodeAkun')[index].value;
             $.ajax({
                 url: "{{ url('pattyCash/update/jenis') }}" + "/" + idJenis,
                 type: 'get',
                 data: {
                     namaJenis: namaJenis,
-                    idKategori: idKategori
+                    idKategori: idKategori,
+                    kodeAkun: kodeAkun
                 },
                 success: function(response) {
                     getAllJenis();
@@ -78,6 +80,12 @@
                         dataTable += '<input type="text" class="form-control" value="';
                         dataTable += obj.dataJenis[i].namaJenis;
                         dataTable += '" name="inputEdit">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataJenis[i].kodeAkun;
+                        dataTable += '" name="kodeAkun">';
                         dataTable += '</td>';
 
                         dataTable += '<td>';

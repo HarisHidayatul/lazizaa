@@ -37,6 +37,7 @@
                 <th>Index Termin Bee</th>
                 <th>Index Cabang Bee</th>
                 <th>Index Gudang Bee</th>
+                <th>Index Kas Bee</th>
                 <th>Edit</th>
             </tr>
         </thead>

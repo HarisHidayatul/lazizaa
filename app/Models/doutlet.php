@@ -60,6 +60,7 @@ class doutlet extends Model
         'indexTerminBee',
         'indexCabangBee',
         'indexGudangBee',
+        'indexKasBee',
         'keywoardBee',
         'created_at',
         'updated_at',

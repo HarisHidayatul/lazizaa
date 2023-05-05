@@ -20,6 +20,7 @@
         <tr>
             <th>ID</th>
             <th>Nama Jenis</th>
+            <th>Kode Akun</th>
             <th>Kategori</th>
             <th>Edit</th>
         </tr>

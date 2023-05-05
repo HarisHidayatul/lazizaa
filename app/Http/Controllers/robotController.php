@@ -85,7 +85,11 @@ class robotController extends Controller
         $indexCabang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexCabangBee;
         $gudang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->keywoardBee;
         $indexGudang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexGudangBee;
-        $notes = '';
+        $indexKas = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexKasBee;
+        $keterangan = '';
+        $keterangan .= $robotPembayaranStatuss->pattyCashHarians->dOutlets['Nama Store'];
+        $keterangan .= ' pembayaran kas ';
+        $keterangan .= $tanggalDDmmYY;
 
         foreach($listPattys as $listPatty){
             $kategoriPattyCashs = $listPatty->jenis_patty_cashs->kategori_patty_cashs->namaKategori;
@@ -101,26 +105,24 @@ class robotController extends Controller
                 continue;
             }
             $hargaSatuan = $total/$qty;
-            if(($kategoriPattyCashs == 'Beban Operasional')||($kategoriPattyCashs == 'Beban Penjualan')){
+            if(($kategoriPattyCashs == 'Beban Operasional')||($kategoriPattyCashs == 'Beban Penjualan')||($kategoriPattyCashs == 'Beban Gaji')||($kategoriPattyCashs == 'Beban Marketing')){
+                $notes = '';
+                $notes .= $listPatty->Item;
+                $notes .= ' ';
+                $notes .= $qty;
+                $notes .= ' ';
+                $notes .= $listPatty->satuans->Satuan;
                 array_push($arrayPatty,(object)[
-                    'idBeeCloud' => $listPatty->kodeBeeCloud,
+                    'kodeAkun' => $listPatty->jenis_patty_cashs->kodeAkun,
                     'namaItem' => $listPatty->Item,
                     'qty' => $qty,
                     'total' => $total,
                     'satuan' => $listPatty->satuans->Satuan,
                     'hargaSatuan' => $hargaSatuan,
                     'gudang'    => $gudang,
-                    'indexGudang' => $indexGudang
+                    'indexGudang' => $indexGudang,
+                    'Notes' => $notes
                 ]);
-                $notes .= $listPatty->Item;
-                $notes .= '  ';
-                $notes .= $qty;
-                $notes .= ' ';
-                $notes .= $listPatty->satuans->Satuan;
-                $notes .= '  ';
-                $notes .= 'Rp ';
-                $notes .= $total;
-                $notes .= '        ,         ';
             }
         }
         // @dd($tanggal);
@@ -130,9 +132,10 @@ class robotController extends Controller
             'indexTermin' => $indexTermin,
             'Cabang' => $cabang,
             'indexCabang' => $indexCabang,
+            'indexKas' => $indexKas,
             'idRobotPembayaran' => $robotPembayaranStatuss->id,
             'Data'  => $arrayPatty,
-            'Notes' => $notes
+            'Keterangan' => $keterangan
         ]);
     }
 
@@ -295,7 +298,7 @@ class robotController extends Controller
                         if($totalPembayaran == 0){
                             continue;
                         }
-                        if(($kategoriPattyCashs == 'Beban Operasional')||($kategoriPattyCashs == 'Beban Penjualan')){
+                        if(($kategoriPattyCashs == 'Beban Operasional')||($kategoriPattyCashs == 'Beban Penjualan')||($kategoriPattyCashs == 'Beban Gaji')||($kategoriPattyCashs == 'Beban Marketing')){
                             array_push($pattyCashSesi, (object)[
                                 'item' => $PembayaranList->Item,
                                 'jenisItem' => $PembayaranList->jenis_patty_cashs->namaJenis,
