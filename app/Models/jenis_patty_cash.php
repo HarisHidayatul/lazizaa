@@ -20,6 +20,7 @@ class jenis_patty_cash extends Model
 
     protected $fillable = [
         'namaJenis',
+        'kodeAkun',
         'idKategori',
         'created_at',
         'updated_at',

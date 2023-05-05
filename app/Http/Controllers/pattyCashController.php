@@ -771,6 +771,7 @@ class pattyCashController extends Controller
                 'id' => $dataJenis[$i]->id,
                 'namaJenis' => $dataJenis[$i]->namaJenis,
                 'idKategori' => $dataJenis[$i]->kategori_patty_cashs->id,
+                'kodeAkun' => $dataJenis[$i]->kodeAkun,
                 'kategori' => $dataJenis[$i]->kategori_patty_cashs->namaKategori
             ]);
         }
@@ -1222,10 +1223,20 @@ class pattyCashController extends Controller
 
     public function updateJenis(Request $request, $id){
         $jenis_patty_cash = jenis_patty_cash::find($id);
-        $jenis_patty_cash->update([
-            'namaJenis' => $request->namaJenis,
-            'idKategori' => $request->idKategori
-        ]);
+        if($request->namaJenis != null){
+            $jenis_patty_cash->namaJenis = $request->namaJenis;
+        }
+        if($request->idKategori != null){
+            $jenis_patty_cash->idKategori = $request->idKategori;
+        }
+        if($request->kodeAkun != null){
+            $jenis_patty_cash->kodeAkun = $request->kodeAkun;
+        }
+        $jenis_patty_cash->save();
+        // $jenis_patty_cash->update([
+        //     'namaJenis' => $request->namaJenis,
+        //     'idKategori' => $request->idKategori
+        // ]);
     }
     public function updateKategori(Request $request, $id){
         $kategori_patty_cash = kategori_patty_cash::find($id);

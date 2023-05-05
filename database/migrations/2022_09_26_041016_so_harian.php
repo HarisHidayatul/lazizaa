@@ -80,6 +80,7 @@ return new class extends Migration
             $table->unsignedInteger('indexTerminBee')->default('0');
             $table->unsignedInteger('indexGudangBee')->default('0');
             $table->unsignedInteger('indexCabangBee')->default('0');
+            $table->unsignedInteger('indexKasBee')->default('0');
 
             $table->timestamps();
             $table->softDeletes();

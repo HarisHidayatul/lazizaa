@@ -17,6 +17,7 @@
             var indexTerminBee = document.getElementsByName('indexTerminBee')[index].value;
             var indexCabangBee = document.getElementsByName('indexCabangBee')[index].value;
             var indexGudangBee = document.getElementsByName('indexGudangBee')[index].value;
+            var indexKasBee = document.getElementsByName('indexKasBee')[index].value;
             var keywoardBee = document.getElementsByName('keywoardBee')[index].value;
 
             $.ajax({
@@ -29,6 +30,7 @@
                     indexTerminBee: indexTerminBee,
                     indexGudangBee: indexGudangBee,
                     indexCabangBee: indexCabangBee,
+                    indexKasBee: indexKasBee,
                     keywoardBee: keywoardBee
                 },
                 success: function(response) {
@@ -135,6 +137,12 @@
                         dataTable += '<input type="number" class="form-control" value="';
                         dataTable += obj.dataItem[i].indexGudangBee;
                         dataTable += '" name="indexGudangBee">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<input type="number" class="form-control" value="';
+                        dataTable += obj.dataItem[i].indexKasBee;
+                        dataTable += '" name="indexKasBee">';
                         dataTable += '</td>';
 
                         

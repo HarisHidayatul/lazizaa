@@ -149,6 +149,11 @@
                                         .item;
                                     historyAll += '</td>';
 
+                                    historyAll += '<td>';
+                                    historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
+                                        .jenisItem;
+                                    historyAll += '</td>';
+
                                     historyAll += '<td ';
                                     if (objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
                                         .idRevQty == '2') {

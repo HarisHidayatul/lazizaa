@@ -28,6 +28,7 @@
                 <td>Outlet</td>
                 <td>Sesi</td>
                 <td>Item</td>
+                <td>Jenis</td>
                 <td>Qty</td>
                 <td>Satuan</td>
                 <td>Harga Satuan</td>

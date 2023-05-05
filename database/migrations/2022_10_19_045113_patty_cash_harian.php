@@ -29,6 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idKategori');
             $table->foreign('idKategori')->references('id')->on('kategori_patty_cash');
 
+            $table->string('kodeAkun')->nullable(true)->change();
+
             $table->timestamps();
             $table->softDeletes();
         });
