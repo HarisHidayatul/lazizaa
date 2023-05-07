@@ -50,6 +50,9 @@ class reimburseController extends Controller
 
     public function storeDataReimburseSales(Request $request)
     {
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
         $idOutlet = $request->idOutlet;
         $tanggal = $request->tanggal;
         $total = $request->total;
@@ -67,37 +70,40 @@ class reimburseController extends Controller
             $tanggalAll = $tanggalAllFind->first();
         }
 
+        $compareTanggalReimburse = strtotime($tanggal);
+        if ($compareTanggalReimburse > $compareTanggalBatas) {
 
-        //cari sales harian reimburse
-        $salesHarianFind = sales_harian_reimburse::where('idOutlet', '=', $idOutlet)->get();
-        if ($salesHarianFind->count() == 0) {
-            $salesHarianReimburse->idOutlet = $idOutlet;
-            $salesHarianReimburse->idTanggal = $tanggalAll->id;
-            $salesHarianReimburse->save();
-        } else {
-            $salesHarianFind = $salesHarianFind->where('idTanggal', '=', $tanggalAll->id);
+            //cari sales harian reimburse
+            $salesHarianFind = sales_harian_reimburse::where('idOutlet', '=', $idOutlet)->get();
             if ($salesHarianFind->count() == 0) {
                 $salesHarianReimburse->idOutlet = $idOutlet;
                 $salesHarianReimburse->idTanggal = $tanggalAll->id;
                 $salesHarianReimburse->save();
             } else {
-                $salesHarianReimburse = $salesHarianFind->first();
+                $salesHarianFind = $salesHarianFind->where('idTanggal', '=', $tanggalAll->id);
+                if ($salesHarianFind->count() == 0) {
+                    $salesHarianReimburse->idOutlet = $idOutlet;
+                    $salesHarianReimburse->idTanggal = $tanggalAll->id;
+                    $salesHarianReimburse->save();
+                } else {
+                    $salesHarianReimburse = $salesHarianFind->first();
+                }
             }
-        }
 
-        $salesReimburseFind = $salesHarianReimburse->sales_reimburses;
-        if ($salesReimburseFind == null) {
-            $salesReimburse->idSalesHarianReimburse = $salesHarianReimburse->id;
-            $salesReimburse->total = $total;
-            $salesReimburse->idPengisi = $idPengisi;
-            $salesReimburse->idPerevisi = $idPengisi;
-            $salesReimburse->save();
-        } else {
-            $salesReimburse = $salesReimburseFind;
-            $salesReimburse->totalRevisi = $total;
-            $salesReimburse->idPerevisi = $idPengisi;
-            $salesReimburse->idRevisiTotal = '2';
-            $salesReimburse->save();
+            $salesReimburseFind = $salesHarianReimburse->sales_reimburses;
+            if ($salesReimburseFind == null) {
+                $salesReimburse->idSalesHarianReimburse = $salesHarianReimburse->id;
+                $salesReimburse->total = $total;
+                $salesReimburse->idPengisi = $idPengisi;
+                $salesReimburse->idPerevisi = $idPengisi;
+                $salesReimburse->save();
+            } else {
+                $salesReimburse = $salesReimburseFind;
+                $salesReimburse->totalRevisi = $total;
+                $salesReimburse->idPerevisi = $idPengisi;
+                $salesReimburse->idRevisiTotal = '2';
+                $salesReimburse->save();
+            }
         }
         // @dd($salesReimburse);
         return response()->json([
@@ -154,6 +160,9 @@ class reimburseController extends Controller
         //idPengirim (default 1), idBank, namaRekening, nomorRekening, pesan, idRevisi (default 2)
         //imgTransfer (default null), qty
 
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
         //searchTanggal
         $tanggalAll = tanggalAll::where('Tanggal', '=', $request->tanggal)->first();
         if ($tanggalAll == null) {
@@ -162,24 +171,28 @@ class reimburseController extends Controller
             ]);
         }
         $reimburse = $tanggalAll->reimburses->where('idOutlet', '=', $request->idOutlet)->first();
-        if ($reimburse == null) {
-            $reimburse = reimburse::create([
-                'idTanggal' => $tanggalAll->id,
-                'idOutlet' => $request->idOutlet,
-                'saldoTerakhir' => '0'
+
+        $compareTanggalReimburse = strtotime($request->tanggal);
+        if ($compareTanggalReimburse > $compareTanggalBatas) {
+            if ($reimburse == null) {
+                $reimburse = reimburse::create([
+                    'idTanggal' => $tanggalAll->id,
+                    'idOutlet' => $request->idOutlet,
+                    'saldoTerakhir' => '0'
+                ]);
+            }
+
+            $penerimaReimburse = penerimaReimburse::create([
+                'idTujuan' => $idTujuan,
+                'idPengirim' => '1', //default 1
+                'idReimburse' => $reimburse->id,
+                'pesan' => $request->pesan,
+                'idRevisi' => '2',
+                'imgTransfer' => 'none',
+                'qty' => $request->qty,
+                'idPengisi' => $request->idPengisi
             ]);
         }
-
-        $penerimaReimburse = penerimaReimburse::create([
-            'idTujuan' => $idTujuan,
-            'idPengirim' => '1', //default 1
-            'idReimburse' => $reimburse->id,
-            'pesan' => $request->pesan,
-            'idRevisi' => '2',
-            'imgTransfer' => 'none',
-            'qty' => $request->qty,
-            'idPengisi' => $request->idPengisi
-        ]);
         echo $penerimaReimburse->id;
         // @dd($reimburse);
     }
@@ -457,11 +470,19 @@ class reimburseController extends Controller
 
     public function updateSalesReimburse($idDetail, Request $request)
     {
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
         $sales_reimburse = sales_reimburse::find($idDetail);
-        $sales_reimburse->totalRevisi = $request->total;
-        $sales_reimburse->idRevisiTotal = '2';
-        $sales_reimburse->idPerevisi = $request->idPengisi;
-        $sales_reimburse->save();
+        $tanggalReimburse = $sales_reimburse->salesHarianReimburses->tanggalAlls->Tanggal;
+        $compareTanggalReimburse = strtotime($tanggalReimburse);
+
+        if ($compareTanggalReimburse > $compareTanggalBatas) {
+            $sales_reimburse->totalRevisi = $request->total;
+            $sales_reimburse->idRevisiTotal = '2';
+            $sales_reimburse->idPerevisi = $request->idPengisi;
+            $sales_reimburse->save();
+        }
     }
 
     public function updateAllHistoryOutlet()
@@ -507,7 +528,7 @@ class reimburseController extends Controller
                 break;
                 // $reimburseAll = $allDate->reimburses;
             }
-            
+
             $reimburseAll = $reimburseAll->where('idOutlet', '=', $idOutlet);
             if (count($reimburseAll) == 0) {
                 reimburse::create([
@@ -640,9 +661,17 @@ class reimburseController extends Controller
     }
     public function deleteRevisiTerima($id)
     {
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
         $penerimaReimburse = penerimaReimburse::find($id);
-        $imagePath = $penerimaReimburse->imgTransfer;
-        $penerimaReimburse->delete();
-        Storage::delete($imagePath);
+        $tanggalReimburse = $penerimaReimburse->tanggalAlls->Tanggal;
+        $compareTanggalReimburse = strtotime($tanggalReimburse);
+
+        if ($compareTanggalReimburse > $compareTanggalBatas) {
+            $imagePath = $penerimaReimburse->imgTransfer;
+            $penerimaReimburse->delete();
+            Storage::delete($imagePath);
+        }
     }
 }

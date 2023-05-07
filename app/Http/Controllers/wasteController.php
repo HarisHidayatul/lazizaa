@@ -48,18 +48,26 @@ class wasteController extends Controller
     public function store(Request $request)
     {
         //
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
+        $tanggalWaste = wasteHarian::find($request->idWaste)->tanggalAlls->Tanggal;
+        $compareTanggalWaste = strtotime($tanggalWaste);
+
         $data = wasteFill::where('idWaste', '=', $request->idWaste)
             ->where('idListItem', '=', $request->idListItem)->first();
         if ($data == null) {
-            $dataArray = [
-                'idWaste' => $request->idWaste,
-                'idListItem' => $request->idListItem,
-                'quantity' => $request->quantity,
-                'total' => $request->total,
-                'idPengisi' => $request->idPengisi,
-                'idPerevisi' => $request->idPengisi
-            ];
-            wasteFill::create($dataArray);
+            if ($compareTanggalWaste > $compareTanggalBatas) {
+                $dataArray = [
+                    'idWaste' => $request->idWaste,
+                    'idListItem' => $request->idListItem,
+                    'quantity' => $request->quantity,
+                    'total' => $request->total,
+                    'idPengisi' => $request->idPengisi,
+                    'idPerevisi' => $request->idPengisi
+                ];
+                wasteFill::create($dataArray);
+            }
             echo 1;
         } else {
             echo 0;
@@ -405,7 +413,7 @@ class wasteController extends Controller
         }
         // @dd($listWaste[0]->satuans);
         for ($i = 0; $i < $listWaste->count(); $i++) {
-            try{
+            try {
                 $outlet = $listWaste[$i]->doutlets;
                 $brand = $listWaste[$i]->dbrands;
                 array_push($arraylistWaste, (object)[
@@ -418,8 +426,7 @@ class wasteController extends Controller
                     'idJenis' => $listWaste[$i]->idJenisBahan,
                     'idSatuan' => $listWaste[$i]->idSatuan
                 ]);
-            }catch(Exception $e){
-                
+            } catch (Exception $e) {
             }
         }
         return response()->json([
@@ -896,19 +903,19 @@ class wasteController extends Controller
                     // @dd($wasteHarians);
                     $wasteHarians = $wasteHarians->where('idOutlet', '=', $outletLoop);
                     $wasteArraySesi = [];
-                    foreach($wasteHarians as $wasteHarian){
+                    foreach ($wasteHarians as $wasteHarian) {
                         $listWastes = $wasteHarian->listItemWastes;
                         // @dd($listWastes);
                         $listWasteArray = [];
-                        foreach($listWastes as $listWaste){
+                        foreach ($listWastes as $listWaste) {
                             // @dd($listWaste);
                             $quantity = $listWaste->pivot->quantity;
                             $idRevQuantity = $listWaste->pivot->idRevQuantity;
                             $pengisi = dUser::find($listWaste->pivot->idPengisi)['Nama Lengkap'];
-                            if($idRevQuantity == '2'){
+                            if ($idRevQuantity == '2') {
                                 $quantity = $listWaste->pivot->quantityRevisi;
                             }
-                            array_push($listWasteArray,(object)[
+                            array_push($listWasteArray, (object)[
                                 'item' => $listWaste->Item,
                                 'satuan' => $listWaste->satuans->Satuan,
                                 'quantity' => $quantity,
@@ -916,19 +923,19 @@ class wasteController extends Controller
                                 'idRev' => $idRevQuantity
                             ]);
                         }
-                        array_push($wasteArraySesi,(object)[
+                        array_push($wasteArraySesi, (object)[
                             'sesi' => $wasteHarian->idSesi,
                             'waste' => $listWasteArray
                         ]);
                     }
-                    array_push($tanggalDataArray,(object)[
+                    array_push($tanggalDataArray, (object)[
                         'tanggal' => $tanggalLoop->Tanggal,
                         'waste' => $wasteArraySesi
                     ]);
                 }
             }
             $namaOutlet = doutlet::find($outletLoop)['Nama Store'];
-            array_push($allData,(object)[
+            array_push($allData, (object)[
                 'outlet' => $namaOutlet,
                 'data' => $tanggalDataArray
             ]);
@@ -951,11 +958,19 @@ class wasteController extends Controller
 
     public function editQty($id, Request $request)
     {
-        wasteFill::find($id)->update([
-            'idPengisi' => $request->idPengisi,
-            'quantityRevisi' => $request->quantityRevisi,
-            'idRevQuantity'  => '2'
-        ]);
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
+        $tanggalWaste = wasteFill::find($id)->wasteHarians->tanggalAlls->Tanggal;
+        $compareTanggalWaste = strtotime($tanggalWaste);
+
+        if ($compareTanggalWaste > $compareTanggalBatas) {
+            wasteFill::find($id)->update([
+                'idPengisi' => $request->idPengisi,
+                'quantityRevisi' => $request->quantityRevisi,
+                'idRevQuantity'  => '2'
+            ]);
+        }
     }
     public function editQtyRev(Request $request)
     {

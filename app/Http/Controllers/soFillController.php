@@ -38,19 +38,26 @@ class soFillController extends Controller
     public function store(Request $request)
     {
         //
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
         $dataSend = $request->dataSend;
-        if($dataSend != null){
+        if ($dataSend != null) {
             $idSo = $request->idSo;
-            $idPengisi = fsoHarian::find($idSo)->idPengisi;
-            for($i =0;$i<count($dataSend);$i++){
-                $dataArray = [
-                    'idSo' => $idSo,
-                    'idItemSo' => $dataSend[$i][0],
-                    'quantity' => $dataSend[$i][1],
-                    'idPerevisi' =>  $idPengisi,
-                    'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-                ];
-                soFill::create($dataArray);
+            $soHarian = fsoHarian::find($idSo);
+            $tanggalSo = $soHarian->tanggalAlls->Tanggal;
+            $idPengisi = $soHarian->idPengisi;
+            $compareTanggalSo = strtotime($tanggalSo);
+            if ($compareTanggalSo > $compareTanggalBatas) {
+                for ($i = 0; $i < count($dataSend); $i++) {
+                    $dataArray = [
+                        'idSo' => $idSo,
+                        'idItemSo' => $dataSend[$i][0],
+                        'quantity' => $dataSend[$i][1],
+                        'idPerevisi' =>  $idPengisi,
+                        'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                    ];
+                    soFill::create($dataArray);
+                }
             }
         }
         echo 'berhasil';

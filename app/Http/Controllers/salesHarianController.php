@@ -49,36 +49,42 @@ class salesHarianController extends Controller
     public function store(Request $request)
     {
         //
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
         $arraySend = $request->dataSend;
         // @dd($arraySend);
         foreach ($arraySend as $dataSend) {
             $data = salesFill::where('idSales', '=', $dataSend['idSales'])
                 ->where('idListSales', '=', $dataSend['idListSales'])->first();
-            if(is_numeric($dataSend['total'])){
-                if ($data == null) {
-                    $dataArray = [
-                        'idSales' => $dataSend['idSales'],
-                        'idListSales' => $dataSend['idListSales'],
-                        'total' => $dataSend['total'],
-                        'idPengisi' => $dataSend['idPengisi'],
-                        'idPerevisi' => $dataSend['idPengisi']
-                    ];
-                    salesFill::create($dataArray);
-                } else {
-                    $tempTotal = $data->total;
-                    if($data->idRevisiTotal == '2'){
-                        $data->update([
+            $tanggalSales = salesharian::find($dataSend['idSales'])->tanggalAlls->Tanggal;
+            $compareTanggalSales = strtotime($tanggalSales);
+            if ($compareTanggalSales > $compareTanggalBatas) {
+                if (is_numeric($dataSend['total'])) {
+                    if ($data == null) {
+                        $dataArray = [
+                            'idSales' => $dataSend['idSales'],
+                            'idListSales' => $dataSend['idListSales'],
+                            'total' => $dataSend['total'],
                             'idPengisi' => $dataSend['idPengisi'],
-                            'totalRevisi' => $dataSend['total'],
-                            'idRevisiTotal' => '2'
-                        ]);
-                    }else{
-                        if($tempTotal != $dataSend['total']){
+                            'idPerevisi' => $dataSend['idPengisi']
+                        ];
+                        salesFill::create($dataArray);
+                    } else {
+                        $tempTotal = $data->total;
+                        if ($data->idRevisiTotal == '2') {
                             $data->update([
                                 'idPengisi' => $dataSend['idPengisi'],
                                 'totalRevisi' => $dataSend['total'],
                                 'idRevisiTotal' => '2'
                             ]);
+                        } else {
+                            if ($tempTotal != $dataSend['total']) {
+                                $data->update([
+                                    'idPengisi' => $dataSend['idPengisi'],
+                                    'totalRevisi' => $dataSend['total'],
+                                    'idRevisiTotal' => '2'
+                                ]);
+                            }
                         }
                     }
                 }
@@ -237,7 +243,7 @@ class salesHarianController extends Controller
                     ]);
                 }
                 if ($salesHarianReimburse != null) {
-                    if($salesHarianReimburse->sales_reimburses != null){
+                    if ($salesHarianReimburse->sales_reimburses != null) {
                         $totalTemp = $salesHarianReimburse->sales_reimburses->total;
                         $idRevisiTotal = $salesHarianReimburse->sales_reimburses->idRevisiTotal;
                         if ($idRevisiTotal == '2') {
@@ -305,7 +311,7 @@ class salesHarianController extends Controller
             $revisionDateFound = false;
             // @dd($datasales[0]->listsaless);
             $salesOutlet = [];
-            foreach($datasaless as $datasales){
+            foreach ($datasaless as $datasales) {
                 $salesArray = [];
                 $revisionFound = false;
                 $idSesi = $datasales->idSesi;
@@ -572,7 +578,7 @@ class salesHarianController extends Controller
                 ]);
                 // @dd($salesHarianReimburse);
             }
-            foreach($setoran as $loopSetoran){
+            foreach ($setoran as $loopSetoran) {
                 array_push($setoranArray, (object)[
                     'idRevisi' => $loopSetoran->idRevisi,
                     'qtySetor' => $loopSetoran->qtySetor

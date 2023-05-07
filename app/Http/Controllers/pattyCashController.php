@@ -207,7 +207,7 @@ class pattyCashController extends Controller
                         break;
                     }
                 }
-            }else{
+            } else {
                 $item_insert = listItemPattyCash::find($itemPattyCashArray[$indexIfFoundItem][1]);
                 $item_insert->Item = $csvData[$i][0];
                 $item_insert->idSatuan = $satuanArray[$indexIfFoundSatuan][1];
@@ -245,18 +245,26 @@ class pattyCashController extends Controller
     public function store(Request $request)
     {
         //
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
+        $tanggalPatty = pattyCashHarian::find($request->idPattyCash)->tanggalAlls->Tanggal;
+        $compareTanggalPatty = strtotime($tanggalPatty);
+
         $data = pattyCashFill::where('idPattyCash', '=', $request->idPattyCash)
             ->where('idListItem', '=', $request->idListItem)->first();
         if ($data == null) {
-            $dataArray = [
-                'idPattyCash' => $request->idPattyCash,
-                'idListItem' => $request->idListItem,
-                'quantity' => $request->quantity,
-                'total' => $request->total,
-                'idPengisi' => $request->idPengisi,
-                'idPerevisi' => $request->idPengisi,
-            ];
-            pattyCashFill::create($dataArray);
+            if ($compareTanggalPatty > $compareTanggalBatas) {
+                $dataArray = [
+                    'idPattyCash' => $request->idPattyCash,
+                    'idListItem' => $request->idListItem,
+                    'quantity' => $request->quantity,
+                    'total' => $request->total,
+                    'idPengisi' => $request->idPengisi,
+                    'idPerevisi' => $request->idPengisi,
+                ];
+                pattyCashFill::create($dataArray);
+            }
             echo 1;
         } else {
             echo 0;
@@ -272,14 +280,16 @@ class pattyCashController extends Controller
         ];
         listItemPattyCash::create($dataArray);
     }
-    public function storeJenis(Request $request){
+    public function storeJenis(Request $request)
+    {
         $dataArray = [
             'namaJenis' => $request->namaJenis,
             'idKategori' => $request->idKategori
         ];
         jenis_patty_cash::create($dataArray);
     }
-    public function storeKategori(Request $request){
+    public function storeKategori(Request $request)
+    {
         $dataArray = [
             'namaKategori' => $request->namaKategori
         ];
@@ -666,7 +676,7 @@ class pattyCashController extends Controller
             ]);
         }
         for ($i = 0; $i < $jenis->count(); $i++) {
-            array_push($arrayJenis,(object)[
+            array_push($arrayJenis, (object)[
                 'id' => $jenis[$i]->id,
                 'namaJenis' => $jenis[$i]->namaJenis
             ]);
@@ -760,14 +770,14 @@ class pattyCashController extends Controller
                 'Satuan' => $dataa[$i]['Satuan']
             ]);
         }
-        for($i =0;$i < $dataKategoriSo->count();$i++){
+        for ($i = 0; $i < $dataKategoriSo->count(); $i++) {
             array_push($arrayKategoriSo, (object)[
                 'id' => $dataKategoriSo[$i]->id,
                 'kategori' => $dataKategoriSo[$i]->namaKategori
             ]);
         }
-        for($i=0;$i<$dataJenis->count();$i++){
-            array_push($arrayJenis,(object)[
+        for ($i = 0; $i < $dataJenis->count(); $i++) {
+            array_push($arrayJenis, (object)[
                 'id' => $dataJenis[$i]->id,
                 'namaJenis' => $dataJenis[$i]->namaJenis,
                 'idKategori' => $dataJenis[$i]->kategori_patty_cashs->id,
@@ -775,8 +785,8 @@ class pattyCashController extends Controller
                 'kategori' => $dataJenis[$i]->kategori_patty_cashs->namaKategori
             ]);
         }
-        for($i = 0;$i<$dataKategori->count();$i++){
-            array_push($arrayKategori,(object)[
+        for ($i = 0; $i < $dataKategori->count(); $i++) {
+            array_push($arrayKategori, (object)[
                 'id' => $dataKategori[$i]->id,
                 'namaKategori' => $dataKategori[$i]->namaKategori
             ]);
@@ -1164,11 +1174,19 @@ class pattyCashController extends Controller
     }
     public function editQty($id, Request $request)
     {
-        pattyCashFill::find($id)->update([
-            'idPengisi' => $request->idPengisi,
-            'quantityRevisi' => $request->quantityRevisi,
-            'idRevQuantity'  => '2'
-        ]);
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
+        $tanggalPatty = pattyCashFill::find($id)->pattyCashHarians->tanggalAlls->Tanggal;
+        $compareTanggalPatty = strtotime($tanggalPatty);
+
+        if ($compareTanggalPatty > $compareTanggalBatas) {
+            pattyCashFill::find($id)->update([
+                'idPengisi' => $request->idPengisi,
+                'quantityRevisi' => $request->quantityRevisi,
+                'idRevQuantity'  => '2'
+            ]);
+        }
     }
 
     public function editQtyRev(Request $request)
@@ -1182,11 +1200,19 @@ class pattyCashController extends Controller
 
     public function editTotal($id, Request $request)
     {
-        pattyCashFill::find($id)->update([
-            'idPengisi' => $request->idPengisi,
-            'totalRevisi' => $request->totalRevisi,
-            'idRevTotal' => '2'
-        ]);
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
+
+        $tanggalPatty = pattyCashFill::find($id)->pattyCashHarians->tanggalAlls->Tanggal;
+        $compareTanggalPatty = strtotime($tanggalPatty);
+
+        if ($compareTanggalPatty > $compareTanggalBatas) {
+            pattyCashFill::find($id)->update([
+                'idPengisi' => $request->idPengisi,
+                'totalRevisi' => $request->totalRevisi,
+                'idRevTotal' => '2'
+            ]);
+        }
     }
 
     public function editTotalRev(Request $request)
@@ -1221,15 +1247,16 @@ class pattyCashController extends Controller
         ]);
     }
 
-    public function updateJenis(Request $request, $id){
+    public function updateJenis(Request $request, $id)
+    {
         $jenis_patty_cash = jenis_patty_cash::find($id);
-        if($request->namaJenis != null){
+        if ($request->namaJenis != null) {
             $jenis_patty_cash->namaJenis = $request->namaJenis;
         }
-        if($request->idKategori != null){
+        if ($request->idKategori != null) {
             $jenis_patty_cash->idKategori = $request->idKategori;
         }
-        if($request->kodeAkun != null){
+        if ($request->kodeAkun != null) {
             $jenis_patty_cash->kodeAkun = $request->kodeAkun;
         }
         $jenis_patty_cash->save();
@@ -1238,7 +1265,8 @@ class pattyCashController extends Controller
         //     'idKategori' => $request->idKategori
         // ]);
     }
-    public function updateKategori(Request $request, $id){
+    public function updateKategori(Request $request, $id)
+    {
         $kategori_patty_cash = kategori_patty_cash::find($id);
         $kategori_patty_cash->update([
             'namaKategori' => $request->namaKategori

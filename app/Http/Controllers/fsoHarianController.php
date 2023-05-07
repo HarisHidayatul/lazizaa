@@ -635,7 +635,7 @@ class fsoHarianController extends Controller
         } else {
             array_push($outletArray, $idOutlet);
         }
-        
+
         $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC');
 
         if ($countData == 'today') {
@@ -757,7 +757,7 @@ class fsoHarianController extends Controller
                 $fsoHarian = $fsoHarians->where('idOutlet', '=', $eachOutlet->id)->first();
                 if ($fsoHarian != null) {
                     $listItemSOs = $fsoHarian->listItemSOs;
-                    if(!($tengahBulan || $akhirBulan)){
+                    if (!($tengahBulan || $akhirBulan)) {
                         $listItemSOs = $listItemSOs->where('munculHarian', '>', 0);
                     }
                     foreach ($listItemSOs as $listItemSO) {
@@ -776,7 +776,7 @@ class fsoHarianController extends Controller
             }
             foreach ($allKategoris as $allKategori) {
                 $listItemSOs = $allKategori->listItemSOs;
-                if(!($tengahBulan || $akhirBulan)){
+                if (!($tengahBulan || $akhirBulan)) {
                     $listItemSOs = $listItemSOs->where('munculHarian', '>', 0);
                 }
                 $itemKategori = [];
@@ -790,15 +790,15 @@ class fsoHarianController extends Controller
                 }
                 foreach ($allOutlet as $eachOutlet) {
                     $tempItemOutlet = [];
-                    $soBatasOutlet = $soHarianBatas->where('idOutlet','=',$eachOutlet->id);
+                    $soBatasOutlet = $soHarianBatas->where('idOutlet', '=', $eachOutlet->id);
                     foreach ($listItemSOs as $listItemSO) {
                         //findDataSo on $allData
                         $quantity = 0;
                         $quantityBatas = 0;
                         $statusMelebihiBatas = false;
-                        if($soBatasOutlet->count()> 0){
-                            $soBatasItem = $soBatasOutlet->where('idItemSo','=',$listItemSO->id)->first();
-                            if($soBatasItem != null){
+                        if ($soBatasOutlet->count() > 0) {
+                            $soBatasItem = $soBatasOutlet->where('idItemSo', '=', $listItemSO->id)->first();
+                            if ($soBatasItem != null) {
                                 $quantityBatas = $soBatasItem->quantity;
                             }
                         }
@@ -809,7 +809,7 @@ class fsoHarianController extends Controller
                             }
                         }
 
-                        if($quantityBatas >= $quantity){
+                        if ($quantityBatas >= $quantity) {
                             $statusMelebihiBatas = true;
                         }
                         array_push($tempItemOutlet, (object)[
@@ -861,15 +861,24 @@ class fsoHarianController extends Controller
 
     public function editSoFill(Request $request)
     {
+        $tanggalBatasTerakhir = app('tanggalBatasTerakhir');
+        $compareTanggalBatas = strtotime($tanggalBatasTerakhir);
         // $request->dataEdit memiliki struktur data [idSoFill,Edit]
         // @dd($request->dataEdit);
+        // @dd($tanggalBatasTerakhir);
         $arrayEdit = $request->dataEdit;
         if ($arrayEdit != null) {
             for ($i = 0; $i < count($arrayEdit); $i++) {
-                soFill::find($arrayEdit[$i][0])->update([
-                    'quantityRevisi' => $arrayEdit[$i][1],
-                    'idRevisi'      => '2'
-                ]);
+                $soFill = soFill::find($arrayEdit[$i][0]);
+                $tanggalSo = $soFill->fsoHarians->tanggalAlls->Tanggal;
+                // @dd($tanggal);
+                $compareTanggalSo = strtotime($tanggalSo);
+                if ($compareTanggalSo > $compareTanggalBatas) {
+                    soFill::find($arrayEdit[$i][0])->update([
+                        'quantityRevisi' => $arrayEdit[$i][1],
+                        'idRevisi'      => '2'
+                    ]);
+                }
             }
         }
         echo 'berhasil';

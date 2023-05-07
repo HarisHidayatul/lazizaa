@@ -14,7 +14,8 @@ class soFill extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     public function fsoHarians(){
-        return $this->hasMany(fsoHarian::class,'id');
+        // return $this->hasMany(fsoHarian::class,'id');
+        return $this->belongsTo(fsoHarian::class,'idSo','id');
     }
     public function dUsers(){
         return $this->belongsTo(dUser::class,'idPerevisi','id');
