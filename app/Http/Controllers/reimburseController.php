@@ -514,7 +514,7 @@ class reimburseController extends Controller
         $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC');
         $from = $dateNow;
         $to = $firstDate;
-        // $allDates = $tanggalAll->whereBetween('Tanggal', array($to, $from)); //Gunakan ini jika pattycash semua outlet sesuai saldo awal
+        $tanggalAll = $tanggalAll->whereBetween('Tanggal', array($to, $from)); //Gunakan ini jika pattycash semua outlet sesuai saldo awal
         $allDates = $tanggalAll->with('reimburses.penerimaReimburses', 'pattyCashHarians.listItemPattyCashs', 'salesHarianReimburses.sales_reimburses')->get();
         // @dd($allDates);
         foreach ($allDates as $allDate) {
