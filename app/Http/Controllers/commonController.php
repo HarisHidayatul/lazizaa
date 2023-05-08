@@ -162,10 +162,10 @@ class commonController extends Controller
                 'alamat' => $outlet[$i]['Alamat Lengkap'],
                 'brand' => $outlet[$i]->dBrands['Nama Brand'],
                 'idBrand' => $outlet[$i]->idBrand,
-                'indexTerminBee' => $outlet[$i]->indexTerminBee,
-                'indexCabangBee' => $outlet[$i]->indexCabangBee,
-                'indexGudangBee' => $outlet[$i]->indexGudangBee,
-                'indexKasBee' => $outlet[$i]->indexKasBee,
+                'terminBee' => $outlet[$i]->terminBee,
+                'cabangBee' => $outlet[$i]->cabangBee,
+                'gudangBee' => $outlet[$i]->gudangBee,
+                'kasBee' => $outlet[$i]->kasBee,
                 'keywoardBee' => $outlet[$i]->keywoardBee
             ]);
         }
@@ -281,10 +281,10 @@ class commonController extends Controller
             'Nama Store' => $request->namaStore,
             'Alamat Lengkap' => $request->alamatStore,
             'idBrand' => $request->idBrand,
-            'indexTerminBee' => $request->indexTerminBee,
-            'indexCabangBee' => $request->indexCabangBee,
-            'indexGudangBee' => $request->indexGudangBee,
-            'indexKasBee' => $request->indexKasBee,
+            'terminBee' => $request->terminBee,
+            'cabangBee' => $request->cabangBee,
+            'gudangBee' => $request->gudangBee,
+            'kasBee' => $request->kasBee,
             'keywoardBee' => $request->keywoardBee
         ]);
     }
