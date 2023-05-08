@@ -34,10 +34,10 @@
                 <th>Keterangan</th>
                 <th>Brand</th>
                 <th>Keywoard Bee</th>
-                <th>Index Termin Bee</th>
-                <th>Index Cabang Bee</th>
-                <th>Index Gudang Bee</th>
-                <th>Index Kas Bee</th>
+                <th>Termin Bee</th>
+                <th>Cabang Bee</th>
+                <th>Gudang Bee</th>
+                <th>Kas Bee</th>
                 <th>Edit</th>
             </tr>
         </thead>

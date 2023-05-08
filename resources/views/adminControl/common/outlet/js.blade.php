@@ -14,10 +14,10 @@
             var alamatStore = document.getElementsByName('addressEdit')[index].value;
             var idBrand = document.getElementsByName('dropDownBrandEdit')[index].value;
 
-            var indexTerminBee = document.getElementsByName('indexTerminBee')[index].value;
-            var indexCabangBee = document.getElementsByName('indexCabangBee')[index].value;
-            var indexGudangBee = document.getElementsByName('indexGudangBee')[index].value;
-            var indexKasBee = document.getElementsByName('indexKasBee')[index].value;
+            var terminBee = document.getElementsByName('terminBee')[index].value;
+            var cabangBee = document.getElementsByName('cabangBee')[index].value;
+            var gudangBee = document.getElementsByName('gudangBee')[index].value;
+            var kasBee = document.getElementsByName('kasBee')[index].value;
             var keywoardBee = document.getElementsByName('keywoardBee')[index].value;
 
             $.ajax({
@@ -27,10 +27,10 @@
                     idBrand: idBrand,
                     namaStore: namaStore,
                     alamatStore: alamatStore,
-                    indexTerminBee: indexTerminBee,
-                    indexGudangBee: indexGudangBee,
-                    indexCabangBee: indexCabangBee,
-                    indexKasBee: indexKasBee,
+                    terminBee: terminBee,
+                    gudangBee: gudangBee,
+                    cabangBee: cabangBee,
+                    kasBee: kasBee,
                     keywoardBee: keywoardBee
                 },
                 success: function(response) {
@@ -122,27 +122,27 @@
                         dataTable += '</td>';
 
                         dataTable += '<td>';
-                        dataTable += '<input type="number" class="form-control" value="';
-                        dataTable += obj.dataItem[i].indexTerminBee;
-                        dataTable += '" name="indexTerminBee">';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].terminBee;
+                        dataTable += '" name="terminBee">';
                         dataTable += '</td>';
 
                         dataTable += '<td>';
-                        dataTable += '<input type="number" class="form-control" value="';
-                        dataTable += obj.dataItem[i].indexCabangBee;
-                        dataTable += '" name="indexCabangBee">';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].cabangBee;
+                        dataTable += '" name="cabangBee">';
                         dataTable += '</td>';
 
                         dataTable += '<td>';
-                        dataTable += '<input type="number" class="form-control" value="';
-                        dataTable += obj.dataItem[i].indexGudangBee;
-                        dataTable += '" name="indexGudangBee">';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].gudangBee;
+                        dataTable += '" name="gudangBee">';
                         dataTable += '</td>';
 
                         dataTable += '<td>';
-                        dataTable += '<input type="number" class="form-control" value="';
-                        dataTable += obj.dataItem[i].indexKasBee;
-                        dataTable += '" name="indexKasBee">';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].kasBee;
+                        dataTable += '" name="kasBee">';
                         dataTable += '</td>';
 
                         

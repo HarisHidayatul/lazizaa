@@ -17,12 +17,10 @@ class robotController extends Controller
         $listPattys = $robotPembelianStatuss->pattyCashHarians->listItemPattyCashs;
         $tanggal = $robotPembelianStatuss->pattyCashHarians->tanggalAlls->Tanggal;
         $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
-        $termin = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
-        $indexTermin = $robotPembelianStatuss->pattyCashHarians->dOutlets->indexTerminBee;
-        $cabang = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
-        $indexCabang = $robotPembelianStatuss->pattyCashHarians->dOutlets->indexCabangBee;
-        $gudang = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
-        $indexGudang = $robotPembelianStatuss->pattyCashHarians->dOutlets->indexGudangBee;
+        $keywoard = $robotPembelianStatuss->pattyCashHarians->dOutlets->keywoardBee;
+        $termin = $robotPembelianStatuss->pattyCashHarians->dOutlets->terminBee;
+        $cabang = $robotPembelianStatuss->pattyCashHarians->dOutlets->cabangBee;
+        $gudang = $robotPembelianStatuss->pattyCashHarians->dOutlets->gudangBee;
         $notes = '';
 
         foreach($listPattys as $listPatty){
@@ -46,8 +44,7 @@ class robotController extends Controller
                     'total' => $total,
                     'satuan' => $listPatty->satuans->Satuan,
                     'hargaSatuan' => $hargaSatuan,
-                    'gudang'    => $gudang,
-                    'indexGudang' => $indexGudang
+                    'gudang'    => $gudang
                 ]);
                 $notes .= $listPatty->Item;
                 $notes .= '  ';
@@ -63,10 +60,9 @@ class robotController extends Controller
         // @dd($tanggal);
         return response()->json([
             'Tanggal' => $tanggalDDmmYY,
-            'Termin' => $termin,
-            'indexTermin' => $indexTermin,
-            'Cabang' => $cabang,
-            'indexCabang' => $indexCabang,
+            'keywoard' => $keywoard,
+            'termin' => $termin,
+            'cabang' => $cabang,
             'idRobotPembelian' => $robotPembelianStatuss->id,
             'Data'  => $arrayPatty,
             'Notes' => $notes
@@ -79,13 +75,11 @@ class robotController extends Controller
         $listPattys = $robotPembayaranStatuss->pattyCashHarians->listItemPattyCashs;
         $tanggal = $robotPembayaranStatuss->pattyCashHarians->tanggalAlls->Tanggal;
         $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
-        $termin = $robotPembayaranStatuss->pattyCashHarians->dOutlets->keywoardBee;
-        $indexTermin = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexTerminBee;
-        $cabang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->keywoardBee;
-        $indexCabang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexCabangBee;
-        $gudang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->keywoardBee;
-        $indexGudang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexGudangBee;
-        $indexKas = $robotPembayaranStatuss->pattyCashHarians->dOutlets->indexKasBee;
+        $keywoard = $robotPembayaranStatuss->pattyCashHarians->dOutlets->keywoardBee;
+        $termin = $robotPembayaranStatuss->pattyCashHarians->dOutlets->terminBee;
+        $cabang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->cabangBee;
+        $gudang = $robotPembayaranStatuss->pattyCashHarians->dOutlets->gudangBee;
+        $kas = $robotPembayaranStatuss->pattyCashHarians->dOutlets->kasBee;
         $keterangan = '';
         $keterangan .= $robotPembayaranStatuss->pattyCashHarians->dOutlets['Nama Store'];
         $keterangan .= ' pembayaran kas ';
@@ -120,7 +114,7 @@ class robotController extends Controller
                     'satuan' => $listPatty->satuans->Satuan,
                     'hargaSatuan' => $hargaSatuan,
                     'gudang'    => $gudang,
-                    'indexGudang' => $indexGudang,
+                    'gudang' => $gudang,
                     'Notes' => $notes
                 ]);
             }
@@ -128,11 +122,10 @@ class robotController extends Controller
         // @dd($tanggal);
         return response()->json([
             'Tanggal' => $tanggalDDmmYY,
-            'Termin' => $termin,
-            'indexTermin' => $indexTermin,
-            'Cabang' => $cabang,
-            'indexCabang' => $indexCabang,
-            'indexKas' => $indexKas,
+            'keywoard' => $keywoard,
+            'termin' => $termin,
+            'cabang' => $cabang,
+            'kas' => $kas,
             'idRobotPembayaran' => $robotPembayaranStatuss->id,
             'Data'  => $arrayPatty,
             'Keterangan' => $keterangan
