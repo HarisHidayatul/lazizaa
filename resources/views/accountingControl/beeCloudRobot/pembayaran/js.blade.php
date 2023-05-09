@@ -31,6 +31,7 @@
 
             getAllOutlet();
         })
+
         function getAllOutlet() {
             $.ajax({
                 url: "{{ url('pattyCash/outlet/show') }}",
@@ -56,6 +57,7 @@
                 }
             })
         }
+
         function getListAllFilter() {
             var idOutlet = document.getElementById('selOutlet').value;
             var startDate = document.getElementById('startDate').value;
@@ -184,6 +186,20 @@
                                     }
                                     historyAll += '>';
                                     historyAll += hargaSatuan.toLocaleString();
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td ';
+                                    if (objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
+                                        .idRevTotal == '2') {
+                                        historyAll += 'style="color: red;"';
+                                    }
+                                    if (objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
+                                        .idRevTotal == '3') {
+                                        historyAll += 'style="color: green;"';
+                                    }
+                                    historyAll += '>';
+                                    historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                        .pattyCash[l].total.toLocaleString();
                                     historyAll += '</td>';
 
                                     if (l == 0) {

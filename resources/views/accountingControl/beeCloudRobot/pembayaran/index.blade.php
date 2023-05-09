@@ -32,6 +32,7 @@
                 <td>Qty</td>
                 <td>Satuan</td>
                 <td>Harga Satuan</td>
+                <td>Total</td>
                 <td>Status</td>
                 <td>Action</td>
             </tr>
