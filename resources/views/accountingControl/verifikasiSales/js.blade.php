@@ -164,7 +164,7 @@
                         for (var j = 0; j < obj.itemSales[i].data.length; j++) {
                             for (var k = 0; k < obj.itemSales[i].data[j].data.length; k++) {
                                 if ((idListSales == 0) || (idListSales == obj.itemSales[i].data[j].data[k]
-                                        .idListSaless)) {
+                                        .idListSales)) {
                                     valueTotalAll[loopCount].set(obj.itemSales[i].data[j].data[k]
                                         .diterima);
                                     loopCount++;
