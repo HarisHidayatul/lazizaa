@@ -5,6 +5,8 @@
         var valueTotalAll = [];
         var idSalesFill = [];
 
+        var arrayCSV = [];
+
         var objAll = '';
 
         $(document).ready(function() {
@@ -42,9 +44,10 @@
 
         function editItem(index) {
             $.ajax({
-                url: "{{ url('salesHarian/update/verifikasi') }}" + '/' + idSalesFill[index],
+                url: "{{ url('salesHarian/update/verifikasi') }}",
                 type: 'get',
                 data: {
+                    idSalesFill: idSalesFill[index],
                     totalDiterima: parseInt(valueTotalAll[index].rawValue)
                 },
                 success: function(response) {
@@ -75,11 +78,10 @@
                     var loopCount = 0;
                     var idListSales = document.getElementById('selFilterSales').value;
                     for (var i = 0; i < obj.itemSales.length; i++) {
-                        for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                            for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].Item[j].Item[k]
-                                        .idListSales)) {
-
+                        for (var j = 0; j < obj.itemSales[i].data.length; j++) {
+                            for (var k = 0; k < obj.itemSales[i].data[j].data.length; k++) {
+                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].data[j].data[k]
+                                        .idListSaless)) {
                                     historyAll += '<tr>';
                                     historyAll += '<td>';
                                     // Example date in yyyy-mm-dd format
@@ -91,35 +93,35 @@
                                     historyAll += `${day}/${month}/${year}`;
                                     historyAll += '</td>';
                                     historyAll += '<td>';
-                                    historyAll += obj.itemSales[i].Item[j].Outlet;
+                                    historyAll += obj.itemSales[i].data[j].outlet;
                                     historyAll += '</td>';
                                     historyAll += '<td>';
-                                    historyAll += obj.itemSales[i].Item[j].Item[k].sales;
+                                    historyAll += obj.itemSales[i].data[j].data[k].listSales;
                                     historyAll += '</td>';
 
                                     historyAll += '<td ';
-                                    if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '2') {
+                                    if (obj.itemSales[i].data[j].data[k].idTotalRevisi == '2') {
                                         historyAll += 'style="color:tomato;" ';
-                                    } else if (obj.itemSales[i].Item[j].Item[k].idTotalRev == '3') {
+                                    } else if (obj.itemSales[i].data[j].data[k].idTotalRevisi == '3') {
                                         historyAll += 'style="color:rgb(30, 206, 9);" ';
                                     }
                                     historyAll += '>';
 
-                                    historyAll += obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
+                                    historyAll += obj.itemSales[i].data[j].data[k].total.toLocaleString();
                                     historyAll += '</td>';
                                     historyAll += '<td>';
                                     historyAll += '<input class="inputTotal" name="inputTotal" ';
-                                    // historyAll += obj.itemSales[i].Item[j].Item[k].jumlahDiterima;
+                                    // historyAll += obj.itemSales[i].data[j].data[k].jumlahDiterima;
                                     historyAll += '>';
                                     historyAll += '</td>';
                                     historyAll += '<td>';
-                                    historyAll += obj.itemSales[i].Item[j].Item[k].selisih.toLocaleString();
+                                    historyAll += obj.itemSales[i].data[j].data[k].selisih.toLocaleString();
                                     historyAll += '</td>';
 
                                     historyAll += '<td>';
-                                    historyAll += Math.round(((obj.itemSales[i].Item[j].Item[k].selisih) *
+                                    historyAll += Math.round(((obj.itemSales[i].data[j].data[k].selisih) *
                                         100) / (
-                                        obj.itemSales[i].Item[j].Item[k].totalQty));
+                                        obj.itemSales[i].data[j].data[k].total));
                                     historyAll += '%';
                                     historyAll += '</td>';
 
@@ -131,8 +133,20 @@
                                     historyAll += '</td>';
                                     historyAll += '</tr>';
 
-                                    idSalesFill.push(obj.itemSales[i].Item[j].Item[k].idSalesFill);
+                                    idSalesFill.push(obj.itemSales[i].data[j].data[k].idSalesFill);
                                     loopCount++;
+
+                                    arrayCSV.push([
+                                        `${day}/${month}/${year}`,
+                                        obj.itemSales[i].data[j].outlet,
+                                        obj.itemSales[i].data[j].data[k].listSales,
+                                        obj.itemSales[i].data[j].data[k].total.toLocaleString(),
+                                        obj.itemSales[i].data[j].data[k].diterima.toLocaleString(),
+                                        obj.itemSales[i].data[j].data[k].selisih.toLocaleString(),
+                                        Math.round(((obj.itemSales[i].data[j].data[k].selisih) *
+                                            100) / (
+                                            obj.itemSales[i].data[j].data[k].total))
+                                    ]);
                                 }
                             }
                         }
@@ -147,12 +161,12 @@
                         }));
                     }
                     for (var i = 0; i < obj.itemSales.length; i++) {
-                        for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                            for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].Item[j].Item[k]
-                                        .idListSales)) {
-                                    valueTotalAll[loopCount].set(obj.itemSales[i].Item[j].Item[k]
-                                        .jumlahDiterima);
+                        for (var j = 0; j < obj.itemSales[i].data.length; j++) {
+                            for (var k = 0; k < obj.itemSales[i].data[j].data.length; k++) {
+                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].data[j].data[k]
+                                        .idListSaless)) {
+                                    valueTotalAll[loopCount].set(obj.itemSales[i].data[j].data[k]
+                                        .diterima);
                                     loopCount++;
                                 }
                             }
@@ -186,48 +200,10 @@
                 'Fee',
                 '%'
             ]);
-            for (var i = 0; i < obj.itemSales.length; i++) {
-                for (var j = 0; j < obj.itemSales[i].Item.length; j++) {
-                    for (var k = 0; k < obj.itemSales[i].Item[j].Item.length; k++) {
-                        var tanggal = '';
-                        var outlet = '';
-                        var item_sales = '';
-                        var jumlah = '';
-                        var jumlah_diterima = '';
-                        var fee = '';
-                        var percent = '';
-
-                        // Example date in yyyy-mm-dd format
-                        const dateStr = obj.itemSales[i].Tanggal;
-
-                        // Split the string into year, month, and day components
-                        const [year, month, day] = dateStr.split('-');
-
-                        tanggal = `${day}/${month}/${year}`;
-                        outlet = obj.itemSales[i].Item[j].Outlet;
-                        item_sales = obj.itemSales[i].Item[j].Item[k].sales;
-
-                        jumlah = obj.itemSales[i].Item[j].Item[k].totalQty.toLocaleString();
-
-                        jumlah_diterima = obj.itemSales[i].Item[j].Item[k].jumlahDiterima.toLocaleString();
-
-                        fee = obj.itemSales[i].Item[j].Item[k].selisih.toLocaleString();
-
-                        percent = Math.round(((obj.itemSales[i].Item[j].Item[k].selisih) * 100) / (
-                            obj.itemSales[i].Item[j].Item[k].totalQty));
-
-                        arrayAllData.push([
-                            tanggal,
-                            outlet,
-                            item_sales,
-                            jumlah,
-                            jumlah_diterima,
-                            fee,
-                            percent
-                        ]);
-                    }
-                }
+            for (var i = 0; i < arrayCSV.length; i++) {
+                arrayAllData.push(arrayCSV[i]);
             }
+            // arrayAllData.push(arrayCSV);
             exportToCsv(namaFile, arrayAllData);
         }
 

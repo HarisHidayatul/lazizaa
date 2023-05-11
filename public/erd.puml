@@ -1,0 +1,35 @@
+@startuml ERD
+' hide the spot
+' hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+left to right direction
+
+entity dbrand{
+    * id
+    __
+
+}
+circle 3
+
+entity doutlet{
+    * id
+    __
+    Nama Store          : String
+    idBrand             : unsignedBigInteger
+    Alamat Lengkap      : String
+    branch_id_bee_cloud : integer
+    keywoardBee         : String
+    terminBee           : String
+    cabangBee           : String
+    gudangBee           : String
+    kasBee              : String
+}
+
+doutlet::idBrand }o.up.|| dbrand::id
+3 }o.down.|| dbrand::id
+' e01::e1_id ||.up.o{ e02::e1_id
+' e01::e1_id |o.down.o{ e03::e1_id
+@enduml

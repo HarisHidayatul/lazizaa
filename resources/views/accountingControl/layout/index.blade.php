@@ -175,6 +175,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ url('accounting/mutasiProcess') }}" class="nav-link" id="mutasiProsesTabMenu">
+                            <i class="nav-icon 	fa fa-hdd-o"></i>
+                            <p class="text">Proses Mutasi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('accounting/pattyCash') }}" class="nav-link" id="pattyCashsTabMenu">
                             <i class="nav-icon fa fa-credit-card"></i>
                             <p class="text">Patty Cash</p>

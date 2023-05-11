@@ -157,7 +157,7 @@ Route::get('salesHarian/items/show/rev/{id}', [salesHarianController::class, 'sh
 Route::get('salesHarian/edit/total/rev/data', [salesHarianController::class, 'editTotalRev']);
 
 Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}',[salesHarianController::class,'showVerifOutlet']);
-Route::get('salesHarian/update/verifikasi/{idSalesFill}',[salesHarianController::class,'updateVerifOutlet']);
+Route::get('salesHarian/update/verifikasi',[salesHarianController::class,'updateVerifOutlet']);
 
 Route::get('salesHarian/show/laporanSales/{idOutlet}/{countData}/{startDate}/{stopDate}',[salesHarianController::class,'showReimburseSales']);
 
@@ -423,7 +423,9 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/revisi/waste', function () {
         return view('accountingControl.revisi.waste.index');
     });
-
+    Route::get('accounting/mutasiProcess', function () {
+        return view('accountingControl.mutasiProses.index');
+    });
     Route::get('accounting/checkExist', function () {
         return view('accountingControl.dataDiIsi.index');
     });
