@@ -81,7 +81,7 @@
                         for (var j = 0; j < obj.itemSales[i].data.length; j++) {
                             for (var k = 0; k < obj.itemSales[i].data[j].data.length; k++) {
                                 if ((idListSales == 0) || (idListSales == obj.itemSales[i].data[j].data[k]
-                                        .idListSaless)) {
+                                        .idListSales)) {
                                     historyAll += '<tr>';
                                     historyAll += '<td>';
                                     // Example date in yyyy-mm-dd format
