@@ -720,7 +720,7 @@ class pattyCashController extends Controller
 
     public function showAllOutlet()
     {
-        $Outlet = doutlet::all();
+        $Outlet = doutlet::all()->sortBy('Nama Store');
         $arrayOutlet = [];
         for ($i = 0; $i < $Outlet->count(); $i++) {
             array_push($arrayOutlet, (object)[
