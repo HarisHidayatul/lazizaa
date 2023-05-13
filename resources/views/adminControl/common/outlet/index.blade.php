@@ -22,26 +22,33 @@
                 <input type="text" class="form-control" id="alamatStore" placeholder="Alamat Lengkap">
             </div>
             <div class="form-group">
-                <button type="button" id="storeSubmitButton" onclick="sendAddItem();" class="btn btn-secondary" disabled>Submit Store</button>
+                <button type="button" id="storeSubmitButton" onclick="sendAddItem();" class="btn btn-secondary"
+                    disabled>Submit Store</button>
             </div>
         </div>
     </form>
-    <table class="table table-striped" id="tableAllItem">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nama Store</th>
-                <th>Keterangan</th>
-                <th>Brand</th>
-                <th>Keywoard Bee</th>
-                <th>Termin Bee</th>
-                <th>Cabang Bee</th>
-                <th>Gudang Bee</th>
-                <th>Kas Bee</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div style="overflow-x: auto">
+        <div style="width: 1500px">
+            <table class="table table-striped" id="tableAllItem">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Store</th>
+                        <th>Keterangan</th>
+                        <th>Brand</th>
+                        <th>Keywoard Bee</th>
+                        <th>Termin Bee</th>
+                        <th>Cabang Bee</th>
+                        <th>Gudang Bee</th>
+                        <th>Kas Bee</th>
+                        <th>Kode Shopee</th>
+                        <th>Kode Go Resto</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection

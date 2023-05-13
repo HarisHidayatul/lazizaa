@@ -1,4 +1,4 @@
-@extends('accountingControl.mutasiProses.penjualan.js')
+@extends('accountingControl.mutasiProses.upload.js')
 
 @section('mutasiStyle')
     <style>

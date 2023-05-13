@@ -20,6 +20,9 @@
             var kasBee = document.getElementsByName('kasBee')[index].value;
             var keywoardBee = document.getElementsByName('keywoardBee')[index].value;
 
+            var kodeShopee = document.getElementsByName('kodeShopee')[index].value;
+            var kodeGoresto = document.getElementsByName('kodeGoresto')[index].value;
+
             $.ajax({
                 url: "{{ url('common/outlet/update') }}" + '/' + idOutletArray[index],
                 type: 'get',
@@ -31,7 +34,9 @@
                     gudangBee: gudangBee,
                     cabangBee: cabangBee,
                     kasBee: kasBee,
-                    keywoardBee: keywoardBee
+                    keywoardBee: keywoardBee,
+                    kodeShopee: kodeShopee,
+                    kodeGoresto: kodeGoresto
                 },
                 success: function(response) {
                     getOutlet();
@@ -145,7 +150,18 @@
                         dataTable += '" name="kasBee">';
                         dataTable += '</td>';
 
-                        
+                        dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].kodeShopee;
+                        dataTable += '" name="kodeShopee">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].kodeGoresto;
+                        dataTable += '" name="kodeGoresto">';
+                        dataTable += '</td>';
+
                         dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' +
                             i +

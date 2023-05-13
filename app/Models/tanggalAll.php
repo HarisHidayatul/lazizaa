@@ -18,6 +18,10 @@ class tanggalAll extends Model
         return $this->hasMany(salesharian::class,'idTanggal','id');
     }
 
+    public function mutasiTransaksis(){
+        return $this->hasMany(mutasi_transaksi::class,'idTanggal','id');
+    }
+
     public function salesHarianReimburses(){
         return $this->hasMany(sales_harian_reimburse::class,'idTanggal','id');
     }

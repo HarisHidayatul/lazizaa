@@ -14,6 +14,7 @@ use App\Http\Controllers\typeOutletItemController;
 use App\Http\Controllers\typeSalesController;
 use App\Http\Controllers\wasteController;
 use App\Http\Controllers\robotController;
+use App\Http\Controllers\prosesMutasiController;
 use App\Models\dUser;
 use App\Models\fsoHarian;
 use App\Models\itemWaste;
@@ -48,21 +49,21 @@ Route::get('common/satuan/update/{id}', [commonController::class, 'updateSatuan'
 
 Route::get('common/brand/show', [commonController::class, 'showBrand']);
 Route::get('common/brand/store', [commonController::class, 'storeBrand']);
-Route::get('common/brand/update/{id}',[commonController::class, 'updateBrand']);
+Route::get('common/brand/update/{id}', [commonController::class, 'updateBrand']);
 
-Route::get('common/outlet/show/{idBrand}',[commonController::class,'showOutlet']);
-Route::get('common/outlet/showAll',[commonController::class,'showAllOutlet']);
-Route::get('common/outlet/store',[commonController::class,'storeOutlet']);
-Route::get('common/outlet/update/{id}',[commonController::class,'updateOutlet']);
+Route::get('common/outlet/show/{idBrand}', [commonController::class, 'showOutlet']);
+Route::get('common/outlet/showAll', [commonController::class, 'showAllOutlet']);
+Route::get('common/outlet/store', [commonController::class, 'storeOutlet']);
+Route::get('common/outlet/update/{id}', [commonController::class, 'updateOutlet']);
 
-Route::get('common/role/showAll',[commonController::class,'showAllRole']);
+Route::get('common/role/showAll', [commonController::class, 'showAllRole']);
 
-Route::get('common/user/show/{idOutlet}',[commonController::class,'showUser']);
-Route::get('common/user/store',[commonController::class,'storeUser']);
-Route::get('common/user/update/{id}',[commonController::class,'updateUser']);
+Route::get('common/user/show/{idOutlet}', [commonController::class, 'showUser']);
+Route::get('common/user/store', [commonController::class, 'storeUser']);
+Route::get('common/user/update/{id}', [commonController::class, 'updateUser']);
 
 //Flow untuk FSO Harian
-Route::get('itemSO/initData',[itemSOController::class, 'initAllDataSO']);
+Route::get('itemSO/initData', [itemSOController::class, 'initAllDataSO']);
 
 Route::get('itemSO/show', [itemSOController::class, 'index']); //get all item SO
 Route::get('itemSO/showAll', [itemSOController::class, 'showAllItem']);
@@ -76,7 +77,7 @@ Route::get('listType/soHarian/updateType/{id}', [typeOutletItemController::class
 Route::get('listType/soHarian/updateKategori/{id}', [typeOutletItemController::class, 'updateKategori']);
 
 Route::get('listType/soHarian/store/item', [typeOutletItemController::class, 'storeItem']);
-Route::get('listType/soHarian/store/kategori',[typeOutletItemController::class,'storeKategori']);
+Route::get('listType/soHarian/store/kategori', [typeOutletItemController::class, 'storeKategori']);
 
 Route::get('listType/soHarian/store/outlet', [typeOutletItemController::class, 'storeOutletOnType']);
 Route::get('listType/soHarian/show/item/{id}', [typeOutletItemController::class, 'showByItem']);
@@ -99,9 +100,9 @@ Route::get('soHarian/edit/qty/rev/data', [fsoHarianController::class, 'editQtyRe
 
 Route::get('soHarian/show/revision/all/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevision']);
 Route::get('soHarian/show/revision/done/{fromDate}/{toDate}', [fsoHarianController::class, 'showDateRevisionDone']);
-Route::get('soHarian/show/history',[fsoHarianController::class, 'showHistory']);//history untuk bulanan
-Route::get('soHarian/show/history2',[fsoHarianController::class, 'showHistory2']);//history untuk harian
-Route::get('soHarian/show/history3',[fsoHarianController::class, 'showHistory3']);
+Route::get('soHarian/show/history', [fsoHarianController::class, 'showHistory']); //history untuk bulanan
+Route::get('soHarian/show/history2', [fsoHarianController::class, 'showHistory2']); //history untuk harian
+Route::get('soHarian/show/history3', [fsoHarianController::class, 'showHistory3']);
 
 Route::get('soHarian/show/batas/{idOutlet}/{date}', [fsoHarianController::class, 'showDataBatasOnDate']);
 Route::get('soHarian/setting/soBatas/show/{idOutlet}', [fsoHarianController::class, 'showBatas']);
@@ -156,13 +157,13 @@ Route::get('salesHarian/items/show/rev/{id}', [salesHarianController::class, 'sh
 // Route::get('salesHarian/edit/total/data/{id}', [salesHarianController::class, 'editTotal']);
 Route::get('salesHarian/edit/total/rev/data', [salesHarianController::class, 'editTotalRev']);
 
-Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}',[salesHarianController::class,'showVerifOutlet']);
-Route::get('salesHarian/update/verifikasi',[salesHarianController::class,'updateVerifOutlet']);
+Route::get('salesHarian/show/verifikasi/{idOutlet}/{fromDate}/{toDate}', [salesHarianController::class, 'showVerifOutlet']);
+Route::get('salesHarian/update/verifikasi', [salesHarianController::class, 'updateVerifOutlet']);
 
-Route::get('salesHarian/show/laporanSales/{idOutlet}/{countData}/{startDate}/{stopDate}',[salesHarianController::class,'showReimburseSales']);
+Route::get('salesHarian/show/laporanSales/{idOutlet}/{countData}/{startDate}/{stopDate}', [salesHarianController::class, 'showReimburseSales']);
 
 //Flow untuk Patty Cash
-Route::get('pattyCash/initData',[pattyCashController::class, 'initAllDataPattyCash']);
+Route::get('pattyCash/initData', [pattyCashController::class, 'initAllDataPattyCash']);
 Route::get('pattyCash/items/show', [pattyCashController::class, 'showAll']);
 Route::get('pattyCash/items/show/revisi', [pattyCashController::class, 'showAllRevisi']);
 Route::get('pattyCash/items/revisi/outlet/{id}', [pattyCashController::class, 'showRevisiOutlet']); //Menampilkan revisi per outlet
@@ -177,8 +178,8 @@ Route::get('pattyCash/show/revision/done/{fromDate}/{toDate}', [pattyCashControl
 Route::get('pattyCash/outlet/show', [pattyCashController::class, 'showAllOutlet']);
 
 Route::get('pattyCash/items/store', [pattyCashController::class, 'storeItem']);
-Route::get('pattyCash/jenisItem/store',[pattyCashController::class,'storeJenis']);
-Route::get('pattyCash/kategoriItem/store',[pattyCashController::class,'storeKategori']);
+Route::get('pattyCash/jenisItem/store', [pattyCashController::class, 'storeJenis']);
+Route::get('pattyCash/kategoriItem/store', [pattyCashController::class, 'storeKategori']);
 
 Route::get('pattyCash/update/item/{id}', [pattyCashController::class, 'updateItem']);
 Route::get('pattyCash/update/jenis/{id}', [pattyCashController::class, 'updateJenis']);
@@ -231,7 +232,7 @@ Route::get('waste/show/revision/outlet/{id}', [wasteController::class, 'showRevi
 Route::get('waste/show/revision/done/outlet/{id}', [wasteController::class, 'showRevisionDoneOutlet']);
 Route::get('waste/show/wasteFill/{id}', [wasteController::class, 'showOnWasteFill']); //menampilkan data seperti showAllData
 
-Route::get('waste/show/history/outlet/{idOutlet}/{countData}/{startDate}/{stopDate}',[wasteController::class, 'showHistory']);
+Route::get('waste/show/history/outlet/{idOutlet}/{countData}/{startDate}/{stopDate}', [wasteController::class, 'showHistory']);
 
 Route::get('waste/items/show/req/all/{id}', [wasteController::class, 'showReqOutlet']);
 
@@ -242,8 +243,8 @@ Route::get('waste/user/showAllSesi/{idOutlet}/{date}', [wasteController::class, 
 
 Route::get('setoran/bank/type/show', [setoranController::class, 'showType']);
 Route::get('setoran/bank/show/all', [setoranController::class, 'showAllBank']);
-Route::get('setoran/bank/create',[setoranController::class,'createBank']);
-Route::get('setoran/bank/update/{id}',[setoranController::class,'updateBank']);
+Route::get('setoran/bank/create', [setoranController::class, 'createBank']);
+Route::get('setoran/bank/update/{id}', [setoranController::class, 'updateBank']);
 Route::get('setoran/bank/show/{idJenisBank}', [setoranController::class, 'showBank']);
 Route::get('setoran/user/pengirim/createID', [setoranController::class, 'createIDPengirim']);
 Route::get('setoran/penerima/createID', [setoranController::class, 'createIDPenerima']);
@@ -258,7 +259,7 @@ Route::get('setoran/show/pengirim/inPart/{idUser}', [setoranController::class, '
 Route::get('setoran/show/pengirim/all/{idUser}', [setoranController::class, 'showPengirimAll']);
 Route::get('setoran/show/detail/{idSetoran}', [setoranController::class, 'showSetoranDetail']);
 Route::get('setoran/update/accounting/revisi/{id}', [setoranController::class, 'update']);
-Route::get('setoran/delete/accounting/revisi/{id}',[setoranController::class,'delete']);
+Route::get('setoran/delete/accounting/revisi/{id}', [setoranController::class, 'delete']);
 
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
 Route::get('setoran/show/data/inPart/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart']);
@@ -276,30 +277,35 @@ Route::get('reimburse/sales/show/detail/{idDetail}', [reimburseController::class
 Route::get('reimburse/sales/edit/detail/{idDetail}', [reimburseController::class, 'updateSalesReimburse']);
 
 Route::get('reimburse/update/history/cycle/{idOutlet}', [reimburseController::class, 'updateAllHistory']); //refresh historty
-Route::get('reimburse/update/history/allOutlet',[reimburseController::class,'updateAllHistoryOutlet']); //Merefresh semua history outlet
+Route::get('reimburse/update/history/allOutlet', [reimburseController::class, 'updateAllHistoryOutlet']); //Merefresh semua history outlet
 
 Route::get('reimburse/update/accounting/revisi/{id}', [reimburseController::class, 'updateRevisiTerima']);
-Route::get('reimburse/delete/accounting/revisi/{id}', [reimburseController::class,'deleteRevisiTerima']);
+Route::get('reimburse/delete/accounting/revisi/{id}', [reimburseController::class, 'deleteRevisiTerima']);
 Route::get('reimburse/store/data', [reimburseController::class, 'storeDataReimburse']);
-Route::get('reimburse/sales/store/data',[reimburseController::class,'storeDataReimburseSales']);
+Route::get('reimburse/sales/store/data', [reimburseController::class, 'storeDataReimburseSales']);
 
 Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class, 'storeReimburseIdTujuan']);
 
 Route::get('reimburse/show/pengirim/all/{idUser}', [reimburseController::class, 'showPengirimAll']);
 
-Route::get('robot/pembelian/show/all',[robotController::class,'showPembelian']);
-Route::post('robot/pembelian/create',[robotController::class,'createRobotPembelian']);
-Route::delete('robot/pembelian/delete',[robotController::class,'deleteRobotPembelian']);
+Route::get('robot/pembelian/show/all', [robotController::class, 'showPembelian']);
+Route::post('robot/pembelian/create', [robotController::class, 'createRobotPembelian']);
+Route::delete('robot/pembelian/delete', [robotController::class, 'deleteRobotPembelian']);
 
-Route::get('robot/pembayaran/show/all',[robotController::class,'showPembayaran']);
-Route::post('robot/pembayaran/create',[robotController::class,'createRobotPembayaran']);
-Route::delete('robot/pembayaran/delete',[robotController::class,'deleteRobotPembayaran']);
+Route::get('robot/pembayaran/show/all', [robotController::class, 'showPembayaran']);
+Route::post('robot/pembayaran/create', [robotController::class, 'createRobotPembayaran']);
+Route::delete('robot/pembayaran/delete', [robotController::class, 'deleteRobotPembayaran']);
 
-Route::get('robot/api/pembelian/show',[robotController::class,'showRobotPembelian']);
-Route::get('robot/api/pembelian/done/{id}',[robotController::class,'doneRobotPembelian']);
+Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
+Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotPembelian']);
 
-Route::get('robot/api/pembayaran/show',[robotController::class,'showRobotPembayaran']);
-Route::get('robot/api/pembayaran/done/{id}',[robotController::class,'doneRobotPembayaran']);
+Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPembayaran']);
+Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);
+
+Route::post('mutasi/upload', [prosesMutasiController::class, 'createMutasi']);
+Route::get('mutasi/show/penjualan',[prosesMutasiController::class, 'showMutasiPenjualan']);
+Route::post('mutasi/generate/penjualan',[prosesMutasiController::class, 'generateMutasiPenjualan']);
+Route::patch('mutasi/edit/penjualan',[prosesMutasiController::class, 'editMutasiPenjualan']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
@@ -313,13 +319,13 @@ Route::get('/', function () {
 });
 Route::post('user/login', [loginController::class, 'login']);
 
-Route::get('uploadImage', function(){
+Route::get('uploadImage', function () {
     return view('tesUploadImage');
 });
-Route::post('postImage',[commonController::class,'postImageAndGetID']);
-Route::get('showImageTemp/{idTempImgAll}',[commonController::class,'showImageTemp']);
-Route::get('delImageTemp/{idTempImgAll}',[commonController::class,'deleteImageTemp']);
-Route::get('moveImage/{fromPathFile}/{toPathFile}',[commonController::class,'moveImage']);
+Route::post('postImage', [commonController::class, 'postImageAndGetID']);
+Route::get('showImageTemp/{idTempImgAll}', [commonController::class, 'showImageTemp']);
+Route::get('delImageTemp/{idTempImgAll}', [commonController::class, 'deleteImageTemp']);
+Route::get('moveImage/{fromPathFile}/{toPathFile}', [commonController::class, 'moveImage']);
 
 Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('user/logout', [loginController::class, 'logout']);
@@ -328,17 +334,17 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     });
 
     //Route akses untuk gudang
-    Route::get('gudang/soBulanan', function(){
+    Route::get('gudang/soBulanan', function () {
         return view('gudangControl.stockOpname.bulanan.index');
     });
-    Route::get('gudang/soHarian', function(){
+    Route::get('gudang/soHarian', function () {
         return view('gudangControl.stockOpname.harian.index');
     });
 
-    Route::get('gudang/so/kategori',function(){
+    Route::get('gudang/so/kategori', function () {
         return view('gudangControl.setItem.so.kategori.index');
     });
-    Route::get('gudang/so/listItem',function(){
+    Route::get('gudang/so/listItem', function () {
         return view('gudangControl.setItem.so.listItem.index');
     });
 
@@ -402,10 +408,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('admin/common/user', function () {
         return view('adminControl.common.user.index');
     });
-    Route::get('admin/setoran', function(){
+    Route::get('admin/setoran', function () {
         return view('adminControl.setoran.index');
     });
-    Route::get('admin/setBank', function(){
+    Route::get('admin/setBank', function () {
         return view('adminControl.setBank.index');
     });
 
@@ -423,30 +429,37 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/revisi/waste', function () {
         return view('accountingControl.revisi.waste.index');
     });
-    Route::get('accounting/mutasiProcess', function () {
-        return view('accountingControl.mutasiProses.index');
+    Route::get('accounting/mutasiProcess/upload', function () {
+        return view('accountingControl.mutasiProses.upload.index');
+    });
+    Route::get('accounting/mutasiProcess/penjualan', function () {
+        return view('accountingControl.mutasiProses.penjualan.index');
     });
     Route::get('accounting/checkExist', function () {
         return view('accountingControl.dataDiIsi.index');
     });
 
-    Route::get('accounting/robot/pembelian',function(){
+    Route::get('accounting/robot/pembelian', function () {
         return view('accountingControl.beeCloudRobot.pembelian.index');
     });
 
-    Route::get('accounting/robot/pembayaran',function(){
+    Route::get('accounting/robot/pembayaran', function () {
         return view('accountingControl.beeCloudRobot.pembayaran.index');
+    });
+
+    Route::get('accounting/robot/ecommerce', function () {
+        return view('accountingControl.beeCloudRobot.ecommerce.index');
     });
 
     Route::get('accounting/pattyCash', function () {
         return view('accountingControl.pattyCash.index');
     });
 
-    Route::get('accounting/saldoPattyCash', function(){
+    Route::get('accounting/saldoPattyCash', function () {
         return view('accountingControl.saldoPattyCash.index');
     });
 
-    Route::get('accounting/reimburse',function(){
+    Route::get('accounting/reimburse', function () {
         return view('accountingControl.reimburse.index');
     });
 
@@ -458,14 +471,14 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('accountingControl.verifikasiSales.index');
     });
 
-    Route::get('accounting/laporanSales',function(){
+    Route::get('accounting/laporanSales', function () {
         return view('accountingControl.laporanSales.index');
     });
 
-    Route::get('accounting/stockOpname', function(){
+    Route::get('accounting/stockOpname', function () {
         return view('accountingControl.stockOpname.index');
     });
-    
+
     Route::get('accounting/so/item', function () {
         // return view('accountingControl.setItem.soHarian');
         return view('accountingControl.setItem.so.listItem.index');
@@ -495,10 +508,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/pattyCash/item', function () {
         return view('accountingControl.setItem.pattyCash.listItem.index');
     });
-    Route::get('accounting/pattyCash/jenisItem',function(){
+    Route::get('accounting/pattyCash/jenisItem', function () {
         return view('accountingControl.setItem.pattyCash.jenisItem.index');
     });
-    Route::get('accounting/pattyCash/kategoriItem',function(){
+    Route::get('accounting/pattyCash/kategoriItem', function () {
         return view('accountingControl.setItem.pattyCash.kategoriItem.index');
     });
     Route::get('accounting/pattyCash/brandItem', function () {
@@ -518,7 +531,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('accountingControl.setItem.waste.pendingItem.index');
     });
 
-    Route::get('accounting/waste', function(){
+    Route::get('accounting/waste', function () {
         return view('accountingControl.waste.index');
     });
 
@@ -569,7 +582,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         ]);
     });
 
-    Route::get('user/detail2/all/salesHarian/{dateSelect}',function($dateSelect){
+    Route::get('user/detail2/all/salesHarian/{dateSelect}', function ($dateSelect) {
         return view('userControl2.salesHarianDetailAll', [
             'dateSelect' => $dateSelect
         ]);
@@ -745,8 +758,8 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         ]);
     });
 
-    Route::get('user/reimburse/sales/detail/{idDetail}', function ($idDetail){
-        return view('userControl.reimburse.detailSales',[
+    Route::get('user/reimburse/sales/detail/{idDetail}', function ($idDetail) {
+        return view('userControl.reimburse.detailSales', [
             'idDetail' => $idDetail
         ]);
     });
@@ -755,7 +768,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
         return view('userControl.reimburse.kirim');
     });
 
-    Route::get('user/reimburse/sales/kirim',function(){
+    Route::get('user/reimburse/sales/kirim', function () {
         return view('userControl.reimburse.reimburseSales');
     });
 
@@ -765,5 +778,5 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 });
 
 //Route dibawah adalah route untuk bee cloud api dan hanya diolah di API Bee Cloud Controller
-Route::get('refreshItemSO',[apiBeeCloudController::class,'refreshAPISoHarian']);
-Route::get('refreshTransaksi',[apiBeeCloudController::class,'refreshTransaksi']);
+Route::get('refreshItemSO', [apiBeeCloudController::class, 'refreshAPISoHarian']);
+Route::get('refreshTransaksi', [apiBeeCloudController::class, 'refreshTransaksi']);

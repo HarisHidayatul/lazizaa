@@ -174,12 +174,35 @@
                             <p class="text">Status Input</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="mutasiTabMenu">
+                        <a href="#" class="nav-link" id="mutasiSubMenu">
+                            <i class="nav-icon 	fa fa-hdd-o"></i>
+                            <p>
+                                Proses Mutasi
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/mutasiProcess/upload') }}" class="nav-link" id="uploadMutasiSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Upload Mutasi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/mutasiProcess/penjualan') }}" class="nav-link" id="penjualanMutasiSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Penjualan</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- <li class="nav-item">
                         <a href="{{ url('accounting/mutasiProcess') }}" class="nav-link" id="mutasiProsesTabMenu">
                             <i class="nav-icon 	fa fa-hdd-o"></i>
                             <p class="text">Proses Mutasi</p>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a href="{{ url('accounting/pattyCash') }}" class="nav-link" id="pattyCashsTabMenu">
                             <i class="nav-icon fa fa-credit-card"></i>

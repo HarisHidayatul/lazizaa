@@ -166,7 +166,9 @@ class commonController extends Controller
                 'cabangBee' => $outlet[$i]->cabangBee,
                 'gudangBee' => $outlet[$i]->gudangBee,
                 'kasBee' => $outlet[$i]->kasBee,
-                'keywoardBee' => $outlet[$i]->keywoardBee
+                'keywoardBee' => $outlet[$i]->keywoardBee,
+                'kodeShopee' => $outlet[$i]->kodeShopee,
+                'kodeGoresto' => $outlet[$i]->kodeGoresto,
             ]);
         }
         return response()->json([
@@ -285,7 +287,9 @@ class commonController extends Controller
             'cabangBee' => $request->cabangBee,
             'gudangBee' => $request->gudangBee,
             'kasBee' => $request->kasBee,
-            'keywoardBee' => $request->keywoardBee
+            'keywoardBee' => $request->keywoardBee,
+            'kodeShopee' => $request->kodeShopee,
+            'kodeGoresto' => $request->kodeGoresto
         ]);
     }
 
