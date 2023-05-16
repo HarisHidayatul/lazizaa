@@ -14,8 +14,16 @@ class pelunasan_mutasi_sales extends Model
     public $guarded = ['id'];
     protected $primaryKey = 'id';
     
+    public function mutasiTransaksis(){
+        return $this->belongsTo(mutasi_transaksi::class,'idMutasiTransaksi','id');
+    }
+
+    public function salesFills(){
+        return $this->belongsTo(salesFill::class,'idSalesFill','id');
+    }
+
     protected $fillable = [
-        'idMutasiSales',
+        'idMutasiTransaksi',
         'idSalesFill',
         'created_at',
         'updated_at',

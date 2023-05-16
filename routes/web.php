@@ -303,8 +303,15 @@ Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPemba
 Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);
 
 Route::post('mutasi/upload', [prosesMutasiController::class, 'createMutasi']);
+Route::get('mutasi/show/all',[prosesMutasiController::class, 'showMutasiAll']);
+Route::get('mutasi/show/pelunasan/sales',[prosesMutasiController::class, 'showPelunasanMutasiSales']);
+Route::post('mutasi/create/pelunasan/sales',[prosesMutasiController::class, 'createPelunasanMutasiSales']);
+
+Route::delete('mutasi/delete/pelunasan/sales',[prosesMutasiController::class, 'delMutasiFromSales']);
+
 Route::get('mutasi/show/penjualan',[prosesMutasiController::class, 'showMutasiPenjualan']);
 Route::post('mutasi/generate/penjualan',[prosesMutasiController::class, 'generateMutasiPenjualan']);
+Route::post('mutasi/generate/pelunasan',[prosesMutasiController::class, 'generateMutasiPelunasan']);
 Route::patch('mutasi/edit/penjualan',[prosesMutasiController::class, 'editMutasiPenjualan']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
