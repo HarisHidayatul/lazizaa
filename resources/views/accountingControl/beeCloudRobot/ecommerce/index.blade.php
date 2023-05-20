@@ -30,7 +30,8 @@
                 <td>Jumlah (+/-)</td>
                 <td>Jumlah Diterima</td>
                 <td>Fee</td>
-                <td>Pelunasan</td>
+                <td>%</td>
+                <td>Fee Robot</td>
                 <td>Status</td>
                 <td>Action</td>
             </tr>

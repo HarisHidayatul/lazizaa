@@ -158,7 +158,7 @@ class prosesMutasiController extends Controller
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
 
-        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis.mutasiSaless.listSaless', 'salesharians.listSaless'])->get();
+        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis', 'salesharians.listSaless'])->get();
         // tanggalAll;
         $listSaless = listSales::all();
         $outletAll = doutlet::all();
@@ -176,7 +176,6 @@ class prosesMutasiController extends Controller
                         $listSalesHarians = $salesHarian->listSaless;
                         foreach ($listSalesHarians as $listSalesHarian) {
                             if ($listSalesHarian->id == $listSales->id) {
-                                $listFound = true;
                                 $idTotalRevisi = $listSalesHarian->pivot->idRevisiTotal;
                                 $totalQtyTemp = $listSalesHarian->pivot->total;
                                 if ($idTotalRevisi == '2') {
@@ -184,7 +183,15 @@ class prosesMutasiController extends Controller
                                 }
                                 $totalQty = $totalQty + $totalQtyTemp;
                                 array_push($arrayIdSalesFill, $listSalesHarian->pivot->id);
+                                // 
+                                if ($totalQty > 0) {
+                                    $listFound = true;
+                                    break;
+                                }
                             }
+                        }
+                        if ($listFound) {
+                            break;
                         }
                     }
                     if ($listFound) {
@@ -205,78 +212,39 @@ class prosesMutasiController extends Controller
         // print_r($arrayDataSales);
 
         foreach ($tanggalAlls as $eachTanggal) {
+            $tanggal = $eachTanggal->Tanggal;
+            $tanggal_baru = date('Y-m-d', strtotime($tanggal . ' -1 day'));
+
             $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
             foreach ($mutasiTransaksis as $mutasiTransaksi) {
-                $mutasiSales = $mutasiTransaksi->mutasiSaless;
-                if($mutasiSales != null){
-                    $idOutletMutasi = $mutasiSales->idOutlet;
-                    //Cari id salesFill berdasarkan listsalesId, outletId dan tanggal. Dengan ketentuan tanggal - 1 hari dari mutasi
-                    $tanggal = $eachTanggal->Tanggal;
-                    $tanggal_baru = date('Y-m-d', strtotime($tanggal . ' -1 day'));
-                    foreach ($arrayDataSales as $eachDataSales) {
-                        print_r($eachDataSales);
-                        $tanggalPembanding = $eachDataSales->Tanggal;
-                        $outletIdPembanding = $eachDataSales->outletId;
-                        $listSalesIdPembanding = $eachDataSales->listSalesId;
-                        if (strtotime($tanggal_baru) == strtotime($tanggalPembanding)) {
-                            if($outletIdPembanding == $idOutletMutasi){
-                                if($listSalesIdPembanding == $mutasiSales->idListSales){
-                                    $idSalesFill = $eachDataSales->salesFillId;
-                                    try{
-                                        $pelunasanMutasiSales = new pelunasan_mutasi_sales();
-                                        $pelunasanMutasiSales->idSalesFill = $idSalesFill;
-                                        $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
-                                        $pelunasanMutasiSales->save();
-                                    }catch(Exception $e){
-    
-                                    }
+                //Cari id salesFill berdasarkan listsalesId, outletId dan tanggal. Dengan ketentuan tanggal - 1 hari dari mutasi
+                $searchMutasi = $this->cariKlasifikasiNotes($mutasiTransaksi->trxNotes, $outletAll);
+                $idOutletSearch = $searchMutasi['idOutlet'];
+                $idListSalesSearch = $searchMutasi['idListSales'];
+                if ($idOutletSearch == 0) {
+                    continue;
+                }
+                if ($idListSalesSearch == 0) {
+                    continue;
+                }
+                print_r($searchMutasi);
+                foreach ($arrayDataSales as $eachDataSales) {
+                    $tanggalPembanding = $eachDataSales->Tanggal;
+                    $listSalesIdPembanding = $eachDataSales->listSalesId;
+                    $idOutletPembanding =  $eachDataSales->outletId;
+                    if (strtotime($tanggal_baru) == strtotime($tanggalPembanding)) {
+                        if ($listSalesIdPembanding == $idListSalesSearch) {
+                            if ($idOutletSearch == $idOutletPembanding) {
+                                $idSalesFill = $eachDataSales->salesFillId;
+                                try {
+                                    $pelunasanMutasiSales = new pelunasan_mutasi_sales();
+                                    $pelunasanMutasiSales->idSalesFill = $idSalesFill;
+                                    $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
+                                    $pelunasanMutasiSales->save();
+                                } catch (Exception $e) {
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    public function generateMutasiPenjualan(Request $request)
-    {
-        $startDate = $request->startDate;
-        $stopDate = $request->stopDate;
-        $idPenerimaList = $request->idPenerimaList;
-
-        $outletAlls = doutlet::all();
-        $listSalesAlls = listSales::all();
-
-        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
-        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
-
-        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis.penerimaLists', 'mutasiTransaksis.mutasiSaless.listSaless'])->get();
-        // tanggalAll;
-        foreach ($tanggalAlls as $eachTanggal) {
-            $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
-            if (count($mutasiTransaksis) > 0) {
-                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', $idPenerimaList);
-                if (count($mutasiTransaksis) > 0) {
-                    foreach ($mutasiTransaksis as $mutasiTransaksi) {
-                        $mutasiSales = $mutasiTransaksi->mutasiSaless;
-                        $mutasiNote = $mutasiTransaksi->trxNotes;
-                        $searchMutasi = $this->cariKlasifikasiNotes($mutasiNote, $outletAlls);
-                        $idOutletSearch = $searchMutasi['idOutlet'];
-                        $idListSalesSearch = $searchMutasi['idListSales'];
-                        if ($idOutletSearch == 0) {
-                            continue;
-                        }
-                        if ($idListSalesSearch == 0) {
-                            continue;
-                        }
-                        if ($mutasiSales == null) {
-                            $mutasiSales = new mutasi_sales();
-                        }
-                        $mutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
-                        $mutasiSales->idOutlet = $idOutletSearch;
-                        $mutasiSales->idListSales = $idListSalesSearch;
-                        $mutasiSales->save();
                     }
                 }
             }
@@ -392,77 +360,6 @@ class prosesMutasiController extends Controller
         ]);
     }
 
-    public function showMutasiPenjualan(Request $request)
-    {
-        $startDate = $request->startDate;
-        $stopDate = $request->stopDate;
-        $idPenerimaList = $request->idPenerimaList;
-
-        $outletAlls = doutlet::all()->sortBy('Nama Store');
-        $listSalesAlls = listSales::all();
-
-        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
-        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
-
-        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis.penerimaLists', 'mutasiTransaksis.mutasiSaless.listSaless'])->get();
-        // tanggalAll;
-        $dataMutasi = [];
-        $outletAll = [];
-        $listSalesAll = [];
-        foreach ($tanggalAlls as $eachTanggal) {
-            $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
-            if (count($mutasiTransaksis) > 0) {
-                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', $idPenerimaList);
-                if (count($mutasiTransaksis) > 0) {
-                    foreach ($mutasiTransaksis as $mutasiTransaksi) {
-                        $tanggalBaru = date('d/m/Y', strtotime($eachTanggal->Tanggal));
-                        $idListSales = 0;
-                        $idOutlet = 0;
-                        $idMutasiSales = 0;
-                        $mutasiSales = $mutasiTransaksi->mutasiSaless;
-                        if ($mutasiSales != null) {
-                            // @dd($mutasiSales);
-                            $idListSales = $mutasiSales->idListSales;
-                            $idOutlet = $mutasiSales->idOutlet;
-                            $idMutasiSales = $mutasiSales->id;
-                        }
-                        array_push($dataMutasi, (object)[
-                            'id' => $mutasiTransaksi->id,
-                            'trxNotes' => $mutasiTransaksi->trxNotes,
-                            'total' => $mutasiTransaksi->total,
-                            'tanggal' => $eachTanggal->Tanggal,
-                            'tanggalBaru' => $tanggalBaru,
-                            'idMutasiSales' => $idMutasiSales,
-                            'idListSales' => $idListSales,
-                            'idOutlet' => $idOutlet
-                        ]);
-                    }
-                } else {
-                    continue;
-                }
-            } else {
-                continue;
-            }
-        }
-        foreach ($outletAlls as $eachOutlet) {
-            array_push($outletAll, (object)[
-                'id' => $eachOutlet->id,
-                'outlet' => $eachOutlet['Nama Store']
-            ]);
-        }
-        foreach ($listSalesAlls as $eachListSales) {
-            array_push($listSalesAll, (object)[
-                'id' => $eachListSales->id,
-                'listSales' => $eachListSales->sales
-            ]);
-        }
-        return response()->json([
-            'dataMutasi' => $dataMutasi,
-            'outlet' => $outletAll,
-            'listSales' => $listSalesAll
-        ]);
-    }
-
     public function showPelunasanMutasiSales(Request $request)
     {
         $idSalesFills = json_decode($request->input('idSalesFill'), true); //idSalesFill disini dalam berbentu array
@@ -488,7 +385,7 @@ class prosesMutasiController extends Controller
             $total = $salesFill->total;
             $idRevisiTotal = $salesFill->idRevisiTotal;
 
-            if($idRevisiTotal == '2'){
+            if ($idRevisiTotal == '2') {
                 $total = $salesFill->totalRevisi;
             }
 
@@ -498,7 +395,7 @@ class prosesMutasiController extends Controller
             $outlet = $salesFill->salesHarians->dOutlets['Nama Store'];
             $sesi = $salesFill->salesHarians->idSesi;
 
-            array_push($dataSales,(object)[
+            array_push($dataSales, (object)[
                 'sesi' => $sesi,
                 'itemSales' => $itemSales,
                 'Tanggal' => $tanggal,
@@ -524,41 +421,6 @@ class prosesMutasiController extends Controller
     {
         //
     }
-
-    public function editMutasiPenjualan(Request $request)
-    {
-        $idListSales = $request->idListSales;
-        $idOutlet = $request->idOutlet;
-        $idMutasi = $request->idMutasi;
-        $idMutasiSales = $request->idMutasiSales;
-
-        if (($idListSales == 0) && ($idOutlet == 0)) {
-            if ($idMutasiSales > 0) {
-                $mutasiSales = mutasi_sales::find($idMutasiSales);
-                $mutasiSales->delete();
-            }
-        }
-
-        if (($idListSales > 0) && ($idOutlet > 0)) {
-            if ($idMutasiSales == 0) {
-                try {
-                    $mutasiSales = new mutasi_sales();
-                    $mutasiSales->idMutasiTransaksi = $idMutasi;
-                    $mutasiSales->idOutlet = $idOutlet;
-                    $mutasiSales->idListSales = $idListSales;
-                    $mutasiSales->save();
-                } catch (Exception $e) {
-                    $mutasiSales = mutasi_sales::onlyTrashed()->where('idMutasiTransaksi', '=', $idMutasi)->restore();
-                    $mutasiSales = mutasi_sales::where('idMutasiTransaksi', '=', $idMutasi)->first();
-                    $mutasiSales->idMutasiTransaksi = $idMutasi;
-                    $mutasiSales->idOutlet = $idOutlet;
-                    $mutasiSales->idListSales = $idListSales;
-                    $mutasiSales->save();
-                }
-            }
-        }
-    }
-
     /**
      * Update the specified resource in storage.
      *

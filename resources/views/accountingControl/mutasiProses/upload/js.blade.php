@@ -196,7 +196,13 @@
             }
 
             // mengonversi menjadi integer
-            return parseInt(cleanedData.replace('.', ''));
+            var valueData = parseInt(cleanedData.replace('.', ''));
+
+            if(data.endsWith('CR')){
+                return (-1)*valueData;
+            }else{
+                return valueData;
+            }
         }
     </script>
 @endsection

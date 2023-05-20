@@ -296,11 +296,18 @@ Route::get('robot/pembayaran/show/all', [robotController::class, 'showPembayaran
 Route::post('robot/pembayaran/create', [robotController::class, 'createRobotPembayaran']);
 Route::delete('robot/pembayaran/delete', [robotController::class, 'deleteRobotPembayaran']);
 
+Route::get('robot/ecommerce/show/all',[robotController::class, 'showEcommerce']);
+Route::post('robot/ecommerce/create', [robotController::class, 'createRobotEcommerce']);
+Route::delete('robot/ecommerce/delete',[robotController::class,'deleteRobotEcommerce']);
+
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
 Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotPembelian']);
 
 Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPembayaran']);
 Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);
+
+Route::get('robot/api/ecommerce/show',[robotController::class,'showRobotECommerce']);
+Route::get('robot/api/ecommerce/done/{id}', [robotController::class, 'doneRobotECommerce']);
 
 Route::post('mutasi/upload', [prosesMutasiController::class, 'createMutasi']);
 Route::get('mutasi/show/all',[prosesMutasiController::class, 'showMutasiAll']);
@@ -309,10 +316,7 @@ Route::post('mutasi/create/pelunasan/sales',[prosesMutasiController::class, 'cre
 
 Route::delete('mutasi/delete/pelunasan/sales',[prosesMutasiController::class, 'delMutasiFromSales']);
 
-Route::get('mutasi/show/penjualan',[prosesMutasiController::class, 'showMutasiPenjualan']);
-Route::post('mutasi/generate/penjualan',[prosesMutasiController::class, 'generateMutasiPenjualan']);
 Route::post('mutasi/generate/pelunasan',[prosesMutasiController::class, 'generateMutasiPelunasan']);
-Route::patch('mutasi/edit/penjualan',[prosesMutasiController::class, 'editMutasiPenjualan']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
@@ -439,9 +443,7 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/mutasiProcess/upload', function () {
         return view('accountingControl.mutasiProses.upload.index');
     });
-    Route::get('accounting/mutasiProcess/penjualan', function () {
-        return view('accountingControl.mutasiProses.penjualan.index');
-    });
+    
     Route::get('accounting/checkExist', function () {
         return view('accountingControl.dataDiIsi.index');
     });

@@ -58,6 +58,14 @@ class tanggalAll extends Model
     public function reimburses(){
         return $this->hasMany(reimburse::class,'idTanggal','id');
     }
+
+    public function robotTempECommerces(){
+        return $this->hasMany(robot_temp_e_commerce::class,'idTanggal','id');
+    }
+
+    public function robotECommerceStatuss(){
+        return $this->hasMany(robot_ecommerce_status::class,'idTanggal','id');
+    }
     
     protected $fillable = [
         'Tanggal',

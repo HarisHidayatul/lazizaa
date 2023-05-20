@@ -22,7 +22,8 @@
                 <th>Item Sales</th>
                 <th>Type</th>
                 <th>Verifikasi</th>
-                <th>Edit</th>
+                <th>keywoard bee</th>
+                <th>item bee</th>
             </tr>
         </thead>
         <tbody>

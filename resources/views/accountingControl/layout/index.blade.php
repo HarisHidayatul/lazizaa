@@ -149,7 +149,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" id="eCommerceRobotSubMenu">
+                                <a href="{{ url('accounting/robot/ecommerce') }}" class="nav-link" id="eCommerceRobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>E-Commerce</p>
                                 </a>
@@ -187,12 +187,6 @@
                                 <a href="{{ url('accounting/mutasiProcess/upload') }}" class="nav-link" id="uploadMutasiSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Upload Mutasi</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('accounting/mutasiProcess/penjualan') }}" class="nav-link" id="penjualanMutasiSubMenu">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Penjualan</p>
                                 </a>
                             </li>
                         </ul>
