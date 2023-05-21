@@ -4,8 +4,11 @@
     <script>
         var valueTotalAll = [];
         var idSalesFill = [];
+        var selIndexSalesFill = 0;
 
         var arrayCSV = [];
+
+        var idMutasiArray = [];
 
         var objAll = '';
 
@@ -34,27 +37,68 @@
             document.getElementById('startDate').value = formattedDate;
             document.getElementById('stopDate').value = formattedDate;
 
+            document.getElementById('startDate2').value = formattedDate;
+            document.getElementById('stopDate2').value = formattedDate;
+
             document.getElementById('verifikasiSalesTabMenu').classList.add("active");
 
             document.getElementById('tittleContent').innerHTML = "Verifikasi Sales";
             document.getElementById('linkContent').innerHTML = "Verifikasi Sales";
             getAllOutlet();
             getListSales();
+
+            getPenerima();
         })
 
-        function editItem(index) {
+        function setGenerateTransaksi() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
             $.ajax({
-                url: "{{ url('salesHarian/update/verifikasi') }}",
-                type: 'get',
+                url: "{{ url('mutasi/generate/pelunasan') }}",
+                type: 'POST',
                 data: {
-                    idSalesFill: idSalesFill[index],
-                    totalDiterima: parseInt(valueTotalAll[index].rawValue)
-                },
-                success: function(response) {
+                    startDate: startDate,
+                    stopDate: stopDate
+                }, // kirim data sebagai JSON string
+                success: function(data) {
                     getListAllFilter();
                 },
-                error: function(req, err) {
-                    console.log(err);
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function getPenerima() {
+            $.ajax({
+                url: "{{ url('setoran/penerima/show') }}",
+                type: 'GET',
+                data: {
+                    // data: JSON.stringify(data)
+                }, // kirim data sebagai JSON string
+                success: function(data) {
+                    var obj = JSON.parse(JSON.stringify(data));
+                    console.log(data);
+                    var dataHtml = '';
+                    for (var i = 0; i < obj.penerimaListArray.length; i++) {
+                        // <option value=""></option>
+                        dataHtml += '<option value="';
+                        dataHtml += obj.penerimaListArray[i].id;
+                        dataHtml += '">';
+                        dataHtml += obj.penerimaListArray[i].namaRekening + ' ' + obj.penerimaListArray[i]
+                            .nomorRekening;
+                        dataHtml += '</option>';
+                    }
+                    $('#selPenerima').empty().append(dataHtml);
+                    // alert('Data berhasil diposting!');
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
                 }
             });
         }
@@ -110,9 +154,12 @@
                                     historyAll += obj.itemSales[i].data[j].data[k].total.toLocaleString();
                                     historyAll += '</td>';
                                     historyAll += '<td>';
-                                    historyAll += '<input class="inputTotal" name="inputTotal" ';
-                                    // historyAll += obj.itemSales[i].data[j].data[k].jumlahDiterima;
-                                    historyAll += '>';
+                                    historyAll +=
+                                        '<a href="#" data-toggle="modal" data-target="#mutasiModalCenter" onclick="getMutasiFromSales(';
+                                    historyAll += loopCount;
+                                    historyAll += ');">';
+                                    historyAll += obj.itemSales[i].data[j].data[k].diterima.toLocaleString();
+                                    historyAll += '</a>';
                                     historyAll += '</td>';
                                     historyAll += '<td>';
                                     historyAll += obj.itemSales[i].data[j].data[k].selisih.toLocaleString();
@@ -123,13 +170,6 @@
                                         100) / (
                                         obj.itemSales[i].data[j].data[k].total));
                                     historyAll += '%';
-                                    historyAll += '</td>';
-
-                                    historyAll += '<td>';
-                                    historyAll +=
-                                        '<button type="button" class="btn btn-secondary" onClick="editItem(' +
-                                        loopCount +
-                                        ');">Submit</button>';
                                     historyAll += '</td>';
                                     historyAll += '</tr>';
 
@@ -152,31 +192,234 @@
                         }
                     }
                     $('#statusInputTabel>tbody').empty().append(historyAll);
-
-                    var inputTotalElement = document.getElementsByName('inputTotal');
-                    loopCount = 0;
-                    for (var i = 0; i < inputTotalElement.length; i++) {
-                        valueTotalAll.push(new AutoNumeric(inputTotalElement[i], {
-                            decimalPlaces: '0'
-                        }));
-                    }
-                    for (var i = 0; i < obj.itemSales.length; i++) {
-                        for (var j = 0; j < obj.itemSales[i].data.length; j++) {
-                            for (var k = 0; k < obj.itemSales[i].data[j].data.length; k++) {
-                                if ((idListSales == 0) || (idListSales == obj.itemSales[i].data[j].data[k]
-                                        .idListSales)) {
-                                    valueTotalAll[loopCount].set(obj.itemSales[i].data[j].data[k]
-                                        .diterima);
-                                    loopCount++;
-                                }
-                            }
-                        }
-                    }
                 },
                 error: function(req, err) {
                     console.log(err);
                 }
             })
+        }
+
+        function setMutasiFromSales() {
+            var mutasiCheck = document.getElementsByName('mutasiCheck');
+            var idSendMutasi = [];
+            for (var i = 0; i < mutasiCheck.length; i++) {
+                if (!mutasiCheck[i].disabled) {
+                    if (mutasiCheck[i].checked) {
+                        idSendMutasi.push(idMutasiArray[i]);
+                    }
+                }
+            }
+            var arraySend = {
+                idSendMutasi: idSendMutasi,
+                idSalesFill: idSalesFill[selIndexSalesFill]
+            }
+
+            console.log(arraySend);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            $.ajax({
+                url: "{{ url('mutasi/create/pelunasan/sales') }}",
+                type: 'POST',
+                data: {
+                    data: JSON.stringify(arraySend)
+                }, // kirim data sebagai JSON string
+                success: function(data) {
+                    var obj = JSON.parse(JSON.stringify(data));
+                    var dataHTML = '';
+                    console.log(obj);
+                    getListAllFilter();
+                    printMutasiFromSales();
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function delMutasiFromSales(idPelunasanMutasiSales) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            $.ajax({
+                url: "{{ url('mutasi/delete/pelunasan/sales') }}",
+                type: 'DELETE',
+                data: {
+                    idPelunasanMutasiSales: idPelunasanMutasiSales
+                }, // kirim data sebagai JSON string
+                success: function(data) {
+                    var obj = JSON.parse(JSON.stringify(data));
+                    var dataHTML = '';
+                    console.log(obj);
+                    getListAllFilter();
+                    printMutasiFromSales();
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function getMutasiFromSales(index) {
+            selIndexSalesFill = index;
+            printMutasiFromSales();
+        }
+
+        function printMutasiFromSales() {
+            $.ajax({
+                url: "{{ url('mutasi/show/pelunasan/sales') }}",
+                type: 'GET',
+                data: {
+                    idSalesFill: JSON.stringify(idSalesFill[selIndexSalesFill])
+                }, // kirim data sebagai JSON string
+                success: function(data) {
+                    var obj = JSON.parse(JSON.stringify(data));
+                    var dataHTML = '';
+                    console.log(data);
+                    for (var i = 0; i < obj.dataMutasi.length; i++) {
+                        dataHTML += '<tr>';
+                        dataHTML += '<td>';
+                        dataHTML += obj.dataMutasi[i].tanggalBaru;
+                        dataHTML += '</td>';
+                        dataHTML += '<td>';
+                        dataHTML += obj.dataMutasi[i].trxNotes;
+                        dataHTML += '</td>';
+                        dataHTML += '<td>';
+                        dataHTML += obj.dataMutasi[i].total.toLocaleString();
+                        dataHTML += '</td>';
+                        dataHTML += '<td>';
+                        // <button type="button" class="btn btn-secondary" onclick="getListAllFilter()">Filter Date</button>
+                        dataHTML +=
+                            '<button type="button" class="btn btn-secondary" onclick="delMutasiFromSales(';
+                        dataHTML += obj.dataMutasi[i].idPelunasanMutasiSales;
+                        dataHTML += ')">Delete</button>';
+                        dataHTML += '</td>';
+                        dataHTML += '</tr>';
+                    }
+                    $('#tabelMutasiDipilih>tbody').empty().append(dataHTML);
+
+                    for (var i = 0; i < idMutasiArray.length; i++) {
+                        var mutasiFound = false;
+                        for (var j = 0; j < obj.dataMutasi.length; j++) {
+                            if (idMutasiArray[i] == obj.dataMutasi[j].id) {
+                                mutasiFound = true;
+                                break;
+                            }
+                        }
+                        if (mutasiFound) {
+                            document.getElementsByName('mutasiCheck')[i].disabled = true;
+                            document.getElementsByName('mutasiCheck')[i].checked = true;
+                        } else {
+                            document.getElementsByName('mutasiCheck')[i].disabled = false;
+                            document.getElementsByName('mutasiCheck')[i].checked = false;
+                        }
+                    }
+
+                    var dataSalesFill = '';
+                    for (var i = 0; i < obj.dataSales.length; i++) {
+                        dataSalesFill += '<tr>';
+
+                        dataSalesFill += '<td>';
+                        dataSalesFill += obj.dataSales[i].TanggalBaru;
+                        dataSalesFill += '<td>';
+
+                        dataSalesFill += '<td>';
+                        dataSalesFill += obj.dataSales[i].outlet;
+                        dataSalesFill += '<td>';
+
+                        dataSalesFill += '<td>';
+                        dataSalesFill += obj.dataSales[i].sesi;
+                        dataSalesFill += '<td>';
+
+                        dataSalesFill += '<td>';
+                        dataSalesFill += obj.dataSales[i].itemSales;
+                        dataSalesFill += '<td>';
+
+                        dataSalesFill += '<td ';
+                        if (obj.dataSales[i].idRevisiTotal == '2') {
+                            dataSalesFill += 'style="color:tomato;" ';
+                        } else if (obj.dataSales[i].idRevisiTotal == '3') {
+                            dataSalesFill += 'style="color:rgb(30, 206, 9);" ';
+                        }
+                        dataSalesFill += '>';
+                        dataSalesFill += obj.dataSales[i].total.toLocaleString();
+                        dataSalesFill += '<td>';
+
+                        dataSalesFill += '</tr>';
+                    }
+                    $('#tabelSalesDipilih>tbody').empty().append(dataSalesFill);
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function getTableMutasi() {
+            // var accessHistory = document.getElementById('selDate').value;
+            var startDate = document.getElementById('startDate2').value;
+            var stopDate = document.getElementById('stopDate2').value;
+            var idPenerimaList = document.getElementById('selPenerima').value;
+            var urlAll = "{{ url('mutasi/show/all') }}";
+            $.ajax({
+                url: urlAll,
+                type: 'get',
+                data: {
+                    idPenerimaList: idPenerimaList,
+                    startDate: startDate,
+                    stopDate: stopDate
+                },
+                success: function(response) {
+                    var objAllData = JSON.parse(JSON.stringify(response));
+                    var historyAll = "";
+                    idMutasiArray.length = 0;
+                    console.log(objAllData);
+                    for (var i = 0; i < objAllData.dataMutasi.length; i++) {
+                        historyAll += '<tr onclick="clickMutasi(';
+                        historyAll += i;
+                        historyAll += ');">';
+                        historyAll += '<td>';
+                        historyAll += '<input type="checkbox" name="mutasiCheck">';
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += objAllData.dataMutasi[i].tanggalBaru;
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += objAllData.dataMutasi[i].trxNotes;
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += objAllData.dataMutasi[i].total.toLocaleString();
+                        historyAll += '</td>';
+
+                        historyAll += '</tr>';
+
+                        idMutasiArray.push(objAllData.dataMutasi[i].id);
+                    }
+                    $('#tabelMutasi>tbody').empty().append(historyAll);
+                    printMutasiFromSales();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function clickMutasi(index) {
+            var checkedMutasi = document.getElementsByName('mutasiCheck')[index].checked;
+            var disableMutasi = document.getElementsByName('mutasiCheck')[index].disabled;
+            if (!disableMutasi) {
+                if (checkedMutasi) {
+                    document.getElementsByName('mutasiCheck')[index].checked = false;
+                } else {
+                    document.getElementsByName('mutasiCheck')[index].checked = true;
+                }
+            }
         }
 
         function downloadCSV() {

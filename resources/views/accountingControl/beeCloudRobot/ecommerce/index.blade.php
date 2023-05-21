@@ -1,4 +1,4 @@
-@extends('accountingControl.beeCloudRobot.pembelian.css')
+@extends('accountingControl.beeCloudRobot.ecommerce.css')
 
 @section('robotBody')
 <div class="d-flex justify-content-between">
@@ -27,11 +27,12 @@
             <tr>
                 <td>Tanggal</td>
                 <td>Outlet</td>
-                <td>Sesi</td>
-                <td>Item HPP</td>
-                <td>Qty</td>
-                <td>Satuan</td>
-                <td>Harga Satuan</td>
+                <td>List Sales</td>
+                <td>Jumlah (+/-)</td>
+                <td>Jumlah Diterima</td>
+                <td>Fee</td>
+                <td>%</td>
+                <td>Fee Robot</td>
                 <td>Status</td>
                 <td>Action</td>
             </tr>

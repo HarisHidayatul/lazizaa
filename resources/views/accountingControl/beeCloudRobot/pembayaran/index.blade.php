@@ -8,6 +8,7 @@
             <option value="0">Semua</option>
             <option value="1">Pending</option>
             <option value="2">Sukses</option>
+            <option value="3">Belum Proses</option>
         </select>
     </div>
     <div class="d-flex justify-content-right">

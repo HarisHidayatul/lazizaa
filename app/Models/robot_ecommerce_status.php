@@ -20,12 +20,17 @@ class robot_ecommerce_status extends Model
         return $this->belongsTo(status_robot::class,'idStatusRobot','id');
     }
 
-    public function salesFills(){
-        return $this->belongsTo(salesFill::class,'idSalesFill','id');
+    public function tanggalAlls(){
+        return $this->belongsTo(tanggalAll::class,'idTanggal','id');
+    }
+
+    public function dOutlets(){
+        return $this->belongsTo(doutlet::class,'idOutlet','id');
     }
 
     protected $fillable = [
-        'idSalesFill',
+        'idTanggal',
+        'idOutlet',
         'idPemverifikasi',
         'idStatusRobot',
         'created_at',

@@ -62,6 +62,8 @@ class doutlet extends Model
         'gudangBee',
         'kasBee',
         'keywoardBee',
+        'kodeShopee',
+        'kodeGoresto',
         'created_at',
         'updated_at',
         'deleted_at'

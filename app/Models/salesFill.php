@@ -17,6 +17,14 @@ class salesFill extends Model
         return $this->belongsTo(salesharian::class,'idSales','id');
     }
 
+    public function listSaless(){
+        return $this->belongsTo(listSales::class,'idListSales','id');
+    }
+
+    public function pelunasanMutasiSaless(){
+        return $this->hasMany(pelunasan_mutasi_sales::class,'idSalesFill','id');
+    }
+
     protected $fillable = [
         'idListSales',
         'idSales',

@@ -18,6 +18,10 @@ class tanggalAll extends Model
         return $this->hasMany(salesharian::class,'idTanggal','id');
     }
 
+    public function mutasiTransaksis(){
+        return $this->hasMany(mutasi_transaksi::class,'idTanggal','id');
+    }
+
     public function salesHarianReimburses(){
         return $this->hasMany(sales_harian_reimburse::class,'idTanggal','id');
     }
@@ -53,6 +57,14 @@ class tanggalAll extends Model
 
     public function reimburses(){
         return $this->hasMany(reimburse::class,'idTanggal','id');
+    }
+
+    public function robotTempECommerces(){
+        return $this->hasMany(robot_temp_e_commerce::class,'idTanggal','id');
+    }
+
+    public function robotECommerceStatuss(){
+        return $this->hasMany(robot_ecommerce_status::class,'idTanggal','id');
     }
     
     protected $fillable = [

@@ -90,11 +90,24 @@
                             dataTable += '</td>';
 
                             dataTable += '<td class="d-flex justify-content-center">';
-                            dataTable += '<input class="form-check-input" name="checkBoxVerif" type="checkbox" ';
-                            if(obj.listType[i].listSales[j].verif != '0'){
+                            dataTable +=
+                                '<input class="form-check-input" name="checkBoxVerif" type="checkbox" ';
+                            if (obj.listType[i].listSales[j].verif != '0') {
                                 dataTable += ' checked';
                             }
                             dataTable += '>';
+                            dataTable += '</td>';
+
+                            dataTable += '<td>';
+                            dataTable += '<input type="text" class="form-control" value="';
+                            dataTable += obj.listType[i].listSales[j].keywoardBee;
+                            dataTable += '" name="keywoardBee">';
+                            dataTable += '</td>';
+
+                            dataTable += '<td>';
+                            dataTable += '<input type="text" class="form-control" value="';
+                            dataTable += obj.listType[i].listSales[j].itemBee;
+                            dataTable += '" name="itemBee">';
                             dataTable += '</td>';
 
                             dataTable += '<td>';
@@ -113,7 +126,7 @@
 
                     var elementDropDownItem = document.getElementsByName('dropDownTypeEdit');
 
-                    for(var i =0;i<dropDownIdEdit.length;i++){
+                    for (var i = 0; i < dropDownIdEdit.length; i++) {
                         elementDropDownItem[i].value = dropDownIdEdit[i];
                     }
                 },
@@ -123,9 +136,9 @@
             });
         }
 
-        function editItem(index){
+        function editItem(index) {
             var butuhVerifikasi = '0';
-            if(document.getElementsByName('checkBoxVerif')[index].checked){
+            if (document.getElementsByName('checkBoxVerif')[index].checked) {
                 butuhVerifikasi = '1';
             }
             $.ajax({
@@ -134,6 +147,8 @@
                 data: {
                     typeSales: document.getElementsByName('dropDownTypeEdit')[index].value,
                     sales: document.getElementsByName('inputEdit')[index].value,
+                    keywoardBee: document.getElementsByName('keywoardBee')[index].value,
+                    itemBee: document.getElementsByName('itemBee')[index].value,
                     butuhVerifikasi: butuhVerifikasi
                 },
                 success: function(response) {

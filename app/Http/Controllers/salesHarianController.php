@@ -7,6 +7,7 @@ use App\Models\dUser;
 use App\Models\listSales;
 use App\Models\listSesi;
 use App\Models\outletListSales;
+use App\Models\pelunasan_mutasi_sales;
 use App\Models\perevisiSales;
 use App\Models\reqItemSales;
 use App\Models\salesFill;
@@ -300,7 +301,7 @@ class salesHarianController extends Controller
 
     public function showVerifOutlet($idOutlet, $fromDate, $toDate)
     {
-        $tanggalAll = tanggalAll::with('salesharians.listSaless')->whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->with('salesharians.listSaless')->get();
         // @dd($tanggalAll[0]->salesharians);
         $listSaless = listSales::where('butuhVerifikasi', '>', 0)->get();
         $outletAll = doutlet::all();
@@ -328,13 +329,17 @@ class salesHarianController extends Controller
                             if ($listSalesHarian->id == $listSales->id) {
                                 $listFound = true;
                                 $idTotalRevisi = $listSalesHarian->pivot->idRevisiTotal;
+                                $idSalesFill = $listSalesHarian->pivot->id;
+                                $pelunasanMutasiSaless = pelunasan_mutasi_sales::where('idSalesFill','=',$idSalesFill)->with('mutasiTransaksis')->get();
+                                foreach($pelunasanMutasiSaless as $pelunasanMutasiSales){
+                                    $jumlahDiterima = $jumlahDiterima + $pelunasanMutasiSales->mutasiTransaksis->total;
+                                }
                                 $totalQtyTemp = $listSalesHarian->pivot->total;
                                 if ($idTotalRevisi == '2') {
                                     $idRevisiTotal = $idTotalRevisi;
                                     $totalQtyTemp = $listSalesHarian->pivot->totalRevisi;
                                 }
                                 array_push($arrayTotal, $totalQtyTemp);
-                                $jumlahDiterima = $jumlahDiterima + $listSalesHarian->pivot->totalDiterima;
                                 $totalQty = $totalQty + $totalQtyTemp;
 
                                 array_push($arrayIdSalesFill, $listSalesHarian->pivot->id);
@@ -358,9 +363,100 @@ class salesHarianController extends Controller
                         // print_r($arrayList);
                     }
                 }
+
+                $arrayList2 = [];
+                foreach($arrayList as $loopList){
+                    //Mengelompokkan gopay dan gofood kedalam satu wadah
+                    $idListSalesTemp = $loopList->idListSales;
+                    $listSalesTemp = $loopList->listSales;
+                    $totalTemp = $loopList->total;
+                    $idTotalRevisiTemp = $loopList->idTotalRevisi;
+                    $diterimaTemp = $loopList->diterima;
+                    $arrayTotalTemp = [];
+                    $idSalesFillTemp = [];
+
+                    foreach($loopList->arrayTotal as $loopArrayTotal){
+                        // $loopList->arrayTotal
+                        array_push($arrayTotalTemp, $loopArrayTotal);
+                    }
+
+                    foreach($loopList->idSalesFill as $loopArrayIdSalesFill){
+                        array_push($idSalesFillTemp, $loopArrayIdSalesFill);
+                    }
+                    
+                    if($loopList->idListSales == 6){
+                        //ID 6 merupakan ID goFood
+                        foreach($arrayList as $loopList2){
+                            //Cari yang memiliki ID 16 atau gopay
+                            if($loopList2->idListSales == 16){
+                                $listSalesTemp .= ' / ';
+                                $listSalesTemp .= $loopList2->listSales;
+                                $totalTemp = $totalTemp + $loopList2->total;
+                                $diterimaTemp = $diterimaTemp + $loopList2->diterima;
+
+                                foreach($loopList2->arrayTotal as $loopArrayTotal2){
+                                    // $loopList->arrayTotal
+                                    array_push($arrayTotalTemp, $loopArrayTotal2);
+                                }
+            
+                                foreach($loopList2->idSalesFill as $loopArrayIdSalesFill2){
+                                    array_push($idSalesFillTemp, $loopArrayIdSalesFill2);
+                                }
+
+                                if($loopList2->idTotalRevisi == 2){
+                                    $idTotalRevisiTemp = 2;
+                                }
+                            }
+                        }
+                    }
+                    else if($loopList->idListSales == 7){
+                        //ID 6 merupakan ID grab food
+                        foreach($arrayList as $loopList2){
+                            //Cari yang memiliki ID 17 atau ovo
+                            if($loopList2->idListSales == 17){
+                                $listSalesTemp .= ' / ';
+                                $listSalesTemp .= $loopList2->listSales;
+                                $totalTemp = $totalTemp + $loopList2->total;
+                                $diterimaTemp = $diterimaTemp + $loopList2->diterima;
+
+                                foreach($loopList2->arrayTotal as $loopArrayTotal2){
+                                    // $loopList->arrayTotal
+                                    array_push($arrayTotalTemp, $loopArrayTotal2);
+                                }
+            
+                                foreach($loopList2->idSalesFill as $loopArrayIdSalesFill2){
+                                    array_push($idSalesFillTemp, $loopArrayIdSalesFill2);
+                                }
+
+                                if($loopList2->idTotalRevisi == 2){
+                                    $idTotalRevisiTemp = 2;
+                                }
+                            }
+                        }
+                    }
+                    else if($loopList->idListSales == 16){
+                        //ID 16 merupakan ID gopay
+                        continue;
+                    }
+                    else if($loopList->idListSales == 17){
+                        //ID 17 merupakan ID ovo
+                        continue;
+                    }
+                    $selisih = $totalTemp - $diterimaTemp;
+                    array_push($arrayList2, (object)[
+                        'idListSales' => $idListSalesTemp,
+                        'listSales' => $listSalesTemp,
+                        'idTotalRevisi' => $idTotalRevisiTemp,
+                        'total' => $totalTemp,
+                        'arrayTotal' => $arrayTotalTemp,
+                        'diterima' => $diterimaTemp,
+                        'selisih' => $selisih,
+                        'idSalesFill' => $idSalesFillTemp
+                    ]);
+                }
                 array_push($salesOutlet, (object)[
                     'outlet' => $eachOutlet['Nama Store'],
-                    'data' => $arrayList
+                    'data' => $arrayList2
                 ]);
                 // @dd($salesHarian);
             }

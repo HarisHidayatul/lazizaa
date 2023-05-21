@@ -113,7 +113,9 @@ class typeSalesController extends Controller
                 array_push($arrayListSales, (object)[
                     'id' => $typeSales[$i]->listSaless[$j]['id'],
                     'sales' => $typeSales[$i]->listSaless[$j]['sales'],
-                    'verif' => $typeSales[$i]->listSaless[$j]['butuhVerifikasi']
+                    'verif' => $typeSales[$i]->listSaless[$j]['butuhVerifikasi'],
+                    'keywoardBee' => $typeSales[$i]->listSaless[$j]['keywoardBee'],
+                    'itemBee' => $typeSales[$i]->listSaless[$j]['itemBee']
                 ]);
             }
             array_push($arrayTypeSales, (object)[
@@ -186,7 +188,9 @@ class typeSalesController extends Controller
         $listSales->update([
             'typeSales' => $request->typeSales,
             'sales' => $request->sales,
-            'butuhVerifikasi' => $request->butuhVerifikasi
+            'butuhVerifikasi' => $request->butuhVerifikasi,
+            'keywoardBee' => $request->keywoardBee,
+            'itemBee' => $request->itemBee
         ]);
         echo 1;
         // @dd($listSales);
