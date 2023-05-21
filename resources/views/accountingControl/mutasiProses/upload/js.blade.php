@@ -48,7 +48,7 @@
                     [
                         convertToDateFormat(transaksiArray[i][0]),
                         keterangan,
-                        convertToInteger(transaksiArray[i][3]) / 100
+                        total
                     ]
                 );
             }
