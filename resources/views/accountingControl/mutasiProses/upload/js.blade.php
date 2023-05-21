@@ -24,9 +24,13 @@
             sendArray.length = 0;
             for (var i = 0; i < transaksiArray.length; i++) {
                 var keterangan = transaksiArray[i][1];
+                var total = (convertToInteger(transaksiArray[i][3]) / 100);
+                if(transaksiArray[i][4] == 'DB'){
+                    total = (-1) * total;
+                }
                 if (!transaksiArray[i][1].includes('TRSF')) {
                     keterangan += ' ' + convertToDateFormat(transaksiArray[i][0]) + '/' + tahun;
-                    keterangan += ' ' + (convertToInteger(transaksiArray[i][3]) / 100);
+                    keterangan += ' ' + total;
                 }
                 dataTable += '<tr>';
                 dataTable += '<td>';
@@ -36,7 +40,7 @@
                 dataTable += keterangan;
                 dataTable += '</td>';
                 dataTable += '<td>';
-                dataTable += (convertToInteger(transaksiArray[i][3]) / 100).toLocaleString();
+                dataTable += total.toLocaleString();
                 dataTable += '</td>';
                 dataTable += '</tr>';
                 countData++;
@@ -199,8 +203,12 @@
             var valueData = parseInt(cleanedData.replace('.', ''));
 
             if(data.endsWith('CR')){
+                return valueData;
+            }
+            else if(data.endsWith('DB')){
                 return (-1)*valueData;
-            }else{
+            }
+            else{
                 return valueData;
             }
         }
