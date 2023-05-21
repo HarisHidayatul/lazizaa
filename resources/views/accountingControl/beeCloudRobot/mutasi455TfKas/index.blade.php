@@ -1,14 +1,13 @@
-@extends('accountingControl.beeCloudRobot.pembelian.css')
+@extends('accountingControl.beeCloudRobot.mutasi455TfKas.css')
 
 @section('robotBody')
 <div class="d-flex justify-content-between">
     <div>
-        <select name="" id="selOutlet"></select>
+        <select name="" id="selPenerima"></select>
         <select name="" id="selFilter">
             <option value="0">Semua</option>
             <option value="1">Pending</option>
             <option value="2">Sukses</option>
-            <option value="3">Belum Proses</option>
         </select>
     </div>
     <div class="d-flex justify-content-right">
@@ -26,12 +25,11 @@
         <thead>
             <tr>
                 <td>Tanggal</td>
-                <td>Outlet</td>
-                <td>Sesi</td>
-                <td>Item HPP</td>
-                <td>Qty</td>
-                <td>Satuan</td>
-                <td>Harga Satuan</td>
+                <td>Keterangan</td>
+                <td>Klasifikasi</td>
+                <td>Debet</td>
+                <td>Kredit</td>
+                <td>Cabang</td>
                 <td>Status</td>
                 <td>Action</td>
             </tr>

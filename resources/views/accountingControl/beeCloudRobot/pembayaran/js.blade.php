@@ -116,6 +116,12 @@
                                             continue;
                                         }
                                     }
+                                    if(selectFilter == 3){
+                                        if (objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                            .dataRobot.length != 0) {
+                                            continue;
+                                        }
+                                    }
 
                                     var lengthPatty = objAllData.allData[i].dataHistory[j].pattyCash[k]
                                         .pattyCash.length;

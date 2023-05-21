@@ -577,6 +577,43 @@ class robotController extends Controller
         ]);
     }
 
+    public function showMutasi455TfKas(Request $request){
+        $idPenerima = $request->idPenerima;
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets','mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless')->get();
+        $dataMutasi = [];
+        
+        foreach($tanggalAll as $loopTanggal){
+            $tanggalDDmmYY = date('d/m/Y', strtotime($loopTanggal->Tanggal));
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList','=',$idPenerima);
+            foreach($mutasiTransaksis as $loopMutasi){
+                $pelunasanMutasiSaless = $loopMutasi->pelunasanMutasiSaless;
+                if($pelunasanMutasiSaless != null){
+                    $kredit = 0;
+                    $debit = 0;
+                    if($loopMutasi->total >0){
+                        $debit = $loopMutasi->total;
+                    }else{
+                        $kredit = (-1)*$loopMutasi->total;
+                    }
+                    array_push($dataMutasi,(object)[
+                        'tanggal' => $tanggalDDmmYY,
+                        'klasifikasi' => $pelunasanMutasiSaless->salesFills->listSaless['sales'],
+                        'cabang' => $pelunasanMutasiSaless->salesFills->salesHarians->dOutlets['Nama Store'],
+                        'kredit' => $kredit,
+                        'debit' => $debit,
+                        'keterangan' => $loopMutasi->trxNotes,
+                    ]);
+                }
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'data' => $dataMutasi
+        ]);
+    }
+
     public function createRobotPembelian(Request $request){
         $idPattyHarian = $request->idPattyHarian;
         $idPemverifikasi = $request->idPemverifikasi;

@@ -69,6 +69,7 @@
                                             if (objAllData.allData[i].dataHistory[j].pattyCash[k]
                                                 .dataRobot[m].status == 'pending') {
                                                 foundPending = true;
+                                                break;
                                             }
                                         }
                                         if (!foundPending) {
@@ -86,9 +87,17 @@
                                             if (objAllData.allData[i].dataHistory[j].pattyCash[k]
                                                 .dataRobot[m].status == 'sukses') {
                                                 foundSukses = true;
+                                                break;
                                             }
                                         }
                                         if (!foundSukses) {
+                                            continue;
+                                        }
+                                    }
+                                    if(selectFilter == 3){
+                                        var foundSukses = false;
+                                        if (objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                            .dataRobot.length != 0) {
                                             continue;
                                         }
                                     }

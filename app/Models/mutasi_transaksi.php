@@ -23,6 +23,10 @@ class mutasi_transaksi extends Model
         return $this->hasOne(mutasi_sales::class,'idMutasiTransaksi','id');
     }
 
+    public function pelunasanMutasiSaless(){
+        return $this->hasOne(pelunasan_mutasi_sales::class,'idMutasiTransaksi','id');
+    }
+
     public function tanggalAlls(){
         return $this->belongsTo(tanggalAll::class,'idTanggal','id');
     }

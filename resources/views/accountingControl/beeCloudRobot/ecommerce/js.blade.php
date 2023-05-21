@@ -83,12 +83,46 @@
                     // idSalesFill.length = 0;
                     var loopCount = 0;
                     var firstLoop = false;
+                    var selectFilter = document.getElementById('selFilter').value;
                     allDataSend.length = 0;
                     for (var i = 0; i < obj.itemSales.length; i++) {
                         for (var j = 0; j < obj.itemSales[i].data.length; j++) {
                             firstLoop = true;
                             var arrayTempSend = [];
                             for (var k = 0; k < obj.itemSales[i].data[j].data.length; k++) {
+                                if (selectFilter == 1) {
+                                    var foundSukses = false;
+                                    if (obj.itemSales[i].data[j].dataRobot.length == 0) {
+                                        continue;
+                                    }
+                                    for (var m = 0; m < obj.itemSales[i].data[j].dataRobot.length; m++) {
+                                        if (obj.itemSales[i].data[j].dataRobot[m].status == 'pending') {
+                                            foundSukses = true;
+                                        }
+                                    }
+                                    if (!foundSukses) {
+                                        continue;
+                                    }
+                                }
+                                if (selectFilter == 2) {
+                                    var foundSukses = false;
+                                    if (obj.itemSales[i].data[j].dataRobot.length == 0) {
+                                        continue;
+                                    }
+                                    for (var m = 0; m < obj.itemSales[i].data[j].dataRobot.length; m++) {
+                                        if (obj.itemSales[i].data[j].dataRobot[m].status == 'sukses') {
+                                            foundSukses = true;
+                                        }
+                                    }
+                                    if (!foundSukses) {
+                                        continue;
+                                    }
+                                }
+                                if (selectFilter == 3) {
+                                    if (obj.itemSales[i].data[j].dataRobot.length != 0) {
+                                        continue;
+                                    }
+                                }
                                 historyAll += '<tr>';
                                 // Example date in yyyy-mm-dd format
                                 const dateStr = obj.itemSales[i].Tanggal;
