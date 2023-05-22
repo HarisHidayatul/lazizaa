@@ -260,19 +260,19 @@ class prosesMutasiController extends Controller
 
         //Cari klasifikasi shopeefood
         $shopeeFound = false;
-        if (strcmp($array_klasifikasi[5], 'SF') == 0) {
+        if (strcmp($array_klasifikasi[6], 'SF') == 0) {
             //ID Shopeefood = 8
             $idListSales = 8;
             $shopeeFound = true;
         }
-        if (strcmp($array_klasifikasi[5], 'MC') == 0) {
+        if (strcmp($array_klasifikasi[6], 'MC') == 0) {
             //ID Shopeepay = 9
             $idListSales = 9;
             $shopeeFound = true;
         }
         if ($shopeeFound) {
             foreach ($dOutlet as $loopOutlet) {
-                if (intval($loopOutlet->kodeShopee) == intval($array_klasifikasi[7])) {
+                if (intval($loopOutlet->kodeShopee) == intval($array_klasifikasi[8])) {
                     $idOutlet = $loopOutlet->id;
                     $klasifikasi['idOutlet'] = $idOutlet;
                     $klasifikasi['idListSales'] = $idListSales;
@@ -284,7 +284,8 @@ class prosesMutasiController extends Controller
         foreach ($dOutlet as $loopOutlet) {
             //Cari klasifikasi gojek
             //Kode gofood 3 untuk id list sales
-            if (strcmp($array_klasifikasi[5], $loopOutlet->kodeGoresto) == 0) {
+            if (strcmp($array_klasifikasi[6], $loopOutlet->kodeGoresto) == 0) {
+                print_r($array_klasifikasi[6]);
                 $idOutlet = $loopOutlet->id;
                 $idListSales = 6;
                 $klasifikasi['idOutlet'] = $idOutlet;
