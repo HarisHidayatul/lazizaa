@@ -98,9 +98,73 @@
                         historyAll += '<td>';
                         historyAll += obj.data[i].cabang;
                         historyAll += '</td>';
+                        historyAll += '<td>';
+                        for (var j = 0; j < obj.data[i].dataRobot.length; j++) {
+                            historyAll += '<div title="';
+                            historyAll += obj.data[i].dataRobot[j].perevisi;
+                            historyAll += '">';
+                            historyAll += obj.data[i].dataRobot[j].status;
+                            historyAll += '</div>';
+                        }
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        if (obj.data[i].dataRobot.length > 0) {
+                            for (var j = 0; j < obj.data[i].dataRobot.length; j++) {
+                                if (obj.data[i].dataRobot[j].status == 'pending') {
+                                    historyAll +=
+                                        '<button type="button" class="btn btn-secondary" onClick="deleteVerifikasi(';
+                                    historyAll += obj.data[i].dataRobot[j].id;
+                                    historyAll += ')">';
+                                    historyAll += 'Delete';
+                                    historyAll += '</button>';
+                                }
+                            }
+                        } else {
+                            historyAll +=
+                                '<button type="button" class="btn btn-secondary" onClick="sendVerifikasi(';
+                            historyAll += obj.data[i].id;
+                            historyAll += ')">';
+                            historyAll += 'Verifikasi';
+                            historyAll += '</button>';
+                        }
+                        historyAll += '</td>';
                         historyAll += '</tr>';
                     }
                     $('#statusInputTabel>tbody').empty().append(historyAll);
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+        function deleteVerifikasi(idRobotMutasi455TfKas) {
+            $.ajax({
+                url: "{{ url('robot/mutasi455TfKas/delete') }}",
+                type: 'delete',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idRobotMutasi455TfKas: idRobotMutasi455TfKas
+                },
+                success: function(response) {
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function sendVerifikasi(idPelunasanMutasiSales) {
+            $.ajax({
+                url: "{{ url('robot/mutasi455TfKas/create') }}",
+                type: 'post',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idPelunasanMutasiSales: idPelunasanMutasiSales,
+                    idPemverifikasi: {{ session('idPengisi') }},
+                },
+                success: function(response) {
+                    getListAllFilter();
                 },
                 error: function(req, err) {
                     console.log(err);

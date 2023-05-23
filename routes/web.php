@@ -301,9 +301,14 @@ Route::post('robot/ecommerce/create', [robotController::class, 'createRobotEcomm
 Route::delete('robot/ecommerce/delete',[robotController::class,'deleteRobotEcommerce']);
 
 Route::get('robot/mutasi455TfKas/show/all',[robotController::class, 'showMutasi455TfKas']);
+Route::post('robot/mutasi455TfKas/create', [robotController::class, 'createRobotMutasi455TfKas']);
+Route::delete('robot/mutasi455TfKas/delete',[robotController::class,'deleteRobotMutasi455TfKas']);
 
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
 Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotPembelian']);
+
+Route::get('robot/api/mutasi455TfKas/show', [robotController::class, 'showRobotMutasi455TfKas']);
+Route::get('robot/api/mutasi455TfKas/done/{id}', [robotController::class, 'doneRobotMutasi455TfKas']);
 
 Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPembayaran']);
 Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);
