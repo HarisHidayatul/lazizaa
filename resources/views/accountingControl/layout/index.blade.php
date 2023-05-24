@@ -161,6 +161,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ url('accounting/robot/mutasi455TfKas') }}" class="nav-link" id="mutasi455TfKasRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>455 Sukodono (Tf Kas)</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="#" class="nav-link" id="reimburseSalesRobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Reimburse Sales</p>
@@ -196,9 +202,9 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('accounting/mutasiProcess/mutasi455') }}" class="nav-link" id="mutasi455SubMenu">
+                                <a href="{{ url('accounting/mutasiProcess/mutasiKlasifikasi') }}" class="nav-link" id="mutasiKlasifikasiSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Mutasi 455</p>
+                                    <p>Mutasi Klasifikasi</p>
                                 </a>
                             </li>
                         </ul>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\doutlet;
 use App\Models\listSales;
+use App\Models\mutasi_aksi;
+use App\Models\mutasi_detail;
+use App\Models\mutasi_klasifikasi;
 use App\Models\mutasi_sales;
 use App\Models\mutasi_transaksi;
 use App\Models\pelunasan_mutasi_sales;
@@ -33,6 +36,17 @@ class prosesMutasiController extends Controller
     public function create()
     {
         //
+    }
+
+    public function createMutasiDetail(Request $request)
+    {
+        $mutasiDetail = new mutasi_detail();
+        $mutasiDetail->idMutasiAksi = $request->idMutasiAksi;
+        $mutasiDetail->idMutasiTransaksi = $request->idMutasiTransaksi;
+        $mutasiDetail->idMutasiKlasifikasi = $request->idMutasiKlasifikasi;
+        $mutasiDetail->idOutlet = $request->idOutlet;
+        $mutasiDetail->selisihHari = $request->selisihHari;
+        $mutasiDetail->save();
     }
 
     public function createMutasi(Request $request)
@@ -158,7 +172,7 @@ class prosesMutasiController extends Controller
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
 
-        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis', 'salesharians.listSaless'])->get();
+        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis.mutasiDetails.mutasiKlasifikasis', 'salesharians.listSaless'])->get();
         // tanggalAll;
         $listSaless = listSales::all();
         $outletAll = doutlet::all();
@@ -213,12 +227,65 @@ class prosesMutasiController extends Controller
 
         foreach ($tanggalAlls as $eachTanggal) {
             $tanggal = $eachTanggal->Tanggal;
-            $tanggal_baru = date('Y-m-d', strtotime($tanggal . ' -1 day'));
+            $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
+            if($mutasiTransaksis->count()>0){
+                //Hanya ambil di rekening 455 saja
+                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList','=',4);
+            }
+            foreach ($mutasiTransaksis as $mutasiTransaksi) {
+                $mutasiDetail = $mutasiTransaksi->mutasiDetails;
+                if($mutasiDetail != null){
+                    $selisihHari = (-1) * $mutasiDetail->selisihHari;
+                    $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
+                    $idListSalesTemp = $mutasiDetail->mutasiKlasifikasis->idListSalesTemp;
+                    $idOutlet = $mutasiDetail->idOutlet;
+                    foreach ($arrayDataSales as $eachDataSales) {
+                        $tanggalPembanding = $eachDataSales->Tanggal;
+                        $listSalesIdPembanding = $eachDataSales->listSalesId;
+                        $idOutletPembanding =  $eachDataSales->outletId;
 
+                        if (strtotime($tanggalBaru) == strtotime($tanggalPembanding)) {
+                            if ($listSalesIdPembanding == $idListSalesTemp) {
+                                if ($idOutlet == $idOutletPembanding) {
+                                    $idSalesFill = $eachDataSales->salesFillId;
+                                    try {
+                                        $pelunasanMutasiSales = new pelunasan_mutasi_sales();
+                                        $pelunasanMutasiSales->idSalesFill = $idSalesFill;
+                                        $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
+                                        $pelunasanMutasiSales->save();
+                                    } catch (Exception $e) {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function generateMutasiDetail(Request $request){
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $idPenerimaList = $request->idPenerimaList;
+        if($idPenerimaList == 4){
+            //Jika idPenerima mengarah ke rekening 455 maka
+            $this->generate455($startDate,$stopDate);
+        }
+    }
+
+    function generate455($startDate,$stopDate){
+        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
+        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
+        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis'])->get();
+        $outletAll = doutlet::all();
+        $mutasiKlasifikasi = mutasi_klasifikasi::all();
+        foreach ($tanggalAlls as $eachTanggal) {
             $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
             foreach ($mutasiTransaksis as $mutasiTransaksi) {
                 //Cari id salesFill berdasarkan listsalesId, outletId dan tanggal. Dengan ketentuan tanggal - 1 hari dari mutasi
                 $searchMutasi = $this->cariKlasifikasiNotes($mutasiTransaksi->trxNotes, $outletAll);
+                print_r($searchMutasi);
                 $idOutletSearch = $searchMutasi['idOutlet'];
                 $idListSalesSearch = $searchMutasi['idListSales'];
                 if ($idOutletSearch == 0) {
@@ -227,25 +294,16 @@ class prosesMutasiController extends Controller
                 if ($idListSalesSearch == 0) {
                     continue;
                 }
-                print_r($searchMutasi);
-                foreach ($arrayDataSales as $eachDataSales) {
-                    $tanggalPembanding = $eachDataSales->Tanggal;
-                    $listSalesIdPembanding = $eachDataSales->listSalesId;
-                    $idOutletPembanding =  $eachDataSales->outletId;
-                    if (strtotime($tanggal_baru) == strtotime($tanggalPembanding)) {
-                        if ($listSalesIdPembanding == $idListSalesSearch) {
-                            if ($idOutletSearch == $idOutletPembanding) {
-                                $idSalesFill = $eachDataSales->salesFillId;
-                                try {
-                                    $pelunasanMutasiSales = new pelunasan_mutasi_sales();
-                                    $pelunasanMutasiSales->idSalesFill = $idSalesFill;
-                                    $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
-                                    $pelunasanMutasiSales->save();
-                                } catch (Exception $e) {
-                                }
-                            }
-                        }
-                    }
+                $idMutasiKlasifikasi = $mutasiKlasifikasi->where('idListSalesTemp','=',$idListSalesSearch)->first()->id;
+                try {
+                    $mutasiDetail = new mutasi_detail();
+                    $mutasiDetail->idMutasiAksi = 4;//Id mutasi transfer kas ke 4
+                    $mutasiDetail->idMutasiTransaksi = $mutasiTransaksi->id;
+                    $mutasiDetail->idMutasiKlasifikasi = $idMutasiKlasifikasi;
+                    $mutasiDetail->idOutlet = $idOutletSearch;
+                    $mutasiDetail->selisihHari = 1;
+                    $mutasiDetail->save();
+                } catch (Exception $e) {
                 }
             }
         }
@@ -256,44 +314,46 @@ class prosesMutasiController extends Controller
         $idOutlet = 0;
         $idListSales = 0;
         $klasifikasi = [];
-        $array_klasifikasi = explode(" ", $trxNotes);
+        $array_klasifikasi = preg_split('/\s+/', $trxNotes);
+        print_r($array_klasifikasi);
 
         //Cari klasifikasi shopeefood
         $shopeeFound = false;
-        if (strcmp($array_klasifikasi[6], 'SF') == 0) {
-            //ID Shopeefood = 8
-            $idListSales = 8;
-            $shopeeFound = true;
-        }
-        if (strcmp($array_klasifikasi[6], 'MC') == 0) {
-            //ID Shopeepay = 9
-            $idListSales = 9;
-            $shopeeFound = true;
-        }
-        if ($shopeeFound) {
+        if (count($array_klasifikasi) > 6) {
+            if (strcmp($array_klasifikasi[5], 'SF') == 0) {
+                //ID Shopeefood = 8
+                $idListSales = 8;
+                $shopeeFound = true;
+            }
+            if (strcmp($array_klasifikasi[5], 'MC') == 0) {
+                //ID Shopeepay = 9
+                $idListSales = 9;
+                $shopeeFound = true;
+            }
+            if ($shopeeFound) {
+                foreach ($dOutlet as $loopOutlet) {
+                    if (intval($loopOutlet->kodeShopee) == intval($array_klasifikasi[7])) {
+                        $idOutlet = $loopOutlet->id;
+                        $klasifikasi['idOutlet'] = $idOutlet;
+                        $klasifikasi['idListSales'] = $idListSales;
+                        return $klasifikasi;
+                    }
+                }
+            }
+
             foreach ($dOutlet as $loopOutlet) {
-                if (intval($loopOutlet->kodeShopee) == intval($array_klasifikasi[8])) {
+                //Cari klasifikasi gojek
+                //Kode gofood 3 untuk id list sales
+                if (strcmp($array_klasifikasi[5], $loopOutlet->kodeGoresto) == 0) {
+                    // print_r($array_klasifikasi[5]);
                     $idOutlet = $loopOutlet->id;
+                    $idListSales = 6;
                     $klasifikasi['idOutlet'] = $idOutlet;
                     $klasifikasi['idListSales'] = $idListSales;
                     return $klasifikasi;
                 }
             }
         }
-
-        foreach ($dOutlet as $loopOutlet) {
-            //Cari klasifikasi gojek
-            //Kode gofood 3 untuk id list sales
-            if (strcmp($array_klasifikasi[6], $loopOutlet->kodeGoresto) == 0) {
-                print_r($array_klasifikasi[6]);
-                $idOutlet = $loopOutlet->id;
-                $idListSales = 6;
-                $klasifikasi['idOutlet'] = $idOutlet;
-                $klasifikasi['idListSales'] = $idListSales;
-                return $klasifikasi;
-            }
-        }
-
         $klasifikasi['idOutlet'] = $idOutlet;
         $klasifikasi['idListSales'] = $idListSales;
         return $klasifikasi;
@@ -319,6 +379,48 @@ class prosesMutasiController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showMutasi($id)
+    {
+        $mutasiTransaksi = mutasi_transaksi::find($id);
+        $mutasiAksi = mutasi_aksi::all();
+        $mutasiKlasifikasi = mutasi_klasifikasi::all();
+        $dOutlet = doutlet::all();
+
+        $mutasiAksiArray = [];
+        $mutasiKlasifikasiArray = [];
+        $outletArray = [];
+
+        foreach ($dOutlet as $loopOutlet) {
+            array_push($outletArray, (object)[
+                'id' => $loopOutlet->id,
+                'outlet' => $loopOutlet['Nama Store']
+            ]);
+        }
+
+        foreach ($mutasiKlasifikasi as $loopKlasifikasi) {
+            array_push($mutasiKlasifikasiArray, (object)[
+                'id' => $loopKlasifikasi->id,
+                'klasifikasi' => $loopKlasifikasi->klasifikasi
+            ]);
+        }
+
+        foreach ($mutasiAksi as $loopMutasiAksi) {
+            array_push($mutasiAksiArray, (object)[
+                'id' => $loopMutasiAksi->id,
+                'aksi' => $loopMutasiAksi->aksi
+            ]);
+        }
+
+        return response()->json([
+            'id' => $mutasiTransaksi->id,
+            'keterangan' => $mutasiTransaksi->trxNotes,
+            'total' => $mutasiTransaksi->total,
+            'outlet' => $outletArray,
+            'mutasiAksi' => $mutasiAksiArray,
+            'mutasiKlasifikasi' => $mutasiKlasifikasiArray
+        ]);
     }
 
     public function showMutasiAll(Request $request)
@@ -351,6 +453,80 @@ class prosesMutasiController extends Controller
                     }
                 } else {
                     continue;
+                }
+            } else {
+                continue;
+            }
+        }
+        return response()->json([
+            'dataMutasi' => $dataMutasi,
+        ]);
+    }
+
+    public function showMutasiSales(Request $request)
+    {
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $idPenerimaList = $request->idPenerimaList;
+
+        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
+        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
+
+        $tanggalAlls = $tanggalAlls->with([
+            'mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless',
+            'mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets',
+            'mutasiTransaksis.mutasiDetails.mutasiAksis',
+            'mutasiTransaksis.mutasiDetails.mutasiKlasifikasis',
+            'mutasiTransaksis.mutasiDetails.doutlets',
+        ])->get();
+        // @dd($tanggalAlls);
+        $dataMutasi = [];
+
+        foreach ($tanggalAlls as $eachTanggal) {
+            $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
+            if (count($mutasiTransaksis) > 0) {
+                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', $idPenerimaList);
+                // @dd($mutasiTransaksis);
+                foreach ($mutasiTransaksis as $mutasiTransaksi) {
+                    $tanggalBaru = date('d/m/Y', strtotime($eachTanggal->Tanggal));
+                    $debit = 0;
+                    $kredit = 0;
+                    $klasifikasi = '';
+                    $cabang = '';
+                    $aksi = '';
+                    $selisihHari = '';
+
+                    //Jika action 0, maka user dapat melakukan add
+                    //Jika action 1, maka user hanya dapat melakukan delete
+                    //Jika action 2, maka user tidak dapat melakukan add maupun delete
+                    $action = 0;
+
+                    $mutasiDetail = $mutasiTransaksi->mutasiDetails;
+                    if ($mutasiDetail != null) {
+                        $klasifikasi = $mutasiDetail->mutasiKlasifikasis->klasifikasi;
+                        $aksi = $mutasiDetail->mutasiAksis->aksi;
+                        $cabang = $mutasiDetail->doutlets['Nama Store'];
+                        $action = 1;
+                        $selisihHari = $mutasiDetail->selisihHari;
+                    }
+
+                    if ($mutasiTransaksi->total < 0) {
+                        $kredit = (-1) * $mutasiTransaksi->total;
+                    } else {
+                        $debit = $mutasiTransaksi->total;
+                    }
+                    array_push($dataMutasi, (object)[
+                        'id' => $mutasiTransaksi->id,
+                        'keterangan' => $mutasiTransaksi->trxNotes,
+                        'kredit' => $kredit,
+                        'debit' => $debit,
+                        'tanggalBaru' => $tanggalBaru,
+                        'klasifikasi' => $klasifikasi,
+                        'cabang' => $cabang,
+                        'aksi' => $aksi,
+                        'action' => $action,
+                        'selisihHari' => $selisihHari
+                    ]);
                 }
             } else {
                 continue;
@@ -462,5 +638,13 @@ class prosesMutasiController extends Controller
                 'logError' => $logError,
             ]
         );
+    }
+
+    public function deleteMutasiDetail(Request $request)
+    {
+        $mutasiDetails = mutasi_detail::where('idMutasiTransaksi', '=', $request->idMutasiTransaksi)->get();
+        foreach ($mutasiDetails as $mutasiDetail) {
+            $mutasiDetail->delete();
+        }
     }
 }

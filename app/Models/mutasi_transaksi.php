@@ -31,6 +31,10 @@ class mutasi_transaksi extends Model
         return $this->belongsTo(tanggalAll::class,'idTanggal','id');
     }
 
+    public function mutasiDetails(){
+        return $this->hasOne(mutasi_detail::class,'idMutasiTransaksi','id');
+    }
+
     protected $fillable = [
         'trxNotes',
         'total',

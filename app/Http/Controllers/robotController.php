@@ -660,6 +660,10 @@ class robotController extends Controller
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
                     }
+                    //Jika merupakan manajemen sukodono, tidak perlu ditampilkan di robot karena merupakan bagian penerimaan pembayaran
+                    if($pelunasanMutasiSaless->salesFills->salesHarians->dOutlets->id == 17){
+                        continue;
+                    }
                     array_push($dataMutasi,(object)[
                         'id' => $pelunasanMutasiSaless->id,
                         'tanggal' => $tanggalDDmmYY,

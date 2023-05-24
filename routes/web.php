@@ -318,12 +318,19 @@ Route::get('robot/api/ecommerce/done/{id}', [robotController::class, 'doneRobotE
 
 Route::post('mutasi/upload', [prosesMutasiController::class, 'createMutasi']);
 Route::get('mutasi/show/all',[prosesMutasiController::class, 'showMutasiAll']);
+Route::get('mutasi/show/id/{id}',[prosesMutasiController::class, 'showMutasi']);
+
+Route::delete('mutasi/detail/delete',[prosesMutasiController::class, 'deleteMutasiDetail']);
+Route::post('mutasi/detail/create',[prosesMutasiController::class, 'createMutasiDetail']);
+
+Route::get('mutasi/show/sales',[prosesMutasiController::class, 'showMutasiSales']);
 Route::get('mutasi/show/pelunasan/sales',[prosesMutasiController::class, 'showPelunasanMutasiSales']);
 Route::post('mutasi/create/pelunasan/sales',[prosesMutasiController::class, 'createPelunasanMutasiSales']);
 
 Route::delete('mutasi/delete/pelunasan/sales',[prosesMutasiController::class, 'delMutasiFromSales']);
 
 Route::post('mutasi/generate/pelunasan',[prosesMutasiController::class, 'generateMutasiPelunasan']);
+Route::post('mutasi/generate/detail',[prosesMutasiController::class, 'generateMutasiDetail']);
 
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
@@ -450,8 +457,8 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
     Route::get('accounting/mutasiProcess/upload', function () {
         return view('accountingControl.mutasiProses.upload.index');
     });
-    Route::get('accounting/mutasiProcess/mutasi455', function(){
-        return view('accountingControl.mutasiProses.mutasi455.index');
+    Route::get('accounting/mutasiProcess/mutasiKlasifikasi', function(){
+        return view('accountingControl.mutasiProses.mutasiKlasifikasi.index');
     });
     Route::get('accounting/checkExist', function () {
         return view('accountingControl.dataDiIsi.index');
