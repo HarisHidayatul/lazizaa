@@ -304,6 +304,8 @@ Route::get('robot/mutasi455TfKas/show/all',[robotController::class, 'showMutasi4
 Route::post('robot/mutasi455TfKas/create', [robotController::class, 'createRobotMutasi455TfKas']);
 Route::delete('robot/mutasi455TfKas/delete',[robotController::class,'deleteRobotMutasi455TfKas']);
 
+Route::get('robot/mutasi455TfKasSukodono/show/all',[robotController::class, 'showMutasi455TfKasSukodono']);
+
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
 Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotPembelian']);
 
@@ -478,6 +480,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/robot/mutasi455TfKas', function () {
         return view('accountingControl.beeCloudRobot.mutasi455TfKas.index');
+    });
+
+    Route::get('accounting/robot/mutasi455TfKasSukodono', function () {
+        return view('accountingControl.beeCloudRobot.mutasi455TfKasSukodono.index');
     });
 
     Route::get('accounting/pattyCash', function () {

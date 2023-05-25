@@ -161,7 +161,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('accounting/robot/mutasi455TfKas') }}" class="nav-link" id="mutasi455TfKasRobotSubMenu">
+                                <a href="{{ url('accounting/robot/mutasi455TfKasSukodono') }}" class="nav-link" id="mutasi455TfKasSukodonoRobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>455 Sukodono (Tf Kas)</p>
                                 </a>
