@@ -208,7 +208,11 @@ class salesHarianController extends Controller
         } else {
             array_push($outletArray, $idOutlet);
         }
-        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with(['salesharians.listSaless', 'salesHarianReimburses.sales_reimburses', 'setorans'])->get();
+        $tanggalAll = tanggalAll::orderBy('Tanggal', 'ASC')->with([
+            'salesharians.listSaless',
+            'salesHarianReimburses.sales_reimburses',
+            'setorans'
+        ])->get();
 
         if ($countData == 'today') {
             $allDate = $tanggalAll->where('Tanggal', '=', $now->format('Y-m-d'));
@@ -262,12 +266,20 @@ class salesHarianController extends Controller
                     foreach ($salesLists as $salesList) {
                         $totalTemp = $salesList->pivot->total;
                         $idTotalRevisi = $salesList->pivot->idRevisiTotal;
+                        $totalDiterima = 0;
                         if ($idTotalRevisi == '2') {
                             $totalTemp = $salesList->pivot->totalRevisi;
                         }
+                        $pelunasanMutasiSaless = pelunasan_mutasi_sales::where('idSalesFill', '=', $salesList->pivot->id)->get();
+                        foreach ($pelunasanMutasiSaless as $pelunasanMutasiSales) {
+                            // print_r($pelunasanMutasiSales->mutasiTransaksis->total);
+                            // print_r('/');
+                            $mutasiTransaksi = $pelunasanMutasiSales->mutasiTransaksis;
+                            $totalDiterima = $totalDiterima + $mutasiTransaksi->total;
+                        }
                         array_push($dataPerSalesArray, (object)[
                             'sales' => $salesList->sales,
-                            'totalDiterima' => $salesList->pivot->totalDiterima,
+                            'totalDiterima' => $totalDiterima,
                             'total' => $totalTemp,
                             'idRevisiTotal' => $idTotalRevisi
                         ]);
@@ -330,8 +342,8 @@ class salesHarianController extends Controller
                                 $listFound = true;
                                 $idTotalRevisi = $listSalesHarian->pivot->idRevisiTotal;
                                 $idSalesFill = $listSalesHarian->pivot->id;
-                                $pelunasanMutasiSaless = pelunasan_mutasi_sales::where('idSalesFill','=',$idSalesFill)->with('mutasiTransaksis')->get();
-                                foreach($pelunasanMutasiSaless as $pelunasanMutasiSales){
+                                $pelunasanMutasiSaless = pelunasan_mutasi_sales::where('idSalesFill', '=', $idSalesFill)->with('mutasiTransaksis')->get();
+                                foreach ($pelunasanMutasiSaless as $pelunasanMutasiSales) {
                                     $jumlahDiterima = $jumlahDiterima + $pelunasanMutasiSales->mutasiTransaksis->total;
                                 }
                                 $totalQtyTemp = $listSalesHarian->pivot->total;
@@ -365,7 +377,9 @@ class salesHarianController extends Controller
                 }
 
                 $arrayList2 = [];
-                foreach($arrayList as $loopList){
+                $gofoodFound = false;
+                $grabfoodFound = false;
+                foreach ($arrayList as $loopList) {
                     //Mengelompokkan gopay dan gofood kedalam satu wadah
                     $idListSalesTemp = $loopList->idListSales;
                     $listSalesTemp = $loopList->listSales;
@@ -375,72 +389,75 @@ class salesHarianController extends Controller
                     $arrayTotalTemp = [];
                     $idSalesFillTemp = [];
 
-                    foreach($loopList->arrayTotal as $loopArrayTotal){
+                    foreach ($loopList->arrayTotal as $loopArrayTotal) {
                         // $loopList->arrayTotal
                         array_push($arrayTotalTemp, $loopArrayTotal);
                     }
 
-                    foreach($loopList->idSalesFill as $loopArrayIdSalesFill){
+                    foreach ($loopList->idSalesFill as $loopArrayIdSalesFill) {
                         array_push($idSalesFillTemp, $loopArrayIdSalesFill);
                     }
-                    
-                    if($loopList->idListSales == 6){
+
+                    if ($loopList->idListSales == 6) {
                         //ID 6 merupakan ID goFood
-                        foreach($arrayList as $loopList2){
+                        foreach ($arrayList as $loopList2) {
                             //Cari yang memiliki ID 16 atau gopay
-                            if($loopList2->idListSales == 16){
+                            if ($loopList2->idListSales == 16) {
+                                $gofoodFound = true;
                                 $listSalesTemp .= ' / ';
                                 $listSalesTemp .= $loopList2->listSales;
                                 $totalTemp = $totalTemp + $loopList2->total;
                                 $diterimaTemp = $diterimaTemp + $loopList2->diterima;
 
-                                foreach($loopList2->arrayTotal as $loopArrayTotal2){
+                                foreach ($loopList2->arrayTotal as $loopArrayTotal2) {
                                     // $loopList->arrayTotal
                                     array_push($arrayTotalTemp, $loopArrayTotal2);
                                 }
-            
-                                foreach($loopList2->idSalesFill as $loopArrayIdSalesFill2){
+
+                                foreach ($loopList2->idSalesFill as $loopArrayIdSalesFill2) {
                                     array_push($idSalesFillTemp, $loopArrayIdSalesFill2);
                                 }
 
-                                if($loopList2->idTotalRevisi == 2){
+                                if ($loopList2->idTotalRevisi == 2) {
                                     $idTotalRevisiTemp = 2;
                                 }
                             }
                         }
-                    }
-                    else if($loopList->idListSales == 7){
+                    } else if ($loopList->idListSales == 7) {
                         //ID 6 merupakan ID grab food
-                        foreach($arrayList as $loopList2){
+                        foreach ($arrayList as $loopList2) {
                             //Cari yang memiliki ID 17 atau ovo
-                            if($loopList2->idListSales == 17){
+                            if ($loopList2->idListSales == 17) {
+                                $grabfoodFound = true;
                                 $listSalesTemp .= ' / ';
                                 $listSalesTemp .= $loopList2->listSales;
                                 $totalTemp = $totalTemp + $loopList2->total;
                                 $diterimaTemp = $diterimaTemp + $loopList2->diterima;
 
-                                foreach($loopList2->arrayTotal as $loopArrayTotal2){
+                                foreach ($loopList2->arrayTotal as $loopArrayTotal2) {
                                     // $loopList->arrayTotal
                                     array_push($arrayTotalTemp, $loopArrayTotal2);
                                 }
-            
-                                foreach($loopList2->idSalesFill as $loopArrayIdSalesFill2){
+
+                                foreach ($loopList2->idSalesFill as $loopArrayIdSalesFill2) {
                                     array_push($idSalesFillTemp, $loopArrayIdSalesFill2);
                                 }
 
-                                if($loopList2->idTotalRevisi == 2){
+                                if ($loopList2->idTotalRevisi == 2) {
                                     $idTotalRevisiTemp = 2;
                                 }
                             }
                         }
-                    }
-                    else if($loopList->idListSales == 16){
+                    } else if ($loopList->idListSales == 16) {
                         //ID 16 merupakan ID gopay
-                        continue;
-                    }
-                    else if($loopList->idListSales == 17){
+                        if($gofoodFound){
+                            continue;
+                        }
+                    } else if ($loopList->idListSales == 17) {
                         //ID 17 merupakan ID ovo
-                        continue;
+                        if($grabfoodFound){
+                            continue;
+                        }
                     }
                     $selisih = $totalTemp - $diterimaTemp;
                     array_push($arrayList2, (object)[
@@ -1220,10 +1237,10 @@ class salesHarianController extends Controller
     {
         $arrayIdSalesFill = $request->idSalesFill;
         $firstFound = false;
-        foreach($arrayIdSalesFill as $idSalesFill){
+        foreach ($arrayIdSalesFill as $idSalesFill) {
             $salesFill = salesFill::find($idSalesFill);
             $totalDiterima = 0;
-            if(!$firstFound){
+            if (!$firstFound) {
                 $firstFound = true;
                 $totalDiterima = $request->totalDiterima;
             }

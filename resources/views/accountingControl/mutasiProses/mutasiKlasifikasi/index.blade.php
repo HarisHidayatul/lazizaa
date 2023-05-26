@@ -2,7 +2,10 @@
 
 @section('mutasiBody')
     <div class="d-flex justify-content-between">
-        <select name="" id="selPenerima"></select>
+        <div>
+            <select name="" id="selPenerima"></select>
+            <select name="" id="selKlasifikasi"></select>
+        </div>
         <div class="d-flex justify-content-right">
             <div>Start Date : </div>
             <input type="date" id="startDate">
@@ -12,9 +15,27 @@
         </div>
     </div>
     <div style="height: 10px;"></div>
+    <div>
+        <div class="d-flex justify-content-start">
+            <div>Jumlah Mutasi : </div>
+            <div id="jumlahMutasi"></div>
+        </div>
+        <div class="d-flex justify-content-start">
+            <div>Jumlah Debit : </div>
+            <div id="jumlahDebit"></div>
+        </div>
+        <div class="d-flex justify-content-start">
+            <div>Jumlah Kredit : </div>
+            <div id="jumlahKredit"></div>
+        </div>
+    </div>
+    <div style="height: 10px;"></div>
     <div class="d-flex justify-content-between">
         <div></div>
-        <button onclick="generateMutasi();">Generate Mutasi</button>
+        <div class="d-flex justify-content-start">
+            <button onclick="downloadCSV();">Download CSV</button>
+            <button onclick="generateMutasi();">Generate Mutasi</button>
+        </div>
     </div>
     <div style="height: 50px;"></div>
     <div style="width: 100%">
@@ -22,6 +43,7 @@
             <table class="table table-striped" id="statusInputTabel">
                 <thead>
                     <tr>
+                        <td>No</td>
                         <td>ID</td>
                         <td>Tanggal</td>
                         <td>Keterangan</td>
@@ -31,6 +53,8 @@
                         <td>Cabang</td>
                         <td>Aksi</td>
                         <td>H+</td>
+                        <td>Terkait</td>
+                        <td>Robot Status</td>
                         <td>Submit</td>
                     </tr>
                 </thead>

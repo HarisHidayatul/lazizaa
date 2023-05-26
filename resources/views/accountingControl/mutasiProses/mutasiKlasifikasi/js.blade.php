@@ -3,6 +3,7 @@
 @section('mutasijs')
     <script>
         var idMutasiSelect = 0;
+        var dataExportToCSV = [];
         $(document).ready(function() {
             // document.getElementById('mutasiProsesTabMenu').classList.add("active");
             document.getElementById("mutasiKlasifikasiSubMenu").classList.add("active");
@@ -36,7 +37,7 @@
             getPenerima();
         })
 
-        function generateMutasi(){
+        function generateMutasi() {
             var startDate = document.getElementById('startDate').value;
             var stopDate = document.getElementById('stopDate').value;
             var idPenerimaList = document.getElementById('selPenerima').value;
@@ -57,6 +58,7 @@
                 }
             });
         }
+
         function getPenerima() {
             $.ajax({
                 url: "{{ url('setoran/penerima/show') }}",
@@ -68,6 +70,7 @@
                     var obj = JSON.parse(JSON.stringify(data));
                     console.log(data);
                     var dataHtml = '';
+                    var htmlKlasifikasi = '<option value="0">Pilih Klasifkasi</option>';
                     for (var i = 0; i < obj.penerimaListArray.length; i++) {
                         // <option value=""></option>
                         dataHtml += '<option value="';
@@ -77,7 +80,16 @@
                             .nomorRekening;
                         dataHtml += '</option>';
                     }
+                    for (var i = 0; i < obj.mutasiKlasifikasiArray.length; i++) {
+                        htmlKlasifikasi += '<option value="';
+                        htmlKlasifikasi += obj.mutasiKlasifikasiArray[i].id;
+                        htmlKlasifikasi += '">';
+                        htmlKlasifikasi += obj.mutasiKlasifikasiArray[i].klasifikasi;
+                        htmlKlasifikasi += '</option>';
+                    }
                     $('#selPenerima').empty().append(dataHtml);
+                    $('#selKlasifikasi').empty().append(htmlKlasifikasi);
+
                     // alert('Data berhasil diposting!');
                 },
                 error: function(xhr, status, error) {
@@ -103,35 +115,80 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     var historyAll = "";
                     console.log(obj);
+                    var loopCount = 0;
+                    var jumlahDebit = 0;
+                    var jumlahKredit = 0;
+                    var idKlasifikasi = document.getElementById('selKlasifikasi').value;
+
+                    dataExportToCSV.length = 0;
+
                     for (var i = 0; i < obj.dataMutasi.length; i++) {
+                        var tempDataExport = [];
+                        if (idKlasifikasi > 0) {
+                            if (idKlasifikasi != obj.dataMutasi[i].idKlasifikasi) {
+                                continue;
+                            }
+                        }
                         historyAll += '<tr>';
                         historyAll += '<td>';
+                        historyAll += loopCount + 1;
+                        tempDataExport.push(loopCount + 1);
+                        historyAll += '</td>';
+                        historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].id;
+                        tempDataExport.push(obj.dataMutasi[i].id);
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].tanggalBaru;
+                        tempDataExport.push(obj.dataMutasi[i].tanggalBaru);
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].keterangan;
+                        tempDataExport.push(obj.dataMutasi[i].keterangan);
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].klasifikasi;
+                        tempDataExport.push(obj.dataMutasi[i].klasifikasi);
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].debit.toLocaleString();
+                        tempDataExport.push(obj.dataMutasi[i].debit.toLocaleString());
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].kredit.toLocaleString();
+                        tempDataExport.push(obj.dataMutasi[i].kredit.toLocaleString());
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].cabang;
+                        tempDataExport.push(obj.dataMutasi[i].cabang);
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].aksi;
+                        tempDataExport.push(obj.dataMutasi[i].aksi);
                         historyAll += '</td>';
                         historyAll += '<td>';
                         historyAll += obj.dataMutasi[i].selisihHari;
+                        tempDataExport.push(obj.dataMutasi[i].selisihHari);
                         historyAll += '</td>';
+
+                        historyAll += '<td>';
+                        for (var j = 0; j < obj.dataMutasi[i].terkaitStatus.length; j++) {
+                            historyAll += obj.dataMutasi[i].terkaitStatus[j];
+                        }
+                        historyAll += '</td>';
+
+                        historyAll += '<td>';
+                        for (var j = 0; j < obj.dataMutasi[i].robot.length; j++) {
+                            historyAll += '<div title="';
+                            historyAll += obj.dataMutasi[i].robot[j].robot;
+                            historyAll += '">';
+                            historyAll += obj.dataMutasi[i].robot[j].status;
+                            historyAll += '</div>';
+
+                            // historyAll += obj.dataMutasi[i].robot[j].status;
+                        }
+                        historyAll += '</td>';
+
                         historyAll += '<td>';
                         if (obj.dataMutasi[i].action == 0) {
                             historyAll +=
@@ -147,11 +204,20 @@
                         }
                         historyAll += '</td>';
                         historyAll += '</tr>';
+                        loopCount++;
+                        jumlahDebit += parseInt(obj.dataMutasi[i].debit);
+                        jumlahKredit += parseInt(obj.dataMutasi[i].kredit);
+                        dataExportToCSV.push(tempDataExport);
                     }
-                    var lokasiScroll =  window.scrollY || window.pageYOffset;
+                    var lokasiScroll = window.scrollY || window.pageYOffset;
                     console.log(lokasiScroll);
                     $('#statusInputTabel>tbody').empty().append(historyAll);
-                    window.scrollTo(0,lokasiScroll+35);
+
+                    document.getElementById('jumlahMutasi').innerHTML = loopCount.toLocaleString();
+                    document.getElementById('jumlahDebit').innerHTML = jumlahDebit.toLocaleString();
+                    document.getElementById('jumlahKredit').innerHTML = jumlahKredit.toLocaleString();
+
+                    window.scrollTo(0, lokasiScroll + 35);
 
                 },
                 error: function(req, err) {
@@ -227,7 +293,7 @@
                     $('#klasifikasiAdd').empty().append(listKlasifikasi);
                     $('#cabangAdd').empty().append(listOutlet);
                     $('#aksiAdd').empty().append(listAksi);
-                    document.getElementById('hPlusAdd').value =0;
+                    document.getElementById('hPlusAdd').value = 0;
                 },
                 error: function(req, err) {
                     console.log(err);
@@ -264,6 +330,78 @@
                     console.log(err);
                 }
             })
+        }
+
+        function downloadCSV() {
+            var arrayAllData = [];
+            var namaFile = 'Data Mutasi Klasifikasi ';
+            const selectElement = document.getElementById('selPenerima');
+            const selectedOptionText = selectElement.options[selectElement.selectedIndex].text;
+
+            namaFile += selectedOptionText;
+            namaFile += ' ';
+            namaFile += document.getElementById('startDate').value;
+            namaFile += ' Sampai ';
+            namaFile += document.getElementById('stopDate').value;
+            arrayAllData.push([
+                'No',
+                'ID',
+                'Tanggal',
+                'Keterangan',
+                'Klasifikasi',
+                'Debit',
+                'Kredit',
+                'Cabang',
+                'Aksi',
+                'H+'
+            ]);
+            for (var i = 0; i < dataExportToCSV.length; i++) {
+                arrayAllData.push(dataExportToCSV[i]);
+            }
+            exportToCsv(namaFile, arrayAllData);
+        }
+
+        function exportToCsv(filename, rows) {
+            var processRow = function(row) {
+                var finalVal = '';
+                for (var j = 0; j < row.length; j++) {
+                    var innerValue = row[j] === null ? '' : row[j].toString();
+                    if (row[j] instanceof Date) {
+                        innerValue = row[j].toLocaleString();
+                    };
+                    var result = innerValue.replace(/"/g, '""');
+                    if (result.search(/("|,|\n)/g) >= 0)
+                        result = '"' + result + '"';
+                    if (j > 0)
+                        finalVal += ',';
+                    finalVal += result;
+                }
+                return finalVal + '\n';
+            };
+
+            var csvFile = '';
+            for (var i = 0; i < rows.length; i++) {
+                csvFile += processRow(rows[i]);
+            }
+
+            var blob = new Blob([csvFile], {
+                type: 'text/csv;charset=utf-8;'
+            });
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                var link = document.createElement("a");
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
         }
     </script>
 @endsection

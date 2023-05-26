@@ -6,6 +6,7 @@ use App\Models\doutlet;
 use App\Models\dUser;
 use App\Models\jenisBank;
 use App\Models\listBank;
+use App\Models\mutasi_klasifikasi;
 use App\Models\penerimaList;
 use App\Models\pengirimList;
 use App\Models\setoran;
@@ -193,9 +194,17 @@ class setoranController extends Controller
     {
         $penerimaList = penerimaList::all();
         $bankList = listBank::all();
+        $mutasiKlasifikasi = mutasi_klasifikasi::all();
         // @dd($penerimaList);
+        $mutasiKlasifikasiArray = [];
         $penerimaListArray = [];
         $bankListArray = [];
+        foreach($mutasiKlasifikasi as $eachKlasifikasi){
+            array_push($mutasiKlasifikasiArray, (object)[
+                'id' => $eachKlasifikasi->id,
+                'klasifikasi' => $eachKlasifikasi->klasifikasi,
+            ]);
+        }
         for ($i = 0; $i < $bankList->count(); $i++) {
             array_push($bankListArray, (object)[
                 'id' => $bankList[$i]->id,
@@ -214,7 +223,8 @@ class setoranController extends Controller
         }
         return response()->json([
             'penerimaListArray' => $penerimaListArray,
-            'bankListArray' => $bankListArray
+            'bankListArray' => $bankListArray,
+            'mutasiKlasifikasiArray' => $mutasiKlasifikasiArray
         ]);
     }
 

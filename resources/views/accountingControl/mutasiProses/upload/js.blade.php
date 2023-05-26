@@ -6,6 +6,11 @@
         var transaksiArray = [];
         var sendArray = [];
         var nomorRekening = 0;
+
+        var logStatus = [];
+        var indexClick = [];
+
+
         $(document).ready(function() {
             // document.getElementById('mutasiProsesTabMenu').classList.add("active");
             document.getElementById("uploadMutasiSubMenu").classList.add("active");
@@ -25,14 +30,18 @@
             for (var i = 0; i < transaksiArray.length; i++) {
                 var keterangan = transaksiArray[i][1];
                 var total = (convertToInteger(transaksiArray[i][3]) / 100);
-                if(transaksiArray[i][4] == 'DB'){
+                if (transaksiArray[i][4] == 'DB') {
                     total = (-1) * total;
                 }
-                if (!transaksiArray[i][1].includes('TRSF')) {
-                    keterangan += ' ' + convertToDateFormat(transaksiArray[i][0]) + '/' + tahun;
-                    keterangan += ' ' + total;
-                }
+
+                keterangan += ' ' + convertToDateFormat(transaksiArray[i][0]) + '/' + tahun;
+                keterangan += ' ' + total;
+                // keterangan += ' ' + nomorRekening;
+
                 dataTable += '<tr>';
+                dataTable += '<td>';
+                dataTable += countData + 1;
+                dataTable += '</td>';
                 dataTable += '<td>';
                 dataTable += convertToDateFormat(transaksiArray[i][0]);
                 dataTable += '</td>';
@@ -41,6 +50,10 @@
                 dataTable += '</td>';
                 dataTable += '<td>';
                 dataTable += total.toLocaleString();
+                dataTable += '</td>';
+                dataTable += '<td>';
+                dataTable += '<div name="uploadStatus">';
+                dataTable += '</div>';
                 dataTable += '</td>';
                 dataTable += '</tr>';
                 countData++;
@@ -77,15 +90,99 @@
                 }, // kirim data sebagai JSON string
                 success: function(data) {
                     var obj = JSON.parse(JSON.stringify(data));
+                    logStatus = obj;
                     document.getElementById('uploadSuccess').innerHTML = obj.dataBerhasil;
                     document.getElementById('uploadFail').innerHTML = obj.dataGagal;
                     console.log(data);
+                    for (var i = 0; i < obj.statusUpload.length; i++) {
+                        if (obj.statusUpload[i].status == 0) {
+                            document.getElementsByName("uploadStatus")[i].innerHTML =
+                                '<a style="color: red; cursor: pointer;" onclick="retryMutasi(' + i +
+                                ');">Gagal</a>';
+                        } else {
+                            document.getElementsByName("uploadStatus")[i].innerHTML = 'Sukses';
+                        }
+                    }
                     // alert('Data berhasil diposting!');
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);
                 }
             });
+        }
+
+        function retryMutasi(index) {
+            indexClick = index;
+            var tahun = document.getElementById('inputYear').value;
+            var keterangan = transaksiArray[index][1];
+            var total = (convertToInteger(transaksiArray[index][3]) / 100);
+            if (transaksiArray[index][4] == 'DB') {
+                total = (-1) * total;
+            }
+
+            keterangan += ' ' + convertToDateFormat(transaksiArray[index][0]) + '/' + tahun;
+            keterangan += ' ' + total;
+            document.getElementById('keteranganTextArea').value = keterangan;
+            document.getElementById('totalModal').innerHTML = total.toLocaleString();
+            document.getElementById('statusError').innerHTML = logStatus.statusUpload[index].error;
+            $('#retryModalCenter').modal('show');
+        }
+
+        function kirimUlangTransaksi() {
+            var kirimTemp = [];
+            var keterangan = document.getElementById('keteranganTextArea').value;
+
+            var total = (convertToInteger(transaksiArray[indexClick][3]) / 100);
+            if (transaksiArray[indexClick][4] == 'DB') {
+                total = (-1) * total;
+            }
+
+            kirimTemp.push(
+                [
+                    convertToDateFormat(transaksiArray[indexClick][0]),
+                    keterangan,
+                    total
+                ]
+            );
+            var data = {
+                tahun: document.getElementById('inputYear').value,
+                nomorRekening: nomorRekening,
+                data: kirimTemp
+            };
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            $.ajax({
+                url: "{{ url('mutasi/upload') }}",
+                type: 'POST',
+                data: {
+                    data: JSON.stringify(data)
+                }, // kirim data sebagai JSON string
+                success: function(data) {
+                    var obj = JSON.parse(JSON.stringify(data));
+                    console.log(data);
+                    for (var i = 0; i < obj.statusUpload.length; i++) {
+                        if (obj.statusUpload[i].status == 0) {
+                            document.getElementsByName("uploadStatus")[indexClick].innerHTML =
+                                '<a style="color: red; cursor: pointer;">Gagal</a>';
+                        } else {
+                            document.getElementsByName("uploadStatus")[indexClick].innerHTML = 'Sukses';
+                        }
+                    }
+                    // alert('Data berhasil diposting!');
+                    $('#retryModalCenter').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function backClick() {
+            // $('#exampleModalCenter').modal('show');
+            $('#retryModalCenter').modal('hide');
         }
 
         function handleFiles(files) {
@@ -202,13 +299,11 @@
             // mengonversi menjadi integer
             var valueData = parseInt(cleanedData.replace('.', ''));
 
-            if(data.endsWith('CR')){
+            if (data.endsWith('CR')) {
                 return valueData;
-            }
-            else if(data.endsWith('DB')){
-                return (-1)*valueData;
-            }
-            else{
+            } else if (data.endsWith('DB')) {
+                return (-1) * valueData;
+            } else {
                 return valueData;
             }
         }

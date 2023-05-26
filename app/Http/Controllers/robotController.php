@@ -16,8 +16,9 @@ use Illuminate\Http\Request;
 class robotController extends Controller
 {
     //
-    public function showRobotPembelian(){
-        $robotPembelianStatuss = robot_pembelian_status::where('idStatusRobot','=','1')->get()->first();
+    public function showRobotPembelian()
+    {
+        $robotPembelianStatuss = robot_pembelian_status::where('idStatusRobot', '=', '1')->get()->first();
         $arrayPatty = [];
         $listPattys = $robotPembelianStatuss->pattyCashHarians->listItemPattyCashs;
         $tanggal = $robotPembelianStatuss->pattyCashHarians->tanggalAlls->Tanggal;
@@ -28,21 +29,21 @@ class robotController extends Controller
         $gudang = $robotPembelianStatuss->pattyCashHarians->dOutlets->gudangBee;
         $notes = '';
 
-        foreach($listPattys as $listPatty){
+        foreach ($listPattys as $listPatty) {
             $qty = $listPatty->pivot->quantity;
             $total = $listPatty->pivot->total;
-            if($listPatty->pivot->idRevQuantity == '2'){
+            if ($listPatty->pivot->idRevQuantity == '2') {
                 $qty = $listPatty->pivot->quantityRevisi;
             }
-            if($listPatty->pivot->idRevTotal == '2'){
+            if ($listPatty->pivot->idRevTotal == '2') {
                 $total = $listPatty->pivot->totalRevisi;
             }
-            if(($qty == 0)||($total == 0)){
+            if (($qty == 0) || ($total == 0)) {
                 continue;
             }
-            $hargaSatuan = $total/$qty;
-            if($listPatty->jenis_patty_cashs->namaJenis == 'HPP'){
-                array_push($arrayPatty,(object)[
+            $hargaSatuan = $total / $qty;
+            if ($listPatty->jenis_patty_cashs->namaJenis == 'HPP') {
+                array_push($arrayPatty, (object)[
                     'idBeeCloud' => $listPatty->kodeBeeCloud,
                     'namaItem' => $listPatty->Item,
                     'qty' => $qty,
@@ -74,8 +75,9 @@ class robotController extends Controller
         ]);
     }
 
-    public function showRobotPembayaran(){
-        $robotPembayaranStatuss = robot_pembayaran_status::where('idStatusRobot','=','1')->get()->first();
+    public function showRobotPembayaran()
+    {
+        $robotPembayaranStatuss = robot_pembayaran_status::where('idStatusRobot', '=', '1')->get()->first();
         $arrayPatty = [];
         $listPattys = $robotPembayaranStatuss->pattyCashHarians->listItemPattyCashs;
         $tanggal = $robotPembayaranStatuss->pattyCashHarians->tanggalAlls->Tanggal;
@@ -90,28 +92,28 @@ class robotController extends Controller
         $keterangan .= ' pembayaran kas ';
         $keterangan .= $tanggalDDmmYY;
 
-        foreach($listPattys as $listPatty){
+        foreach ($listPattys as $listPatty) {
             $kategoriPattyCashs = $listPatty->jenis_patty_cashs->kategori_patty_cashs->namaKategori;
             $qty = $listPatty->pivot->quantity;
             $total = $listPatty->pivot->total;
-            if($listPatty->pivot->idRevQuantity == '2'){
+            if ($listPatty->pivot->idRevQuantity == '2') {
                 $qty = $listPatty->pivot->quantityRevisi;
             }
-            if($listPatty->pivot->idRevTotal == '2'){
+            if ($listPatty->pivot->idRevTotal == '2') {
                 $total = $listPatty->pivot->totalRevisi;
             }
-            if(($qty == 0)||($total == 0)){
+            if (($qty == 0) || ($total == 0)) {
                 continue;
             }
-            $hargaSatuan = $total/$qty;
-            if(($kategoriPattyCashs == 'Beban Operasional')||($kategoriPattyCashs == 'Beban Penjualan')||($kategoriPattyCashs == 'Beban Gaji')||($kategoriPattyCashs == 'Beban Marketing')){
+            $hargaSatuan = $total / $qty;
+            if (($kategoriPattyCashs == 'Beban Operasional') || ($kategoriPattyCashs == 'Beban Penjualan') || ($kategoriPattyCashs == 'Beban Gaji') || ($kategoriPattyCashs == 'Beban Marketing')) {
                 $notes = '';
                 $notes .= $listPatty->Item;
                 $notes .= ' ';
                 $notes .= $qty;
                 $notes .= ' ';
                 $notes .= $listPatty->satuans->Satuan;
-                array_push($arrayPatty,(object)[
+                array_push($arrayPatty, (object)[
                     'kodeAkun' => $listPatty->jenis_patty_cashs->kodeAkun,
                     'namaItem' => $listPatty->Item,
                     'qty' => $qty,
@@ -137,14 +139,15 @@ class robotController extends Controller
         ]);
     }
 
-    public function showRobotECommerce(){
-        $robotECommerceStatus = robot_ecommerce_status::where('idStatusRobot','=','1')->get()->first();
+    public function showRobotECommerce()
+    {
+        $robotECommerceStatus = robot_ecommerce_status::where('idStatusRobot', '=', '1')->get()->first();
         $tanggal = $robotECommerceStatus->tanggalAlls->Tanggal;
         $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
         $keterangan = $robotECommerceStatus->dOutlets['Nama Store'];
         $keterangan .= ' Beban E Commerce ';
         $keterangan .= $tanggalDDmmYY;
-                
+
         $keywoard = $robotECommerceStatus->dOutlets->keywoardBee;
         $cabang = $robotECommerceStatus->dOutlets->cabangBee;
 
@@ -155,13 +158,13 @@ class robotController extends Controller
         $idOutlet = $robotECommerceStatus->idOutlet;
         $idTanggal = $robotECommerceStatus->idTanggal;
 
-        $robotTempECommerces = robot_temp_e_commerce::where('idOutlet','=',$idOutlet)->get();
-        if($robotTempECommerces->count() > 0){
-            $robotTempECommerces = $robotTempECommerces->where('idTanggal','=',$idTanggal);
-            if($robotTempECommerces->count() > 0){
-                foreach($robotTempECommerces as $eachTempECommerce){
+        $robotTempECommerces = robot_temp_e_commerce::where('idOutlet', '=', $idOutlet)->get();
+        if ($robotTempECommerces->count() > 0) {
+            $robotTempECommerces = $robotTempECommerces->where('idTanggal', '=', $idTanggal);
+            if ($robotTempECommerces->count() > 0) {
+                foreach ($robotTempECommerces as $eachTempECommerce) {
                     $totalECommerce = $totalECommerce + $eachTempECommerce->total;
-                    array_push($data,(object)[
+                    array_push($data, (object)[
                         'total' => $eachTempECommerce->total,
                         'keywoardBee' => $eachTempECommerce->listSaless->keywoardBee,
                         'itemBee' => $eachTempECommerce->listSaless->itemBee
@@ -181,8 +184,9 @@ class robotController extends Controller
         ]);
     }
 
-    public function showRobotMutasi455TfKas(){
-        $robotMutasi455TfKas = robot_mutasi455tfkas_status::where('idStatusRobot','=','1')->get()->first();
+    public function showRobotMutasi455TfKas()
+    {
+        $robotMutasi455TfKas = robot_mutasi455tfkas_status::where('idStatusRobot', '=', '1')->get()->first();
         $pelunasanMutasiSales = $robotMutasi455TfKas->pelunasanMutasiSaless;
         $mutasiTransaksi = $pelunasanMutasiSales->mutasiTransaksis;
 
@@ -204,7 +208,7 @@ class robotController extends Controller
         $listSalesKeywoard = $pelunasanMutasiSales->salesFills->listSaless->keywoardBee;
         $listSales = $pelunasanMutasiSales->salesFills->listSaless->itemBee;
 
-        if($total < 0){
+        if ($total < 0) {
             //Termasuk kolom kredit
             $total = $total * (-1);
 
@@ -212,7 +216,7 @@ class robotController extends Controller
             $kasTujuan .= $listSales;
 
             $kasTujuanKeywoard = $listSalesKeywoard;
-        }else{
+        } else {
             //Termasuk kolom debit
             $kasAsal = 'IDR - ';
             $kasAsal .= $listSales;
@@ -234,7 +238,8 @@ class robotController extends Controller
         ]);
     }
 
-    public function showPembelian(Request $request){
+    public function showPembelian(Request $request)
+    {
         $idOutlet = $request->idOutlet;
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
@@ -251,7 +256,7 @@ class robotController extends Controller
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
         $tanggalAlls = $tanggalAlls->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans', 'pattyCashHarians.listItemPattyCashs.jenis_patty_cashs.kategori_patty_cashs'])->get();
-        
+
         for ($indexOutletLoop = 0; $indexOutletLoop < count($outletArray); $indexOutletLoop++) {
             $allHistory = [];
             $namaOutlet = doutlet::find($outletArray[$indexOutletLoop])['Nama Store'];
@@ -267,10 +272,10 @@ class robotController extends Controller
                     $dataRobot = [];
                     $pembelianLists = $pembelianHarian->listItemPattyCashs;
                     $idSesi = $pembelianHarian->idSesi;
-                    
+
                     $robotPembelians = $pembelianHarian->robotPembelianStatuss;
-                    foreach($robotPembelians as $robotPembelian){
-                        array_push($dataRobot,(object)[
+                    foreach ($robotPembelians as $robotPembelian) {
+                        array_push($dataRobot, (object)[
                             'idRobotList' => $robotPembelian->id,
                             'user' => $robotPembelian->dUsers['Nama Lengkap'],
                             'status' => $robotPembelian->statusRobots->status
@@ -286,13 +291,13 @@ class robotController extends Controller
                         if ($pembelianList->pivot->idRevQuantity == 2) {
                             $qtyPembelian = $pembelianList->pivot->quantityRevisi;
                         }
-                        if($qtyPembelian == 0){
+                        if ($qtyPembelian == 0) {
                             continue;
                         }
-                        if($totalPembelian == 0){
+                        if ($totalPembelian == 0) {
                             continue;
                         }
-                        if($pembelianList->jenis_patty_cashs->namaJenis == 'HPP'){
+                        if ($pembelianList->jenis_patty_cashs->namaJenis == 'HPP') {
                             array_push($pattyCashSesi, (object)[
                                 'item' => $pembelianList->Item,
                                 'jenisItem' => $pembelianList->jenis_patty_cashs->namaJenis,
@@ -306,7 +311,7 @@ class robotController extends Controller
                         }
                         $dataFound = true;
                     }
-                    array_push($pattyCash,(object)[
+                    array_push($pattyCash, (object)[
                         'sesi' => $idSesi,
                         'pattyCash' => $pattyCashSesi,
                         'idPattyHarian' => $pembelianHarian->id,
@@ -334,7 +339,8 @@ class robotController extends Controller
         ]);
     }
 
-    public function showPembayaran(Request $request){
+    public function showPembayaran(Request $request)
+    {
         $idOutlet = $request->idOutlet;
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
@@ -351,7 +357,7 @@ class robotController extends Controller
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
         $tanggalAlls = $tanggalAlls->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans', 'pattyCashHarians.listItemPattyCashs.jenis_patty_cashs.kategori_patty_cashs'])->get();
-        
+
         for ($indexOutletLoop = 0; $indexOutletLoop < count($outletArray); $indexOutletLoop++) {
             $allHistory = [];
             $namaOutlet = doutlet::find($outletArray[$indexOutletLoop])['Nama Store'];
@@ -367,10 +373,10 @@ class robotController extends Controller
                     $dataRobot = [];
                     $PembayaranLists = $PembayaranHarian->listItemPattyCashs;
                     $idSesi = $PembayaranHarian->idSesi;
-                    
+
                     $robotPembayarans = $PembayaranHarian->robotPembayaranStatuss;
-                    foreach($robotPembayarans as $robotPembayaran){
-                        array_push($dataRobot,(object)[
+                    foreach ($robotPembayarans as $robotPembayaran) {
+                        array_push($dataRobot, (object)[
                             'idRobotList' => $robotPembayaran->id,
                             'user' => $robotPembayaran->dUsers['Nama Lengkap'],
                             'status' => $robotPembayaran->statusRobots->status
@@ -387,13 +393,13 @@ class robotController extends Controller
                         if ($PembayaranList->pivot->idRevQuantity == 2) {
                             $qtyPembayaran = $PembayaranList->pivot->quantityRevisi;
                         }
-                        if($qtyPembayaran == 0){
+                        if ($qtyPembayaran == 0) {
                             continue;
                         }
-                        if($totalPembayaran == 0){
+                        if ($totalPembayaran == 0) {
                             continue;
                         }
-                        if(($kategoriPattyCashs == 'Beban Operasional')||($kategoriPattyCashs == 'Beban Penjualan')||($kategoriPattyCashs == 'Beban Gaji')||($kategoriPattyCashs == 'Beban Marketing')){
+                        if (($kategoriPattyCashs == 'Beban Operasional') || ($kategoriPattyCashs == 'Beban Penjualan') || ($kategoriPattyCashs == 'Beban Gaji') || ($kategoriPattyCashs == 'Beban Marketing')) {
                             array_push($pattyCashSesi, (object)[
                                 'item' => $PembayaranList->Item,
                                 'jenisItem' => $PembayaranList->jenis_patty_cashs->namaJenis,
@@ -407,7 +413,7 @@ class robotController extends Controller
                         }
                         $dataFound = true;
                     }
-                    array_push($pattyCash,(object)[
+                    array_push($pattyCash, (object)[
                         'sesi' => $idSesi,
                         'pattyCash' => $pattyCashSesi,
                         'idPattyHarian' => $PembayaranHarian->id,
@@ -435,11 +441,12 @@ class robotController extends Controller
         ]);
     }
 
-    public function showEcommerce(Request $request){
+    public function showEcommerce(Request $request)
+    {
         $idOutlet = $request->idOutlet;
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
-        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('salesharians.listSaless','robotTempECommerces','robotECommerceStatuss.dUsers')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('salesharians.listSaless', 'robotTempECommerces', 'robotECommerceStatuss.dUsers')->get();
         // @dd($tanggalAll[0]->salesharians);
         $listSaless = listSales::where('butuhVerifikasi', '>', 0)->get();
         $outletAll = doutlet::all();
@@ -454,7 +461,7 @@ class robotController extends Controller
             foreach ($outletAll as $eachOutlet) {
                 $salesHarians = $eachTanggal->salesharians->where('idOutlet', '=', $eachOutlet->id);
                 $robotTempECommerces = $eachTanggal->robotTempECommerces->where('idOutlet', '=', $eachOutlet->id);
-                $robotECommerceStatuss = $eachTanggal->robotECommerceStatuss->where('idOutlet','=',$eachOutlet->id);
+                $robotECommerceStatuss = $eachTanggal->robotECommerceStatuss->where('idOutlet', '=', $eachOutlet->id);
                 $arrayList = [];
                 foreach ($listSaless as $listSales) {
                     $listFound = false;
@@ -470,8 +477,8 @@ class robotController extends Controller
                                 $listFound = true;
                                 $idTotalRevisi = $listSalesHarian->pivot->idRevisiTotal;
                                 $idSalesFill = $listSalesHarian->pivot->id;
-                                $pelunasanMutasiSaless = pelunasan_mutasi_sales::where('idSalesFill','=',$idSalesFill)->with('mutasiTransaksis')->get();
-                                foreach($pelunasanMutasiSaless as $pelunasanMutasiSales){
+                                $pelunasanMutasiSaless = pelunasan_mutasi_sales::where('idSalesFill', '=', $idSalesFill)->with('mutasiTransaksis')->get();
+                                foreach ($pelunasanMutasiSaless as $pelunasanMutasiSales) {
                                     $jumlahDiterima = $jumlahDiterima + $pelunasanMutasiSales->mutasiTransaksis->total;
                                 }
                                 $totalQtyTemp = $listSalesHarian->pivot->total;
@@ -505,7 +512,9 @@ class robotController extends Controller
                 }
 
                 $arrayList2 = [];
-                foreach($arrayList as $loopList){
+                $gofoodFound = false;
+                $grabfoodFound = false;
+                foreach ($arrayList as $loopList) {
                     //Mengelompokkan gopay dan gofood kedalam satu wadah
                     $idListSalesTemp = $loopList->idListSales;
                     $listSalesTemp = $loopList->listSales;
@@ -515,76 +524,79 @@ class robotController extends Controller
                     $arrayTotalTemp = [];
                     $idSalesFillTemp = [];
 
-                    foreach($loopList->arrayTotal as $loopArrayTotal){
+                    foreach ($loopList->arrayTotal as $loopArrayTotal) {
                         // $loopList->arrayTotal
                         array_push($arrayTotalTemp, $loopArrayTotal);
                     }
 
-                    foreach($loopList->idSalesFill as $loopArrayIdSalesFill){
+                    foreach ($loopList->idSalesFill as $loopArrayIdSalesFill) {
                         array_push($idSalesFillTemp, $loopArrayIdSalesFill);
                     }
-                    
-                    if($loopList->idListSales == 6){
+
+                    if ($loopList->idListSales == 6) {
                         //ID 6 merupakan ID goFood
-                        foreach($arrayList as $loopList2){
+                        foreach ($arrayList as $loopList2) {
                             //Cari yang memiliki ID 16 atau gopay
-                            if($loopList2->idListSales == 16){
+                            if ($loopList2->idListSales == 16) {
+                                $gofoodFound = true;
                                 $listSalesTemp .= ' / ';
                                 $listSalesTemp .= $loopList2->listSales;
                                 $totalTemp = $totalTemp + $loopList2->total;
                                 $diterimaTemp = $diterimaTemp + $loopList2->diterima;
 
-                                foreach($loopList2->arrayTotal as $loopArrayTotal2){
+                                foreach ($loopList2->arrayTotal as $loopArrayTotal2) {
                                     // $loopList->arrayTotal
                                     array_push($arrayTotalTemp, $loopArrayTotal2);
                                 }
-            
-                                foreach($loopList2->idSalesFill as $loopArrayIdSalesFill2){
+
+                                foreach ($loopList2->idSalesFill as $loopArrayIdSalesFill2) {
                                     array_push($idSalesFillTemp, $loopArrayIdSalesFill2);
                                 }
 
-                                if($loopList2->idTotalRevisi == 2){
+                                if ($loopList2->idTotalRevisi == 2) {
                                     $idTotalRevisiTemp = 2;
                                 }
                             }
                         }
-                    }
-                    else if($loopList->idListSales == 7){
+                    } else if ($loopList->idListSales == 7) {
                         //ID 6 merupakan ID grab food
-                        foreach($arrayList as $loopList2){
+                        foreach ($arrayList as $loopList2) {
                             //Cari yang memiliki ID 17 atau ovo
-                            if($loopList2->idListSales == 17){
+                            if ($loopList2->idListSales == 17) {
+                                $grabfoodFound = true;
                                 $listSalesTemp .= ' / ';
                                 $listSalesTemp .= $loopList2->listSales;
                                 $totalTemp = $totalTemp + $loopList2->total;
                                 $diterimaTemp = $diterimaTemp + $loopList2->diterima;
 
-                                foreach($loopList2->arrayTotal as $loopArrayTotal2){
+                                foreach ($loopList2->arrayTotal as $loopArrayTotal2) {
                                     // $loopList->arrayTotal
                                     array_push($arrayTotalTemp, $loopArrayTotal2);
                                 }
-            
-                                foreach($loopList2->idSalesFill as $loopArrayIdSalesFill2){
+
+                                foreach ($loopList2->idSalesFill as $loopArrayIdSalesFill2) {
                                     array_push($idSalesFillTemp, $loopArrayIdSalesFill2);
                                 }
 
-                                if($loopList2->idTotalRevisi == 2){
+                                if ($loopList2->idTotalRevisi == 2) {
                                     $idTotalRevisiTemp = 2;
                                 }
                             }
                         }
-                    }
-                    else if($loopList->idListSales == 16){
+                    } else if ($loopList->idListSales == 16) {
                         //ID 16 merupakan ID gopay
-                        continue;
-                    }
-                    else if($loopList->idListSales == 17){
+                        if($gofoodFound){
+                            continue;
+                        }
+                    } else if ($loopList->idListSales == 17) {
                         //ID 17 merupakan ID ovo
-                        continue;
+                        if($grabfoodFound){
+                            continue;
+                        }
                     }
                     $robotQty = 0;
-                    foreach($robotTempECommerces as $robotTempECommerce){
-                        if($loopList->idListSales == $robotTempECommerce->idListSales){
+                    foreach ($robotTempECommerces as $robotTempECommerce) {
+                        if ($loopList->idListSales == $robotTempECommerce->idListSales) {
                             $robotQty = $robotTempECommerce->total;
                             break;
                         }
@@ -603,8 +615,8 @@ class robotController extends Controller
                     ]);
                 }
                 $dataRobot = [];
-                foreach($robotECommerceStatuss as $robotECommerceStatus){
-                    array_push($dataRobot,(object)[
+                foreach ($robotECommerceStatuss as $robotECommerceStatus) {
+                    array_push($dataRobot, (object)[
                         'id' => $robotECommerceStatus->id,
                         'user' => $robotECommerceStatus->dUsers['Nama Lengkap'],
                         'status' => $robotECommerceStatus->statusRobots->status
@@ -631,40 +643,41 @@ class robotController extends Controller
         ]);
     }
 
-    public function showMutasi455TfKas(Request $request){
+    public function showMutasi455TfKas(Request $request)
+    {
         $idPenerima = $request->idPenerima;
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
-        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets','mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets', 'mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless')->get();
         $dataMutasi = [];
-        
-        foreach($tanggalAll as $loopTanggal){
+
+        foreach ($tanggalAll as $loopTanggal) {
             $tanggalDDmmYY = date('d/m/Y', strtotime($loopTanggal->Tanggal));
-            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList','=',$idPenerima);
-            foreach($mutasiTransaksis as $loopMutasi){
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList', '=', $idPenerima);
+            foreach ($mutasiTransaksis as $loopMutasi) {
                 $pelunasanMutasiSaless = $loopMutasi->pelunasanMutasiSaless;
-                if($pelunasanMutasiSaless != null){
+                if ($pelunasanMutasiSaless != null) {
                     $kredit = 0;
                     $debit = 0;
                     $dataRobot = [];
                     $robotMutasi455TfKas = $pelunasanMutasiSaless->robotMutasi455TfKasStatus;
-                    if($loopMutasi->total >0){
+                    if ($loopMutasi->total > 0) {
                         $debit = $loopMutasi->total;
-                    }else{
-                        $kredit = (-1)*$loopMutasi->total;
+                    } else {
+                        $kredit = (-1) * $loopMutasi->total;
                     }
-                    foreach($robotMutasi455TfKas as $loopMutasiRobot){
-                        array_push($dataRobot,(object)[
+                    foreach ($robotMutasi455TfKas as $loopMutasiRobot) {
+                        array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
-                            'status'=> $loopMutasiRobot->statusRobots->status,
+                            'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
                     }
                     //Jika merupakan manajemen sukodono, tidak perlu ditampilkan di robot karena merupakan bagian penerimaan pembayaran
-                    if($pelunasanMutasiSaless->salesFills->salesHarians->dOutlets->id == 17){
+                    if ($pelunasanMutasiSaless->salesFills->salesHarians->dOutlets->id == 17) {
                         continue;
                     }
-                    array_push($dataMutasi,(object)[
+                    array_push($dataMutasi, (object)[
                         'id' => $pelunasanMutasiSaless->id,
                         'tanggal' => $tanggalDDmmYY,
                         'klasifikasi' => $pelunasanMutasiSaless->salesFills->listSaless['sales'],
@@ -683,40 +696,41 @@ class robotController extends Controller
         ]);
     }
 
-    public function showMutasi455TfKasSukodono(Request $request){
+    public function showMutasi455TfKasSukodono(Request $request)
+    {
         $idPenerima = $request->idPenerima;
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
-        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets','mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless')->get();
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets', 'mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless')->get();
         $dataMutasi = [];
-        
-        foreach($tanggalAll as $loopTanggal){
+
+        foreach ($tanggalAll as $loopTanggal) {
             $tanggalDDmmYY = date('d/m/Y', strtotime($loopTanggal->Tanggal));
-            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList','=',$idPenerima);
-            foreach($mutasiTransaksis as $loopMutasi){
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList', '=', $idPenerima);
+            foreach ($mutasiTransaksis as $loopMutasi) {
                 $pelunasanMutasiSaless = $loopMutasi->pelunasanMutasiSaless;
-                if($pelunasanMutasiSaless != null){
+                if ($pelunasanMutasiSaless != null) {
                     $kredit = 0;
                     $debit = 0;
                     $dataRobot = [];
                     $robotMutasi455TfKas = $pelunasanMutasiSaless->robotMutasi455TfKasStatus;
-                    if($loopMutasi->total >0){
+                    if ($loopMutasi->total > 0) {
                         $debit = $loopMutasi->total;
-                    }else{
-                        $kredit = (-1)*$loopMutasi->total;
+                    } else {
+                        $kredit = (-1) * $loopMutasi->total;
                     }
-                    foreach($robotMutasi455TfKas as $loopMutasiRobot){
-                        array_push($dataRobot,(object)[
+                    foreach ($robotMutasi455TfKas as $loopMutasiRobot) {
+                        array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
-                            'status'=> $loopMutasiRobot->statusRobots->status,
+                            'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
                     }
                     //Jika merupakan manajemen sukodono, tidak perlu ditampilkan di robot karena merupakan bagian penerimaan pembayaran
-                    if($pelunasanMutasiSaless->salesFills->salesHarians->dOutlets->id == 17){
+                    if ($pelunasanMutasiSaless->salesFills->salesHarians->dOutlets->id == 17) {
                         continue;
                     }
-                    array_push($dataMutasi,(object)[
+                    array_push($dataMutasi, (object)[
                         'id' => $pelunasanMutasiSaless->id,
                         'tanggal' => $tanggalDDmmYY,
                         'klasifikasi' => $pelunasanMutasiSaless->salesFills->listSaless['sales'],
@@ -735,7 +749,8 @@ class robotController extends Controller
         ]);
     }
 
-    public function createRobotPembelian(Request $request){
+    public function createRobotPembelian(Request $request)
+    {
         $idPattyHarian = $request->idPattyHarian;
         $idPemverifikasi = $request->idPemverifikasi;
 
@@ -746,7 +761,8 @@ class robotController extends Controller
         ]);
     }
 
-    public function createRobotPembayaran(Request $request){
+    public function createRobotPembayaran(Request $request)
+    {
         $idPattyHarian = $request->idPattyHarian;
         $idPemverifikasi = $request->idPemverifikasi;
 
@@ -757,7 +773,8 @@ class robotController extends Controller
         ]);
     }
 
-    public function createRobotEcommerce(Request $request){
+    public function createRobotEcommerce(Request $request)
+    {
         $dataArray = $request->input('data');
         $idPemverifikasi = $dataArray['idPemverifikasi'];
 
@@ -766,7 +783,7 @@ class robotController extends Controller
         $idTanggal = $dataParse['idTanggal'];
         $datas = $dataParse['data'];
 
-        foreach($datas as $data){
+        foreach ($datas as $data) {
             $idListSales = $data['idListSales'];
             $bebanECommerce = $data['beban'];
             print_r($data);
@@ -786,7 +803,8 @@ class robotController extends Controller
         $robotECommerceStatus->save();
     }
 
-    public function createRobotMutasi455TfKas(Request $request){
+    public function createRobotMutasi455TfKas(Request $request)
+    {
         $idPelunasanMutasiSales = $request->idPelunasanMutasiSales;
         $idPemverifikasi = $request->idPemverifikasi;
         $robotMutasi455TfKas = new robot_mutasi455tfkas_status();
@@ -796,7 +814,8 @@ class robotController extends Controller
         $robotMutasi455TfKas->save();
     }
 
-    public function doneRobotPembelian($id){
+    public function doneRobotPembelian($id)
+    {
         $robot_pembelian_status = robot_pembelian_status::find($id);
         $robot_pembelian_status->update([
             'idStatusRobot' => '2'
@@ -804,53 +823,60 @@ class robotController extends Controller
         // @dd($robot_pembelian_status);
     }
 
-    public function doneRobotPembayaran($id){
+    public function doneRobotPembayaran($id)
+    {
         $robot_pembayaran_status = robot_pembayaran_status::find($id);
         $robot_pembayaran_status->update([
             'idStatusRobot' => '2'
         ]);
     }
 
-    public function doneRobotECommerce($id){
+    public function doneRobotECommerce($id)
+    {
         $robot_ecommerce_status = robot_ecommerce_status::find($id);
         $robot_ecommerce_status->update([
             'idStatusRobot' => '2'
         ]);
     }
 
-    public function doneRobotMutasi455TfKas($id){
+    public function doneRobotMutasi455TfKas($id)
+    {
         $robot_mutasi455tfkas_status = robot_mutasi455tfkas_status::find($id);
         $robot_mutasi455tfkas_status->update([
             'idStatusRobot' => '2'
         ]);
     }
 
-    public function deleteRobotPembelian(Request $request){
+    public function deleteRobotPembelian(Request $request)
+    {
         robot_pembelian_status::find($request->idRobotPembelianStatus)->delete();
     }
 
-    public function deleteRobotPembayaran(Request $request){
+    public function deleteRobotPembayaran(Request $request)
+    {
         robot_pembayaran_status::find($request->idRobotPembayaranStatus)->delete();
     }
-    public function deleteRobotEcommerce(Request $request){
+    public function deleteRobotEcommerce(Request $request)
+    {
         $idRobotEcommerceStatus = $request->idRobotEcommerceStatus;
 
         $robotECommerceStatus = robot_ecommerce_status::find($idRobotEcommerceStatus);
         $idTanggal = $robotECommerceStatus->idTanggal;
         $idOutlet = $robotECommerceStatus->idOutlet;
 
-        $robotTempECommerces = robot_temp_e_commerce::where('idTanggal','=',$idTanggal)->get();
-        if($robotTempECommerces->count() > 0){
-            $robotTempECommerces = $robotTempECommerces->where('idOutlet','=',$idOutlet);
-            if($robotTempECommerces->count() > 0){
-                foreach($robotTempECommerces as $robotTempECommerce){
+        $robotTempECommerces = robot_temp_e_commerce::where('idTanggal', '=', $idTanggal)->get();
+        if ($robotTempECommerces->count() > 0) {
+            $robotTempECommerces = $robotTempECommerces->where('idOutlet', '=', $idOutlet);
+            if ($robotTempECommerces->count() > 0) {
+                foreach ($robotTempECommerces as $robotTempECommerce) {
                     $robotTempECommerce->delete();
                 }
             }
         }
         $robotECommerceStatus->delete();
     }
-    public function deleteRobotMutasi455TfKas(Request $request){
+    public function deleteRobotMutasi455TfKas(Request $request)
+    {
         $idRobotMutasi455TfKas = $request->idRobotMutasi455TfKas;
         robot_mutasi455tfkas_status::find($idRobotMutasi455TfKas)->delete();
     }

@@ -66,8 +66,8 @@ class prosesMutasiController extends Controller
         $firstTangalFound = false;
         $tanggalID = 0;
 
-        $mutasiGagal = [];
-        $logError = [];
+        $statusArray = [];
+
         //Cari id nomor rekening
         try {
             $idNomorRekening = penerimaList::where('nomorRekening', '=', $nomorRekening)->first()->id;
@@ -107,6 +107,9 @@ class prosesMutasiController extends Controller
                         }
                     }
                 }
+
+                $statusUpload = 0; // 0 untuk data gagal
+                $error = '';
                 try {
                     $mutasiTransaksi = new mutasi_transaksi();
                     $mutasiTransaksi->idPenerimaList = $idNomorRekening;
@@ -115,11 +118,17 @@ class prosesMutasiController extends Controller
                     $mutasiTransaksi->total = $dataInput[2];
                     $mutasiTransaksi->save();
                     $dataBerhasil = $dataBerhasil + 1;
+                    $statusUpload = 1;
                 } catch (Exception $e) {
                     $dataGagal = $dataGagal + 1;
-                    array_push($logError, $e->getMessage());
-                    array_push($mutasiGagal, $dataInput[1]);
+                    // array_push($logError, $e->getMessage());
+                    // array_push($mutasiGagal, $dataInput[1]);
+                    $error = $e->getMessage();
                 }
+                array_push($statusArray, (object)[
+                    'status' => $statusUpload,
+                    'error' => $error
+                ]);
             }
             // ($allDataInput);
         }
@@ -131,8 +140,7 @@ class prosesMutasiController extends Controller
                 'message' => 'Data berhasil diposting!',
                 'dataBerhasil' => $dataBerhasil,
                 'dataGagal' => $dataGagal,
-                'logError' => $logError,
-                'dataError' => $mutasiGagal
+                'statusUpload' => $statusArray
             ]
         );
     }
@@ -172,7 +180,11 @@ class prosesMutasiController extends Controller
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
 
-        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis.mutasiDetails.mutasiKlasifikasis', 'salesharians.listSaless'])->get();
+        $tanggalAlls = $tanggalAlls->with([
+            'mutasiTransaksis.mutasiDetails.mutasiKlasifikasis',
+            'salesharians.listSaless',
+            'mutasiTransaksis.pelunasanMutasiSaless'
+        ])->get();
         // tanggalAll;
         $listSaless = listSales::all();
         $outletAll = doutlet::all();
@@ -228,13 +240,13 @@ class prosesMutasiController extends Controller
         foreach ($tanggalAlls as $eachTanggal) {
             $tanggal = $eachTanggal->Tanggal;
             $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
-            if($mutasiTransaksis->count()>0){
+            if ($mutasiTransaksis->count() > 0) {
                 //Hanya ambil di rekening 455 saja
-                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList','=',4);
+                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', 4);
             }
             foreach ($mutasiTransaksis as $mutasiTransaksi) {
                 $mutasiDetail = $mutasiTransaksi->mutasiDetails;
-                if($mutasiDetail != null){
+                if ($mutasiDetail != null) {
                     $selisihHari = (-1) * $mutasiDetail->selisihHari;
                     $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
                     $idListSalesTemp = $mutasiDetail->mutasiKlasifikasis->idListSalesTemp;
@@ -248,13 +260,16 @@ class prosesMutasiController extends Controller
                             if ($listSalesIdPembanding == $idListSalesTemp) {
                                 if ($idOutlet == $idOutletPembanding) {
                                     $idSalesFill = $eachDataSales->salesFillId;
-                                    try {
-                                        $pelunasanMutasiSales = new pelunasan_mutasi_sales();
-                                        $pelunasanMutasiSales->idSalesFill = $idSalesFill;
-                                        $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
-                                        $pelunasanMutasiSales->save();
-                                    } catch (Exception $e) {
+
+                                    //Delete data sebelumnya dan ganti dengan sales fill yang baru
+                                    $pelunasanMutasiSalesTemp = $mutasiTransaksi->pelunasanMutasiSaless;
+                                    if ($pelunasanMutasiSalesTemp != null) {
+                                        $pelunasanMutasiSalesTemp->delete();
                                     }
+                                    $pelunasanMutasiSales = new pelunasan_mutasi_sales();
+                                    $pelunasanMutasiSales->idSalesFill = $idSalesFill;
+                                    $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
+                                    $pelunasanMutasiSales->save();
                                 }
                             }
                         }
@@ -264,17 +279,19 @@ class prosesMutasiController extends Controller
         }
     }
 
-    function generateMutasiDetail(Request $request){
+    function generateMutasiDetail(Request $request)
+    {
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
         $idPenerimaList = $request->idPenerimaList;
-        if($idPenerimaList == 4){
+        if ($idPenerimaList == 4) {
             //Jika idPenerima mengarah ke rekening 455 maka
-            $this->generate455($startDate,$stopDate);
+            $this->generate455($startDate, $stopDate);
         }
     }
 
-    function generate455($startDate,$stopDate){
+    function generate455($startDate, $stopDate)
+    {
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
         $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis'])->get();
@@ -294,10 +311,10 @@ class prosesMutasiController extends Controller
                 if ($idListSalesSearch == 0) {
                     continue;
                 }
-                $idMutasiKlasifikasi = $mutasiKlasifikasi->where('idListSalesTemp','=',$idListSalesSearch)->first()->id;
+                $idMutasiKlasifikasi = $mutasiKlasifikasi->where('idListSalesTemp', '=', $idListSalesSearch)->first()->id;
                 try {
                     $mutasiDetail = new mutasi_detail();
-                    $mutasiDetail->idMutasiAksi = 4;//Id mutasi transfer kas ke 4
+                    $mutasiDetail->idMutasiAksi = 4; //Id mutasi transfer kas ke 4
                     $mutasiDetail->idMutasiTransaksi = $mutasiTransaksi->id;
                     $mutasiDetail->idMutasiKlasifikasi = $idMutasiKlasifikasi;
                     $mutasiDetail->idOutlet = $idOutletSearch;
@@ -353,6 +370,92 @@ class prosesMutasiController extends Controller
                     return $klasifikasi;
                 }
             }
+        }
+
+        //Cari klasifikasi grab
+        if (strpos($trxNotes, 'YANTO') !== false) {
+            $idOutlet = 2;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, 'MOHAMAD ZAINUDIN') !== false) {
+            $idOutlet = 3;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, 'MUHAMMAD NAJIB') !== false) {
+            $idOutlet = 4;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "LAILY SA ADAH, SE") !== false) {
+            $idOutlet = 5;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "YUDHA SETYAWAN IR") !== false) {
+            $idOutlet = 7;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "RAKHMAWATI EKA PUT") !== false) {
+            $idOutlet = 8;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "PRASIDHA WIDIANTO") !== false) {
+            $idOutlet = 9;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "SINGGIH WAHYUTI") !== false) {
+            $idOutlet = 10;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "MUHAMAD FAUJI") !== false) {
+            $idOutlet = 11;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "ANDI AFRADIN") !== false) {
+            $idOutlet = 13;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "DIKO YURIDIKA WIDA") !== false) {
+            $idOutlet = 21;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
+        }
+        if (strpos($trxNotes, "YUDHA SETYAWAN") !== false) {
+            $idOutlet = 19;
+            $idListSales = 7;
+            $klasifikasi['idOutlet'] = $idOutlet;
+            $klasifikasi['idListSales'] = $idListSales;
+            return $klasifikasi;
         }
         $klasifikasi['idOutlet'] = $idOutlet;
         $klasifikasi['idListSales'] = $idListSales;
@@ -495,6 +598,10 @@ class prosesMutasiController extends Controller
                     $cabang = '';
                     $aksi = '';
                     $selisihHari = '';
+                    $idKlasifikasi = '';
+
+                    $robotStatus = [];
+                    $terkaitStatus = [];
 
                     //Jika action 0, maka user dapat melakukan add
                     //Jika action 1, maka user hanya dapat melakukan delete
@@ -503,11 +610,25 @@ class prosesMutasiController extends Controller
 
                     $mutasiDetail = $mutasiTransaksi->mutasiDetails;
                     if ($mutasiDetail != null) {
+                        $idKlasifikasi = $mutasiDetail->mutasiKlasifikasis->id;
                         $klasifikasi = $mutasiDetail->mutasiKlasifikasis->klasifikasi;
                         $aksi = $mutasiDetail->mutasiAksis->aksi;
                         $cabang = $mutasiDetail->doutlets['Nama Store'];
                         $action = 1;
                         $selisihHari = $mutasiDetail->selisihHari;
+                    }
+
+                    $pelunasanMutasiSales = $mutasiTransaksi->pelunasanMutasiSaless;
+                    if ($pelunasanMutasiSales != null) {
+                        array_push($terkaitStatus, 'Pelunasan');
+
+                        $robotMutasi455TfKasStatus = $pelunasanMutasiSales->robotMutasi455TfKasStatus;
+                        foreach ($robotMutasi455TfKasStatus as $robotMutasi455kas) {
+                            array_push($robotStatus, (object)[
+                                'robot' => 'Mutasi 455 Tf Kas',
+                                'status' => $robotMutasi455kas->statusRobots->status
+                            ]);
+                        }
                     }
 
                     if ($mutasiTransaksi->total < 0) {
@@ -522,10 +643,13 @@ class prosesMutasiController extends Controller
                         'debit' => $debit,
                         'tanggalBaru' => $tanggalBaru,
                         'klasifikasi' => $klasifikasi,
+                        'idKlasifikasi' => $idKlasifikasi,
                         'cabang' => $cabang,
                         'aksi' => $aksi,
                         'action' => $action,
-                        'selisihHari' => $selisihHari
+                        'selisihHari' => $selisihHari,
+                        'terkaitStatus' => $terkaitStatus,
+                        'robot' => $robotStatus
                     ]);
                 }
             } else {
