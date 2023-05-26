@@ -260,16 +260,13 @@ class prosesMutasiController extends Controller
                             if ($listSalesIdPembanding == $idListSalesTemp) {
                                 if ($idOutlet == $idOutletPembanding) {
                                     $idSalesFill = $eachDataSales->salesFillId;
-
-                                    //Delete data sebelumnya dan ganti dengan sales fill yang baru
-                                    $pelunasanMutasiSalesTemp = $mutasiTransaksi->pelunasanMutasiSaless;
-                                    if ($pelunasanMutasiSalesTemp != null) {
-                                        $pelunasanMutasiSalesTemp->delete();
+                                    try {
+                                        $pelunasanMutasiSales = new pelunasan_mutasi_sales();
+                                        $pelunasanMutasiSales->idSalesFill = $idSalesFill;
+                                        $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
+                                        $pelunasanMutasiSales->save();
+                                    } catch (Exception $e) {
                                     }
-                                    $pelunasanMutasiSales = new pelunasan_mutasi_sales();
-                                    $pelunasanMutasiSales->idSalesFill = $idSalesFill;
-                                    $pelunasanMutasiSales->idMutasiTransaksi = $mutasiTransaksi->id;
-                                    $pelunasanMutasiSales->save();
                                 }
                             }
                         }
@@ -300,6 +297,20 @@ class prosesMutasiController extends Controller
         foreach ($tanggalAlls as $eachTanggal) {
             $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
             foreach ($mutasiTransaksis as $mutasiTransaksi) {
+                //Cari berdasarkan nama JUDDI INDRIARI KRI maka masukkan ke pembayaran sukodono h+0
+                if (strpos($mutasiTransaksi->trxNotes, 'JUDDI INDRIARI KRI') !== false) {
+                    try {
+                        $mutasiDetail = new mutasi_detail();
+                        $mutasiDetail->idMutasiAksi = 1; //Id mutasi pembayaran 1
+                        $mutasiDetail->idMutasiTransaksi = $mutasiTransaksi->id;
+                        $mutasiDetail->idMutasiKlasifikasi = 1;//Klasifikasi 1 untuk sukodono
+                        $mutasiDetail->idOutlet = 17;//17 untuk outlet sukodono
+                        $mutasiDetail->selisihHari = 0;
+                        $mutasiDetail->save();
+                    } catch (Exception $e) {
+                    }
+                }
+
                 //Cari id salesFill berdasarkan listsalesId, outletId dan tanggal. Dengan ketentuan tanggal - 1 hari dari mutasi
                 $searchMutasi = $this->cariKlasifikasiNotes($mutasiTransaksi->trxNotes, $outletAll);
                 print_r($searchMutasi);
