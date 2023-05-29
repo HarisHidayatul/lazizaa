@@ -26,6 +26,10 @@ class pelunasan_mutasi_sales extends Model
         return $this->hasMany(robot_mutasi455tfkas_status::class,'idPelunasanMutasiSales','id');
     }
 
+    public function robotMutasi455TfKasPenerimaanStatus(){
+        return $this->hasMany(robot_mutasi455tfkas_penerimaan_status::class,'idPelunasanMutasiSales','id');
+    }
+
     protected $fillable = [
         'idMutasiTransaksi',
         'idSalesFill',

@@ -304,6 +304,10 @@ Route::get('robot/mutasi455TfKas/show/all',[robotController::class, 'showMutasi4
 Route::post('robot/mutasi455TfKas/create', [robotController::class, 'createRobotMutasi455TfKas']);
 Route::delete('robot/mutasi455TfKas/delete',[robotController::class,'deleteRobotMutasi455TfKas']);
 
+Route::get('robot/mutasi455TfKasPenerimaan/show/all',[robotController::class, 'showMutasi455TfKasPenerimaan']);
+Route::post('robot/mutasi455TfKasPenerimaan/create', [robotController::class, 'createRobotMutasi455TfKasPenerimaan']);
+Route::delete('robot/mutasi455TfKasPenerimaan/delete',[robotController::class,'deleteRobotMutasi455TfKasPenerimaan']);
+
 Route::get('robot/mutasi455TfKasSukodono/show/all',[robotController::class, 'showMutasi455TfKasSukodono']);
 
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
@@ -311,6 +315,9 @@ Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotP
 
 Route::get('robot/api/mutasi455TfKas/show', [robotController::class, 'showRobotMutasi455TfKas']);
 Route::get('robot/api/mutasi455TfKas/done/{id}', [robotController::class, 'doneRobotMutasi455TfKas']);
+
+Route::get('robot/api/mutasi455TfKasPenerimaan/show', [robotController::class, 'showRobotMutasi455TfKasPenerimaan']);
+Route::get('robot/api/mutasi455TfKasPenerimaan/done/{id}', [robotController::class, 'doneRobotMutasi455TfKasPenerimaan']);
 
 Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPembayaran']);
 Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);

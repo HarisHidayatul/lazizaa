@@ -60,5 +60,117 @@
                 }
             });
         }
+
+        function getListAllFilter() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            var idPenerima = document.getElementById('selPenerima').value;
+            var urlAll = "{{ url('robot/mutasi455TfKasPenerimaan/show/all') }}";
+            $.ajax({
+                url: urlAll,
+                type: 'get',
+                data: {
+                    idPenerima: idPenerima,
+                    startDate: startDate,
+                    stopDate: stopDate
+                },
+                success: function(response) {
+                    var obj = JSON.parse(JSON.stringify(response));
+                    var historyAll = "";
+                    console.log(obj);
+                    for (var i = 0; i < obj.data.length; i++) {
+                        historyAll += '<tr>';
+                        historyAll += '<td>';
+                        historyAll += obj.data[i].tanggal;
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += obj.data[i].keterangan;
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += obj.data[i].klasifikasi;
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += obj.data[i].debit.toLocaleString();
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += obj.data[i].kredit.toLocaleString();
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        historyAll += obj.data[i].cabang;
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        for (var j = 0; j < obj.data[i].dataRobot.length; j++) {
+                            historyAll += '<div title="';
+                            historyAll += obj.data[i].dataRobot[j].perevisi;
+                            historyAll += '">';
+                            historyAll += obj.data[i].dataRobot[j].status;
+                            historyAll += '</div>';
+                        }
+                        historyAll += '</td>';
+                        historyAll += '<td>';
+                        if (obj.data[i].dataRobot.length > 0) {
+                            for (var j = 0; j < obj.data[i].dataRobot.length; j++) {
+                                if (obj.data[i].dataRobot[j].status == 'pending') {
+                                    historyAll +=
+                                        '<button type="button" class="btn btn-secondary" onClick="deleteVerifikasi(';
+                                    historyAll += obj.data[i].dataRobot[j].id;
+                                    historyAll += ')">';
+                                    historyAll += 'Delete';
+                                    historyAll += '</button>';
+                                }
+                            }
+                        } else {
+                            historyAll +=
+                                '<button type="button" class="btn btn-secondary" onClick="sendVerifikasi(';
+                            historyAll += obj.data[i].id;
+                            historyAll += ')">';
+                            historyAll += 'Verifikasi';
+                            historyAll += '</button>';
+                        }
+                        historyAll += '</td>';
+                        historyAll += '</tr>';
+                    }
+                    $('#statusInputTabel>tbody').empty().append(historyAll);
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function deleteVerifikasi(idRobotMutasi455TfKas) {
+            $.ajax({
+                url: "{{ url('robot/mutasi455TfKasPenerimaan/delete') }}",
+                type: 'delete',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idRobotMutasi455TfKas: idRobotMutasi455TfKas
+                },
+                success: function(response) {
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function sendVerifikasi(idPelunasanMutasiSales) {
+            $.ajax({
+                url: "{{ url('robot/mutasi455TfKasPenerimaan/create') }}",
+                type: 'post',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idPelunasanMutasiSales: idPelunasanMutasiSales,
+                    idPemverifikasi: {{ session('idPengisi') }},
+                },
+                success: function(response) {
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
+        }
     </script>
 @endsection

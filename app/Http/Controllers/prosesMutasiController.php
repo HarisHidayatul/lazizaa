@@ -640,6 +640,15 @@ class prosesMutasiController extends Controller
                                 'status' => $robotMutasi455kas->statusRobots->status
                             ]);
                         }
+
+                        $robotMutasi455TfKasPenerimaanStatus = $pelunasanMutasiSales->robotMutasi455TfKasPenerimaanStatus;
+                        foreach ($robotMutasi455TfKasPenerimaanStatus as $robotMutasi455kas) {
+                            array_push($robotStatus, (object)[
+                                'robot' => '455 Sukodono Tf Kas',
+                                'status' => $robotMutasi455kas->statusRobots->status
+                            ]);
+                        }
+
                     }
 
                     if ($mutasiTransaksi->total < 0) {
