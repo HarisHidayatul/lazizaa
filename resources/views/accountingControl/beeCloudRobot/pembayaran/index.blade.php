@@ -31,9 +31,11 @@
                 <td>Item</td>
                 <td>Jenis</td>
                 <td>Qty</td>
+                <td>Qty Robot</td>
                 <td>Satuan</td>
                 <td>Harga Satuan</td>
                 <td>Total</td>
+                <td>Total Robot</td>
                 <td>Status</td>
                 <td>Action</td>
             </tr>

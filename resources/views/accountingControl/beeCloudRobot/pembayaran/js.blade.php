@@ -176,6 +176,12 @@
                                         .qty;
                                     historyAll += '</td>';
 
+                                    
+                                    historyAll += '<td>';
+                                    historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
+                                        .qtyRobot;
+                                    historyAll += '</td>';
+
                                     historyAll += '<td>';
                                     historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
                                         .satuan;
@@ -206,6 +212,11 @@
                                     historyAll += '>';
                                     historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k]
                                         .pattyCash[l].total.toLocaleString();
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td>';
+                                    historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
+                                        .totalRobot;
                                     historyAll += '</td>';
 
                                     if (l == 0) {

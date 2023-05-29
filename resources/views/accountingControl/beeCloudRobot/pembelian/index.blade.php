@@ -30,8 +30,10 @@
                 <td>Sesi</td>
                 <td>Item HPP</td>
                 <td>Qty</td>
+                <td>Qty Robot</td>
                 <td>Satuan</td>
                 <td>Harga Satuan</td>
+                <td>Harga Satuan Robot</td>
                 <td>Status</td>
                 <td>Action</td>
             </tr>

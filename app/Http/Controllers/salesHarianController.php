@@ -315,7 +315,8 @@ class salesHarianController extends Controller
     {
         $tanggalAll = tanggalAll::whereBetween('Tanggal', array($fromDate, $toDate))->orderBy('Tanggal', 'DESC')->with('salesharians.listSaless')->get();
         // @dd($tanggalAll[0]->salesharians);
-        $listSaless = listSales::where('butuhVerifikasi', '>', 0)->get();
+        // $listSaless = listSales::where('butuhVerifikasi', '>', 0)->get();
+        $listSaless = listSales::all();
         $outletAll = doutlet::all();
         if ($idOutlet > 0) {
             $outletAll = $outletAll->where('id', '=', $idOutlet);

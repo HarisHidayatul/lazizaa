@@ -303,8 +303,8 @@ class prosesMutasiController extends Controller
                         $mutasiDetail = new mutasi_detail();
                         $mutasiDetail->idMutasiAksi = 1; //Id mutasi pembayaran 1
                         $mutasiDetail->idMutasiTransaksi = $mutasiTransaksi->id;
-                        $mutasiDetail->idMutasiKlasifikasi = 1;//Klasifikasi 1 untuk sukodono
-                        $mutasiDetail->idOutlet = 17;//17 untuk outlet sukodono
+                        $mutasiDetail->idMutasiKlasifikasi = 1; //Klasifikasi 1 untuk sukodono
+                        $mutasiDetail->idOutlet = 17; //17 untuk outlet sukodono
                         $mutasiDetail->selisihHari = 0;
                         $mutasiDetail->save();
                     } catch (Exception $e) {

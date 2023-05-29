@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\doutlet;
 use App\Models\listSales;
+use App\Models\pattyCashFill;
+use App\Models\pattyCashHarian;
 use App\Models\pelunasan_mutasi_sales;
 use App\Models\robot_ecommerce_status;
 use App\Models\robot_mutasi455tfkas_status;
@@ -285,17 +287,24 @@ class robotController extends Controller
                     foreach ($pembelianLists as $pembelianList) {
                         $qtyPembelian = $pembelianList->pivot->quantity;
                         $totalPembelian = $pembelianList->pivot->total;
+
+                        $robotQtyPembelian = $pembelianList->pivot->quantityRobot;
+                        $robotTotalPembelian = $pembelianList->pivot->totalRobot;
+
                         if ($pembelianList->pivot->idRevTotal == 2) {
                             $totalPembelian = $pembelianList->pivot->totalRevisi;
                         }
                         if ($pembelianList->pivot->idRevQuantity == 2) {
                             $qtyPembelian = $pembelianList->pivot->quantityRevisi;
                         }
-                        if ($qtyPembelian == 0) {
-                            continue;
-                        }
-                        if ($totalPembelian == 0) {
-                            continue;
+
+                        if (($robotQtyPembelian == 0) && ($robotTotalPembelian == 0)) {
+                            if ($qtyPembelian == 0) {
+                                continue;
+                            }
+                            if ($totalPembelian == 0) {
+                                continue;
+                            }
                         }
                         if ($pembelianList->jenis_patty_cashs->namaJenis == 'HPP') {
                             array_push($pattyCashSesi, (object)[
@@ -307,6 +316,8 @@ class robotController extends Controller
                                 'idRevTotal' => $pembelianList->pivot->idRevTotal,
                                 'idRevQty' => $pembelianList->pivot->idRevQuantity,
                                 'satuan' => $pembelianList->satuans->Satuan,
+                                'qtyRobot' => $robotQtyPembelian,
+                                'totalRobot' => $robotTotalPembelian
                             ]);
                         }
                         $dataFound = true;
@@ -387,17 +398,25 @@ class robotController extends Controller
                         $qtyPembayaran = $PembayaranList->pivot->quantity;
                         $totalPembayaran = $PembayaranList->pivot->total;
                         $kategoriPattyCashs = $PembayaranList->jenis_patty_cashs->kategori_patty_cashs->namaKategori;
+
+                        $qtyRobot = $PembayaranList->pivot->quantityRobot;
+                        $totalRobot = $PembayaranList->pivot->totalRobot;
+
+
                         if ($PembayaranList->pivot->idRevTotal == 2) {
                             $totalPembayaran = $PembayaranList->pivot->totalRevisi;
                         }
                         if ($PembayaranList->pivot->idRevQuantity == 2) {
                             $qtyPembayaran = $PembayaranList->pivot->quantityRevisi;
                         }
-                        if ($qtyPembayaran == 0) {
-                            continue;
-                        }
-                        if ($totalPembayaran == 0) {
-                            continue;
+
+                        if (($qtyRobot == 0) && ($totalRobot == 0)) {
+                            if ($qtyPembayaran == 0) {
+                                continue;
+                            }
+                            if ($totalPembayaran == 0) {
+                                continue;
+                            }
                         }
                         if (($kategoriPattyCashs == 'Beban Operasional') || ($kategoriPattyCashs == 'Beban Penjualan') || ($kategoriPattyCashs == 'Beban Gaji') || ($kategoriPattyCashs == 'Beban Marketing')) {
                             array_push($pattyCashSesi, (object)[
@@ -409,6 +428,8 @@ class robotController extends Controller
                                 'idRevTotal' => $PembayaranList->pivot->idRevTotal,
                                 'idRevQty' => $PembayaranList->pivot->idRevQuantity,
                                 'satuan' => $PembayaranList->satuans->Satuan,
+                                'qtyRobot' => $qtyRobot,
+                                'totalRobot' => $totalRobot
                             ]);
                         }
                         $dataFound = true;
@@ -585,12 +606,12 @@ class robotController extends Controller
                         }
                     } else if ($loopList->idListSales == 16) {
                         //ID 16 merupakan ID gopay
-                        if($gofoodFound){
+                        if ($gofoodFound) {
                             continue;
                         }
                     } else if ($loopList->idListSales == 17) {
                         //ID 17 merupakan ID ovo
-                        if($grabfoodFound){
+                        if ($grabfoodFound) {
                             continue;
                         }
                     }
@@ -754,6 +775,29 @@ class robotController extends Controller
         $idPattyHarian = $request->idPattyHarian;
         $idPemverifikasi = $request->idPemverifikasi;
 
+        $pattyCashHarian = pattyCashHarian::find($idPattyHarian);
+        $listPattyCash = $pattyCashHarian->listItemPattyCashs;
+        foreach ($listPattyCash as $eachListPatty) {
+            if ($eachListPatty->jenis_patty_cashs->namaJenis == 'HPP') {
+                $quantity = $eachListPatty->pivot->quantity;
+                $total = $eachListPatty->pivot->total;
+
+                $idQtyRevisi = $eachListPatty->pivot->idRevQuantity;
+                $idTotalRevisi = $eachListPatty->pivot->idRevTotal;
+                if ($idQtyRevisi == '2') {
+                    $quantity = $eachListPatty->pivot->quantityRevisi;
+                }
+                if ($idTotalRevisi == '2') {
+                    $total = $eachListPatty->pivot->totalRevisi;
+                }
+
+                $pattyCashFill = pattyCashFill::find($eachListPatty->pivot->id);
+                $pattyCashFill->quantityRobot = $quantity;
+                $pattyCashFill->totalRobot = $total;
+                $pattyCashFill->save();
+            }
+        }
+
         robot_pembelian_status::create([
             'idPattyCashHarian' => $idPattyHarian,
             'idPemverifikasi' => $idPemverifikasi,
@@ -765,6 +809,30 @@ class robotController extends Controller
     {
         $idPattyHarian = $request->idPattyHarian;
         $idPemverifikasi = $request->idPemverifikasi;
+
+        $pattyCashHarian = pattyCashHarian::find($idPattyHarian);
+        $listPattyCash = $pattyCashHarian->listItemPattyCashs;
+        foreach ($listPattyCash as $eachListPatty) {
+            $kategoriPattyCashs = $eachListPatty->jenis_patty_cashs->kategori_patty_cashs->namaKategori;
+            if (($kategoriPattyCashs == 'Beban Operasional') || ($kategoriPattyCashs == 'Beban Penjualan') || ($kategoriPattyCashs == 'Beban Gaji') || ($kategoriPattyCashs == 'Beban Marketing')) {
+                $quantity = $eachListPatty->pivot->quantity;
+                $total = $eachListPatty->pivot->total;
+
+                $idQtyRevisi = $eachListPatty->pivot->idRevQuantity;
+                $idTotalRevisi = $eachListPatty->pivot->idRevTotal;
+                if ($idQtyRevisi == '2') {
+                    $quantity = $eachListPatty->pivot->quantityRevisi;
+                }
+                if ($idTotalRevisi == '2') {
+                    $total = $eachListPatty->pivot->totalRevisi;
+                }
+
+                $pattyCashFill = pattyCashFill::find($eachListPatty->pivot->id);
+                $pattyCashFill->quantityRobot = $quantity;
+                $pattyCashFill->totalRobot = $total;
+                $pattyCashFill->save();
+            }
+        }
 
         robot_pembayaran_status::create([
             'idPattyCashHarian' => $idPattyHarian,
@@ -849,11 +917,34 @@ class robotController extends Controller
 
     public function deleteRobotPembelian(Request $request)
     {
+        $robotPembelianStatus = robot_pembelian_status::find($request->idRobotPembelianStatus);
+        $listPattyCash = $robotPembelianStatus->pattyCashHarians->listItemPattyCashs;
+        foreach ($listPattyCash as $eachListPatty) {
+            //Cari item patty yang termasuk hpp
+            if ($eachListPatty->jenis_patty_cashs->namaJenis == 'HPP') {
+                $pattyCashFill = pattyCashFill::find($eachListPatty->pivot->id);
+                $pattyCashFill->quantityRobot = 0;
+                $pattyCashFill->totalRobot = 0;
+                $pattyCashFill->save();
+            }
+        }
+
         robot_pembelian_status::find($request->idRobotPembelianStatus)->delete();
     }
 
     public function deleteRobotPembayaran(Request $request)
     {
+        $robotPembelianStatus = robot_pembayaran_status::find($request->idRobotPembayaranStatus);
+        $listPattyCash = $robotPembelianStatus->pattyCashHarians->listItemPattyCashs;
+        foreach ($listPattyCash as $eachListPatty) {
+            $kategoriPattyCashs = $eachListPatty->jenis_patty_cashs->kategori_patty_cashs->namaKategori;
+            if (($kategoriPattyCashs == 'Beban Operasional') || ($kategoriPattyCashs == 'Beban Penjualan') || ($kategoriPattyCashs == 'Beban Gaji') || ($kategoriPattyCashs == 'Beban Marketing')) {
+                $pattyCashFill = pattyCashFill::find($eachListPatty->pivot->id);
+                $pattyCashFill->quantityRobot = 0;
+                $pattyCashFill->totalRobot = 0;
+                $pattyCashFill->save();
+            }
+        }
         robot_pembayaran_status::find($request->idRobotPembayaranStatus)->delete();
     }
     public function deleteRobotEcommerce(Request $request)

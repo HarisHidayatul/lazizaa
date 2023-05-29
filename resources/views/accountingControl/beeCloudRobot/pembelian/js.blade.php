@@ -110,6 +110,13 @@
                                     hargaSatuan /= parseInt(objAllData.allData[i].dataHistory[j].pattyCash[k]
                                         .pattyCash[l].qty);
                                     hargaSatuan = Math.round(hargaSatuan);
+
+                                    var hargaSatuanRobot = parseInt(objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                        .pattyCash[l].totalRobot);
+                                    hargaSatuanRobot /= parseInt(objAllData.allData[i].dataHistory[j].pattyCash[k]
+                                        .pattyCash[l].qtyRobot);
+                                    hargaSatuanRobot = Math.round(hargaSatuanRobot);
+
                                     if (l == 0) {
                                         historyAll += '<td rowspan="';
                                         historyAll += lengthPatty;
@@ -150,6 +157,11 @@
 
                                     historyAll += '<td>';
                                     historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
+                                        .qtyRobot;
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td>';
+                                    historyAll += objAllData.allData[i].dataHistory[j].pattyCash[k].pattyCash[l]
                                         .satuan;
                                     historyAll += '</td>';
 
@@ -164,6 +176,10 @@
                                     }
                                     historyAll += '>';
                                     historyAll += hargaSatuan.toLocaleString();
+                                    historyAll += '</td>';
+
+                                    historyAll += '<td>';
+                                    historyAll += hargaSatuanRobot.toLocaleString();
                                     historyAll += '</td>';
 
                                     if (l == 0) {
