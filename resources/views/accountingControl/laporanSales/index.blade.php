@@ -29,6 +29,11 @@
 <div style="height: 10px;"></div>
 <button type="button" class="btn btn-secondary float-right" onclick="downloadCSV();">Download CSV</button>
 <div style="height: 50px;"></div>
+<div class="d-flex justify-content-start">
+    <div>Waktu Sekarang : </div>
+    <div style="content: '''; width: 10px"></div>
+    <div id="server-time"></div>
+</div>
 <div style="overflow-x: auto">
     <table class="table table-striped" id="statusInputTabel">
         <thead>
@@ -42,6 +47,8 @@
                 <td>Fee E-Commerce</td>
                 <td>Saldo</td>
                 <td>Status</td>
+                <td>Dibuat</td>
+                <td>Update</td>
             </tr>
         </thead>
         <tbody>

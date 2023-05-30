@@ -18,7 +18,7 @@ class salesharian extends Model
     }
 
     public function listSaless(){
-        return $this->belongsToMany(listSales::class,salesFill::class,'idSales','idListSales')->withPivot('total','totalRevisi','idRevisiTotal','id','idPengisi','idPerevisi','totalDiterima','idRevDiterima');
+        return $this->belongsToMany(listSales::class,salesFill::class,'idSales','idListSales')->withPivot('total','totalRevisi','idRevisiTotal','id','idPengisi','idPerevisi','totalDiterima','idRevDiterima','created_at','updated_at');
     }
 
     public function salesFills(){

@@ -648,7 +648,15 @@ class prosesMutasiController extends Controller
                                 'status' => $robotMutasi455kas->statusRobots->status
                             ]);
                         }
+                    }
 
+                    // 
+                    $robotMutasi455Pembayaran = $mutasiTransaksi->robotMutasi455Pembayaran;
+                    foreach ($robotMutasi455Pembayaran as $robotMutasi455kas) {
+                        array_push($robotStatus, (object)[
+                            'robot' => '455 Pembayaran',
+                            'status' => $robotMutasi455kas->statusRobots->status
+                        ]);
                     }
 
                     if ($mutasiTransaksi->total < 0) {

@@ -34,6 +34,10 @@ class mutasi_transaksi extends Model
     public function mutasiDetails(){
         return $this->hasOne(mutasi_detail::class,'idMutasiTransaksi','id');
     }
+    
+    public function robotMutasi455Pembayaran(){
+        return $this->hasMany(robot_mutasi455_pembayaran_status::class,'idMutasiTransaksi','id');
+    }
 
     protected $fillable = [
         'trxNotes',

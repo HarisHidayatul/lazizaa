@@ -34,6 +34,20 @@
 
             getAllOutlet();
         })
+        $(document).ready(function() {
+            setInterval(function() {
+                $.ajax({
+                    url: "{{ url('getServerTime') }}",
+                    method: 'GET',
+                    success: function(response) {
+                        $('#server-time').text(response.server_time);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            }, 5000); // Perbarui setiap 1 detik (1000 milidetik)
+        });
 
         function getListAllFilter() {
             // var accessHistory = document.getElementById('selDate').value;
@@ -109,6 +123,14 @@
                                 dataTable += '<td>';
                                 dataTable += '</td>';
                                 tempDataExport.push('');
+
+                                dataTable += '<td>';
+                                dataTable += obj.dataSales[i].data[j].dataSales[k].created_at;
+                                dataTable += '</td>';
+                                dataTable += '<td>';
+                                dataTable += obj.dataSales[i].data[j].dataSales[k].updated_at;
+                                dataTable += '</td>';
+
                                 dataTable += '</tr>';
                                 dataExportToCSV.push(tempDataExport);
 
@@ -162,6 +184,14 @@
                                         tempDataExport.push('');
                                     }
                                     dataTable += '</td>';
+
+                                    dataTable += '<td>';
+                                    dataTable += obj.dataSales[i].data[j].dataSales[k].data[l].created_at;
+                                    dataTable += '</td>';
+                                    dataTable += '<td>';
+                                    dataTable += obj.dataSales[i].data[j].dataSales[k].data[l].updated_at;
+                                    dataTable += '</td>';
+
                                     dataTable += '</tr>';
                                     dataExportToCSV.push(tempDataExport);
                                 }
@@ -209,15 +239,32 @@
                                     tempDataExport.push('');
                                 }
                                 dataTable += '</td>';
+
+                                dataTable += '<td>';
+                                dataTable += obj.dataSales[i].data[j].dataReimburse[k].created_at;
+                                dataTable += '</td>';
+                                dataTable += '<td>';
+                                dataTable += obj.dataSales[i].data[j].dataReimburse[k].updated_at;
+                                dataTable += '</td>';
+
                                 dataTable += '</tr>';
                                 dataExportToCSV.push(tempDataExport);
                             }
+
+                            var created_at_setoran = '';
 
                             for (var k = 0; k < obj.dataSales[i].data[j].dataSetor.length; k++) {
                                 saldoSetoran += parseInt(obj.dataSales[i].data[j].dataSetor[k].total);
                                 if (obj.dataSales[i].data[j].dataSetor[k].idReivisiTotal == '2') {
                                     pendingStatus = true;
                                 }
+                                created_at_setoran += '<td>';
+                                created_at_setoran += obj.dataSales[i].data[j].dataSetor[k].created_at;
+                                created_at_setoran += '</td>';
+                                created_at_setoran += '<td>';
+                                created_at_setoran += obj.dataSales[i].data[j].dataSetor[k].updated_at;
+                                created_at_setoran += '</td>';
+
                             }
                             var tempDataExport = [];
                             dataTable += '<tr>';
@@ -275,12 +322,12 @@
                             tempTableSetoran += '</td>';
 
                             dataTable += '<td>';
-                            dataTable += (saldo-saldoSetoran).toLocaleString();
+                            dataTable += (saldo - saldoSetoran).toLocaleString();
                             dataTable += '</td>';
-                            tempDataExport.push((saldo-saldoSetoran).toLocaleString());
+                            tempDataExport.push((saldo - saldoSetoran).toLocaleString());
 
                             tempTableSetoran += '<td>';
-                            tempTableSetoran += (saldo-saldoSetoran).toLocaleString();
+                            tempTableSetoran += (saldo - saldoSetoran).toLocaleString();
                             tempTableSetoran += '</td>';
 
                             dataTable += '<td>';
@@ -307,28 +354,29 @@
                             }
                             tempTableSetoran += '</td>';
 
+                            dataTable += created_at_setoran;
                             dataTable += '</tr>';
                             dataExportToCSV.push(tempDataExport);
 
                             tempTableSetoran += '</tr>';
 
                             // if()
-                            if((saldo-saldoSetoran) > 0){
+                            if ((saldo - saldoSetoran) > 0) {
                                 minusTableSetoran += tempTableSetoran;
                             }
-                            if((saldo-saldoSetoran) < 0){
+                            if ((saldo - saldoSetoran) < 0) {
                                 surplusTableSetoran += tempTableSetoran;
                             }
                         }
                     }
-                    if(filterTableSetoran == 0){
+                    if (filterTableSetoran == 0) {
                         $('#statusInputTabel>tbody').empty().append(dataTable);
-                    }else if(filterTableSetoran == 1){
+                    } else if (filterTableSetoran == 1) {
                         $('#statusInputTabel>tbody').empty().append(surplusTableSetoran);
-                    }else if(filterTableSetoran == 2){
+                    } else if (filterTableSetoran == 2) {
                         $('#statusInputTabel>tbody').empty().append(minusTableSetoran);
                     }
-                    
+
                 },
                 error: function(req, err) {
                     console.log(err);

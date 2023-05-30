@@ -13,6 +13,7 @@ use App\Models\robot_mutasi455tfkas_status;
 use App\Models\robot_pembayaran_status;
 use App\Models\robot_pembelian_status;
 use App\Models\robot_temp_e_commerce;
+use App\Models\robot_mutasi455_pembayaran_status;
 use App\Models\tanggalAll;
 use Illuminate\Http\Request;
 
@@ -263,6 +264,37 @@ class robotController extends Controller
 
         return response()->json([
             'idRobotMutasi455TfKasPenerimaan' => $robotMutasi455TfKasPenerimaan->id,
+            'Tanggal' => $tanggalDDmmYY,
+            'kodeAkun' => $kodeAkun,
+            'kasKeywoard' => $kasKeywoard,
+            'kas' => $kas,
+            'keterangan' => $keterangan,
+            'total' => $total,
+            'cabangKeywoard' => $cabangKeywoard,
+            'cabang' => $cabang
+        ]);
+    }
+
+    public function showRobotMutasi455Pembayaran(){
+        $robotMutasi455Pembayaran = robot_mutasi455_pembayaran_status::where('idStatusRobot', '=', '1')->get()->first();
+        $mutasiTransaksi = $robotMutasi455Pembayaran->mutasiTransaksis;
+
+        $keterangan = $mutasiTransaksi->trxNotes;
+        $tanggal = $mutasiTransaksi->tanggalAlls->Tanggal;
+        $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
+
+        $total = (-1) * $mutasiTransaksi->total;
+        
+        $cabangKeywoard = 'lazizaa';
+        $cabang = 'PT. Lazizaa Rahmat Semesta';
+
+        $kodeAkun = '250.2041';
+
+        $kasKeywoard = '0455';
+        $kas = 'BCA CS 0455';
+
+        return response()->json([
+            'idRobotMutasi455Pembayaran' => $robotMutasi455Pembayaran->id,
             'Tanggal' => $tanggalDDmmYY,
             'kodeAkun' => $kodeAkun,
             'kasKeywoard' => $kasKeywoard,
@@ -856,6 +888,63 @@ class robotController extends Controller
         ]);
     }
 
+    public function showMutasi455Pembayaran(Request $request)
+    {
+        $idPenerima = $request->idPenerima;
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.pelunasanMutasiSaless.salesFills.salesHarians.dOutlets', 'mutasiTransaksis.pelunasanMutasiSaless.salesFills.listSaless')->get();
+        $dataMutasi = [];
+
+        foreach ($tanggalAll as $loopTanggal) {
+            $tanggalDDmmYY = date('d/m/Y', strtotime($loopTanggal->Tanggal));
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList', '=', $idPenerima);
+            foreach ($mutasiTransaksis as $loopMutasi) {
+                $mutasiDetail = $loopMutasi->mutasiDetails;
+                if ($mutasiDetail != null) {
+                    if($mutasiDetail->mutasiAksis->id != 1){
+                        //Hanya tampilkan yang aksi pembayaran
+                        continue;
+                    }
+                    if($mutasiDetail->mutasiKlasifikasis->id != 1){
+                        //Hanya tampilkan yang punya klasifikasi sukodono
+                        continue;
+                    }
+                    $kredit = 0;
+                    $debit = 0;
+                    $dataRobot = [];
+                    $robotMutasi455Pembayaran = $loopMutasi->robotMutasi455Pembayaran;
+                    if ($loopMutasi->total > 0) {
+                        $debit = $loopMutasi->total;
+                    } else {
+                        $kredit = (-1) * $loopMutasi->total;
+                    }
+                    foreach ($robotMutasi455Pembayaran as $loopMutasiRobot) {
+                        array_push($dataRobot, (object)[
+                            'id' => $loopMutasiRobot->id,
+                            'status' => $loopMutasiRobot->statusRobots->status,
+                            'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
+                        ]);
+                    }
+                    array_push($dataMutasi, (object)[
+                        'id' => $loopMutasi->id,
+                        'tanggal' => $tanggalDDmmYY,
+                        'klasifikasi' => $mutasiDetail->mutasiKlasifikasis->klasifikasi,
+                        'cabang' => $mutasiDetail->dOutlets['Nama Store'],
+                        'kredit' => $kredit,
+                        'debit' => $debit,
+                        'keterangan' => $loopMutasi->trxNotes,
+                        'dataRobot' => $dataRobot
+                    ]);
+                }
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'data' => $dataMutasi
+        ]);
+    }
+
     public function createRobotPembelian(Request $request)
     {
         $idPattyHarian = $request->idPattyHarian;
@@ -979,6 +1068,16 @@ class robotController extends Controller
         $robotMutasi455TfKas->save();
     }
 
+    public function createRobotMutasi455Pembayaran(Request $request){
+        $idMutasiTransaksi = $request->idMutasiTransaksi;
+        $idPemverifikasi = $request->idPemverifikasi;
+        $robotPembayaran455 = new robot_mutasi455_pembayaran_status();
+        $robotPembayaran455->idMutasiTransaksi = $idMutasiTransaksi;
+        $robotPembayaran455->idPemverifikasi = $idPemverifikasi;
+        $robotPembayaran455->idStatusRobot = '1';
+        $robotPembayaran455->save();
+    }
+
     public function doneRobotPembelian($id)
     {
         $robot_pembelian_status = robot_pembelian_status::find($id);
@@ -1016,6 +1115,13 @@ class robotController extends Controller
     {
         $robot_mutasi455tfkas_penerimaan_status = robot_mutasi455tfkas_penerimaan_status::find($id);
         $robot_mutasi455tfkas_penerimaan_status->update([
+            'idStatusRobot' => '2'
+        ]);
+    }
+
+    public function doneRobotMutasi455Pembayaran($id){
+        $robotMutasi455Pembayaran = robot_mutasi455_pembayaran_status::find($id);
+        $robotMutasi455Pembayaran->update([
             'idStatusRobot' => '2'
         ]);
     }
@@ -1080,5 +1186,10 @@ class robotController extends Controller
     {
         $idRobotMutasi455TfKas = $request->idRobotMutasi455TfKas;
         robot_mutasi455tfkas_penerimaan_status::find($idRobotMutasi455TfKas)->delete();
+    }
+
+    public function deleteRobotMutasi455Pembayaran(Request $request){
+        $idRobotMutasi455Pembayaran = $request->idRobotMutasi455Pembayaran;
+        robot_mutasi455_pembayaran_status::find($idRobotMutasi455Pembayaran)->delete();
     }
 }

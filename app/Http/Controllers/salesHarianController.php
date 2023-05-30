@@ -244,7 +244,9 @@ class salesHarianController extends Controller
                 foreach ($setoranHarians as $setoranHarian) {
                     array_push($dataSetoran, (object)[
                         'total' => $setoranHarian->qtySetor,
-                        'idReivisiTotal' => $setoranHarian->idRevisi
+                        'idReivisiTotal' => $setoranHarian->idRevisi,
+                        'created_at' => date("d/m/Y H:i", strtotime($setoranHarian->created_at)),
+                        'updated_at' => date("d/m/Y H:i", strtotime($setoranHarian->updated_at)),
                     ]);
                 }
                 if ($salesHarianReimburse != null) {
@@ -256,7 +258,10 @@ class salesHarianController extends Controller
                         }
                         array_push($dataReimburse, (object)[
                             'total' => $totalTemp,
-                            'idRevisiTotal' => $idRevisiTotal
+                            'idRevisiTotal' => $idRevisiTotal,
+                            'created_at' => date("d/m/Y H:i", strtotime($salesHarianReimburse->sales_reimburses->created_at)),
+                            'updated_at' => date("d/m/Y H:i", strtotime($salesHarianReimburse->sales_reimburses->updated_at)),
+                            
                         ]);
                     }
                 }
@@ -281,13 +286,17 @@ class salesHarianController extends Controller
                             'sales' => $salesList->sales,
                             'totalDiterima' => $totalDiterima,
                             'total' => $totalTemp,
-                            'idRevisiTotal' => $idTotalRevisi
+                            'idRevisiTotal' => $idTotalRevisi,
+                            'created_at' => date("d/m/Y H:i", strtotime($salesList->pivot->created_at)),
+                            'updated_at' => date("d/m/Y H:i", strtotime($salesList->pivot->updated_at)),
                         ]);
                     }
                     array_push($dataPerSesi, (object)[
                         'sesi' => $salesHarianSesi->idSesi,
                         'data' => $dataPerSalesArray,
-                        'totalManual' => $salesHarianSesi->totalManual
+                        'totalManual' => $salesHarianSesi->totalManual,
+                        'created_at' => date("d/m/Y H:i", strtotime($salesHarianSesi->created_at)),
+                        'updated_at' => date("d/m/Y H:i", strtotime($salesHarianSesi->updated_at)),
                     ]);
                 }
                 array_push($dataPerTanggalArray, (object)[

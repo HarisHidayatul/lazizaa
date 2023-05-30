@@ -10,6 +10,7 @@ use App\Models\satuan;
 use App\Models\tempImgAll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class commonController extends Controller
 {
@@ -23,7 +24,16 @@ class commonController extends Controller
         //
     }
 
-    public function postImageAndGetID(Request $request){
+    public function getServerTime()
+    {
+        $serverTime = DB::select(DB::raw('SELECT CURRENT_TIMESTAMP() AS server_time'));
+        $formattedTime = date("d/m/y H:i:s", strtotime($serverTime[0]->server_time));
+
+        return response()->json(['server_time' => $formattedTime]);
+    }
+
+    public function postImageAndGetID(Request $request)
+    {
         // ddd($request);
         $request->validate([
             'image' => 'required|file|mimes:jpeg,png,jpg,pdf|max:1048'
@@ -34,8 +44,9 @@ class commonController extends Controller
         ])->id;
         return $idSaveTempID;
     }
-    public function moveImage($fromPathFile,$toPathFile){
-        Storage::move('post-images\oYTnOi0pgnWBvqVj5nIg0O7n3wscjD3w8l8v83am.png','temp-images\1.png');
+    public function moveImage($fromPathFile, $toPathFile)
+    {
+        Storage::move('post-images\oYTnOi0pgnWBvqVj5nIg0O7n3wscjD3w8l8v83am.png', 'temp-images\1.png');
     }
 
     /**
@@ -59,7 +70,8 @@ class commonController extends Controller
         //
     }
 
-    public function storeOutlet(Request $request){
+    public function storeOutlet(Request $request)
+    {
         $outlet = doutlet::create([
             'Nama Store' => $request->namaStore,
             'Alamat Lengkap' => $request->alamatStore,
@@ -67,7 +79,8 @@ class commonController extends Controller
         ]);
     }
 
-    public function storeBrand(Request $request){
+    public function storeBrand(Request $request)
+    {
         $brand = dBrand::create([
             'Nama Brand' => $request->namaBrand,
             'Keterangan' => $request->keterangan,
@@ -75,13 +88,15 @@ class commonController extends Controller
         ]);
     }
 
-    public function storeSatuan(Request $request){
+    public function storeSatuan(Request $request)
+    {
         $satuan = satuan::create([
             'Satuan' => $request->satuan
         ]);
     }
 
-    public function storeUser(Request $request){
+    public function storeUser(Request $request)
+    {
         $user = dUser::create([
             'Username' => $request->username,
             'Password' => $request->password,
@@ -103,31 +118,33 @@ class commonController extends Controller
         //
     }
 
-    public function showImageTemp($idTempImgAll){
+    public function showImageTemp($idTempImgAll)
+    {
         return tempImgAll::find($idTempImgAll)->imagePath;
     }
 
-    public function showUser($idOutlet){
-        $user = dUser::where('idOutlet','=',$idOutlet)->get();
+    public function showUser($idOutlet)
+    {
+        $user = dUser::where('idOutlet', '=', $idOutlet)->get();
         $outletAll = doutlet::all();
         $roleAll = drole::all();
         $outletArray = [];
         $roleArray = [];
         $userArray = [];
-        for($i =0;$i<$outletAll->count();$i++){
+        for ($i = 0; $i < $outletAll->count(); $i++) {
             array_push($outletArray, (object)[
                 'id' => $outletAll[$i]->id,
                 'outlet' => $outletAll[$i]['Nama Store']
             ]);
         }
-        for($i = 0;$i<$roleAll->count();$i++){
+        for ($i = 0; $i < $roleAll->count(); $i++) {
             array_push($roleArray, (object)[
                 'id' => $roleAll[$i]->id,
                 'role' => $roleAll[$i]->Role
             ]);
         }
-        for($i=0;$i<$user->count();$i++){
-            array_push($userArray,(object)[
+        for ($i = 0; $i < $user->count(); $i++) {
+            array_push($userArray, (object)[
                 'id' => $user[$i]->id,
                 'nama' => $user[$i]['Nama Lengkap'],
                 'username' => $user[$i]['Username'],
@@ -144,18 +161,19 @@ class commonController extends Controller
         ]);
     }
 
-    public function showOutlet($idBrand){
-        $outlet = doutlet::where('idBrand','=',$idBrand)->get();
+    public function showOutlet($idBrand)
+    {
+        $outlet = doutlet::where('idBrand', '=', $idBrand)->get();
         $brand = dBrand::all();
         $array = [];
         $arrayBrand = [];
-        for($i =0;$i<$brand->count();$i++){
+        for ($i = 0; $i < $brand->count(); $i++) {
             array_push($arrayBrand, (object)[
                 'id' => $brand[$i]->id,
                 'brand' => $brand[$i]['Nama Brand']
             ]);
         }
-        for($i=0;$i<$outlet->count();$i++){
+        for ($i = 0; $i < $outlet->count(); $i++) {
             array_push($array, (object)[
                 'id' => $outlet[$i]['id'],
                 'store' => $outlet[$i]['Nama Store'],
@@ -178,10 +196,11 @@ class commonController extends Controller
         ]);
     }
 
-    public function showAllOutlet(){
+    public function showAllOutlet()
+    {
         $outlet = doutlet::all();
         $arrayOutlet = [];
-        for($i=0;$i<$outlet->count();$i++){
+        for ($i = 0; $i < $outlet->count(); $i++) {
             array_push($arrayOutlet, (object)[
                 'id' => $outlet[$i]['id'],
                 'store' => $outlet[$i]['Nama Store'],
@@ -196,11 +215,12 @@ class commonController extends Controller
         ]);
     }
 
-    public function showAllRole(){
+    public function showAllRole()
+    {
         $role = drole::all();
         $arrayRole = [];
-        for($i=0;$i<$role->count();$i++){
-            array_push($arrayRole,(object)[
+        for ($i = 0; $i < $role->count(); $i++) {
+            array_push($arrayRole, (object)[
                 'id' => $role[$i]->id,
                 'role' => $role[$i]->Role
             ]);
@@ -227,10 +247,11 @@ class commonController extends Controller
         ]);
     }
 
-    public function showBrand(){
+    public function showBrand()
+    {
         $brand = dBrand::all();
         $array = [];
-        for($i=0;$i<$brand->count();$i++){
+        for ($i = 0; $i < $brand->count(); $i++) {
             array_push($array, (object)[
                 'id' => $brand[$i]->id,
                 'brand' => $brand[$i]['Nama Brand'],
@@ -267,18 +288,20 @@ class commonController extends Controller
         //
     }
 
-    public function updateUser(Request $request, $id){
+    public function updateUser(Request $request, $id)
+    {
         $user = dUser::find($id)->update([
             'Username' => $request->username,
             'Password' => $request->password,
             'Email' => $request->email,
             'Nama Lengkap' => $request->namaLengkap,
             'idRole' => $request->idRole,
-            'idOutlet' => $request->idOutlet            
+            'idOutlet' => $request->idOutlet
         ]);
     }
 
-    public function updateOutlet(Request $request, $id){
+    public function updateOutlet(Request $request, $id)
+    {
         $outlet = doutlet::find($id)->update([
             'Nama Store' => $request->namaStore,
             'Alamat Lengkap' => $request->alamatStore,
@@ -293,7 +316,8 @@ class commonController extends Controller
         ]);
     }
 
-    public function updateBrand(Request $request, $id){
+    public function updateBrand(Request $request, $id)
+    {
         $brand = dBrand::find($id)->update([
             'Nama Brand' => $request->namaBrand,
             'Keterangan' => $request->keterangan,
@@ -319,7 +343,8 @@ class commonController extends Controller
         //
     }
 
-    public function deleteImageTemp($idTempImgAll){
+    public function deleteImageTemp($idTempImgAll)
+    {
         $imagePathTemp = tempImgAll::find($idTempImgAll)->imagePath;
         Storage::delete($imagePathTemp);
         return 1;

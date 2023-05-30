@@ -166,6 +166,13 @@
                                     <p>455 Sukodono (Tf Kas)</p>
                                 </a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/robot/mutasi455Pembayaran') }}" class="nav-link" id="mutasi455PembayaranRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>455 Pembayaran</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" id="reimburseSalesRobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>

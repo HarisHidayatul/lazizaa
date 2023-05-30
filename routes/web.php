@@ -43,6 +43,8 @@ use App\Http\Controllers\apiBeeCloudController;
 //composer dump-autoload //untuk optimize dan auto load folder
 
 //Flow untuk common fitur
+Route::get('getServerTime',[commonController::class,'getServerTime']);
+
 Route::get('common/satuan/show', [commonController::class, 'showSatuan']);
 Route::get('common/satuan/store', [commonController::class, 'storeSatuan']);
 Route::get('common/satuan/update/{id}', [commonController::class, 'updateSatuan']);
@@ -308,6 +310,10 @@ Route::get('robot/mutasi455TfKasPenerimaan/show/all',[robotController::class, 's
 Route::post('robot/mutasi455TfKasPenerimaan/create', [robotController::class, 'createRobotMutasi455TfKasPenerimaan']);
 Route::delete('robot/mutasi455TfKasPenerimaan/delete',[robotController::class,'deleteRobotMutasi455TfKasPenerimaan']);
 
+Route::get('robot/mutasi455Pembayaran/show/all',[robotController::class, 'showMutasi455Pembayaran']);
+Route::post('robot/mutasi455Pembayaran/create', [robotController::class, 'createRobotMutasi455Pembayaran']);
+Route::delete('robot/mutasi455Pembayaran/delete',[robotController::class,'deleteRobotMutasi455Pembayaran']);
+
 Route::get('robot/mutasi455TfKasSukodono/show/all',[robotController::class, 'showMutasi455TfKasSukodono']);
 
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
@@ -318,6 +324,9 @@ Route::get('robot/api/mutasi455TfKas/done/{id}', [robotController::class, 'doneR
 
 Route::get('robot/api/mutasi455TfKasPenerimaan/show', [robotController::class, 'showRobotMutasi455TfKasPenerimaan']);
 Route::get('robot/api/mutasi455TfKasPenerimaan/done/{id}', [robotController::class, 'doneRobotMutasi455TfKasPenerimaan']);
+
+Route::get('robot/api/mutasi455Pembayaran/show', [robotController::class, 'showRobotMutasi455Pembayaran']);
+Route::get('robot/api/mutasi455Pembayaran/done/{id}', [robotController::class, 'doneRobotMutasi455Pembayaran']);
 
 Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPembayaran']);
 Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);
@@ -491,6 +500,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/robot/mutasi455TfKasSukodono', function () {
         return view('accountingControl.beeCloudRobot.mutasi455TfKasSukodono.index');
+    });
+
+    Route::get('accounting/robot/mutasi455Pembayaran', function () {
+        return view('accountingControl.beeCloudRobot.mutasi455Pembayaran.index');
     });
 
     Route::get('accounting/pattyCash', function () {
