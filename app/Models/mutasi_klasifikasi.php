@@ -17,6 +17,7 @@ class mutasi_klasifikasi extends Model
     protected $fillable = [
         'klasifikasi',
         'idListSalesTemp',
+        'idListSalesTemp2',
         'created_at',
         'updated_at',
         'deleted_at'

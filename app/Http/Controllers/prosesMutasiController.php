@@ -250,6 +250,7 @@ class prosesMutasiController extends Controller
                     $selisihHari = (-1) * $mutasiDetail->selisihHari;
                     $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
                     $idListSalesTemp = $mutasiDetail->mutasiKlasifikasis->idListSalesTemp;
+                    $idListSalesTemp2 = $mutasiDetail->mutasiKlasifikasis->idListSalesTemp2;
                     $idOutlet = $mutasiDetail->idOutlet;
                     foreach ($arrayDataSales as $eachDataSales) {
                         $tanggalPembanding = $eachDataSales->Tanggal;
@@ -257,7 +258,7 @@ class prosesMutasiController extends Controller
                         $idOutletPembanding =  $eachDataSales->outletId;
 
                         if (strtotime($tanggalBaru) == strtotime($tanggalPembanding)) {
-                            if ($listSalesIdPembanding == $idListSalesTemp) {
+                            if (($listSalesIdPembanding == $idListSalesTemp)||($listSalesIdPembanding == $idListSalesTemp2)) {
                                 if ($idOutlet == $idOutletPembanding) {
                                     $idSalesFill = $eachDataSales->salesFillId;
                                     try {
