@@ -52,7 +52,7 @@ class prosesMutasiController extends Controller
     public function createMutasi(Request $request)
     {
         $data = json_decode($request->input('data'), true); // ambil data dari POST request
-        // print_r($data);
+        print_r($data);
         // olah data disini
         $tahun = $data['tahun'];
         $nomorRekening = $data['nomorRekening'];
@@ -172,6 +172,21 @@ class prosesMutasiController extends Controller
         );
     }
 
+    
+    public function generateMutasiSetoran(Request $request){
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+
+        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
+        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
+
+        $tanggalAlls = $tanggalAlls->with([
+            'mutasiTransaksis',
+            'setorans',
+            
+        ])->get();
+    }
+
     public function generateMutasiPelunasan(Request $request)
     {
         $startDate = $request->startDate;
@@ -286,6 +301,16 @@ class prosesMutasiController extends Controller
             //Jika idPenerima mengarah ke rekening 455 maka
             $this->generate455($startDate, $stopDate);
         }
+        if($idPenerimaList == 1){
+
+        }
+    }
+
+    function generate103($startDate, $stopDate){
+        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
+        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
+        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis'])->get();
+
     }
 
     function generate455($startDate, $stopDate)

@@ -144,6 +144,17 @@
             })
         }
 
+        function autoGenerate(){
+            $.ajax({
+                url: "{{ url('setoran/show/detail') }}",
+                type: 'get',
+                success: function(response) {
+                    getListAllFilter();
+                },
+                error: function(req, err) {}
+            })
+        }
+
         function clickSetoran(index) {
             indexSetoran = index;
             $.ajax({

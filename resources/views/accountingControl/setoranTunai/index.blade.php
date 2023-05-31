@@ -18,6 +18,10 @@
         </div>
     </div>
     <div style="height: 10px;"></div>
+    {{-- <div class="d-flex justify-content-between">
+        <div></div>
+        <button onclick="autoGenerate();">Auto Generate Mutasi</button>
+    </div> --}}
     <div style="overflow-x: auto">
         <table class="table table-striped" id="statusInputTabel">
             <thead>
@@ -26,6 +30,7 @@
                     <td>Outlet</td>
                     <td>Jumlah Transfer</td>
                     <td>Status</td>
+                    <td>Mutasi</td>
                 </tr>
             </thead>
             <tbody>

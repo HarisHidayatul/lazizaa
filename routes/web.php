@@ -263,6 +263,8 @@ Route::get('setoran/show/detail/{idSetoran}', [setoranController::class, 'showSe
 Route::get('setoran/update/accounting/revisi/{id}', [setoranController::class, 'update']);
 Route::get('setoran/delete/accounting/revisi/{id}', [setoranController::class, 'delete']);
 
+Route::get('setoran/generate/mutasi',[prosesMutasiController::class ,'generateMutasiSetoran']);
+
 Route::get('setoran/show/pengirim/list/{idPengirimList}', [setoranController::class, 'showPengirimList']);
 Route::get('setoran/show/data/inPart/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart']);
 Route::get('setoran/show/data/inPart2/{idOutlet}/{countData}/{startDate}/{stopDate}', [setoranController::class, 'showSetoranPart2']);
