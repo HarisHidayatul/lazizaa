@@ -177,6 +177,7 @@ class prosesMutasiController extends Controller
 
     public function generateMutasiSetoran(Request $request)
     {
+        //Pemilihan /1000 agar sesuai batas toleransinya dengan kode outlet
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
@@ -197,7 +198,7 @@ class prosesMutasiController extends Controller
                     'id' => $loopSetoran->id,
                     'Tanggal' => $loopTanggal->Tanggal,
                     'idOutlet' => $loopSetoran->idOutlet,
-                    'total' => $loopSetoran->qtySetor
+                    'total' => ($loopSetoran->qtySetor)/1000
                 ]);
             }
         }
@@ -214,7 +215,7 @@ class prosesMutasiController extends Controller
                     $selisihHari = (-1) * $mutasiDetail->selisihHari;
                     $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
                     $idOutlet = $mutasiDetail->idOutlet;
-                    $totalMutasi = $mutasiTransaksi->total;
+                    $totalMutasi = ($mutasiTransaksi->total)/1000;
                     foreach ($arrayDataSetoran as $loopDataSetoran) {
                         $tanggalPembanding = $loopDataSetoran->Tanggal;
                         $idOutletPembanding =  $loopDataSetoran->idOutlet;
