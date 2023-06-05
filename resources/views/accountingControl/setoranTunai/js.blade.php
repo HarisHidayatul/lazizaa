@@ -63,17 +63,17 @@
         }
 
         function deleteTransfer() {
-            $.ajax({
-                url: "{{ url('setoran/delete/accounting/revisi') }}" + '/' + indexSetoran,
-                type: 'get',
-                success: function(response) {
-                    $("#deleteModalCenter").modal('hide');
-                    getListAllFilter();
-                },
-                error: function(req, err) {
-                    console.log(err);
-                }
-            });
+            // $.ajax({
+            //     url: "{{ url('setoran/delete/accounting/revisi') }}" + '/' + indexSetoran,
+            //     type: 'get',
+            //     success: function(response) {
+            //         $("#deleteModalCenter").modal('hide');
+            //         getListAllFilter();
+            //     },
+            //     error: function(req, err) {
+            //         console.log(err);
+            //     }
+            // });
         }
 
         function getListAllFilter() {
@@ -96,8 +96,8 @@
                     for (var i = 0; i < obj.allSetoran.length; i++) {
                         for (var j = 0; j < obj.allSetoran[i].setoran.length; j++) {
                             for (var k = 0; k < obj.allSetoran[i].setoran[j].setoran.length; k++) {
-                                if(obj.allSetoran[i].setoran[j].setoran[k].idRev != '2'){
-                                    if(statusFilter == 1){
+                                if (obj.allSetoran[i].setoran[j].setoran[k].idRev != '2') {
+                                    if (statusFilter == 1) {
                                         continue;
                                     }
                                 }
@@ -112,10 +112,11 @@
                                 historyAll += '<td>';
                                 historyAll += obj.allSetoran[i].outlet;
                                 historyAll += '</td>';
-                                
+
                                 historyAll += '<td>';
-                                historyAll += obj.allSetoran[i].setoran[j].setoran[k].qty.toLocaleString().replaceAll(',',
-                                    '.');
+                                historyAll += obj.allSetoran[i].setoran[j].setoran[k].qty.toLocaleString()
+                                    .replaceAll(',',
+                                        '.');
                                 historyAll += '</td>';
                                 historyAll += '<td ';
                                 if (obj.allSetoran[i].setoran[j].setoran[k].idRev == '2') {
@@ -130,6 +131,22 @@
                                 historyAll += '>';
                                 historyAll += statusRevisi;
                                 historyAll += '</td>';
+
+                                historyAll += '<td>';
+                                for (var l = 0; l < obj.allSetoran[i].setoran[j].setoran[k].mutasi
+                                    .length; l++) {
+                                    historyAll += obj.allSetoran[i].setoran[j].setoran[k].mutasi[l].trxNotes;
+                                    historyAll += ' ';
+                                }
+                                historyAll += '</td>';
+
+                                historyAll += '<td>';
+                                historyAll +=
+                                    '<button type="button" class="btn btn-secondary"  onClick="deleteMutasiSetoran(';
+                                historyAll += obj.allSetoran[i].setoran[j].setoran[k].id;
+                                historyAll += ')">Delete</button>';
+                                historyAll += '</td>';
+
                                 historyAll += '</tr>';
                             }
                         }
@@ -144,10 +161,29 @@
             })
         }
 
-        function autoGenerate(){
+        function deleteMutasiSetoran(idSetoran){
             $.ajax({
-                url: "{{ url('setoran/show/detail') }}",
+                url: "{{ url('setoran/mutasi/delete') }}",
+                type: 'delete',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idSetoran: idSetoran
+                },
+                success: function(response) {
+                    getListAllFilter();
+                },
+                error: function(req, err) {}
+            })
+        }
+
+        function autoGenerate() {
+            $.ajax({
+                url: "{{ url('setoran/generate/mutasi') }}",
                 type: 'get',
+                data: {
+                    startDate: document.getElementById('startDate').value,
+                    stopDate: document.getElementById('stopDate').value,
+                },
                 success: function(response) {
                     getListAllFilter();
                 },
@@ -164,13 +200,13 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
                     var setoranStatus = '';
-                    if (obj.idStatus == '2') {
-                        setoranStatus = 'PENDING';
-                        document.getElementById('doneTransfer').checked = false;
-                    } else if (obj.idStatus == '3') {
-                        setoranStatus = 'SUKSES';
-                        document.getElementById('doneTransfer').checked = true;
-                    }
+                    // if (obj.idStatus == '2') {
+                    //     setoranStatus = 'PENDING';
+                    //     document.getElementById('doneTransfer').checked = false;
+                    // } else if (obj.idStatus == '3') {
+                    //     setoranStatus = 'SUKSES';
+                    //     document.getElementById('doneTransfer').checked = true;
+                    // }
                     document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + obj
                         .imagePathFile;
                     document.getElementById('filePathName').innerHTML = obj.imagePathFile;
@@ -182,7 +218,7 @@
                     document.getElementById('setoranPengirim').innerHTML = obj.qty.toLocaleString().replaceAll(
                         ',', '.');
                     // document.getElementById('')
-                    setPengirim(obj.idPenerima);
+                    // setPengirim(obj.idPenerima);
                     transferCheck();
                     $('#exampleModalCenter').modal('toggle');
                 },
@@ -195,37 +231,37 @@
         }
 
         function transferCheck() {
-            if (document.getElementById('doneTransfer').checked) {
-                document.getElementById('listPenerima').disabled = false;
-                document.getElementById('bankPenerima').style.color = "black";
-                document.getElementById('rekeningPenerima').style.color = "black";
-            } else {
-                document.getElementById('listPenerima').disabled = true;
-                document.getElementById('bankPenerima').style.color = "darkgrey";
-                document.getElementById('rekeningPenerima').style.color = "darkgrey";
-            }
+            // if (document.getElementById('doneTransfer').checked) {
+            //     document.getElementById('listPenerima').disabled = false;
+            //     document.getElementById('bankPenerima').style.color = "black";
+            //     document.getElementById('rekeningPenerima').style.color = "black";
+            // } else {
+            //     document.getElementById('listPenerima').disabled = true;
+            //     document.getElementById('bankPenerima').style.color = "darkgrey";
+            //     document.getElementById('rekeningPenerima').style.color = "darkgrey";
+            // }
         }
 
         function getAllPenerima() {
-            $.ajax({
-                url: "{{ url('setoran/penerima/show') }}",
-                type: 'get',
-                success: function(response) {
-                    var obj = JSON.parse(JSON.stringify(response));
-                    var dataJenis = '';
-                    console.log(obj);
-                    objPenerima = obj;
-                    var listPenerima = '';
-                    for (var i = 0; i < obj.penerimaListArray.length; i++) {
-                        listPenerima += '<option value="' + obj.penerimaListArray[i].id;
-                        listPenerima += '" data-index="' + i + '" >' + obj.penerimaListArray[i].namaRekening;
-                        listPenerima += '</option>';
-                    }
-                    $('#listPenerima').empty().append(listPenerima);
-                    refreshListPenerima(0);
-                },
-                error: function(req, err) {}
-            })
+            // $.ajax({
+            //     url: "{{ url('setoran/penerima/show') }}",
+            //     type: 'get',
+            //     success: function(response) {
+            //         var obj = JSON.parse(JSON.stringify(response));
+            //         var dataJenis = '';
+            //         console.log(obj);
+            //         objPenerima = obj;
+            //         var listPenerima = '';
+            //         for (var i = 0; i < obj.penerimaListArray.length; i++) {
+            //             listPenerima += '<option value="' + obj.penerimaListArray[i].id;
+            //             listPenerima += '" data-index="' + i + '" >' + obj.penerimaListArray[i].namaRekening;
+            //             listPenerima += '</option>';
+            //         }
+            //         $('#listPenerima').empty().append(listPenerima);
+            //         refreshListPenerima(0);
+            //     },
+            //     error: function(req, err) {}
+            // })
         }
 
         function refreshListPenerima(index) {

@@ -18,24 +18,27 @@
         </div>
     </div>
     <div style="height: 10px;"></div>
-    {{-- <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
         <div></div>
         <button onclick="autoGenerate();">Auto Generate Mutasi</button>
-    </div> --}}
+    </div>
     <div style="overflow-x: auto">
-        <table class="table table-striped" id="statusInputTabel">
-            <thead>
-                <tr>
-                    <td>Tanggal</td>
-                    <td>Outlet</td>
-                    <td>Jumlah Transfer</td>
-                    <td>Status</td>
-                    <td>Mutasi</td>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div style="width: 1500px">
+            <table class="table table-striped" id="statusInputTabel">
+                <thead>
+                    <tr>
+                        <td>Tanggal</td>
+                        <td>Outlet</td>
+                        <td>Jumlah Transfer</td>
+                        <td>Status</td>
+                        <td>Mutasi</td>
+                        <td>Delete Mutasi</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
     <h3>Total Sukses : <span id="totalSukses">0</span></h3>
     <h3>Total Pending : <span id="totalPending">0</span></h3>
@@ -82,7 +85,7 @@
                                     id="filePathName"></a></span></div>
                     </div>
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
-                    <div class="form-check">
+                    {{-- <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="doneTransfer" onchange="transferCheck();">
                         <label class="form-check-label" for="doneTransfer">
                             Sudah Diterima
@@ -106,13 +109,13 @@
                     <div class="row">
                         <div class="col-5">Rekening Penerima</div>
                         <div class="col-7">: <span style="color: darkgrey" id="rekeningPenerima"></span></div>
-                    </div>
+                    </div> --}}
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="deleteTabClick();">Delete</button>
+                    {{-- <button type="button" class="btn btn-danger" onclick="deleteTabClick();">Delete</button> --}}
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="kirimTransfer();">Kirim</button>
+                    {{-- <button type="button" class="btn btn-primary" onclick="kirimTransfer();">Kirim</button> --}}
                 </div>
             </div>
         </div>

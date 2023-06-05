@@ -29,6 +29,13 @@ class setoran extends Model
     public function tanggalAlls(){
         return $this->belongsTo(tanggalAll::class,'idTanggal','id');
     }
+    public function mutasiSetorans(){
+        return $this->hasMany(mutasi_setoran::class,'idSetoran','id');
+    }
+
+    public function dOutlets(){
+        return $this->belongsTo(doutlet::class,'idOutlet','id');
+    }
 
     protected $fillable = [
         'idPengirim',

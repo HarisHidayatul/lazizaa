@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\doutlet;
 use App\Models\listSales;
+use App\Models\mutasi_transaksi;
 use App\Models\pattyCashFill;
 use App\Models\pattyCashHarian;
 use App\Models\pelunasan_mutasi_sales;
 use App\Models\robot_ecommerce_status;
+use App\Models\robot_mutasi1003_setoran_status;
 use App\Models\robot_mutasi455tfkas_penerimaan_status;
 use App\Models\robot_mutasi455tfkas_status;
 use App\Models\robot_pembayaran_status;
@@ -299,6 +301,48 @@ class robotController extends Controller
             'kodeAkun' => $kodeAkun,
             'kasKeywoard' => $kasKeywoard,
             'kas' => $kas,
+            'keterangan' => $keterangan,
+            'total' => $total,
+            'cabangKeywoard' => $cabangKeywoard,
+            'cabang' => $cabang
+        ]);
+    }
+
+    public function showRobotMutasi1003(){
+        $robotMutasi1003 = robot_mutasi1003_setoran_status::where('idStatusRobot', '=', '1')->get()->first();
+        $mutasiSetoran = $robotMutasi1003->mutasiSetorans;
+        // @dd($mutasiSetoran);
+
+        $mutasiTransaksi = $mutasiSetoran->mutasiTransaksis;
+
+        $keterangan = $mutasiTransaksi->trxNotes;
+        $tanggal = $mutasiTransaksi->tanggalAlls->Tanggal;
+        $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
+
+        $total = $mutasiTransaksi->total;
+
+        $kasTujuanKeywoard = 'setoran';
+        $kasTujuan = 'IDR - BCA Setoran Sales';
+
+        // @dd($mutasiSetoran->setorans);
+        $cabang = $mutasiSetoran->setorans->dOutlets->cabangBee;
+        $cabangKeywoard = $mutasiSetoran->setorans->dOutlets->keywoardBee;
+
+        if ($total < 0) {
+            //Termasuk kolom kredit
+            $total = $total * (-1);
+        }
+
+        $kasAsalKeywoard = $mutasiSetoran->setorans->dOutlets->keywoardBee;
+        $kasAsal = $mutasiSetoran->setorans->dOutlets->kasSalesBee;
+
+        return response()->json([
+            'idRobotMutasi1003' => $robotMutasi1003->id,
+            'Tanggal' => $tanggalDDmmYY,
+            'kasAsalKeywoard' => $kasAsalKeywoard,
+            'kasAsal' => $kasAsal,
+            'kasTujuanKeywoard' => $kasTujuanKeywoard,
+            'kasTujuan' => $kasTujuan,
             'keterangan' => $keterangan,
             'total' => $total,
             'cabangKeywoard' => $cabangKeywoard,
@@ -945,6 +989,55 @@ class robotController extends Controller
         ]);
     }
 
+    public function showMutasi1003Setoran(Request $request){
+        $idPenerima = $request->idPenerima;
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.mutasiSetorans','mutasiTransaksis.mutasiDetails')->get();
+        $dataMutasi = [];
+
+        foreach ($tanggalAll as $loopTanggal) {
+            $tanggalDDmmYY = date('d/m/Y', strtotime($loopTanggal->Tanggal));
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList', '=', $idPenerima);
+            foreach ($mutasiTransaksis as $loopMutasi) {
+                $mutasiSetoran = $loopMutasi->mutasiSetorans;
+                $mutasiDetail =  $loopMutasi->mutasiDetails;
+                if ($mutasiSetoran != null) {
+                    $kredit = 0;
+                    $debit = 0;
+                    $dataRobot = [];
+                    $robotMutasi1003Setorans = $mutasiSetoran->robotMutasi1003Setorans;
+                    if ($loopMutasi->total > 0) {
+                        $debit = $loopMutasi->total;
+                    } else {
+                        $kredit = (-1) * $loopMutasi->total;
+                    }
+                    foreach ($robotMutasi1003Setorans as $loopMutasiRobot) {
+                        array_push($dataRobot, (object)[
+                            'id' => $loopMutasiRobot->id,
+                            'status' => $loopMutasiRobot->statusRobots->status,
+                            'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
+                        ]);
+                    }
+                    array_push($dataMutasi, (object)[
+                        'id' => $loopMutasi->id,
+                        'tanggal' => $tanggalDDmmYY,
+                        'klasifikasi' => $mutasiDetail->mutasiKlasifikasis->klasifikasi,
+                        'cabang' => $mutasiDetail->dOutlets['Nama Store'],
+                        'kredit' => $kredit,
+                        'debit' => $debit,
+                        'keterangan' => $loopMutasi->trxNotes,
+                        'dataRobot' => $dataRobot
+                    ]);
+                }
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'data' => $dataMutasi
+        ]);
+    }
+
     public function createRobotPembelian(Request $request)
     {
         $idPattyHarian = $request->idPattyHarian;
@@ -1078,6 +1171,17 @@ class robotController extends Controller
         $robotPembayaran455->save();
     }
 
+    public function createRobotMutasi1003Setoran(Request $request){
+        $idMutasiTransaksi = $request->idMutasiTransaksi;
+        $idPemverifikasi = $request->idPemverifikasi;
+        $mutasiSetoran = mutasi_transaksi::find($idMutasiTransaksi)->mutasiSetorans;
+        $robotMutasi1003 = new robot_mutasi1003_setoran_status();
+        $robotMutasi1003->idMutasiSetoran = $mutasiSetoran->id;
+        $robotMutasi1003->idPemverifikasi = $idPemverifikasi;
+        $robotMutasi1003->idStatusRobot = '1';
+        $robotMutasi1003->save();
+    }
+
     public function doneRobotPembelian($id)
     {
         $robot_pembelian_status = robot_pembelian_status::find($id);
@@ -1122,6 +1226,13 @@ class robotController extends Controller
     public function doneRobotMutasi455Pembayaran($id){
         $robotMutasi455Pembayaran = robot_mutasi455_pembayaran_status::find($id);
         $robotMutasi455Pembayaran->update([
+            'idStatusRobot' => '2'
+        ]);
+    }
+
+    public function doneRobotMutasi1003($id){
+        $robotMutasi1003 = robot_mutasi1003_setoran_status::find($id);
+        $robotMutasi1003->update([
             'idStatusRobot' => '2'
         ]);
     }
@@ -1191,5 +1302,10 @@ class robotController extends Controller
     public function deleteRobotMutasi455Pembayaran(Request $request){
         $idRobotMutasi455Pembayaran = $request->idRobotMutasi455Pembayaran;
         robot_mutasi455_pembayaran_status::find($idRobotMutasi455Pembayaran)->delete();
+    }
+    
+    public function deleteRobotMutasi1003Setoran(Request $request){
+        $idRobotMutasi1003Setoran = $request->idRobotMutasi1003Setoran;
+        robot_mutasi1003_setoran_status::find($idRobotMutasi1003Setoran)->delete();
     }
 }

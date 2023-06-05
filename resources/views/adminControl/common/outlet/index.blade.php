@@ -28,7 +28,7 @@
         </div>
     </form>
     <div style="overflow-x: auto">
-        <div style="width: 1500px">
+        <div style="width: 2000px">
             <table class="table table-striped" id="tableAllItem">
                 <thead>
                     <tr>
@@ -43,6 +43,8 @@
                         <th>Kas Bee</th>
                         <th>Kode Shopee</th>
                         <th>Kode Go Resto</th>
+                        <th>Kode Setoran</th>
+                        <th>Kas Sales Bee</th>
                         <th>Edit</th>
                     </tr>
                 </thead>

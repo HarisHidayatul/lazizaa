@@ -411,7 +411,7 @@ class setoranController extends Controller
     public function showSetoran($idOutlet, $countData, $startDate, $stopDate){
         $now = Carbon::now();
         $tanggalAll = [];
-        $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with('setorans.pengirimLists.listBanks')->get();
+        $semuaTanggal = tanggalAll::orderBy('Tanggal', 'DESC')->with('setorans.pengirimLists.listBanks','setorans.mutasiSetorans.mutasiTransaksis')->get();
         if ($countData == 'today') {
             $tanggalAll = $semuaTanggal->where('Tanggal', '=', $now->format('Y-m-d'));
         } else if ($countData == '7day') {
@@ -435,6 +435,14 @@ class setoranController extends Controller
             $setoranArray = [];
             $dataFound = false;
             foreach($setoran as $setoranLoop){
+                $mutasiSetorans = $setoranLoop->mutasiSetorans;
+                $arrayMutasiSetoran = [];
+                foreach($mutasiSetorans as $loopSetoran){
+                    $mutasiTransaksi = $loopSetoran->mutasiTransaksis;
+                    array_push($arrayMutasiSetoran,(object)[
+                        'trxNotes' => $mutasiTransaksi->trxNotes
+                    ]);
+                }
                 array_push($setoranArray, (object)[
                     'id' => $setoranLoop->id,
                     'idRev' => $setoranLoop->idRevisi,
@@ -442,7 +450,8 @@ class setoranController extends Controller
                     'time' => $setoranLoop->updated_at->format('H:i'),
                     'imgBank' => $setoranLoop->pengirimLists->listBanks->imageBank,
                     'qty' => $setoranLoop->qtySetor,
-                    'idJenis' => $setoranLoop->pengirimLists->listBanks->idJenisBank
+                    'idJenis' => $setoranLoop->pengirimLists->listBanks->idJenisBank,
+                    'mutasi' => $arrayMutasiSetoran
                 ]);
                 $dataFound = true;
             }

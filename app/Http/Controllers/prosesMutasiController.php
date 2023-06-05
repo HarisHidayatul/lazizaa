@@ -8,10 +8,12 @@ use App\Models\mutasi_aksi;
 use App\Models\mutasi_detail;
 use App\Models\mutasi_klasifikasi;
 use App\Models\mutasi_sales;
+use App\Models\mutasi_setoran;
 use App\Models\mutasi_transaksi;
 use App\Models\pelunasan_mutasi_sales;
 use App\Models\penerimaList;
 use App\Models\salesFill;
+use App\Models\setoran;
 use App\Models\tanggalAll;
 use Exception;
 use Illuminate\Http\Request;
@@ -52,7 +54,7 @@ class prosesMutasiController extends Controller
     public function createMutasi(Request $request)
     {
         $data = json_decode($request->input('data'), true); // ambil data dari POST request
-        print_r($data);
+        // print_r($data);
         // olah data disini
         $tahun = $data['tahun'];
         $nomorRekening = $data['nomorRekening'];
@@ -88,7 +90,7 @@ class prosesMutasiController extends Controller
                     $tanggalAll = tanggalAll::where('Tanggal', '=', $tanggal_sql)->first();
                     if ($tanggalAll == null) {
                         $tanggalID = tanggalAll::create([
-                            'Tanggal' => $request->tanggal,
+                            'Tanggal' => $tanggal_sql,
                         ])->id;
                     } else {
                         $tanggalID = $tanggalAll['id'];
@@ -100,7 +102,7 @@ class prosesMutasiController extends Controller
                         $tanggalAll = tanggalAll::where('Tanggal', '=', $tanggal_sql)->first();
                         if ($tanggalAll == null) {
                             $tanggalID = tanggalAll::create([
-                                'Tanggal' => $request->tanggal,
+                                'Tanggal' => $tanggal_sql,
                             ])->id;
                         } else {
                             $tanggalID = $tanggalAll['id'];
@@ -172,19 +174,71 @@ class prosesMutasiController extends Controller
         );
     }
 
-    
-    public function generateMutasiSetoran(Request $request){
+
+    public function generateMutasiSetoran(Request $request)
+    {
         $startDate = $request->startDate;
         $stopDate = $request->stopDate;
-
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
 
         $tanggalAlls = $tanggalAlls->with([
-            'mutasiTransaksis',
-            'setorans',
-            
+            'mutasiTransaksis.mutasiDetails.mutasiKlasifikasis',
+            'mutasiTransaksis.mutasiSetorans',
+            'setorans'
         ])->get();
+
+        $arrayDataSetoran = [];
+
+        foreach ($tanggalAlls as $loopTanggal) {
+            $setorans = $loopTanggal->setorans;
+            foreach ($setorans as $loopSetoran) {
+                array_push($arrayDataSetoran, (object)[
+                    'id' => $loopSetoran->id,
+                    'Tanggal' => $loopTanggal->Tanggal,
+                    'idOutlet' => $loopSetoran->idOutlet,
+                    'total' => $loopSetoran->qtySetor
+                ]);
+            }
+        }
+        foreach ($tanggalAlls as $eachTanggal) {
+            $tanggal = $eachTanggal->Tanggal;
+            $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
+            if ($mutasiTransaksis->count() > 0) {
+                //Hanya ambil di rekening 1003 saja
+                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', 2);
+            }
+            foreach ($mutasiTransaksis as $mutasiTransaksi) {
+                $mutasiDetail = $mutasiTransaksi->mutasiDetails;
+                if ($mutasiDetail != null) {
+                    $selisihHari = (-1) * $mutasiDetail->selisihHari;
+                    $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
+                    $idOutlet = $mutasiDetail->idOutlet;
+                    $totalMutasi = $mutasiTransaksi->total;
+                    foreach ($arrayDataSetoran as $loopDataSetoran) {
+                        $tanggalPembanding = $loopDataSetoran->Tanggal;
+                        $idOutletPembanding =  $loopDataSetoran->idOutlet;
+                        $totalPembanding = $loopDataSetoran->total;
+                        if (strtotime($tanggalBaru) == strtotime($tanggalPembanding)) {
+                            if ($idOutlet == $idOutletPembanding) {
+                                if ($totalMutasi == $totalPembanding) {
+                                    try {
+                                        $mutasiSetoran = new mutasi_setoran();
+                                        $mutasiSetoran->idMutasiTransaksi = $mutasiTransaksi->id;
+                                        $mutasiSetoran->idSetoran = $loopDataSetoran->id;
+                                        $mutasiSetoran->save();
+                                    } catch (Exception $e) {
+                                    }
+                                    $setoran = setoran::find($loopDataSetoran->id);
+                                    $setoran->idRevisi = '3';
+                                    $setoran->save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function generateMutasiPelunasan(Request $request)
@@ -273,7 +327,7 @@ class prosesMutasiController extends Controller
                         $idOutletPembanding =  $eachDataSales->outletId;
 
                         if (strtotime($tanggalBaru) == strtotime($tanggalPembanding)) {
-                            if (($listSalesIdPembanding == $idListSalesTemp)||($listSalesIdPembanding == $idListSalesTemp2)) {
+                            if (($listSalesIdPembanding == $idListSalesTemp) || ($listSalesIdPembanding == $idListSalesTemp2)) {
                                 if ($idOutlet == $idOutletPembanding) {
                                     $idSalesFill = $eachDataSales->salesFillId;
                                     try {
@@ -301,16 +355,91 @@ class prosesMutasiController extends Controller
             //Jika idPenerima mengarah ke rekening 455 maka
             $this->generate455($startDate, $stopDate);
         }
-        if($idPenerimaList == 1){
-
+        if ($idPenerimaList == 2) {
+            //Jika rekening mengarah ke rekening 103 yang digunakan untuk setoran maka
+            $this->generate103($startDate, $stopDate);
         }
     }
 
-    function generate103($startDate, $stopDate){
+    function generate103($startDate, $stopDate)
+    {
         $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
         $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
-        $tanggalAlls = $tanggalAlls->with(['mutasiTransaksis'])->get();
 
+        $tanggalAlls = $tanggalAlls->with([
+            'mutasiTransaksis.mutasiSetorans',
+            'setorans.pengirimLists',
+        ])->get();
+        //Lakukan looping dengan ambil semua setoran di antara tanggal ini dan simpan setoran di array $allSetoran
+        $allSetoran = [];
+        foreach ($tanggalAlls as $eachTanggal) {
+            $setorans = $eachTanggal->setorans;
+            foreach ($setorans as $setoran) {
+                array_push($allSetoran, (object)[
+                    'id' => $setoran->id,
+                    'Tanggal' => $eachTanggal->Tanggal,
+                    'idOutlet' => $setoran->idOutlet,
+                    'qtySetor' => $setoran->qtySetor,
+                    'penyetor' => strtoupper($setoran->pengirimLists->namaRekening)
+                ]);
+            }
+        }
+        // @dd($allSetoran);
+        foreach ($tanggalAlls as $eachTanggal) {
+            $tanggal = $eachTanggal->Tanggal;
+            $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
+            if ($mutasiTransaksis->count() > 0) {
+                //Hanya filter penerima list yang digunakan untuk setoran
+                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', 2);
+                foreach ($mutasiTransaksis as $mutasiTransaksi) {
+                    $totalTransaksi = $mutasiTransaksi->total;
+                    //Lakukan looping untuk menentukan setoran mana yang cocok sesuai H +1 dari setoran dan nilainya sama
+                    //Cek juga untuk nama agar sesuai
+                    $tanggalBaru = date('Y-m-d', strtotime($tanggal . ' -1 day'));
+                    foreach ($allSetoran as $loopSetoran) {
+                        if (strtotime($loopSetoran->Tanggal) == strtotime($tanggalBaru)) {
+                            if ($loopSetoran->qtySetor == $totalTransaksi) {
+                                $percentage = 0;
+                                similar_text($loopSetoran->penyetor, strtoupper($mutasiTransaksi->trxNotes), $percentage);
+                                print_r($percentage);
+                                print_r('  ');
+                                print_r($loopSetoran->penyetor);
+                                print_r(' || ');
+                                print_r(strtoupper($mutasiTransaksi->trxNotes));
+                                echo '<br>';
+                                if ($percentage > 10) {
+                                    $mutasiSetorans = $mutasiTransaksi->mutasiSetorans;
+                                    echo 'Berhasil';
+                                    echo '<br>';
+                                    $idOutlet = 0;
+                                    if ($mutasiSetorans == null) {
+                                        $mutasiSetoran = new mutasi_setoran();
+                                        $mutasiSetoran->idMutasiTransaksi = $mutasiTransaksi->id;
+                                        $mutasiSetoran->idSetoran = $loopSetoran->id;
+                                        $mutasiSetoran->save();
+                                    }
+
+                                    $mutasiDetail = $mutasiTransaksi->mutasiDetails;
+                                    if ($mutasiDetail == null) {
+                                        $mutasiDetail = new mutasi_detail();
+                                        $mutasiDetail->idMutasiTransaksi = $mutasiTransaksi->id;
+                                        $mutasiDetail->selisihHari = 1;
+                                        $mutasiDetail->idOutlet = $loopSetoran->idOutlet;
+                                        $mutasiDetail->idMutasiAksi = 4; //Pilih ke transfer kas
+                                        $mutasiDetail->idMutasiKlasifikasi = 9; //Pilih klasifikasi ke sukodono
+                                        $mutasiDetail->save();
+                                    }
+
+                                    $setoran = setoran::find($loopSetoran->id);
+                                    $setoran->idRevisi = '3';
+                                    $setoran->save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     function generate455($startDate, $stopDate)
@@ -618,6 +747,7 @@ class prosesMutasiController extends Controller
             'mutasiTransaksis.mutasiDetails.mutasiAksis',
             'mutasiTransaksis.mutasiDetails.mutasiKlasifikasis',
             'mutasiTransaksis.mutasiDetails.doutlets',
+            'mutasiTransaksis.mutasiSetorans.robotMutasi1003Setorans',
         ])->get();
         // @dd($tanggalAlls);
         $dataMutasi = [];
@@ -672,6 +802,18 @@ class prosesMutasiController extends Controller
                             array_push($robotStatus, (object)[
                                 'robot' => '455 Sukodono Tf Kas',
                                 'status' => $robotMutasi455kas->statusRobots->status
+                            ]);
+                        }
+                    }
+
+                    $mutasiSetorans = $mutasiTransaksi->mutasiSetorans;
+                    if ($mutasiSetorans != null) {
+                        array_push($terkaitStatus, 'Setoran');
+                        $robotMutasi1003Setorans = $mutasiSetorans->robotMutasi1003Setorans;
+                        foreach ($robotMutasi1003Setorans as $robotMutasi1003) {
+                            array_push($robotStatus, (object)[
+                                'robot' => '103 Setoran',
+                                'status' => $robotMutasi1003->statusRobots->status
                             ]);
                         }
                     }
@@ -816,6 +958,18 @@ class prosesMutasiController extends Controller
                 'logError' => $logError,
             ]
         );
+    }
+
+    public function deleteMutasiSetoran(Request $request)
+    {
+        $idSetoran = $request->idSetoran;
+        $mutasiSetoran = mutasi_setoran::where('idSetoran', '=', $idSetoran)->get();
+        foreach ($mutasiSetoran as $loopSetoran) {
+            $loopSetoran->delete();
+        }
+        $setoran = setoran::find($idSetoran);
+        $setoran->idRevisi = '2';
+        $setoran->save();
     }
 
     public function deleteMutasiDetail(Request $request)

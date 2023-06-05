@@ -173,6 +173,14 @@
                                     <p>455 Pembayaran</p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/robot/mutasi1003Setoran') }}" class="nav-link" id="mutasi1003SetoranRobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>1003 Setoran</p>
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="#" class="nav-link" id="reimburseSalesRobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
