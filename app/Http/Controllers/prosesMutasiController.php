@@ -198,7 +198,7 @@ class prosesMutasiController extends Controller
                     'id' => $loopSetoran->id,
                     'Tanggal' => $loopTanggal->Tanggal,
                     'idOutlet' => $loopSetoran->idOutlet,
-                    'total' => ($loopSetoran->qtySetor)/1000
+                    'total' => ($loopSetoran->qtySetor) / 1000
                 ]);
             }
         }
@@ -215,7 +215,7 @@ class prosesMutasiController extends Controller
                     $selisihHari = (-1) * $mutasiDetail->selisihHari;
                     $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
                     $idOutlet = $mutasiDetail->idOutlet;
-                    $totalMutasi = ($mutasiTransaksi->total)/1000;
+                    $totalMutasi = ($mutasiTransaksi->total) / 1000;
                     foreach ($arrayDataSetoran as $loopDataSetoran) {
                         $tanggalPembanding = $loopDataSetoran->Tanggal;
                         $idOutletPembanding =  $loopDataSetoran->idOutlet;
@@ -399,16 +399,17 @@ class prosesMutasiController extends Controller
                     $tanggalBaru = date('Y-m-d', strtotime($tanggal . ' -1 day'));
                     foreach ($allSetoran as $loopSetoran) {
                         if (strtotime($loopSetoran->Tanggal) == strtotime($tanggalBaru)) {
-                            if ($loopSetoran->qtySetor == $totalTransaksi) {
-                                $percentage = 0;
-                                similar_text($loopSetoran->penyetor, strtoupper($mutasiTransaksi->trxNotes), $percentage);
-                                print_r($percentage);
-                                print_r('  ');
-                                print_r($loopSetoran->penyetor);
-                                print_r(' || ');
-                                print_r(strtoupper($mutasiTransaksi->trxNotes));
-                                echo '<br>';
-                                if ($percentage > 10) {
+                            $percentage = 0;
+                            similar_text($loopSetoran->penyetor, strtoupper($mutasiTransaksi->trxNotes), $percentage);
+                            print_r($percentage);
+                            print_r('  ');
+                            print_r($loopSetoran->penyetor);
+                            print_r(' || ');
+                            print_r(strtoupper($mutasiTransaksi->trxNotes));
+                            echo '<br>';
+                            if ($percentage > 10) {
+                                if (($loopSetoran->qtySetor)/1000 == ($totalTransaksi)/1000) {
+                                    //Toleransi 1000 untuk nama yang sama, tanggal yang sama
                                     $mutasiSetorans = $mutasiTransaksi->mutasiSetorans;
                                     echo 'Berhasil';
                                     echo '<br>';
@@ -419,7 +420,7 @@ class prosesMutasiController extends Controller
                                         $mutasiSetoran->idSetoran = $loopSetoran->id;
                                         $mutasiSetoran->save();
                                     }
-
+    
                                     $mutasiDetail = $mutasiTransaksi->mutasiDetails;
                                     if ($mutasiDetail == null) {
                                         $mutasiDetail = new mutasi_detail();
@@ -430,7 +431,7 @@ class prosesMutasiController extends Controller
                                         $mutasiDetail->idMutasiKlasifikasi = 9; //Pilih klasifikasi ke sukodono
                                         $mutasiDetail->save();
                                     }
-
+    
                                     $setoran = setoran::find($loopSetoran->id);
                                     $setoran->idRevisi = '3';
                                     $setoran->save();
