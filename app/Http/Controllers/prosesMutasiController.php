@@ -399,7 +399,7 @@ class prosesMutasiController extends Controller
                     $tanggalBaru = date('Y-m-d', strtotime($tanggal . ' -1 day'));
                     foreach ($allSetoran as $loopSetoran) {
                         if (strtotime($loopSetoran->Tanggal) == strtotime($tanggalBaru)) {
-                            if (floor(($loopSetoran->qtySetor)/1000) == floor(($totalTransaksi)/1000)) {
+                            if (floor(($loopSetoran->qtySetor)/100) == floor(($totalTransaksi)/100)) {
                                 $percentage = 0;
                                 similar_text($loopSetoran->penyetor, strtoupper($mutasiTransaksi->trxNotes), $percentage);
                                 print_r($percentage);
