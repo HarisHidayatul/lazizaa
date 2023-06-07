@@ -129,6 +129,11 @@
                                 continue;
                             }
                         }
+                        if(idKlasifikasi == 99){
+                            if(obj.dataMutasi[i].idKlasifikasi != ''){
+                                continue;
+                            }
+                        }
                         historyAll += '<tr>';
                         historyAll += '<td>';
                         historyAll += loopCount + 1;
@@ -268,6 +273,7 @@
 
                     var listOutlet = '<option value="0">Pilih Outlet</option>';
                     var listKlasifikasi = '<option value="0">Pilih Klasifikasi</option>';
+                    listKlasifikasi += '<option value="99">Belum Terklasifikasi</option>';
                     var listAksi = '<option value="0">Pilih Aksi</option>';
                     for (var i = 0; i < obj.outlet.length; i++) {
                         listOutlet += '<option value="';
