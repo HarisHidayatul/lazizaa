@@ -26,20 +26,24 @@
     </div> --}}
 </div>
 <div style="height: 10px;"></div>
-<div style="overflow-x: auto">
-    <table class="table table-striped" id="statusInputTabel">
-        <thead>
-            <tr>
-                <td>Tanggal</td>
-                <td>Outlet</td>
-                <td>Item Kas</td>
-                <td>Debit</td>
-                <td>Status</td>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+<div style="overflow-x: auto;">
+    <div style="width: 1500px">
+        <table class="table table-striped" id="statusInputTabel">
+            <thead>
+                <tr>
+                    <td>Tanggal</td>
+                    <td>Outlet</td>
+                    <td>Item Kas</td>
+                    <td>Debit</td>
+                    <td>Status</td>
+                    <td>Mutasi</td>
+                    <td>Delete Mutasi</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
 {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
     Launch demo modal
@@ -149,7 +153,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteTabClick();">Delete</button>
+                {{-- <button type="button" class="btn btn-danger" onclick="deleteTabClick();">Delete</button> --}}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="kirimTransfer();">Kirim</button>
             </div>
@@ -171,7 +175,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="backDeleteClick();">Back</button>
-                <button type="button" class="btn btn-primary" onclick="deleteTransfer();">Delete</button>
+                {{-- <button type="button" class="btn btn-primary" onclick="deleteTransfer();">Delete</button> --}}
             </div>
         </div>
     </div>

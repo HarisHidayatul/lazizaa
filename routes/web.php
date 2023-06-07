@@ -294,6 +294,8 @@ Route::get('reimburse/store/byIdTujuan/{idTujuan}', [reimburseController::class,
 
 Route::get('reimburse/show/pengirim/all/{idUser}', [reimburseController::class, 'showPengirimAll']);
 
+Route::delete('reimburse/mutasi/delete',[prosesMutasiController::class, 'deleteMutasiReimburse']);
+
 Route::get('robot/pembelian/show/all', [robotController::class, 'showPembelian']);
 Route::post('robot/pembelian/create', [robotController::class, 'createRobotPembelian']);
 Route::delete('robot/pembelian/delete', [robotController::class, 'deleteRobotPembelian']);

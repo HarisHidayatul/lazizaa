@@ -345,6 +345,21 @@
                                 historyAll += '</td>';
                                 tempDataExport.push(statusRevisi);
 
+                                historyAll += '<td>';
+                                historyAll += obj.dataHistory[i].reimburse[j].mutasi;
+                                historyAll += '</td>';
+
+                                if (obj.dataHistory[i].reimburse[j].mutasi != '') {
+                                    historyAll += '<td>';
+                                    historyAll +=
+                                        '<button type="button" class="btn btn-secondary" onclick="deleteMutasiReimburse(';
+                                    historyAll += obj.dataHistory[i].reimburse[j].idMutasiReimburse;
+                                    historyAll += ')">';
+                                    historyAll += 'Delete';
+                                    historyAll += '</button>';
+                                    historyAll += '</td>';
+                                }
+
                                 historyAll += '</tr>';
                                 dataExportToCSV.push(tempDataExport);
                             }
@@ -457,7 +472,29 @@
                     console.log(err);
                 }
             })
-            $('#exampleModalCenter').modal('toggle');
+            // $('#exampleModalCenter').modal('toggle');
+            $('#exampleModalCenter').modal('show');
+        }
+
+        function deleteMutasiReimburse(idMutasiReimburse) {
+            // idMutasiReimburse
+            $.ajax({
+                url: "{{ url('reimburse/mutasi/delete') }}",
+                type: 'delete',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    idMutasiReimburse: idMutasiReimburse,
+                },
+                success: function(response) {
+                    var obj = JSON.parse(JSON.stringify(response));
+                    console.log(obj);
+                    getListAllFilter();
+                    $('#exampleModalCenter').modal('hide');
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            })
         }
     </script>
 @endsection

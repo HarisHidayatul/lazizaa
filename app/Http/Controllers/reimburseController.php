@@ -331,7 +331,13 @@ class reimburseController extends Controller
         } else if ($countData == 'all') {
             $tanggalAlls = $tanggalAlls;
         }
-        $tanggalAlls = $tanggalAlls->with(['reimburses.penerimaReimburses.pengirimLists', 'reimburses.penerimaReimburses.penerimaLists', 'pattyCashHarians.listItemPattyCashs.satuans', 'pattyCashHarians.listItemPattyCashs.jenis_patty_cashs.kategori_patty_cashs'])->get();
+        $tanggalAlls = $tanggalAlls->with([
+            'reimburses.penerimaReimburses.pengirimLists',
+            'reimburses.penerimaReimburses.penerimaLists',
+            'pattyCashHarians.listItemPattyCashs.satuans',
+            'pattyCashHarians.listItemPattyCashs.jenis_patty_cashs.kategori_patty_cashs',
+            'reimburses.penerimaReimburses.mutasiReimburses.mutasiTransaksis'
+        ])->get();
         // @dd($tanggalAlls);
 
         // $fsadfa = tanggalAll;
@@ -380,6 +386,14 @@ class reimburseController extends Controller
                 }
 
                 foreach ($reimburseHarians as $reimburseHarian) {
+                    $mutasiReimburses = $reimburseHarian->mutasiReimburses;
+                    $mutasiText = '';
+                    $idMutasiReimburse = 0;
+                    if ($mutasiReimburses != null) {
+                        $mutasiTransaksii = $mutasiReimburses->mutasiTransaksis;
+                        $mutasiText = $mutasiTransaksii->trxNotes;
+                        $idMutasiReimburse = $mutasiReimburses->id;
+                    }
                     if ($reimburseHarian->idRevisi == '3') {
                         $pergerakanSaldo = $pergerakanSaldo + $reimburseHarian->qty;
                     }
@@ -387,7 +401,9 @@ class reimburseController extends Controller
                         'id' => $reimburseHarian->id,
                         'reimburse' => $reimburseHarian->qty,
                         'saldo' => $pergerakanSaldo,
-                        'idRev' => $reimburseHarian->idRevisi
+                        'idRev' => $reimburseHarian->idRevisi,
+                        'mutasi' => $mutasiText,
+                        'idMutasiReimburse' => $idMutasiReimburse
                     ]);
                     $dataFound = true;
                 }
