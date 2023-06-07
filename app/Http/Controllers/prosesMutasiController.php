@@ -766,7 +766,7 @@ class prosesMutasiController extends Controller
                     $cabang = '';
                     $aksi = '';
                     $selisihHari = '';
-                    $idKlasifikasi = 0;
+                    $idKlasifikasi = 99;
 
                     $robotStatus = [];
                     $terkaitStatus = [];

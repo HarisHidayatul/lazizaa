@@ -131,7 +131,7 @@
                             }
                         }
                         if(idKlasifikasi == 99){
-                            if(parseInt(obj.dataMutasi[i].idKlasifikasi) != 0){
+                            if(parseInt(obj.dataMutasi[i].idKlasifikasi) != 99){
                                 continue;
                             }
                         }
