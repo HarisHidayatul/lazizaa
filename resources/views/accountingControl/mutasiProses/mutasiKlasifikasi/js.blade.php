@@ -126,12 +126,12 @@
                     for (var i = 0; i < obj.dataMutasi.length; i++) {
                         var tempDataExport = [];
                         if (idKlasifikasi > 0) {
-                            if (idKlasifikasi != obj.dataMutasi[i].idKlasifikasi) {
+                            if (idKlasifikasi != parseInt(obj.dataMutasi[i].idKlasifikasi)) {
                                 continue;
                             }
                         }
                         if(idKlasifikasi == 99){
-                            if(obj.dataMutasi[i].idKlasifikasi != 0){
+                            if(parseInt(obj.dataMutasi[i].idKlasifikasi) != 0){
                                 continue;
                             }
                         }
