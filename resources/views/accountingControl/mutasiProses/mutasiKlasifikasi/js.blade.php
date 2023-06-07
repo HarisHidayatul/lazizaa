@@ -71,6 +71,7 @@
                     console.log(data);
                     var dataHtml = '';
                     var htmlKlasifikasi = '<option value="0">Pilih Klasifkasi</option>';
+                    htmlKlasifikasi += '<option value="99">Belum Terklasifkasi</option>';
                     for (var i = 0; i < obj.penerimaListArray.length; i++) {
                         // <option value=""></option>
                         dataHtml += '<option value="';
