@@ -131,7 +131,7 @@
                             }
                         }
                         if(idKlasifikasi == 99){
-                            if(obj.dataMutasi[i].idKlasifikasi != ''){
+                            if(obj.dataMutasi[i].idKlasifikasi > 0){
                                 continue;
                             }
                         }
