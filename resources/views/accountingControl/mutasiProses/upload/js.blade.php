@@ -267,10 +267,10 @@
 
         function ubahFormatTanggal(tanggal) {
             let tanggalSplit = tanggal.split('/');
-            let bulan = tanggalSplit[1];
-            if (parseInt(bulan, 10) > 12) {
+            let bulan = parseInt(tanggalSplit[1], 10).toString();
+            if(tanggalSplit[0] > 12){
                 return tanggal;
-            } else {
+            }else{
                 return tanggalSplit[0] + '/' + bulan;
             }
         }
