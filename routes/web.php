@@ -361,6 +361,8 @@ Route::delete('mutasi/delete/pelunasan/sales',[prosesMutasiController::class, 'd
 Route::post('mutasi/generate/pelunasan',[prosesMutasiController::class, 'generateMutasiPelunasan']);
 Route::post('mutasi/generate/detail',[prosesMutasiController::class, 'generateMutasiDetail']);
 
+Route::get('mutasi/delete/complete/{idStart}/{idStop}',[prosesMutasiController::class, 'deleteMutasiFromId']);
+
 Route::get('user/show/all', [loginController::class, 'getAllUser']);
 
 Route::get('checkLogin', [loginController::class, 'loginCheck']);
