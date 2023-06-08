@@ -265,10 +265,14 @@
             console.log(transaksiArray);
         }
 
+        function ubahFormatTanggal(tanggal) {
+            return tanggal.replace(/^0(\d+)\//, '$1/');
+        }
+
         function convertToDateFormat(data) {
             // cek apakah data adalah dalam format 'DD/MM'
             if (/\d{1,2}\/\d{1,2}/.test(data)) {
-                return data.replace('/0', '/');
+                return ubahFormatTanggal(data);
             }
 
             // array singkatan bulan
@@ -282,10 +286,10 @@
             // mendapatkan angka bulan dari singkatan bulan
             const monthIndex = months.findIndex((m) => m === monthStr);
             var month = (monthIndex + 1).toString().padStart(2, '0');
-            month = parseInt(month, 10);
 
             // menggabungkan angka bulan dan angka tanggal dalam format MM/DD
-            return `${month}/${date}`;
+            var dataConvert = `${month}/${date}`;
+            return ubahFormatTanggal(dataConvert);
         }
 
         function convertToInteger(data) {
