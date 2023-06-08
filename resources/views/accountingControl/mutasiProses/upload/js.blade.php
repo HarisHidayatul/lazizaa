@@ -268,7 +268,7 @@
         function convertToDateFormat(data) {
             // cek apakah data adalah dalam format 'DD/MM'
             if (/\d{1,2}\/\d{1,2}/.test(data)) {
-                return data;
+                return data.replace('/0', '/');
             }
 
             // array singkatan bulan
