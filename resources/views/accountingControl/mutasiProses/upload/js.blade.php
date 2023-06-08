@@ -266,7 +266,7 @@
         }
 
         function ubahFormatTanggal(tanggal) {
-            return tanggal.replace(/^0(\d+)\//, '$1/');
+            return tanggal.replace(/^0(\d{2})/, '$1');
         }
 
         function convertToDateFormat(data) {
