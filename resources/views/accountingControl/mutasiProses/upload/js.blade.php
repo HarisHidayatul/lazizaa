@@ -281,7 +281,8 @@
 
             // mendapatkan angka bulan dari singkatan bulan
             const monthIndex = months.findIndex((m) => m === monthStr);
-            const month = (monthIndex + 1).toString().padStart(2, '0');
+            var month = (monthIndex + 1).toString().padStart(2, '0');
+            month = parseInt(month, 10);
 
             // menggabungkan angka bulan dan angka tanggal dalam format MM/DD
             return `${month}/${date}`;
