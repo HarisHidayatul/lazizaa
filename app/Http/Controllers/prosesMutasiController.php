@@ -986,7 +986,7 @@ class prosesMutasiController extends Controller
         $mutasiTransaksis = $mutasiTransaksis->where('id','<=',$idStop);
         foreach($mutasiTransaksis as $loopMutasiTransaksi){
             try{
-                $loopMutasiTransaksi->delete();
+                $loopMutasiTransaksi->forceDelete();
                 echo '<br>';
             }catch(Exception $e){
                 echo $e->getMessage();
