@@ -205,13 +205,17 @@ class prosesMutasiController extends Controller
         foreach ($tanggalAlls as $eachTanggal) {
             $tanggal = $eachTanggal->Tanggal;
             $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
-            if ($mutasiTransaksis->count() > 0) {
-                //Hanya ambil di rekening 1003 saja
-                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', 2);
-            }
+            // if ($mutasiTransaksis->count() > 0) {
+            //     //Hanya ambil di rekening 1003 saja
+            //     $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', 2);
+            // }
             foreach ($mutasiTransaksis as $mutasiTransaksi) {
                 $mutasiDetail = $mutasiTransaksi->mutasiDetails;
                 if ($mutasiDetail != null) {
+                    $idMutasiKlasifikasi = $mutasiDetail->idMutasiKlasifikasi;
+                    if($idMutasiKlasifikasi != 9){
+                        continue;
+                    }
                     $selisihHari = (-1) * $mutasiDetail->selisihHari;
                     $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($tanggal)));
                     $idOutlet = $mutasiDetail->idOutlet;
