@@ -266,7 +266,9 @@
         }
 
         function ubahFormatTanggal(tanggal) {
-            return tanggal.replace(/^0(\d{2})/, '$1');
+            let tanggalSplit = tanggal.split('/');
+            let bulan = parseInt(tanggalSplit[1], 10).toString();
+            return tanggalSplit[0] + '/' + bulan;
         }
 
         function convertToDateFormat(data) {
