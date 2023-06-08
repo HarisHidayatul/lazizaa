@@ -13,6 +13,7 @@ use App\Models\mutasi_setoran;
 use App\Models\mutasi_transaksi;
 use App\Models\pelunasan_mutasi_sales;
 use App\Models\penerimaList;
+use App\Models\penerimaReimburse;
 use App\Models\salesFill;
 use App\Models\setoran;
 use App\Models\tanggalAll;
@@ -444,12 +445,17 @@ class prosesMutasiController extends Controller
                                     $mutasiDetail->save();
                                 }
                                 try{
-                                    $mutasiReimburse = new mutasi_reimburse;
+                                    $mutasiReimburse = new mutasi_reimburse();
                                     $mutasiReimburse->idMutasiTransaksi = $eachMutasi->id;
                                     $mutasiReimburse->idPenerimaReimburse = $loopReimburse->idPenerimaReimburse;
                                     $mutasiReimburse->save();
                                 }catch(Exception $e){
                                 }
+
+                                //Lakukan verifikasi untuk mensukseskan reimburse mutasi
+                                $penerimaReimburse = penerimaReimburse::find($loopReimburse->idPenerimaReimburse);
+                                $penerimaReimburse->idRevisi = '3';
+                                $penerimaReimburse->save();
                             }
                         }
                     }

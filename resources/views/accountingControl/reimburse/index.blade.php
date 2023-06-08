@@ -26,6 +26,12 @@
     </div> --}}
 </div>
 <div style="height: 10px;"></div>
+<div class="d-flex justify-content-between">
+    <div></div>
+    <div>
+        <button type="button" class="btn btn-secondary" onclick="">Auto Generate</button>
+    </div>
+</div>
 <div style="overflow-x: auto;">
     <div style="width: 1500px">
         <table class="table table-striped" id="statusInputTabel">
