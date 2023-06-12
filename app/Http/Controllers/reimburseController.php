@@ -239,10 +239,17 @@ class reimburseController extends Controller
         $rekeningPenerima = '';
         $imgBankPenerima = '';
         $bankPenerima = '';
+        $buktiMutasi = '';
 
         $idRevisi = null;
         $jumlahTransfer = 0;
         // @dd($penerimaReimburse->listBanks);
+
+        $mutasiReimburse = $penerimaReimburse->mutasiReimburses;
+        if($mutasiReimburse != null){
+            $buktiMutasi = $mutasiReimburse->mutasiTransaksis->trxNotes;
+        }
+
         if ($penerimaReimburse != null) {
             // @dd($penerimaReimburse->tanggalAlls);
             $tanggal = $penerimaReimburse->tanggalAlls->Tanggal;
@@ -270,7 +277,8 @@ class reimburseController extends Controller
             'bankPenerima' => $bankPenerima,
             'idRevisi' => $idRevisi,
             'idPengirim' => $penerimaReimburse->penerimaLists->id,
-            'imageBukti' => $penerimaReimburse->imgTransfer
+            'imageBukti' => $penerimaReimburse->imgTransfer,
+            'buktiMutasi' => $buktiMutasi
         ]);
     }
 

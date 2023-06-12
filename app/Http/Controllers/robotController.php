@@ -10,6 +10,7 @@ use App\Models\pattyCashHarian;
 use App\Models\pelunasan_mutasi_sales;
 use App\Models\robot_ecommerce_status;
 use App\Models\robot_mutasi1003_setoran_status;
+use App\Models\robot_mutasi165_reimburse_status;
 use App\Models\robot_mutasi455tfkas_penerimaan_status;
 use App\Models\robot_mutasi455tfkas_status;
 use App\Models\robot_pembayaran_status;
@@ -338,6 +339,47 @@ class robotController extends Controller
 
         return response()->json([
             'idRobotMutasi1003' => $robotMutasi1003->id,
+            'Tanggal' => $tanggalDDmmYY,
+            'kasAsalKeywoard' => $kasAsalKeywoard,
+            'kasAsal' => $kasAsal,
+            'kasTujuanKeywoard' => $kasTujuanKeywoard,
+            'kasTujuan' => $kasTujuan,
+            'keterangan' => $keterangan,
+            'total' => $total,
+            'cabangKeywoard' => $cabangKeywoard,
+            'cabang' => $cabang
+        ]);
+    }
+
+    public function showRobotReimburse165(){
+        $robotMutasi165 = robot_mutasi165_reimburse_status::where('idStatusRobot', '=', '1')->get()->first();
+        $mutasiReimburse = $robotMutasi165->mutasiReimburses;
+
+        $mutasiTransaksi = $mutasiReimburse->mutasiTransaksis;
+
+        $keterangan = $mutasiTransaksi->trxNotes;
+        $tanggal = $mutasiTransaksi->tanggalAlls->Tanggal;
+        $tanggalDDmmYY = date('d-m-Y', strtotime($tanggal));
+
+        $total = (-1)*$mutasiTransaksi->total;
+
+        $kasAsalKeywoard = '0165';
+        $kasAsal = 'IDR - BCA Bisnis 0165';
+
+        // @dd($mutasiReimburse->penerimaReimburses->reimburses);
+        $cabang = $mutasiReimburse->penerimaReimburses->reimburses->dOutlets->cabangBee;
+        $cabangKeywoard = $mutasiReimburse->penerimaReimburses->reimburses->dOutlets->keywoardBee;
+
+        if ($total < 0) {
+            //Termasuk kolom kredit
+            $total = $total * (-1);
+        }
+
+        $kasTujuanKeywoard = $mutasiReimburse->penerimaReimburses->reimburses->dOutlets->keywoardBee;
+        $kasTujuan = $mutasiReimburse->penerimaReimburses->reimburses->dOutlets->terminBee;
+
+        return response()->json([
+            'idRobotMutasi165' => $robotMutasi165->id,
             'Tanggal' => $tanggalDDmmYY,
             'kasAsalKeywoard' => $kasAsalKeywoard,
             'kasAsal' => $kasAsal,
@@ -1038,6 +1080,55 @@ class robotController extends Controller
         ]);
     }
 
+    public function showMutasi165Reimburse(Request $request){
+        $idPenerima = $request->idPenerima;
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+        $tanggalAll = tanggalAll::whereBetween('Tanggal', array($startDate, $stopDate))->orderBy('Tanggal', 'ASC')->with('mutasiTransaksis.mutasiSetorans','mutasiTransaksis.mutasiDetails')->get();
+        $dataMutasi = [];
+
+        foreach ($tanggalAll as $loopTanggal) {
+            $tanggalDDmmYY = date('d/m/Y', strtotime($loopTanggal->Tanggal));
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis->where('idPenerimaList', '=', $idPenerima);
+            foreach ($mutasiTransaksis as $loopMutasi) {
+                $mutasiReimburse = $loopMutasi->mutasiReimburses;
+                $mutasiDetail =  $loopMutasi->mutasiDetails;
+                if ($mutasiReimburse != null) {
+                    $kredit = 0;
+                    $debit = 0;
+                    $dataRobot = [];
+                    $robotMutasi165Reimburse = $mutasiReimburse->robotMutasi165Reimburse;
+                    if ($loopMutasi->total > 0) {
+                        $debit = $loopMutasi->total;
+                    } else {
+                        $kredit = (-1) * $loopMutasi->total;
+                    }
+                    foreach ($robotMutasi165Reimburse as $loopMutasiRobot) {
+                        array_push($dataRobot, (object)[
+                            'id' => $loopMutasiRobot->id,
+                            'status' => $loopMutasiRobot->statusRobots->status,
+                            'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
+                        ]);
+                    }
+                    array_push($dataMutasi, (object)[
+                        'id' => $loopMutasi->id,
+                        'tanggal' => $tanggalDDmmYY,
+                        'klasifikasi' => $mutasiDetail->mutasiKlasifikasis->klasifikasi,
+                        'cabang' => $mutasiDetail->dOutlets['Nama Store'],
+                        'kredit' => $kredit,
+                        'debit' => $debit,
+                        'keterangan' => $loopMutasi->trxNotes,
+                        'dataRobot' => $dataRobot
+                    ]);
+                }
+            }
+        }
+        return response()->json([
+            // 'countItem' => $datasales->count(),
+            'data' => $dataMutasi
+        ]);
+    }
+
     public function createRobotPembelian(Request $request)
     {
         $idPattyHarian = $request->idPattyHarian;
@@ -1182,6 +1273,17 @@ class robotController extends Controller
         $robotMutasi1003->save();
     }
 
+    public function createRobotMutasi165Reimburse(Request $request){
+        $idMutasiTransaksi = $request->idMutasiTransaksi;
+        $idPemverifikasi = $request->idPemverifikasi;
+        $mutasiReimburse = mutasi_transaksi::find($idMutasiTransaksi)->mutasiReimburses;
+        $robotMutasi165Reimburse = new robot_mutasi165_reimburse_status();
+        $robotMutasi165Reimburse->idmutasiReimburse = $mutasiReimburse->id;
+        $robotMutasi165Reimburse->idPemverifikasi = $idPemverifikasi;
+        $robotMutasi165Reimburse->idStatusRobot = '1';
+        $robotMutasi165Reimburse->save();
+    }
+
     public function doneRobotPembelian($id)
     {
         $robot_pembelian_status = robot_pembelian_status::find($id);
@@ -1233,6 +1335,13 @@ class robotController extends Controller
     public function doneRobotMutasi1003($id){
         $robotMutasi1003 = robot_mutasi1003_setoran_status::find($id);
         $robotMutasi1003->update([
+            'idStatusRobot' => '2'
+        ]);
+    }
+
+    public function doneRobotReimburse165($id){
+        $robotMutasiReimburse = robot_mutasi165_reimburse_status::find($id);
+        $robotMutasiReimburse->update([
             'idStatusRobot' => '2'
         ]);
     }
@@ -1307,5 +1416,10 @@ class robotController extends Controller
     public function deleteRobotMutasi1003Setoran(Request $request){
         $idRobotMutasi1003Setoran = $request->idRobotMutasi1003Setoran;
         robot_mutasi1003_setoran_status::find($idRobotMutasi1003Setoran)->delete();
+    }
+
+    public function deleteRobotMutasi165Reimburse(Request $request){
+        $idRobotMutasi165Reimburse = $request->idRobotMutasi165Reimburse;
+        robot_mutasi165_reimburse_status::find($idRobotMutasi165Reimburse)->delete();
     }
 }

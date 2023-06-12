@@ -195,6 +195,82 @@ class prosesMutasiController extends Controller
         );
     }
 
+    public function generateMutasiReimburse(Request $request)
+    {
+        $startDate = $request->startDate;
+        $stopDate = $request->stopDate;
+
+        $reimburseArray = [];
+
+        $tanggalAlls = tanggalAll::orderBy('Tanggal', 'ASC');
+        $tanggalAlls = $tanggalAlls->whereBetween('Tanggal', array($startDate, $stopDate));
+
+        $tanggalAlls = $tanggalAlls->with([
+            'mutasiTransaksis.mutasiDetails',
+            'reimburses.penerimaReimburses'
+        ])->get();
+
+        foreach ($tanggalAlls as $loopTanggal) {
+            $reimburses = $loopTanggal->reimburses;
+            foreach ($reimburses as $loopReimburse) {
+                $penerimaReimburse = $loopReimburse->penerimaReimburses;
+                foreach ($penerimaReimburse as $loopPenerimaReimburse) {
+                    array_push($reimburseArray, (object)[
+                        'idPenerimaReimburse' => $loopPenerimaReimburse->id,
+                        'total' => $loopPenerimaReimburse->qty,
+                        'idOutlet' => $loopReimburse->idOutlet,
+                        'Tanggal' => $loopTanggal->Tanggal
+                    ]);
+                }
+            }
+        }
+
+        // print_r($reimburseArray);
+
+        foreach ($tanggalAlls as $loopTanggal) {
+            $mutasiTransaksis = $loopTanggal->mutasiTransaksis;
+            if ($mutasiTransaksis->count() > 0) {
+                $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', '1');
+            }
+            foreach ($mutasiTransaksis as $loopMutasiTransaksi) {
+                $mutasiDetail = $loopMutasiTransaksi->mutasiDetails;
+                if ($mutasiDetail != null) {
+                    $idMutasiAksi = $mutasiDetail->idMutasiAksi;
+                    $idMutasiKlasifikasi = $mutasiDetail->idMutasiKlasifikasi;
+                    if($idMutasiKlasifikasi != 10){
+                        continue;
+                    }
+                    $idOutlet = $mutasiDetail->idOutlet;
+                    $selisihHari = (-1) * $mutasiDetail->selisihHari;
+                    $tanggalBaru = date('Y-m-d', strtotime("$selisihHari days", strtotime($loopTanggal->Tanggal)));
+                    $totalMutasi = ($loopMutasiTransaksi->total) / 1000;
+                    foreach ($reimburseArray as $loopReimburse) {
+                        $tanggalPembanding = $loopReimburse->Tanggal;
+                        $idOutletPembanding =  $loopReimburse->idOutlet;
+                        $totalPembanding = ($loopReimburse->total) / 1000;
+                        $totalPembanding = $totalPembanding * (-1);
+                        if (strtotime($tanggalBaru) == strtotime($tanggalPembanding)) {
+                            if ($idOutlet == $idOutletPembanding) {
+                                if (floor($totalMutasi) == floor($totalPembanding)) {
+                                    print_r($loopReimburse);
+                                    try {
+                                        $mutasiReimburse = new mutasi_reimburse();
+                                        $mutasiReimburse->idMutasiTransaksi = $loopMutasiTransaksi->id;
+                                        $mutasiReimburse->idPenerimaReimburse = $loopReimburse->idPenerimaReimburse;
+                                        $mutasiReimburse->save();
+                                    } catch (Exception $e) {
+                                    }
+                                    $penerimaReimburse = penerimaReimburse::find($loopReimburse->idPenerimaReimburse);
+                                    $penerimaReimburse->idRevisi = '3';
+                                    $penerimaReimburse->save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public function generateMutasiSetoran(Request $request)
     {
@@ -406,7 +482,8 @@ class prosesMutasiController extends Controller
                         'idOutlet' => $eachReimburse->idOutlet,
                         'Tanggal' => $eachTanggal->Tanggal,
                         'total' => $eachPenerimaReimburse->qty,
-                        'nama' => strtoupper($eachPenerimaReimburse->pengirimLists->namaRekening)
+                        'nama' => strtoupper($eachPenerimaReimburse->pengirimLists->namaRekening),
+                        'nomorRekening' => strtoupper($eachPenerimaReimburse->pengirimLists->nomorRekening)
                     ]);
                 }
             }
@@ -421,6 +498,7 @@ class prosesMutasiController extends Controller
                     foreach ($arrayReimburse as $loopReimburse) {
                         if ($loopReimburse->total == $totalMutasi) {
                             $similarity = $this->findNameInText($loopReimburse->nama, strtoupper($eachMutasi->trxNotes));
+                            $similiartyNoRek = $this->findNameInText($loopReimburse->nomorRekening, strtoupper($eachMutasi->trxNotes));
                             print_r($similarity);
                             print_r('  ');
                             print_r($loopReimburse->nama);
@@ -430,7 +508,7 @@ class prosesMutasiController extends Controller
                             print_r(strtoupper($eachMutasi->trxNotes));
                             echo ('<br>');
                             echo ('<br>');
-                            if ($similarity >= 40) {
+                            if (($similarity >= 40) || ($similiartyNoRek >= 40)) {
                                 $tanggal1 = $loopReimburse->Tanggal; //Tanggal minta reimburse
                                 $tanggal2 = $eachTanggal->Tanggal; //Tanggal Mutasi
                                 $selisihTanggal = date_diff(date_create($tanggal1), date_create($tanggal2))->days;
@@ -444,12 +522,12 @@ class prosesMutasiController extends Controller
                                     $mutasiDetail->idMutasiKlasifikasi = 10; //Pilih klasifikasi ke pattycash
                                     $mutasiDetail->save();
                                 }
-                                try{
+                                try {
                                     $mutasiReimburse = new mutasi_reimburse();
                                     $mutasiReimburse->idMutasiTransaksi = $eachMutasi->id;
                                     $mutasiReimburse->idPenerimaReimburse = $loopReimburse->idPenerimaReimburse;
                                     $mutasiReimburse->save();
-                                }catch(Exception $e){
+                                } catch (Exception $e) {
                                 }
 
                                 //Lakukan verifikasi untuk mensukseskan reimburse mutasi
@@ -850,7 +928,7 @@ class prosesMutasiController extends Controller
             'mutasiTransaksis.mutasiDetails.mutasiKlasifikasis',
             'mutasiTransaksis.mutasiDetails.doutlets',
             'mutasiTransaksis.mutasiSetorans.robotMutasi1003Setorans',
-            'mutasiTransaksis.mutasiReimburses'
+            'mutasiTransaksis.mutasiReimburses.robotMutasi165Reimburse'
         ])->get();
         // @dd($tanggalAlls);
         $dataMutasi = [];
@@ -910,8 +988,15 @@ class prosesMutasiController extends Controller
                     }
 
                     $mutasiReimburses = $mutasiTransaksi->mutasiReimburses;
-                    if($mutasiReimburses != null){
+                    if ($mutasiReimburses != null) {
                         array_push($terkaitStatus, 'Reimburse');
+                        $robotMutasi165Reimburse = $mutasiReimburses->robotMutasi165Reimburse;
+                        foreach ($robotMutasi165Reimburse as $robotMutasi) {
+                            array_push($robotStatus, (object)[
+                                'robot' => '165 Reimburse',
+                                'status' => $robotMutasi->statusRobots->status
+                            ]);
+                        }
                     }
 
                     $mutasiSetorans = $mutasiTransaksi->mutasiSetorans;

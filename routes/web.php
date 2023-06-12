@@ -296,6 +296,8 @@ Route::get('reimburse/show/pengirim/all/{idUser}', [reimburseController::class, 
 
 Route::delete('reimburse/mutasi/delete',[prosesMutasiController::class, 'deleteMutasiReimburse']);
 
+Route::post('reimburse/generate/mutasi',[prosesMutasiController::class, 'generateMutasiReimburse']);
+
 Route::get('robot/pembelian/show/all', [robotController::class, 'showPembelian']);
 Route::post('robot/pembelian/create', [robotController::class, 'createRobotPembelian']);
 Route::delete('robot/pembelian/delete', [robotController::class, 'deleteRobotPembelian']);
@@ -326,6 +328,10 @@ Route::delete('robot/mutasi1003Setoran/delete',[robotController::class,'deleteRo
 
 Route::get('robot/mutasi455TfKasSukodono/show/all',[robotController::class, 'showMutasi455TfKasSukodono']);
 
+Route::get('robot/mutasi165Reimburse/show/all',[robotController::class, 'showMutasi165Reimburse']);
+Route::post('robot/mutasi165Reimburse/create', [robotController::class, 'createRobotMutasi165Reimburse']);
+Route::delete('robot/mutasi165Reimburse/delete',[robotController::class,'deleteRobotMutasi165Reimburse']);
+
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
 Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotPembelian']);
 
@@ -346,6 +352,9 @@ Route::get('robot/api/ecommerce/done/{id}', [robotController::class, 'doneRobotE
 
 Route::get('robot/api/mutasi1003/setoran/show',[robotController::class,'showRobotMutasi1003']);
 Route::get('robot/api/mutasi1003/setoran/done/{id}', [robotController::class, 'doneRobotMutasi1003']);
+
+Route::get('robot/api/mutasi165/reimburse/show',[robotController::class,'showRobotReimburse165']);
+Route::get('robot/api/mutasi165/reimburse/done/{id}', [robotController::class, 'doneRobotReimburse165']);
 
 Route::post('mutasi/upload', [prosesMutasiController::class, 'createMutasi']);
 Route::get('mutasi/show/all',[prosesMutasiController::class, 'showMutasiAll']);
@@ -521,6 +530,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/robot/mutasi1003Setoran',function(){
         return view('accountingControl.beeCloudRobot.mutasi1003Setoran.index');
+    });
+
+    Route::get('accounting/robot/mutasi165reimburse',function(){
+        return view('accountingControl.beeCloudRobot.mutasi165.index');
     });
 
     Route::get('accounting/pattyCash', function () {

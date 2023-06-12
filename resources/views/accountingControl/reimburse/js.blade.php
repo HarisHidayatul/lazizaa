@@ -496,5 +496,26 @@
                 }
             })
         }
+
+        function generateMutasiReimburse() {
+            var startDate = document.getElementById('startDate').value;
+            var stopDate = document.getElementById('stopDate').value;
+            $.ajax({
+                url: "{{ url('reimburse/generate/mutasi') }}",
+                type: 'post',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    startDate: startDate,
+                    stopDate: stopDate
+                },
+                success: function(response) {
+                    $("#exampleModalCenter").modal('hide');
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            });
+        }
     </script>
 @endsection

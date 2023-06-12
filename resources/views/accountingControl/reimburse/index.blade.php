@@ -29,7 +29,7 @@
 <div class="d-flex justify-content-between">
     <div></div>
     <div>
-        <button type="button" class="btn btn-secondary" onclick="">Auto Generate</button>
+        <button type="button" class="btn btn-secondary" onclick="generateMutasiReimburse()">Auto Generate</button>
     </div>
 </div>
 <div style="overflow-x: auto;">

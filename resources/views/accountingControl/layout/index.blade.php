@@ -180,17 +180,11 @@
                                     <p>1003 Setoran</p>
                                 </a>
                             </li>
-
+                            
                             <li class="nav-item">
-                                <a href="#" class="nav-link" id="reimburseSalesRobotSubMenu">
+                                <a href="{{ url('accounting/robot/mutasi165reimburse') }}" class="nav-link" id="reimburse165RobotSubMenu">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Reimburse Sales</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link" id="reimburseFinanceRobotSubMenu">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Reimburse Finance</p>
+                                    <p>Reimburse 165</p>
                                 </a>
                             </li>
                         </ul>

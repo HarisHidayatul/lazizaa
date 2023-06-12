@@ -18,6 +18,10 @@ class reimburse extends Model
     public function penerimaReimburses(){
         return $this->hasMany(penerimaReimburse::class,'idReimburse','id');
     }
+
+    public function dOutlets(){
+        return $this->belongsTo(doutlet::class,'idOutlet','id');
+    }
     
     protected $fillable = [
         'idTanggal',
