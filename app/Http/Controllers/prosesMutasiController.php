@@ -518,13 +518,17 @@ class prosesMutasiController extends Controller
                                 $selisihTanggal = date_diff(date_create($tanggal1), date_create($tanggal2))->days;
                                 $mutasiDetail = $eachMutasi->mutasiDetails;
                                 if ($mutasiDetail == null) {
-                                    $mutasiDetail = new mutasi_detail();
-                                    $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
-                                    $mutasiDetail->selisihHari = $selisihTanggal;
-                                    $mutasiDetail->idOutlet = $loopReimburse->idOutlet;
-                                    $mutasiDetail->idMutasiAksi = 4; //Pilih ke transfer kas
-                                    $mutasiDetail->idMutasiKlasifikasi = 10; //Pilih klasifikasi ke pattycash
-                                    $mutasiDetail->save();
+                                    try{
+                                        $mutasiDetail = new mutasi_detail();
+                                        $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
+                                        $mutasiDetail->selisihHari = $selisihTanggal;
+                                        $mutasiDetail->idOutlet = $loopReimburse->idOutlet;
+                                        $mutasiDetail->idMutasiAksi = 4; //Pilih ke transfer kas
+                                        $mutasiDetail->idMutasiKlasifikasi = 10; //Pilih klasifikasi ke pattycash
+                                        $mutasiDetail->save();
+                                    }catch(Exception $e){
+
+                                    }
                                 }
                                 try {
                                     $mutasiReimburse = new mutasi_reimburse();
