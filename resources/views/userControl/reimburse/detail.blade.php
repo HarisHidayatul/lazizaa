@@ -322,6 +322,9 @@
                         <a target="_blank" rel="noopener noreferrer" href="#" id="filePathName"></a>
                     </div>
                 </div>
+                <div class="d-flex justify-content-start align-items-center wrapBukti">
+                    <div class="labelPembayaran" id="buktiTfMutasi"></div>
+                </div>
             </div>
             <div class="penerimaLabel">Penerima</div>
             <div class="d-flex justify-content-start align-items-center wrapPenerima" style="margin-top: 10px;">
@@ -408,6 +411,7 @@
                 document.getElementById('tanggal').innerHTML = day.getDate() + ' ' + months[day.getMonth()];
                 document.getElementById('jumlahTransfer').innerHTML = parseInt(obj.jumlahTransfer)
                     .toLocaleString();
+                document.getElementById('buktiTfMutasi').innerHTML = obj.buktiMutasi;
                 if (obj.idRevisi == '2') {
                     document.getElementById('imageStatusSetoran').src =
                         "{{ url('img/icon/pending.png') }}";

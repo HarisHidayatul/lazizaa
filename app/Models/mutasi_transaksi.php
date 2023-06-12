@@ -43,6 +43,10 @@ class mutasi_transaksi extends Model
         return $this->hasOne(mutasi_setoran::class,'idMutasiTransaksi','id');
     }
 
+    public function mutasiReimburses(){
+        return $this->hasOne(mutasi_reimburse::class,'idMutasiTransaksi','id');
+    }
+
     protected $fillable = [
         'trxNotes',
         'total',

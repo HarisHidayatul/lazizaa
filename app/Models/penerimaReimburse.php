@@ -30,6 +30,14 @@ class penerimaReimburse extends Model
         return $this->hasOneThrough(listBank::class,pengirimList::class,'id','id','idTujuan','idBank');
     }
 
+    public function mutasiReimburses(){
+        return $this->hasOne(mutasi_reimburse::class,'idPenerimaReimburse','id');
+    }
+
+    public function reimburses(){
+        return $this->belongsTo(reimburse::class,'idReimburse','id');
+    }
+
     protected $fillable = [
         'idTujuan',
         'idPengirim',
