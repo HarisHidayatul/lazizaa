@@ -1016,7 +1016,7 @@ class prosesMutasiController extends Controller
                         $robot165PindahSaldo = $mutasiDetail->robot165PindahSaldo;
                         foreach ($robot165PindahSaldo as $robotMutasi165) {
                             array_push($robotStatus, (object)[
-                                'robot' => 'Mutasi 455 Tf Kas',
+                                'robot' => 'Mutasi 165 Pindah Saldo',
                                 'status' => $robotMutasi165->statusRobots->status
                             ]);
                         }
