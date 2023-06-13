@@ -975,7 +975,8 @@ class prosesMutasiController extends Controller
             'mutasiTransaksis.mutasiDetails.mutasiKlasifikasis',
             'mutasiTransaksis.mutasiDetails.doutlets',
             'mutasiTransaksis.mutasiSetorans.robotMutasi1003Setorans',
-            'mutasiTransaksis.mutasiReimburses.robotMutasi165Reimburse'
+            'mutasiTransaksis.mutasiReimburses.robotMutasi165Reimburse',
+            'mutasiTransaksis.mutasiDetails.robot165PindahSaldo'
         ])->get();
         // @dd($tanggalAlls);
         $dataMutasi = [];
@@ -1011,6 +1012,14 @@ class prosesMutasiController extends Controller
                         $cabang = $mutasiDetail->doutlets['Nama Store'];
                         $action = 1;
                         $selisihHari = $mutasiDetail->selisihHari;
+
+                        $robot165PindahSaldo = $mutasiDetail->robot165PindahSaldo;
+                        foreach ($robot165PindahSaldo as $robotMutasi165) {
+                            array_push($robotStatus, (object)[
+                                'robot' => 'Mutasi 455 Tf Kas',
+                                'status' => $robotMutasi165->statusRobots->status
+                            ]);
+                        }
                     }
 
                     $pelunasanMutasiSales = $mutasiTransaksi->pelunasanMutasiSaless;
