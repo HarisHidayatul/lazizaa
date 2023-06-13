@@ -24,6 +24,14 @@ class mutasi_detail extends Model
         return $this->belongsTo(doutlet::class,'idOutlet','id');
     }
 
+    public function mutasiTransaksis(){
+        return $this->belongsTo(mutasi_transaksi ::class,'idMutasiTransaksi','id');
+    }
+
+    public function robot165PindahSaldo(){
+        return $this->hasMany(robot_165_pindah_saldo_status::class,'idMutasiDetail','id');
+    }
+
     protected $fillable = [
         'idMutasiAksi',
         'idMutasiTransaksi',

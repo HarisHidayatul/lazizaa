@@ -237,7 +237,7 @@ class prosesMutasiController extends Controller
                 if ($mutasiDetail != null) {
                     $idMutasiAksi = $mutasiDetail->idMutasiAksi;
                     $idMutasiKlasifikasi = $mutasiDetail->idMutasiKlasifikasi;
-                    if($idMutasiKlasifikasi != 10){
+                    if ($idMutasiKlasifikasi != 10) {
                         continue;
                     }
                     $idOutlet = $mutasiDetail->idOutlet;
@@ -310,7 +310,7 @@ class prosesMutasiController extends Controller
                 $mutasiDetail = $mutasiTransaksi->mutasiDetails;
                 if ($mutasiDetail != null) {
                     $idMutasiKlasifikasi = $mutasiDetail->idMutasiKlasifikasi;
-                    if($idMutasiKlasifikasi != 9){
+                    if ($idMutasiKlasifikasi != 9) {
                         continue;
                     }
                     $selisihHari = (-1) * $mutasiDetail->selisihHari;
@@ -496,8 +496,10 @@ class prosesMutasiController extends Controller
         foreach ($tanggalAlls as $eachTanggal) {
             $mutasiTransaksis = $eachTanggal->mutasiTransaksis;
             if ($mutasiTransaksis->count() > 0) {
+                $mutasiTransaksiPindahSaldo = $mutasiTransaksis;
                 $mutasiTransaksis = $mutasiTransaksis->where('idPenerimaList', '=', 1);
-                foreach ($eachTanggal->mutasiTransaksis as $eachMutasi) {
+                //Cari data reimburse
+                foreach ($mutasiTransaksis as $eachMutasi) {
                     $totalMutasi = (-1) * $eachMutasi->total;
                     foreach ($arrayReimburse as $loopReimburse) {
                         if ($loopReimburse->total == $totalMutasi) {
@@ -518,7 +520,7 @@ class prosesMutasiController extends Controller
                                 $selisihTanggal = date_diff(date_create($tanggal1), date_create($tanggal2))->days;
                                 $mutasiDetail = $eachMutasi->mutasiDetails;
                                 if ($mutasiDetail == null) {
-                                    try{
+                                    try {
                                         $mutasiDetail = new mutasi_detail();
                                         $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
                                         $mutasiDetail->selisihHari = $selisihTanggal;
@@ -526,8 +528,7 @@ class prosesMutasiController extends Controller
                                         $mutasiDetail->idMutasiAksi = 4; //Pilih ke transfer kas
                                         $mutasiDetail->idMutasiKlasifikasi = 10; //Pilih klasifikasi ke pattycash
                                         $mutasiDetail->save();
-                                    }catch(Exception $e){
-
+                                    } catch (Exception $e) {
                                     }
                                 }
                                 try {
@@ -543,6 +544,44 @@ class prosesMutasiController extends Controller
                                 $penerimaReimburse->idRevisi = '3';
                                 $penerimaReimburse->save();
                             }
+                        }
+                    }
+                }
+                // Cari data pindah saldo
+                foreach ($mutasiTransaksis as $eachMutasi) {
+                    $mutasi1003 = $mutasiTransaksiPindahSaldo->where('idPenerimaList', '=', '2');
+                    foreach ($mutasi1003 as $loop1003) {
+                        if ($loop1003->total == (-1)*$eachMutasi->total) {
+                            try {
+                                $mutasiDetail = new mutasi_detail();
+                                $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
+                                $mutasiDetail->selisihHari = 0;
+                                $mutasiDetail->idOutlet = '1';
+                                $mutasiDetail->idMutasiAksi = 3; //Pilih ke pindah saldo
+                                $mutasiDetail->idMutasiKlasifikasi = 11; //Pilih pindah saldo 1003 ke 165
+                                $mutasiDetail->save();
+                            } catch (Exception $e) {
+                            }
+                            echo $eachMutasi->id;
+                            echo ' pindah 1003 ke 165 ';
+                        }
+                    }
+
+                    $mutasi455 = $mutasiTransaksiPindahSaldo->where('idPenerimaList', '=', '4');
+                    foreach ($mutasi455 as $loop455) {
+                        if ($loop455->total == (-1)*$eachMutasi->total) {
+                            try {
+                                $mutasiDetail = new mutasi_detail();
+                                $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
+                                $mutasiDetail->selisihHari = 0;
+                                $mutasiDetail->idOutlet = '1';
+                                $mutasiDetail->idMutasiAksi = 3; //Pilih ke pindah saldo
+                                $mutasiDetail->idMutasiKlasifikasi = 12; //Pilih pindah saldo 455 ke 165
+                                $mutasiDetail->save();
+                            } catch (Exception $e) {
+                            }
+                            echo $eachMutasi->id;
+                            echo ' pindah 455 ke 165 ';
                         }
                     }
                 }

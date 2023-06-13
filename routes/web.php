@@ -332,6 +332,10 @@ Route::get('robot/mutasi165Reimburse/show/all',[robotController::class, 'showMut
 Route::post('robot/mutasi165Reimburse/create', [robotController::class, 'createRobotMutasi165Reimburse']);
 Route::delete('robot/mutasi165Reimburse/delete',[robotController::class,'deleteRobotMutasi165Reimburse']);
 
+Route::get('robot/mutasi165PindahSaldo/show/all',[robotController::class, 'showMutasi165PindahSaldo']);
+Route::post('robot/mutasi165PindahSaldo/create', [robotController::class, 'createRobotMutasi165PindahSaldo']);
+Route::delete('robot/mutasi165PindahSaldo/delete',[robotController::class,'deleteRobotMutasi165PindahSaldo']);
+
 Route::get('robot/api/pembelian/show', [robotController::class, 'showRobotPembelian']);
 Route::get('robot/api/pembelian/done/{id}', [robotController::class, 'doneRobotPembelian']);
 
@@ -343,6 +347,9 @@ Route::get('robot/api/mutasi455TfKasPenerimaan/done/{id}', [robotController::cla
 
 Route::get('robot/api/mutasi455Pembayaran/show', [robotController::class, 'showRobotMutasi455Pembayaran']);
 Route::get('robot/api/mutasi455Pembayaran/done/{id}', [robotController::class, 'doneRobotMutasi455Pembayaran']);
+
+Route::get('robot/api/mutasi165PindahSaldo/show', [robotController::class, 'showRobotMutasi165PindahSaldo']);
+Route::get('robot/api/mutasi165PindahSaldo/done/{id}', [robotController::class, 'doneRobotMutasi165PindahSaldo']);
 
 Route::get('robot/api/pembayaran/show', [robotController::class, 'showRobotPembayaran']);
 Route::get('robot/api/pembayaran/done/{id}', [robotController::class, 'doneRobotPembayaran']);
@@ -536,6 +543,10 @@ Route::group(['middleware' => 'cekLoginMiddleware'], function () {
 
     Route::get('accounting/robot/mutasi165reimburse',function(){
         return view('accountingControl.beeCloudRobot.mutasi165.index');
+    });
+
+    Route::get('accounting/robot/pindahSaldo165', function(){
+        return view('accountingControl.beeCloudRobot.pindahSaldo165.index');
     });
 
     Route::get('accounting/pattyCash', function () {
