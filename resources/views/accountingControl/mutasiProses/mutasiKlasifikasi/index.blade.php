@@ -87,7 +87,19 @@
                     </div>
                     <div class="row">
                         <div class="col-5">Klasifikasi</div>
-                        <div class="col-7">: <select name="" id="klasifikasiAdd"></select></div>
+                        <div class="col-7">: <select name="" id="klasifikasiAdd" onchange="searchPatty();"></select></div>
+                    </div>
+                    <div id="lain2div" style="display: none;">
+                        <div style="height: 15px; content: ''"></div>
+                        <div class="row">
+                            <div class="col-5">Lain - lain</div>
+                            <div class="col-7">: <input id="lain2text" type="text" onkeyup="searchItemPatty();"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-7">: <select name="" id="lain2Add" style="width: 200px"></select></div>
+                        </div>
+                        <div style="height: 15px; content: ''"></div>
                     </div>
                     <div class="row">
                         <div class="col-5">Cabang</div>

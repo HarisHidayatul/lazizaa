@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\doutlet;
+use App\Models\listItemPattyCash;
 use App\Models\listSales;
 use App\Models\mutasi_aksi;
 use App\Models\mutasi_detail;
@@ -70,6 +71,11 @@ class prosesMutasiController extends Controller
         $mutasiDetail->idOutlet = $request->idOutlet;
         $mutasiDetail->selisihHari = $request->selisihHari;
         $mutasiDetail->save();
+
+        if($request->idMutasiKlasifikasi == 13){
+            //Jika pilih lain-lain, inputkan juga di mutasi  pembayaran
+            
+        }
     }
 
     public function createMutasi(Request $request)
@@ -551,7 +557,7 @@ class prosesMutasiController extends Controller
                 foreach ($mutasiTransaksis as $eachMutasi) {
                     $mutasi1003 = $mutasiTransaksiPindahSaldo->where('idPenerimaList', '=', '2');
                     foreach ($mutasi1003 as $loop1003) {
-                        if ($loop1003->total == (-1)*$eachMutasi->total) {
+                        if ($loop1003->total == (-1) * $eachMutasi->total) {
                             try {
                                 $mutasiDetail = new mutasi_detail();
                                 $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
@@ -569,7 +575,7 @@ class prosesMutasiController extends Controller
 
                     $mutasi455 = $mutasiTransaksiPindahSaldo->where('idPenerimaList', '=', '4');
                     foreach ($mutasi455 as $loop455) {
-                        if ($loop455->total == (-1)*$eachMutasi->total) {
+                        if ($loop455->total == (-1) * $eachMutasi->total) {
                             try {
                                 $mutasiDetail = new mutasi_detail();
                                 $mutasiDetail->idMutasiTransaksi = $eachMutasi->id;
@@ -883,10 +889,12 @@ class prosesMutasiController extends Controller
         $mutasiAksi = mutasi_aksi::all();
         $mutasiKlasifikasi = mutasi_klasifikasi::all();
         $dOutlet = doutlet::all();
+        $pattyCash = listItemPattyCash::with('jenis_patty_cashs.kategori_patty_cashs')->get();
 
         $mutasiAksiArray = [];
         $mutasiKlasifikasiArray = [];
         $outletArray = [];
+        $listPattyArray = [];
 
         foreach ($dOutlet as $loopOutlet) {
             array_push($outletArray, (object)[
@@ -909,13 +917,25 @@ class prosesMutasiController extends Controller
             ]);
         }
 
+        foreach ($pattyCash as $loopPattyCash) {
+            $idKategoriPatty = $loopPattyCash->jenis_patty_cashs->kategori_patty_cashs->id;
+            // @dd($idKategoriPatty);
+            if ($idKategoriPatty == 1) {
+                array_push($listPattyArray, (object)[
+                    'id' => $loopPattyCash->id,
+                    'pattyCash' => $loopPattyCash->Item
+                ]);
+            }
+        }
+
         return response()->json([
             'id' => $mutasiTransaksi->id,
             'keterangan' => $mutasiTransaksi->trxNotes,
             'total' => $mutasiTransaksi->total,
             'outlet' => $outletArray,
             'mutasiAksi' => $mutasiAksiArray,
-            'mutasiKlasifikasi' => $mutasiKlasifikasiArray
+            'mutasiKlasifikasi' => $mutasiKlasifikasiArray,
+            'pattyCash' => $listPattyArray
         ]);
     }
 

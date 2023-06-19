@@ -4,6 +4,10 @@
     <script>
         var idMutasiSelect = 0;
         var dataExportToCSV = [];
+
+        var pattyCashObjTemp = [];
+
+        // $("#lain2Add").select2();
         $(document).ready(function() {
             // document.getElementById('mutasiProsesTabMenu').classList.add("active");
             document.getElementById("mutasiKlasifikasiSubMenu").classList.add("active");
@@ -130,8 +134,8 @@
                                 continue;
                             }
                         }
-                        if(idKlasifikasi == 99){
-                            if(parseInt(obj.dataMutasi[i].idKlasifikasi) != 99){
+                        if (idKlasifikasi == 99) {
+                            if (parseInt(obj.dataMutasi[i].idKlasifikasi) != 99) {
                                 continue;
                             }
                         }
@@ -297,16 +301,58 @@
                         listKlasifikasi += obj.mutasiKlasifikasi[i].klasifikasi;
                         listKlasifikasi += '</option>';
                     }
+                    var pattyCash = '';
+                    for (var i = 0; i < obj.pattyCash.length; i++) {
+                        pattyCash += '<option value=';
+                        pattyCash += obj.pattyCash[i].id;
+                        pattyCash += '>';
+                        pattyCash += obj.pattyCash[i].pattyCash;
+                        pattyCash += '</option>';
+                    }
+                    pattyCashObjTemp = obj.pattyCash;
+                    console.log(pattyCashObjTemp);
+                    $('#lain2Add').empty().append(pattyCash);
                     $('#klasifikasiAdd').empty().append(listKlasifikasi);
                     $('#cabangAdd').empty().append(listOutlet);
                     $('#aksiAdd').empty().append(listAksi);
+                    document.getElementById('lain2div').style.display = 'none';
                     document.getElementById('hPlusAdd').value = 0;
+                    document.getElementById('lain2text').value = '';
                 },
                 error: function(req, err) {
                     console.log(err);
                 }
             })
             $('#addModalCenter').modal('show');
+        }
+
+        function searchPatty() {
+            console.log(pattyCashObjTemp);
+            var idKategori = document.getElementById('klasifikasiAdd').value;
+            if (idKategori == '13') {
+                document.getElementById('lain2div').style.display = 'block';
+            } else {
+                document.getElementById('lain2div').style.display = 'none';
+            }
+        }
+
+        function searchItemPatty() {
+            var pattyCash = '';
+            var inputSearchPatty = document.getElementById('lain2text').value.toUpperCase();
+            // console.log(pattyCashObjTemp);
+            for (var i = 0; i < pattyCashObjTemp.length; i++) {
+                const pattyText = pattyCashObjTemp[i].pattyCash.toUpperCase();
+                // console.log(pattyText);
+                if (pattyText.indexOf(inputSearchPatty) > -1) {
+                    pattyCash += '<option value=';
+                    pattyCash += pattyCashObjTemp[i].id;
+                    pattyCash += '>';
+                    pattyCash += pattyCashObjTemp[i].pattyCash;
+                    pattyCash += '</option>';
+                    // console.log('dsd');
+                }
+            }
+            $('#lain2Add').empty().append(pattyCash);
         }
 
         function backMutasiClick() {
@@ -318,6 +364,7 @@
             var idOutlet = document.getElementById('cabangAdd').value;
             var idMutasiKlasifikasi = document.getElementById('klasifikasiAdd').value;
             var hPlusAdd = document.getElementById('hPlusAdd').value;
+            var idPattyCash = document.getElementById('lain2Add').value;
             $.ajax({
                 url: "{{ url('mutasi/detail/create') }}",
                 type: 'post',
@@ -327,7 +374,8 @@
                     idMutasiAksi: idMutasiAksi,
                     idOutlet: idOutlet,
                     idMutasiKlasifikasi: idMutasiKlasifikasi,
-                    selisihHari: hPlusAdd
+                    selisihHari: hPlusAdd,
+                    idPattyCash: idPattyCash
                 },
                 success: function(response) {
                     getListAllFilter();
