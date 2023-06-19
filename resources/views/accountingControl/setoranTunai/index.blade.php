@@ -85,7 +85,7 @@
                                     id="filePathName"></a></span></div>
                     </div>
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
-                    {{-- <div class="form-check">
+                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="doneTransfer" onchange="transferCheck();">
                         <label class="form-check-label" for="doneTransfer">
                             Sudah Diterima
@@ -109,13 +109,13 @@
                     <div class="row">
                         <div class="col-5">Rekening Penerima</div>
                         <div class="col-7">: <span style="color: darkgrey" id="rekeningPenerima"></span></div>
-                    </div> --}}
+                    </div>
                     <div style="border-bottom: 1px dotted rgb(0, 0, 0);"></div>
                 </div>
                 <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-danger" onclick="deleteTabClick();">Delete</button> --}}
+                    <button type="button" class="btn btn-danger" onclick="deleteTabClick();">Delete</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    {{-- <button type="button" class="btn btn-primary" onclick="kirimTransfer();">Kirim</button> --}}
+                    <button type="button" class="btn btn-primary" onclick="kirimTransfer();">Kirim</button>
                 </div>
             </div>
         </div>

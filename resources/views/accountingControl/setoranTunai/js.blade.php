@@ -63,17 +63,17 @@
         }
 
         function deleteTransfer() {
-            // $.ajax({
-            //     url: "{{ url('setoran/delete/accounting/revisi') }}" + '/' + indexSetoran,
-            //     type: 'get',
-            //     success: function(response) {
-            //         $("#deleteModalCenter").modal('hide');
-            //         getListAllFilter();
-            //     },
-            //     error: function(req, err) {
-            //         console.log(err);
-            //     }
-            // });
+            $.ajax({
+                url: "{{ url('setoran/delete/accounting/revisi') }}" + '/' + indexSetoran,
+                type: 'get',
+                success: function(response) {
+                    $("#deleteModalCenter").modal('hide');
+                    getListAllFilter();
+                },
+                error: function(req, err) {
+                    console.log(err);
+                }
+            });
         }
 
         function getListAllFilter() {
@@ -200,13 +200,13 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     console.log(obj);
                     var setoranStatus = '';
-                    // if (obj.idStatus == '2') {
-                    //     setoranStatus = 'PENDING';
-                    //     document.getElementById('doneTransfer').checked = false;
-                    // } else if (obj.idStatus == '3') {
-                    //     setoranStatus = 'SUKSES';
-                    //     document.getElementById('doneTransfer').checked = true;
-                    // }
+                    if (obj.idStatus == '2') {
+                        setoranStatus = 'PENDING';
+                        document.getElementById('doneTransfer').checked = false;
+                    } else if (obj.idStatus == '3') {
+                        setoranStatus = 'SUKSES';
+                        document.getElementById('doneTransfer').checked = true;
+                    }
                     document.getElementById('filePathName').href = "{{ url('storage') }}" + '/' + obj
                         .imagePathFile;
                     document.getElementById('filePathName').innerHTML = obj.imagePathFile;
@@ -231,37 +231,37 @@
         }
 
         function transferCheck() {
-            // if (document.getElementById('doneTransfer').checked) {
-            //     document.getElementById('listPenerima').disabled = false;
-            //     document.getElementById('bankPenerima').style.color = "black";
-            //     document.getElementById('rekeningPenerima').style.color = "black";
-            // } else {
-            //     document.getElementById('listPenerima').disabled = true;
-            //     document.getElementById('bankPenerima').style.color = "darkgrey";
-            //     document.getElementById('rekeningPenerima').style.color = "darkgrey";
-            // }
+            if (document.getElementById('doneTransfer').checked) {
+                document.getElementById('listPenerima').disabled = false;
+                document.getElementById('bankPenerima').style.color = "black";
+                document.getElementById('rekeningPenerima').style.color = "black";
+            } else {
+                document.getElementById('listPenerima').disabled = true;
+                document.getElementById('bankPenerima').style.color = "darkgrey";
+                document.getElementById('rekeningPenerima').style.color = "darkgrey";
+            }
         }
 
         function getAllPenerima() {
-            // $.ajax({
-            //     url: "{{ url('setoran/penerima/show') }}",
-            //     type: 'get',
-            //     success: function(response) {
-            //         var obj = JSON.parse(JSON.stringify(response));
-            //         var dataJenis = '';
-            //         console.log(obj);
-            //         objPenerima = obj;
-            //         var listPenerima = '';
-            //         for (var i = 0; i < obj.penerimaListArray.length; i++) {
-            //             listPenerima += '<option value="' + obj.penerimaListArray[i].id;
-            //             listPenerima += '" data-index="' + i + '" >' + obj.penerimaListArray[i].namaRekening;
-            //             listPenerima += '</option>';
-            //         }
-            //         $('#listPenerima').empty().append(listPenerima);
-            //         refreshListPenerima(0);
-            //     },
-            //     error: function(req, err) {}
-            // })
+            $.ajax({
+                url: "{{ url('setoran/penerima/show') }}",
+                type: 'get',
+                success: function(response) {
+                    var obj = JSON.parse(JSON.stringify(response));
+                    var dataJenis = '';
+                    console.log(obj);
+                    objPenerima = obj;
+                    var listPenerima = '';
+                    for (var i = 0; i < obj.penerimaListArray.length; i++) {
+                        listPenerima += '<option value="' + obj.penerimaListArray[i].id;
+                        listPenerima += '" data-index="' + i + '" >' + obj.penerimaListArray[i].namaRekening;
+                        listPenerima += '</option>';
+                    }
+                    $('#listPenerima').empty().append(listPenerima);
+                    refreshListPenerima(0);
+                },
+                error: function(req, err) {}
+            })
         }
 
         function refreshListPenerima(index) {
