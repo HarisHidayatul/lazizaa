@@ -193,6 +193,12 @@
                                     <p>Pindah Saldo 165</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ url('accounting/robot/pembayaran165') }}" class="nav-link" id="pembayaran165RobotSubMenu">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pembayaran 165</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">

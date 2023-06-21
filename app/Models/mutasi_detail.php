@@ -32,6 +32,10 @@ class mutasi_detail extends Model
         return $this->hasMany(robot_165_pindah_saldo_status::class,'idMutasiDetail','id');
     }
 
+    public function mutasiPembayarans(){
+        return $this->hasOne(mutasi_pembayaran::class,'idMutasiDetail','id');
+    }
+
     protected $fillable = [
         'idMutasiAksi',
         'idMutasiTransaksi',
