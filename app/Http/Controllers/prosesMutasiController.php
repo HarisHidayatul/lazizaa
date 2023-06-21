@@ -12,6 +12,7 @@ use App\Models\mutasi_reimburse;
 use App\Models\mutasi_sales;
 use App\Models\mutasi_setoran;
 use App\Models\mutasi_transaksi;
+use App\Models\mutasi_pembayaran;
 use App\Models\pelunasan_mutasi_sales;
 use App\Models\penerimaList;
 use App\Models\penerimaReimburse;
@@ -73,8 +74,15 @@ class prosesMutasiController extends Controller
         $mutasiDetail->save();
 
         if($request->idMutasiKlasifikasi == 13){
-            //Jika pilih lain-lain, inputkan juga di mutasi  pembayaran
-            
+            //Jika klasifikasi pilih lain-lain, inputkan juga di mutasi  pembayaran
+            $idPattyCash = $request->idPattyCash;
+            try{
+                $mutasiPembayaran = new mutasi_pembayaran();
+                $mutasiPembayaran->idPattyCash = $idPattyCash;
+                $mutasiPembayaran->idMutasiDetail = $mutasiDetail->id;
+                $mutasiPembayaran->save();
+            }catch(Exception $e){
+            }
         }
     }
 
@@ -920,7 +928,7 @@ class prosesMutasiController extends Controller
         foreach ($pattyCash as $loopPattyCash) {
             $idKategoriPatty = $loopPattyCash->jenis_patty_cashs->kategori_patty_cashs->id;
             // @dd($idKategoriPatty);
-            if ($idKategoriPatty == 1) {
+            if (($idKategoriPatty != 2)&&($idKategoriPatty != 5)) {
                 array_push($listPattyArray, (object)[
                     'id' => $loopPattyCash->id,
                     'pattyCash' => $loopPattyCash->Item
@@ -996,7 +1004,9 @@ class prosesMutasiController extends Controller
             'mutasiTransaksis.mutasiDetails.doutlets',
             'mutasiTransaksis.mutasiSetorans.robotMutasi1003Setorans',
             'mutasiTransaksis.mutasiReimburses.robotMutasi165Reimburse',
-            'mutasiTransaksis.mutasiDetails.robot165PindahSaldo'
+            'mutasiTransaksis.mutasiDetails.robot165PindahSaldo',
+            'mutasiTransaksis.mutasiDetails.mutasiPembayarans.listItemPattyCash',
+            'mutasiTransaksis.mutasiDetails.mutasiPembayarans.robot165Pembayaran'
         ])->get();
         // @dd($tanggalAlls);
         $dataMutasi = [];
@@ -1039,6 +1049,20 @@ class prosesMutasiController extends Controller
                                 'robot' => 'Mutasi 165 Pindah Saldo',
                                 'status' => $robotMutasi165->statusRobots->status
                             ]);
+                        }
+
+                        $mutasiPembayaran = $mutasiDetail->mutasiPembayarans;
+                        if($mutasiPembayaran != null){
+                            $listItemPattyCash = $mutasiPembayaran->listItemPattyCash;
+                            $klasifikasi = $listItemPattyCash->Item;
+
+                            $robot165Pembayaran = $mutasiPembayaran->robot165Pembayaran;
+                            foreach ($robot165Pembayaran as $robotMutasi165) {
+                                array_push($robotStatus, (object)[
+                                    'robot' => 'Mutasi 165 Pembayaran',
+                                    'status' => $robotMutasi165->statusRobots->status
+                                ]);
+                            }
                         }
                     }
 
@@ -1245,6 +1269,10 @@ class prosesMutasiController extends Controller
     {
         $mutasiDetails = mutasi_detail::where('idMutasiTransaksi', '=', $request->idMutasiTransaksi)->get();
         foreach ($mutasiDetails as $mutasiDetail) {
+            $mutasiPembayaran = $mutasiDetail->mutasiPembayarans;
+            if($mutasiPembayaran != null){
+                $mutasiPembayaran->delete();
+            }
             $mutasiDetail->delete();
         }
     }

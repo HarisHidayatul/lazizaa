@@ -83,7 +83,7 @@
                     </div>
                     <div class="row">
                         <div class="col-5">Aksi</div>
-                        <div class="col-7">: <select name="" id="aksiAdd"></select></div>
+                        <div class="col-7">: <select name="" id="aksiAdd" onchange="searchPatty();"></select></div>
                     </div>
                     <div class="row">
                         <div class="col-5">Klasifikasi</div>

@@ -329,7 +329,8 @@
         function searchPatty() {
             console.log(pattyCashObjTemp);
             var idKategori = document.getElementById('klasifikasiAdd').value;
-            if (idKategori == '13') {
+            var idAksi = document.getElementById('aksiAdd').value;
+            if ((idKategori == '13') && (idAksi == '1')) {
                 document.getElementById('lain2div').style.display = 'block';
             } else {
                 document.getElementById('lain2div').style.display = 'none';
