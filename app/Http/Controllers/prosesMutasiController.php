@@ -1276,4 +1276,11 @@ class prosesMutasiController extends Controller
             $mutasiDetail->delete();
         }
     }
+
+    public function deleteMutasiFromId($idStart,$idStop){
+        $mutasiTransaksi = mutasi_transaksi::where('id','>=',$idStart)->where('id','<=',$idStop)->get();
+        foreach($mutasiTransaksi as $loopMutasi){
+            $loopMutasi->delete();
+        }
+    }
 }
