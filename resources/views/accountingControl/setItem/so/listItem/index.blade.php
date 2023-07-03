@@ -28,6 +28,7 @@
                 <th>Harian</th>
                 <th>Mingguan</th>
                 <th>Kode Akun</th>
+                <th>Kode Bee</th>
                 <th>Submit</th>
             </tr>
         </thead>

@@ -189,7 +189,8 @@ class itemSOController extends Controller
                 'icon' => $itemso[$i]['icon'],
                 'mingguanItem' => $itemso[$i]['munculMingguan'],
                 'harianItem' => $itemso[$i]['munculHarian'],
-                'kodeAkun' => $itemso[$i]['kode_akun']
+                'kodeAkun' => $itemso[$i]['kode_akun'],
+                'kodeBeeCloud' => $itemso[$i]['kode_bee_cloud']
             ]);
         }
         return response()->json([
@@ -280,6 +281,9 @@ class itemSOController extends Controller
         }
         if($request->kodeAkun != null){
             $listItemSO->kode_akun = $request->kodeAkun;
+        }
+        if($request->kodeBeeCloud != null){
+            $listItemSO->kode_bee_cloud = $request->kodeBeeCloud;
         }
         $listItemSO->save();
         // @dd($listItemSO->idKategoriSo);

@@ -131,6 +131,12 @@
                         dataTable += '</td>';
 
                         dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.itemSO[i].kodeBeeCloud;
+                        dataTable += '" name="kodeBeeCloud">';
+                        dataTable += '</td>';
+
+                        dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' + i +
                             ');">Edit</button>';
 
@@ -159,6 +165,7 @@
             var itemEdit = document.getElementsByName('inputEdit')[index].value;
             var iconEdit = document.getElementsByName('locationEdit')[index].value;
             var kodeAkun = document.getElementsByName('kodeAkun')[index].value;
+            var kodeBeeCloud = document.getElementsByName('kodeBeeCloud')[index].value;
             var idItem = listItemSoArray[index];
             var checkBoxMingguan = document.getElementsByName('checkBoxMingguan')[index].checked;
             var checkBoxHarian = document.getElementsByName('checkBoxHarian')[index].checked;
@@ -180,7 +187,8 @@
                     icon: iconEdit,
                     munculMingguan: munculMingguan,
                     munculHarian: munculHarian,
-                    kodeAkun: kodeAkun
+                    kodeAkun: kodeAkun,
+                    kodeBeeCloud: kodeBeeCloud
                 },
                 success: function(response) {
                     getListAllItem();

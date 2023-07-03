@@ -27,10 +27,11 @@ class listItemSO extends Model
         'idSatuan',
         'idKategoriSo',
         'icon',
-        'id_bee_cloud_item',
         'kode_akun',
         'munculMingguan',
         'munculHarian',
+        'kode_bee_cloud',
+        'kode_akun',
         'created_at',
         'updated_at',
         'deleted_at'
