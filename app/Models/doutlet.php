@@ -65,6 +65,7 @@ class doutlet extends Model
         'kodeGoresto',
         'kodeSetoran',
         'kasSalesBee',
+        'warehouseIdBee',
         'created_at',
         'updated_at',
         'deleted_at'

@@ -45,6 +45,7 @@
                         <th>Kode Go Resto</th>
                         <th>Kode Setoran</th>
                         <th>Kas Sales Bee</th>
+                        <th>Wh Id Bee</th>
                         <th>Edit</th>
                     </tr>
                 </thead>

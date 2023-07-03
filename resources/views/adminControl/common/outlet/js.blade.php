@@ -26,6 +26,8 @@
 
             var kasSalesBee = document.getElementsByName('kasSalesBee')[index].value;
 
+            var warehouseIdBee = document.getElementsByName('warehouseIdBee')[index].value
+
             $.ajax({
                 url: "{{ url('common/outlet/update') }}" + '/' + idOutletArray[index],
                 type: 'get',
@@ -41,7 +43,8 @@
                     kodeShopee: kodeShopee,
                     kodeGoresto: kodeGoresto,
                     kodeSetoran: kodeSetoran,
-                    kasSalesBee: kasSalesBee
+                    kasSalesBee: kasSalesBee,
+                    warehouseIdBee: warehouseIdBee
                 },
                 success: function(response) {
                     getOutlet();
@@ -179,6 +182,12 @@
                         dataTable += '" name="kasSalesBee">';
                         dataTable += '</td>';
 
+                        dataTable += '<td>';
+                        dataTable += '<input type="text" class="form-control" value="';
+                        dataTable += obj.dataItem[i].warehouseIdBee;
+                        dataTable += '" name="warehouseIdBee">';
+                        dataTable += '</td>';
+                        
                         dataTable += '<td>';
                         dataTable += '<button type="button" class="btn btn-secondary" onClick="editItem(' +
                             i +
