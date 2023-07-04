@@ -934,6 +934,7 @@ class robotController extends Controller
                     foreach ($robotMutasi455TfKas as $loopMutasiRobot) {
                         array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
+                            'idStatus' => $loopMutasiRobot->statusRobots->id,
                             'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
@@ -987,6 +988,7 @@ class robotController extends Controller
                     foreach ($robotMutasi455TfKasPenerimaan as $loopMutasiRobot) {
                         array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
+                            'idStatus' => $loopMutasiRobot->statusRobots->id,
                             'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
@@ -1040,6 +1042,7 @@ class robotController extends Controller
                     foreach ($robotMutasi455TfKas as $loopMutasiRobot) {
                         array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
+                            'idStatus' => $loopMutasiRobot->statusRobots->id,
                             'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
@@ -1101,6 +1104,7 @@ class robotController extends Controller
                     foreach ($robotMutasi455Pembayaran as $loopMutasiRobot) {
                         array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
+                            'idStatus' => $loopMutasiRobot->statusRobots->id,
                             'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
@@ -1151,6 +1155,7 @@ class robotController extends Controller
                     foreach ($robotMutasi1003Setorans as $loopMutasiRobot) {
                         array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
+                            'idStatus' => $loopMutasiRobot->statusRobots->id,
                             'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
@@ -1201,6 +1206,7 @@ class robotController extends Controller
                     foreach ($robotMutasi165Reimburse as $loopMutasiRobot) {
                         array_push($dataRobot, (object)[
                             'id' => $loopMutasiRobot->id,
+                            'idStatus' => $loopMutasiRobot->statusRobots->id,
                             'status' => $loopMutasiRobot->statusRobots->status,
                             'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                         ]);
@@ -1251,6 +1257,7 @@ class robotController extends Controller
                         foreach ($robot165PindahSaldo as $loopMutasiRobot) {
                             array_push($dataRobot, (object)[
                                 'id' => $loopMutasiRobot->id,
+                                'idStatus' => $loopMutasiRobot->statusRobots->id,
                                 'status' => $loopMutasiRobot->statusRobots->status,
                                 'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                             ]);
@@ -1303,6 +1310,7 @@ class robotController extends Controller
                         foreach ($robot165Pembayaran as $loopMutasiRobot) {
                             array_push($dataRobot, (object)[
                                 'id' => $loopMutasiRobot->id,
+                                'idStatus' => $loopMutasiRobot->statusRobots->id,
                                 'status' => $loopMutasiRobot->statusRobots->status,
                                 'perevisi' => $loopMutasiRobot->dUsers['Nama Lengkap']
                             ]);

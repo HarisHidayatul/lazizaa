@@ -65,6 +65,7 @@
             var startDate = document.getElementById('startDate').value;
             var stopDate = document.getElementById('stopDate').value;
             var idPenerima = document.getElementById('selPenerima').value;
+            var selFilter = document.getElementById('selFilter').value;
             var urlAll = "{{ url('robot/mutasi165Reimburse/show/all') }}";
             $.ajax({
                 url: urlAll,
@@ -78,7 +79,22 @@
                     var obj = JSON.parse(JSON.stringify(response));
                     var historyAll = "";
                     console.log(obj);
+                    var selFilter = document.getElementById('selFilter').value;
+                    var dataFound = false;
                     for (var i = 0; i < obj.data.length; i++) {
+                        if (selFilter != 0) {
+                            dataFound = false;
+                            if (obj.data[i].dataRobot.length > 0) {
+                                for (var j = 0; j < obj.data[i].dataRobot.length; j++) {
+                                    if(obj.data[i].dataRobot[j].idStatus == selFilter){
+                                        dataFound = true;
+                                    }
+                                }
+                            }
+                            if(!dataFound){
+                                continue;
+                            }
+                        }
                         historyAll += '<tr>';
                         historyAll += '<td>';
                         historyAll += obj.data[i].tanggal;
